@@ -2,6 +2,14 @@ package it.algos.vaadbio;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.server.VaadinRequest;
+import com.vaadin.ui.Label;
+import com.vaadin.ui.Notification;
+import it.algos.vaad.wiki.WikiLogin;
+import it.algos.vaadbio.bio.BioMod;
+import it.algos.vaadbio.lib.LibBio;
+import it.algos.webbase.domain.pref.PrefMod;
+import it.algos.webbase.domain.utente.UtenteModulo;
+import it.algos.webbase.web.lib.LibSession;
 import it.algos.webbase.web.ui.AlgosUI;
 
 /**
@@ -16,8 +24,8 @@ import it.algos.webbase.web.ui.AlgosUI;
  * Se le applicazioni specifiche vogliono una UI completamente differente,
  * possono sovrascrivere il metodo startUI() della superclasse
  */
-@Theme("valo")
-//@Theme("algos")
+//@Theme("valo")
+@Theme("algos")
 public class VaadbioUI extends AlgosUI {
 
     /**
@@ -35,9 +43,26 @@ public class VaadbioUI extends AlgosUI {
      */
     @Override
     protected void init(VaadinRequest request) {
-//        AlgosUI.DEBUG_GUI = true;
-//        menuAddressModuloPartenza = "Bolla";
+        WikiLogin login;
+
+//        AlgosUI.DEBUG_GUI = Pref.getBool(LibWiki.DEBUG, true);
+        menuAddressModuloPartenza = "Wiki";
         super.init(request);
+        footerLayout.addComponent(new Label("VaadBio versione 1.0 del 25 nov 2015"));
+
+//        this.checkLogin();
+        boolean loggato = false;
+        loggato = LibSession.getAttributeBool("logged");
+        if (loggato) {
+            login = LibBio.getLogin();
+            if (login.isValido()) {
+                Notification.show("Avviso", "Sei loggato come " + login.getLgusername(), Notification.Type.HUMANIZED_MESSAGE);
+            } else {
+                Notification.show("Avviso", "Login non valido", Notification.Type.HUMANIZED_MESSAGE);
+            }// fine del blocco if-else
+        } else {
+            Notification.show("Avviso", "Nessun login effettuato", Notification.Type.HUMANIZED_MESSAGE);
+        }// fine del blocco if-else
     }// end of method
 
 
@@ -49,7 +74,9 @@ public class VaadbioUI extends AlgosUI {
      */
     @Override
     protected void addModuli() {
-        // this.addModulo(new BollaMod());
+        this.addModulo(new UtenteModulo("User"));
+        this.addModulo(new PrefMod());
+        this.addModulo(new BioMod());
     }// end of method
 
 }//end of UI class

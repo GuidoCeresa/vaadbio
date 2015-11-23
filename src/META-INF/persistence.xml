@@ -8,6 +8,7 @@
         <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
 
         <class>it.algos.webbase.web.entity.BaseEntity</class>
+		<class>it.algos.vaadbio.bolla.Bolla</class>
 		<class>it.algos.webbase.domain.ruolo.Ruolo</class>
 		<class>it.algos.webbase.domain.utente.Utente</class>
 		<class>it.algos.webbase.domain.utenteruolo.UtenteRuolo</class>

@@ -45,9 +45,17 @@ public class VaadbioBootStrap extends ABootStrap {
 
         // eventuali modifiche ai flag generali di regolazione
         AlgosApp.USE_SECURITY = true;
-//        AlgosApp.USE_LOG = true;
-//        AlgosApp.USE_VERS = false;
-//        AlgosApp.USE_PREF = false;
+        AlgosApp.USE_LOG = false; //usa una propria sottoclasse del modulo
+        AlgosApp.USE_PREF = false; //lo uso, ma lo creo in VaadbotUI per averlo nell'ordine voluto
+
+        // avvia lo scheduler ciclo download new che esegue due volte al giorno
+//        DaemonBioCicloNew.getInstance().start();
+
+        // avvia lo scheduler ciclo download new che esegue ogni ora al minuto 0
+//        DaemonBioCicloUpdate.getInstance().start();
+
+        // avvia lo scheduler ciclo elabora new che esegue ogni ora al minuto 30
+//        DaemonBioCicloElabora.getInstance().start();
     }// end of method
 
 
@@ -58,6 +66,13 @@ public class VaadbioBootStrap extends ABootStrap {
      */
     @Override
     public void contextDestroyed(ServletContextEvent servletContextEvent) {
+
+        // arresta gli schedulers
+//        DaemonBioCicloNew.getInstance().stop();
+//        DaemonBioCicloUpdate.getInstance().stop();
+//        DaemonBioCicloElabora.getInstance().stop();
+
+        super.contextDestroyed(servletContextEvent);
     }// end of method
 
 }// end of bootstrap class
