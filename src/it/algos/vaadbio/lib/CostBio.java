@@ -22,7 +22,7 @@ public abstract class CostBio {
     public static final String USA_LIMITE_DOWNLOAD = "usaLimiteDownload";
     public static final String MAX_DOWNLOAD = "maxDownload";
     public static final String USA_LOG_DOWNLOAD = "usaLogDownload";
-    public static final String USA_UPLOAD_DOWNLOADATA = "usaUploadVoceDownloadata";
+    public static final String USA_UPLOAD_DOWNLOADATA = "usaUploadDownloadata";
     public static final String USA_CANCELLA_VOCE_MANCANTE = "usaCancellaVoceMancante";
     public static final String NUM_PAGEIDS_REQUEST = "numPageidesRequest";
 
@@ -32,7 +32,7 @@ public abstract class CostBio {
     public static final String MAX_ELABORA = "maxElabora";
     public static final String USA_LOG_ELABORA = "usaLogElabora";
     public static final String USA_UPLOAD_ELABORATA = "usaUploadElaborata";
-    public static final String USA_LOG_UPLOAD_ELABORATA = "usaLogElaborata";
+    public static final String USA_LOG_UPLOAD_ELABORATA = "usaLogUploadElaborata";
 
 
 }// end of static abstract class

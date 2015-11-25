@@ -47,8 +47,8 @@ import java.util.ArrayList;
  */
 public class CicloDown {
 
-    private static final String TAG_BIO = "BioBot";
-    private static final String TAG_CAT_DEBUG = "Nati nel 1420";
+    public static final String TAG_BIO = "BioBot";
+    public static final String TAG_CAT_DEBUG = "Nati nel 1420";
 
     public CicloDown() {
         newAndDelete();
@@ -218,7 +218,7 @@ public class CicloDown {
         if (downloadBio.isStatus()) {
             voce = Voce.trovataCorretta;
             bio = downloadBio.getBio();
-            new ElaboraBio(bio);
+            new ElaboraBio(bio, Pref.getBool(CostBio.USA_UPLOAD_DOWNLOADATA, false));
         }// fine del blocco if-else
 
         //--se è attivo il flag ed i template sono diversi, parte il ciclo di aggiornamento

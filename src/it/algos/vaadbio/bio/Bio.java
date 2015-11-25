@@ -250,7 +250,7 @@ public class Bio extends BaseEntity {
      * @return lista di pageids (Long)
      */
     public synchronized static ArrayList<Long> findAllPageid(int limit) {
-        return LibBio.queryFind("select pageid from Bio order by ultimaLettura asc", limit);
+        return LibBio.queryFind("select bio.pageid from Bio bio order by bio.ultimaLettura asc", limit);
     }// end of method
 
     /**

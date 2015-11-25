@@ -122,12 +122,12 @@ public class VersBootStrap implements ServletContextListener {
 
         //--creata una nuova preferenza
         if (LibVers.installa(17)) {
-            LibPref.newVersBool(CostBio.USA_UPLOAD_ELABORATA, false, "Upload di ogni singola voce nel cicloElabora. Ela, se tmpl diverso: Up, Down, Ela");
+            LibPref.newVersBool(CostBio.USA_UPLOAD_ELABORATA, true, "Upload di ogni singola voce nel cicloElabora. Ela, se tmpl diverso: Up, Down, Ela");
         }// fine del blocco if
 
         //--creata una nuova preferenza
         if (LibVers.installa(18)) {
-            LibPref.newVersBool(CostBio.USA_LOG_UPLOAD_ELABORATA, false, "Uso del log di registrazione per la singola voce uploadata", "Livello debug");
+            LibPref.newVersBool(CostBio.USA_LOG_UPLOAD_ELABORATA, true, "Uso del log di registrazione per la singola voce uploadata", "Livello debug");
         }// fine del blocco if
 
 

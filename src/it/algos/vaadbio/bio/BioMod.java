@@ -51,8 +51,20 @@ public class BioMod extends ModulePop {
      * Serve anche per l'ordine con cui vengono presentati i campi nella scheda <br>
      */
     protected Attribute<?, ?>[] creaFieldsForm() {
-        return new Attribute[]{Bio_.pageid, Bio_.title, Bio_.templateEsiste, Bio_.templateValido, Bio_.templatesUguali, Bio_.ultimaLettura, Bio_.ultimaElaborazione,Bio_.templateServer,Bio_.templateStandard};
+        return new Attribute[]{Bio_.pageid, Bio_.title, Bio_.templateEsiste, Bio_.templateValido, Bio_.templatesUguali, Bio_.ultimaLettura, Bio_.ultimaElaborazione, Bio_.templateServer, Bio_.templateStandard};
     }// end of method
+
+
+    /**
+     * Returns the table used to shows the list. <br>
+     * The concrete subclass must override for a specific Table.
+     *
+     * @return the Table
+     */
+    public ATable createTable() {
+        return (new BioTable(this));
+    }// end of method
+
 
     /**
      * Create the MenuBar Item for this module
@@ -88,14 +100,47 @@ public class BioMod extends ModulePop {
         menuItem.addItem("Ciclo down", FontAwesome.COG, new MenuBar.Command() {
             public void menuSelected(MenuBar.MenuItem selectedItem) {
                 if (Pref.getBool(CostBio.USA_DIALOGHI_CONFERMA, true)) {
+                    final String nomeCat;
+                    final boolean usaDebug = Pref.getBool(CostBio.USA_DEBUG, false);
+                    final boolean usaLimite = Pref.getBool(CostBio.USA_LIMITE_DOWNLOAD, false);
+                    final boolean usaLog = Pref.getBool(CostBio.USA_LOG_DOWNLOAD, false);
+                    final boolean usaUpdate = Pref.getBool(CostBio.USA_UPLOAD_DOWNLOADATA, false);
+                    final boolean usaCancella = Pref.getBool(CostBio.USA_CANCELLA_VOCE_MANCANTE, false);
+                    if (usaDebug) {
+                        nomeCat = "<b><span style=\"color:red\">" + CicloDown.TAG_CAT_DEBUG + "</span></b>";
+                    } else {
+                        nomeCat = "<b><span style=\"color:red\">" + CicloDown.TAG_BIO + "</span></b>";
+                    }// end of if/else cycle
                     int maxDowloadNew = Pref.getInt(CostBio.MAX_DOWNLOAD, 1000);
-                    String newMsg = "Esegue un ciclo di sincronizzazione tra le pagine della categoria TAG_BIO ed i records della tavola Bio";
-                    newMsg += "<br>Esegue un ciclo di controllo e creazione di nuovi records esistenti nella categoria e mancanti nel database";
-                    newMsg += "<br>Esegue un ciclo di controllo e cancellazione di records esistenti nel database e mancanti nella categoria";
-                    newMsg += "<br>Le preferenze prevedono di scaricare ";
-                    newMsg += LibNum.format(maxDowloadNew);
-                    newMsg += " voci dal server";
-                    newMsg += "<br>Occorre diverso tempo";
+                    String newMsg = "Esegue un ciclo di sincronizzazione tra le pagine della categoria " + nomeCat + " ed i records della tavola Bio<br/>";
+                    newMsg += "<br/>Esegue un ciclo (<b><span style=\"color:green\">new</span></b>) di controllo e creazione di nuovi records esistenti nella categoria e mancanti nel database";
+                    newMsg += "<br/>Esegue un ciclo (<b><span style=\"color:green\">delete</span></b>) di cancellazione di records esistenti nel database e mancanti nella categoria";
+                    newMsg += "<br/>Esegue un ciclo (<b><span style=\"color:green\">update</span></b>) di controllo e aggiornamento di tutti i records esistenti nel database<br/>";
+                    if (usaDebug) {
+                        newMsg += "<br>Le preferenze prevedono di usare la categoria di debug " + nomeCat;
+                    } else {
+                        newMsg += "<br>Le preferenze prevedono di usare la categoria " + nomeCat;
+                    }// end of if/else cycle
+                    if (usaLimite) {
+                        newMsg += "<br>Le preferenze prevedono di scaricare <b><span style=\"color:red\">" + LibNum.format(maxDowloadNew) + "</span></b> voci dal server";
+                    } else {
+                        newMsg += "<br>Le preferenze prevedono di scaricare dal server <b><span style=\"color:red\">tutte</span></b> le voci della categoria";
+                    }// end of if/else cycle
+                    if (usaLog) {
+                        newMsg += "<br>Le preferenze prevedono di registrare il risultato nei <b><span style=\"color:red\">log</span></b>";
+                    } else {
+                        newMsg += "<br>Le preferenze <b><span style=\"color:red\">non</span></b> prevedono di registrare il risultato nei log";
+                    }// end of if/else cycle
+                    if (usaUpdate) {
+                        newMsg += "<br>Le preferenze prevedono un <b><span style=\"color:red\">upload</span></b> della voce se il templateStandard è diverso dal templateServer";
+                    } else {
+                        newMsg += "<br>Le preferenze <b><span style=\"color:red\">non</span></b> prevedono un upload della voce";
+                    }// end of if/else cycle
+                    if (usaCancella) {
+                        newMsg += "<br>Le preferenze prevedono di <b><span style=\"color:red\">cancellare</span></b> le voci non più presenti nella categoria";
+                    } else {
+                        newMsg += "<br>Le preferenze <b><span style=\"color:red\">non</span></b> prevedono di cancellare le voci";
+                    }// end of if/else cycle
                     ConfirmDialog dialog = new ConfirmDialog(msg, newMsg,
                             new ConfirmDialog.Listener() {
                                 @Override

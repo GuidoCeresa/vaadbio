@@ -1,6 +1,8 @@
 package it.algos.vaadbio;
 
 import it.algos.vaadbio.bio.Bio;
+import it.algos.vaadbio.lib.CostBio;
+import it.algos.webbase.domain.pref.Pref;
 
 import java.util.ArrayList;
 
@@ -34,10 +36,15 @@ public class CicloElabora {
      */
     public void doInit() {
         ArrayList<Long> vociDaElaborare;
+        int limite = 0;
 
-        vociDaElaborare = Bio.findLast(20);
+        if (Pref.getBool(CostBio.USA_LIMITE_ELABORA, false)) {
+            limite = Pref.getInt(CostBio.MAX_ELABORA, 100);
+        }// fine del blocco if
 
-        if (vociDaElaborare!=null&&vociDaElaborare.size()>0) {
+        vociDaElaborare = Bio.findLast(limite);
+
+        if (vociDaElaborare != null && vociDaElaborare.size() > 0) {
             for (Long pageid : vociDaElaborare) {
                 new ElaboraBio(pageid);
             }// end of for cycle

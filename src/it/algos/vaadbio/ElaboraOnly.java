@@ -45,6 +45,7 @@ public class ElaboraOnly {
     private void doInit(Bio bio) {
         String tmplBioServer = "";
         String templateStandard = "";
+        boolean templateEsiste = false;
 
         if (bio == null) {
             return;
@@ -54,21 +55,27 @@ public class ElaboraOnly {
         if (tmplBioServer != null && !tmplBioServer.equals("")) {
             mappaReali = LibBio.getMappaReali(tmplBioServer);
             mappaBio = LibBio.getMappaBio(tmplBioServer);
-        }// fine del blocco if
-
-        if (mappaBio != null) {
-            fixMappa(bio, mappaBio);
-        }// fine del blocco if
-
-        templateStandard = creaNewTmpl(bio);
-
-        if (bio.getTemplateServer().equals(templateStandard)) {
-            bio.setTemplatesUguali(true);
+            templateEsiste = true;
         }// end of if cycle
 
+        if (templateEsiste) {
+            if (mappaBio != null) {
+                fixMappa(bio, mappaBio);
+            }// fine del blocco if
+            templateStandard = creaNewTmpl(bio);
+        }// end of if cycle
+
+        if (!templateStandard.equals("") && bio.getTemplateServer().equals(templateStandard)) {
+            bio.setTemplatesUguali(true);
+        } else {
+            bio.setTemplatesUguali(false);
+        }// end of if/else cycle
+
+        bio.setTemplateEsiste(templateEsiste);
+        bio.setTemplateStandard(templateStandard);
+        bio.setUltimaElaborazione(LibTime.adesso());
+
         try { // prova ad eseguire il codice
-            bio.setTemplateStandard(templateStandard);
-            bio.setUltimaElaborazione(LibTime.adesso());
             bio.save();
         } catch (Exception unErrore) { // intercetta l'errore
             //--Recupera i dati dal record della tavola Wikibio
