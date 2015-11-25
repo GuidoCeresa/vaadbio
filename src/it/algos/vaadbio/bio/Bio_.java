@@ -14,8 +14,13 @@ import java.sql.Timestamp;
 public class Bio_ extends BaseEntity_ {
     public static volatile SingularAttribute<Bio, Long> pageid;
     public static volatile SingularAttribute<Bio, String> title;
-    public static volatile SingularAttribute<Bio, String> tmplBio;
+    public static volatile SingularAttribute<Bio, String> templateServer;
+    public static volatile SingularAttribute<Bio, String> templateStandard;
+    public static volatile SingularAttribute<Bio, Timestamp> ultimaLettura;
     public static volatile SingularAttribute<Bio, Timestamp> ultimaElaborazione;
+    public static volatile SingularAttribute<Bio, Boolean> templateEsiste;
+    public static volatile SingularAttribute<Bio, Boolean> templateValido;
+    public static volatile SingularAttribute<Bio, Boolean> templatesUguali;
 
     public static volatile SingularAttribute<Bio, String> titolo;
     public static volatile SingularAttribute<Bio, String> nome;

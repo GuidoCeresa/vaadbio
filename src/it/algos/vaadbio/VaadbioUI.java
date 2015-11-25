@@ -6,9 +6,11 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
 import it.algos.vaad.wiki.WikiLogin;
 import it.algos.vaadbio.bio.BioMod;
+import it.algos.vaadbio.biologo.BioLogoMod;
 import it.algos.vaadbio.lib.LibBio;
 import it.algos.webbase.domain.pref.PrefMod;
 import it.algos.webbase.domain.utente.UtenteModulo;
+import it.algos.webbase.domain.vers.VersMod;
 import it.algos.webbase.web.lib.LibSession;
 import it.algos.webbase.web.ui.AlgosUI;
 
@@ -76,6 +78,8 @@ public class VaadbioUI extends AlgosUI {
     protected void addModuli() {
         this.addModulo(new UtenteModulo("User"));
         this.addModulo(new PrefMod());
+        this.addModulo(new VersMod());
+        this.addModulo(new BioLogoMod());
         this.addModulo(new BioMod());
     }// end of method
 

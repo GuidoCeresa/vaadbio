@@ -1,6 +1,8 @@
 package it.algos.vaadbio.bio;
 
-import it.algos.vaad.wiki.entities.wiki.Wiki;
+import it.algos.vaadbio.lib.LibBio;
+import it.algos.webbase.web.entity.BaseEntity;
+import it.algos.webbase.web.query.AQuery;
 import org.eclipse.persistence.annotations.Index;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -9,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 /**
  * Classe di tipo JavaBean
@@ -22,7 +25,7 @@ import java.sql.Timestamp;
  */
 @Entity
 
-public class Bio extends Wiki {
+public class Bio extends BaseEntity {
 
     @NotNull
     @Index
@@ -32,14 +35,36 @@ public class Bio extends Wiki {
     @Column(columnDefinition = "text")
     private String title = "";
 
-    @NotEmpty
     @Lob
-    private String tmplBio = "";
+    private String templateServer = "";
 
+    @Lob
+    private String templateStandard = "";
+
+    //--tempo di DOWNLOAD
+    //--uso il formato Timestamp, per confrontarla col campo timestamp
+    //--molto meglio che siano esattamente dello stesso tipo
+    //--ultima lettura/aggiornamento della voce effettuata dal programma VaadBio
+    private Timestamp ultimaLettura;
+
+    //--tempo di ELABORAZIONE
+    //--momento in cui il record Bio è stato elaborato estraendo i dati dal tmplBioServer e costruendo il tmplBioStandard
     private Timestamp ultimaElaborazione;
 
+    //--esiste la pagina (altrimenti non ci sarebbe il record) con pageid e title, ma templateServer potrebbe essere vuoto
+    //--controllato e regolato alla fine di Download
+    private boolean templateEsiste;
 
-    //--parametri del template Bio presenti nel template della voce
+    //--templateServer potrebbe essere incompleto o non chiuso o mancante di alcuni parametri fondamentali
+    //--controllato e regolato alla fine di Download
+    private boolean templateValido;
+
+    //-- uguaglianza tra templateServer e templateStandard
+    //--controllato e regolato alla fine di Elabora
+    private boolean templatesUguali;
+
+    //--parametri originali del template Bio presenti nel template della voce ed estratti pari pari dal tmplBioServer
+    //--serve mantenerli separati per ricerche ed ordinamenti
     @Column(columnDefinition = "text")
     private String titolo = "";  //titolo tipo ''dottore'', non TITLE della pagina
     @Column(columnDefinition = "text")
@@ -125,6 +150,8 @@ public class Bio extends Wiki {
     private String dimImmagine = "";
 
 
+    //--parametri modificati rispetto ai parametri originali con lo stesso nome, secondo logiche specifiche per ogni parametro
+    //--parametri usati per creare i link alle tavole specializzate per costruire le didascalie usate nelle liste
     private String nomeValido = "";
     private String cognomeValido = "";
     private String sessoValido = "";
@@ -167,32 +194,114 @@ public class Bio extends Wiki {
         super();
     }// end of general constructor
 
-    @Override
+
+    /**
+     * Recupera una istanza di Bio usando la query standard della Primary Key
+     *
+     * @param id valore della Primary Key
+     * @return istanza di Bio, null se non trovata
+     */
+    public synchronized static Bio find(long id) {
+        Bio instance = null;
+        BaseEntity entity = AQuery.queryById(Bio.class, id);
+
+        if (entity != null) {
+            if (entity instanceof Bio) {
+                instance = (Bio) entity;
+            }// end of if cycle
+        }// end of if cycle
+
+        return instance;
+    }// end of method
+
+    /**
+     * Recupera una istanza di Wikibio usando la query specifica
+     *
+     * @param pageid valore della key base/standard per la ricerca (indicizzata e più veloce)
+     * @return istanza di Bio, null se non trovata
+     */
+    public synchronized static Bio findByPageid(long pageid) {
+        Bio instance = null;
+        BaseEntity entity = AQuery.queryOne(Bio.class, Bio_.pageid, pageid);
+
+        if (entity != null) {
+            if (entity instanceof Bio) {
+                instance = (Bio) entity;
+            }// end of if cycle
+        }// end of if cycle
+
+        return instance;
+    }// end of method
+
+    /**
+     * Recupera i pageids di tutti i records presenti
+     *
+     * @return lista di pageids (Long)
+     */
+    public synchronized static ArrayList<Long> findAllPageid() {
+        return findAllPageid(0);
+    }// end of method
+
+
+    /**
+     * Recupera i pageids dei primi (limit) records, ordinati per ultimaLettura ascendente
+     *
+     * @param limit di ricerca per la query
+     * @return lista di pageids (Long)
+     */
+    public synchronized static ArrayList<Long> findAllPageid(int limit) {
+        return LibBio.queryFind("select pageid from Bio order by ultimaLettura asc", limit);
+    }// end of method
+
+    /**
+     * Recupera i pageids dei primi (limit) records, ordinati per ultimaElaborazione ascendente
+     *
+     * @param limit di ricerca per la query
+     * @return lista di pageids (Long)
+     */
+    public synchronized static ArrayList<Long> findLast(int limit) {
+        return LibBio.queryFind("select bio.pageid from Bio bio order by bio.ultimaElaborazione asc", limit);
+    }// end of method
+
+
     public long getPageid() {
         return pageid;
     }// end of getter method
 
-    @Override
     public void setPageid(long pageid) {
         this.pageid = pageid;
     }//end of setter method
 
-    @Override
     public String getTitle() {
         return title;
     }// end of getter method
 
-    @Override
     public void setTitle(String title) {
         this.title = title;
     }//end of setter method
 
-    public String getTmplBio() {
-        return tmplBio;
+    public String getTemplateServer() {
+        return templateServer;
     }// end of getter method
 
-    public void setTmplBio(String tmplBio) {
-        this.tmplBio = tmplBio;
+    public void setTemplateServer(String templateServer) {
+        this.templateServer = templateServer;
+    }//end of setter method
+
+    public String getTemplateStandard() {
+        return templateStandard;
+    }// end of getter method
+
+    public void setTemplateStandard(String templateStandard) {
+        this.templateStandard = templateStandard;
+    }//end of setter method
+
+    public Timestamp getUltimaLettura() {
+        return ultimaLettura;
+    }// end of getter method
+
+    public void setUltimaLettura(Timestamp ultimaLettura) {
+        this.ultimaLettura = ultimaLettura;
     }//end of setter method
 
     public Timestamp getUltimaElaborazione() {
@@ -201,6 +310,31 @@ public class Bio extends Wiki {
 
     public void setUltimaElaborazione(Timestamp ultimaElaborazione) {
         this.ultimaElaborazione = ultimaElaborazione;
+    }//end of setter method
+
+
+    public boolean isTemplateEsiste() {
+        return templateEsiste;
+    }// end of getter method
+
+    public void setTemplateEsiste(boolean templateEsiste) {
+        this.templateEsiste = templateEsiste;
+    }//end of setter method
+
+    public boolean isTemplateValido() {
+        return templateValido;
+    }// end of getter method
+
+    public void setTemplateValido(boolean templateValido) {
+        this.templateValido = templateValido;
+    }//end of setter method
+
+    public boolean isTemplatesUguali() {
+        return templatesUguali;
+    }// end of getter method
+
+    public void setTemplatesUguali(boolean templatesUguali) {
+        this.templatesUguali = templatesUguali;
     }//end of setter method
 
     public String getTitolo() {

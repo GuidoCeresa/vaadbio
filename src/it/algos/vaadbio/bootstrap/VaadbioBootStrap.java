@@ -46,7 +46,8 @@ public class VaadbioBootStrap extends ABootStrap {
         // eventuali modifiche ai flag generali di regolazione
         AlgosApp.USE_SECURITY = true;
         AlgosApp.USE_LOG = false; //usa una propria sottoclasse del modulo
-        AlgosApp.USE_PREF = false; //lo uso, ma lo creo in VaadbotUI per averlo nell'ordine voluto
+        AlgosApp.USE_PREF = false; //lo uso, ma lo creo in VaadbioUI per averlo nell'ordine voluto
+        AlgosApp.USE_VERS = false; //lo uso, ma lo creo in VaadbioUI per averlo nell'ordine voluto
 
         // avvia lo scheduler ciclo download new che esegue due volte al giorno
 //        DaemonBioCicloNew.getInstance().start();

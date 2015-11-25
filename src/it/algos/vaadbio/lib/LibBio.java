@@ -5,16 +5,20 @@ import com.vaadin.addon.jpacontainer.JPAContainerItem;
 import com.vaadin.data.Item;
 import it.algos.vaad.wiki.WikiLogin;
 import it.algos.vaadbio.bio.Bio;
-//import it.algos.vaadbio.biolista.BioLista;
-//import it.algos.vaadbio.biooriginale.BioOriginale;
-//import it.algos.vaadbio.biovalida.BioValida;
-//import it.algos.vaadbio.biowiki.BioWiki;
 import it.algos.webbase.domain.pref.Pref;
+import it.algos.webbase.web.entity.EM;
 import it.algos.webbase.web.lib.LibArray;
 import it.algos.webbase.web.lib.LibSession;
 import it.algos.webbase.web.lib.LibText;
 
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import java.util.*;
+
+//import it.algos.vaadbio.biolista.BioLista;
+//import it.algos.vaadbio.biooriginale.BioOriginale;
+//import it.algos.vaadbio.biovalida.BioValida;
+//import it.algos.vaadbio.biowiki.BioWiki;
 
 /**
  * Created by gac on 20 ago 2015.
@@ -129,11 +133,11 @@ public abstract class LibBio {
 
     /**
      * Estrae una mappa chiave valore per un fix di parametri, dal testo di una biografia
-     * <p/>
+     * <p>
      * E impossibile sperare in uno schema fisso
      * Occorre considerare le {{ graffe annidate, i | (pipe) annidati
      * i mancati ritorni a capo, ecc., ecc.
-     * <p/>
+     * <p>
      * Uso la lista dei parametri che può riconoscere
      * (è meno flessibile, ma più sicuro)
      * Cerco il primo parametro nel testo e poi spazzolo il testo per cercare
@@ -148,7 +152,7 @@ public abstract class LibBio {
 //        Collection lista = null;
         String chiave;
         String sep = PIPE;
-        String sep2 = PIPE+" ";
+        String sep2 = PIPE + " ";
         String spazio = " ";
         String uguale = "=";
         String tab = "\t";
@@ -206,7 +210,7 @@ public abstract class LibBio {
                         valore = valore.substring(posUgu).trim();
                     }// fine del blocco if
                     valore = regValore(valore);
-                    if (!LibBio.isPariTag(valore,"{{","}}")) {
+                    if (!LibBio.isPariTag(valore, "{{", "}}")) {
                         valore = regGraffe(valore);
                     }// end of if cycle
                     valore = regACapo(valore);
@@ -272,7 +276,7 @@ public abstract class LibBio {
     /**
      * Estrae la mappa chiave/valore di un template dal testo completo di una voce
      * Gli estremi sono ESCLUSI
-     * <p/>
+     * <p>
      * Recupera il tag iniziale con o senza ''Template''
      * Recupera il tag finale con o senza ritorno a capo precedente
      * Controlla che non esistano doppie graffe dispari all'interno del template
@@ -295,7 +299,7 @@ public abstract class LibBio {
     /**
      * Estrae il testo essenziale di un template dal testo completo di una voce
      * Gli estremi sono ESCLUSI
-     * <p/>
+     * <p>
      * Il template DOVREBBE iniziare con {{Bio aCapo |
      * Il template DOVREBBE terminare con }} aCapo (eventuale)
      * Elimina doppie graffe iniziali e nome del template in modo che il raw parta col pipe
@@ -408,7 +412,7 @@ public abstract class LibBio {
 
     /**
      * Controlla le graffe interne al testo
-     * <p/>
+     * <p>
      * Casi da controllare (all'interno delle graffe principali, già eliminate):
      * 1-...{{..}}...               (singola)
      * 2-...{{}}...                 (vuota)
@@ -418,7 +422,7 @@ public abstract class LibBio {
      * 6-..{{..}}..{{..}}..{{...}}..(tre o più)
      * 7-..{{..}}..|..{{..}}        (due in punti diversi)
      * 8-..{{...|...}}              (pipe interni)
-     * <p/>
+     * <p>
      * Se la graffe esistono, restituisce:
      * testo = testo depurate delle graffe
      * valGraffe = valore del contenuto delle graffe                (stringa o arry di stringhe)
@@ -851,14 +855,14 @@ public abstract class LibBio {
 
     /**
      * Cancella un record
-     * <p/>
+     * <p>
      * Cancella il record di BioWiki
      * Cancella (se esiste) anche il corrispondente record (medesimo pageid) di BioOriginale
      * Cancella (se esiste) anche il corrispondente record (medesimo pageid) di BioValida
      * Cancella (se esiste) anche il corrispondente record (medesimo pageid) di BioLista
      *
      * @param pageid della voce
-     *               @deprecated
+     * @deprecated
      */
     public static boolean delete(long pageid) {
         boolean status = false;
@@ -921,7 +925,7 @@ public abstract class LibBio {
 
     /**
      * Il ciclo necessita del login come bot per il funzionamento normale
-     * <p/>
+     * <p>
      * Se è loggato come bot, ritorna true
      * Se non nè loggato o non è loggato come bot, controlla il flag USA_CICLI_ANCHE_SENZA_BOT
      * se è true, usa il limite normale (non bot) di mediawiki di 50 pagine
@@ -931,7 +935,7 @@ public abstract class LibBio {
         if (LibBio.isLoggatoBot()) {
             return true;
         } else {
-            if (Pref.getBool(CostBio.USA_CICLI_ANCHE_SENZA_BOT)) {
+            if (Pref.getBool(CostBio.USA_CICLI_ANCHE_SENZA_BOT, true)) {
                 return true;
             } else {
                 return false;
@@ -941,7 +945,7 @@ public abstract class LibBio {
 
     /**
      * Regola la lunghezza del campo
-     * <p/>
+     * <p>
      * Elimina il teasto successivo al ref
      * Elimina il testo successivo alle note
      * Elimina il testo successivo alle graffe
@@ -976,7 +980,7 @@ public abstract class LibBio {
 
     /**
      * Regola la lunghezza del campo
-     * <p/>
+     * <p>
      * Elimina il teasto successivo al ref
      * Elimina il testo successivo alle note
      * Elimina il testo successivo alle graffe
@@ -1060,7 +1064,7 @@ public abstract class LibBio {
 
     /**
      * Elimina (eventuali) doppie quadre in testa e coda della stringa.
-     * <p/>
+     * <p>
      * Funziona solo se le quadre sono esattamente in TESTA ed in CODA alla stringa
      * Elimina spazi vuoti iniziali e finali
      *
@@ -1140,7 +1144,7 @@ public abstract class LibBio {
 
     /**
      * Confronta il template risultante
-     * <p/>
+     * <p>
      * Costruisce un template 'corretto' e lo confronta con quello attuale
      * A seconda del flag, considera il template presente sul server, oppure quello riformulato in BioOriginale
      * La differenza sono gli spazi e l'ordine dei parametri, mentre i valori sono gli stessi in entrambi i casi
@@ -1164,17 +1168,30 @@ public abstract class LibBio {
 //            tmplBioNew = bioOrig.creaNewTmpl();
 //        }// end of if cycle
 
-        if (Pref.getBool(CostBio.USA_UPLOAD_CONTROLLO_STRETTO, false)) {
-            if (tmplBioNew.equals(tmplBioWiki)) {
-                status = false;
-            }// end of if cycle
-        } else {
-            if (tmplBioNew.equals(tmplBioOriginario)) {
-                status = false;
-            }// end of if cycle
-        }// end of if/else cycle
+        if (tmplBioNew.equals(tmplBioWiki)) {
+            status = false;
+        }// end of if cycle
 
         return status;
     }// end of static method
+
+
+    /**
+     * Recupera i pageids dei primi (limit) records, selezionati secondo la query ricevuta
+     *
+     * @param queryTxt per la selezione
+     * @param limit    di ricerca per la query
+     * @return lista di pageids (Long)
+     */
+    public synchronized static ArrayList<Long> queryFind(String queryTxt, int limit) {
+        List lista;
+        EntityManager manager = EM.createEntityManager();
+        Query query = manager.createQuery(queryTxt);
+        if (limit > 0) {
+            query.setMaxResults(limit);
+        }// fine del blocco if
+        lista = query.getResultList();
+        return new ArrayList<Long>(lista);
+    }// end of method
 
 }// end of abstract static class
