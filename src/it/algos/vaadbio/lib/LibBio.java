@@ -29,7 +29,7 @@ public abstract class LibBio {
     /**
      * tag per la singola quadra di apertura
      */
-    public static final String QUADRA_INI = "[";
+    public static final String QUADRA_INI = "\\[";
 
     /**
      * tag per le doppie quadre di apertura
@@ -39,7 +39,7 @@ public abstract class LibBio {
     /**
      * tag per la singola quadra di chiusura
      */
-    public static final String QUADRA_END = "]";
+    public static final String QUADRA_END = "\\]";
 
     /**
      * tag per le doppie quadre di chiusura
@@ -49,7 +49,7 @@ public abstract class LibBio {
     /**
      * tag per la singola graffa di apertura
      */
-    public static final String GRAFFA_INI = "{";
+    public static final String GRAFFA_INI = "\\{";
 
     /**
      * tag per le doppie graffe di apertura
@@ -59,7 +59,7 @@ public abstract class LibBio {
     /**
      * tag per la singola graffa di apertura
      */
-    public static final String GRAFFA_END = "}";
+    public static final String GRAFFA_END = "\\}";
 
     /**
      * tag per le doppie graffe di chiusura
@@ -693,9 +693,9 @@ public abstract class LibBio {
     /**
      * Controlla che le occorrenze dei due tag si pareggino all'interno del testo.
      *
-     * @param testo
-     * @param tagIni
-     * @param tagEnd
+     * @param testo  di riferimento
+     * @param tagIni di apertura
+     * @param tagEnd di chiusura
      * @return vero se il numero di tagIni è uguale al numero di tagEnd
      */
     public static boolean isPariTag(String testo, String tagIni, String tagEnd) {
@@ -711,6 +711,30 @@ public abstract class LibBio {
 
         return pari;
     } // fine del metodo
+
+    /**
+     * Controlla se nel testo ci sono occorrenze pari delle graffe.
+     * Le graffe devono anche essere nel giusto ordine
+     *
+     * @param testo in ingresso
+     * @return vero se le occorrenze di apertura e chiusura sono uguali
+     */
+    public static boolean isPariGraffe(String testo) {
+        return isPariTag(testo, GRAFFE_INI, GRAFFE_END);
+    } // fine del metodo
+
+
+    /**
+     * Controlla se nel testo ci sono occorrenze pari delle quadre.
+     * Le graffe devono anche essere nel giusto ordine
+     *
+     * @param testo in ingresso
+     * @return vero se le occorrenze di apertura e chiusura sono uguali
+     */
+    public static boolean isPariQuadre(String testo) {
+        return isPariTag(testo, QUADRE_INI, QUADRE_END);
+    } // fine del metodo
+
 
     /**
      * Restituisce il valore di occorrenze del tag nel testo.

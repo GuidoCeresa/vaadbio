@@ -12,14 +12,15 @@ import it.algos.webbase.web.lib.LibTime;
 import java.sql.Timestamp;
 
 /**
- * Download della singola pagina
+ * Download della singola voce
  * <p>
- * Legge dal server wiki
+ * Scarica la singola voce dal server e crea il nuovo record di Bio
  * Crea un nuovo record (solo se il pageid non esiste già)
  * Modifica il record esistente con lo stesso pageid
- * Registra il record Bio
+ * Registra il record Bio (solo pageid, title e templateServer)
  * Regola il flag temporale ultimaLettura
  * Azzera il flag temporale ultimaElaborazione
+ * Regola il flag templateEsiste
  */
 public class DownloadBio {
 
@@ -43,12 +44,13 @@ public class DownloadBio {
 
 
     /**
-     * Legge dal server wiki
+     * Scarica la singola voce dal server e crea il nuovo record di Bio
      * Crea un nuovo record (solo se il pageid non esiste già)
      * Modifica il record esistente con lo stesso pageid
      * Registra il record Bio
      * Regola il flag temporale ultimaLettura
      * Azzera il flag temporale ultimaElaborazione
+     * Regola il flag templateEsiste
      *
      * @param pagina dal server
      */
@@ -106,6 +108,16 @@ public class DownloadBio {
         }// fine del blocco try-catch
 
         this.setBio(bio);
+
+        doElabora();
+    }// end of method
+
+    //--se è attivo il flag ed i template sono diversi, parte il ciclo di aggiornamento
+    private void doElabora() {
+        if (this.isStatus()) {
+            bio = this.getBio();
+            new ElaboraBio(bio, Pref.getBool(CostBio.USA_UPLOAD_DOWNLOADATA, false));
+        }// fine del blocco if-else
     }// end of method
 
     public Bio getBio() {

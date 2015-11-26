@@ -1,6 +1,7 @@
 package it.algos.vaadbio.bio;
 
 import it.algos.webbase.web.entity.BaseEntity_;
+import it.algos.webbase.web.field.TextArea;
 
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
@@ -14,8 +15,8 @@ import java.sql.Timestamp;
 public class Bio_ extends BaseEntity_ {
     public static volatile SingularAttribute<Bio, Long> pageid;
     public static volatile SingularAttribute<Bio, String> title;
-    public static volatile SingularAttribute<Bio, String> templateServer;
-    public static volatile SingularAttribute<Bio, String> templateStandard;
+    public static volatile SingularAttribute<Bio, TextArea> templateServer;
+    public static volatile SingularAttribute<Bio, TextArea> templateStandard;
     public static volatile SingularAttribute<Bio, Timestamp> ultimaLettura;
     public static volatile SingularAttribute<Bio, Timestamp> ultimaElaborazione;
     public static volatile SingularAttribute<Bio, Boolean> templateEsiste;

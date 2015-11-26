@@ -1,15 +1,15 @@
 package it.algos.vaadbio;
 
+import com.vaadin.ui.Upload;
 import it.algos.vaadbio.bio.Bio;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.webbase.domain.pref.Pref;
 
 /**
  * Elabora la singola pagina
+ * <p>
  * Controlla la equivalenza di tmplBioServer con tmplBioStandard
- * Eventuale Upload della pagina
- * Eventuale Download della pagina
- * Regola il flag temporale ultimaElaborazione
+ * Eventuale Upload della pagina, seguito da un ulteriore Download della pagina
  */
 public class ElaboraBio {
 
@@ -35,9 +35,7 @@ public class ElaboraBio {
      * Elabora la singola pagina
      * <p>
      * Controlla la equivalenza di tmplBioServer con tmplBioStandard
-     * Eventuale Upload della pagina
-     * Eventuale Download della pagina
-     * Regola il flag temporale ultimaElaborazione
+     * Eventuale Upload della pagina, seguito da un ulteriore Download della pagina
      *
      * @param pageid della voce da elaborare
      */
@@ -57,15 +55,26 @@ public class ElaboraBio {
      * Elabora la singola pagina
      * <p>
      * Controlla la equivalenza di tmplBioServer con tmplBioStandard
-     * Eventuale Upload della pagina
-     * Eventuale Download della pagina
-     * Regola il flag temporale ultimaElaborazione
+     * Eventuale Upload della pagina, seguito da un ulteriore Download della pagina
      *
      * @param bio da elaborare
      */
     private void doInit(Bio bio, boolean upload) {
+        boolean templatesUguali;
         this.upload = upload;
         new ElaboraOnly(bio);
+
+        if (upload) {
+            templatesUguali = bio.isTemplatesUguali();
+            if (!templatesUguali) {
+//                new Upload(bio);
+//                new DownloadBio(bio.getPageid());
+//                new ElaboraOnly(bio);
+            }// end of if cycle
+
+        }// end of if cycle
+
     }// end of method
+
 
 }// end of class

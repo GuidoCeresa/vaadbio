@@ -56,21 +56,13 @@ public class CicloDown {
     }// end of constructor
 
     /**
-     * Esegue un ciclo di sincronizzazione tra le pagine della categoria TAG_BIO ed i records della tavola Bio
-     * <p>
-     * Esegue un ciclo (NEW) di controllo e creazione di nuovi records esistenti nella categoria sul server e mancanti nel database
-     * Esegue un ciclo (UPGRADE) di controllo di records esistenti nel database e modificati sul server dall'ultimo controllo
+     * Esegue un ciclo (NEW) di controllo e creazione di nuovi records esistenti sul server e mancanti nel database
      * Esegue un ciclo (DELETE) di cancellazione di records esistenti nel database e mancanti nella categoria
      * <p>
-     * Il ciclo viene chiamato da DaemonDownload (con frequenza giornaliera)
-     * Il ciclo può essere invocato dal bottone 'Ciclo Down' nella tavola Bio
-     * <p></p>
-     * Controlla il flag USA_LIMITE_DOWNLOAD
-     * Usa il numero massimo (MAX_DOWNLOAD) di voci da scaricare ad ogni ciclo (se USA_LIMITE_DOWNLOAD=true)
      * Legge la categoria BioBot
      * Legge le voci Bio esistenti
      * Trova la differenza negativa (records mancanti)
-     * Scarica MAX_DOWNLOAD voci dal server e crea MAX_DOWNLOAD nuovi records di Bio
+     * Scarica la lista di voci mancanti dal server e crea i nuovi records di Bio
      * Trova la differenza positiva (records eccedenti)
      * Cancella tutti i records non più presenti nella categoria
      */
@@ -151,8 +143,9 @@ public class CicloDown {
 //        vociModificate(listaVociDaControllare, inizio);
     }// end of method
 
+
     /**
-     * Scarica le voci mancanti dal server e crea i nuovi records di Bio
+     * Scarica la lista di voci mancanti dal server e crea i nuovi records di Bio
      * <p>
      * Controlla il flag USA_LIMITE_DOWNLOAD
      * Usa il numero massimo (MAX_DOWNLOAD) di voci da scaricare ad ogni ciclo (se USA_LIMITE_DOWNLOAD=true)
@@ -200,13 +193,11 @@ public class CicloDown {
 
 
     /**
-     * Legge dal server wiki
+     * Scarica la singola voce dal server e crea il nuovo record di Bio
      * <p>
      * Crea un nuovo record (solo se il pageid non esiste già)
      * Modifica il record esistente con lo stesso pageid
-     * Registra il record Bio
-     * Regola il flag temporale ultimaLettura
-     * Azzera il flag temporale ultimaElaborazione
+     * Esegue il metodo Elabora, col flag di update specifico per il ciclo di Download
      *
      * @param pageId della pagina
      */
@@ -215,22 +206,12 @@ public class CicloDown {
         DownloadBio downloadBio = new DownloadBio(pageId);
         Bio bio;
 
-        if (downloadBio.isStatus()) {
-            voce = Voce.trovataCorretta;
-            bio = downloadBio.getBio();
-            new ElaboraBio(bio, Pref.getBool(CostBio.USA_UPLOAD_DOWNLOADATA, false));
-        }// fine del blocco if-else
-
-        //--se è attivo il flag ed i template sono diversi, parte il ciclo di aggiornamento
-        if (Pref.getBool(CostBio.USA_UPLOAD_DOWNLOADATA, false)) {
-//            new ElaboraOriginale(pageId);
-//            //--se i template sono diversi, parte il ciclo di aggiornamento
-//            if (LibBio.isTemplateDiversi(pageId)) {
-//                new UploadBio(pageId);
-//                new DownloadBio(pageId);
-//                voce = Voce.uploadata;
-//            }// end of if cycle
-        }// end of if cycle
+//        if (downloadBio.isStatus()) {
+//            voce = Voce.trovataCorretta;
+//            bio = downloadBio.getBio();
+//            //--se è attivo il flag ed i template sono diversi, parte il ciclo di aggiornamento
+//            new ElaboraBio(bio, Pref.getBool(CostBio.USA_UPLOAD_DOWNLOADATA, false));
+//        }// fine del blocco if-else
 
         return voce;
     }// end of method
