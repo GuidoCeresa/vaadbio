@@ -84,9 +84,18 @@ public class DownloadBio {
         } catch (Exception unErrore) { // intercetta l'errore
             //--manca il DB
         }// fine del blocco try-catch
+
+        if (bio == null) {
+            try { // prova ad eseguire il codice
+                bio = Bio.findByTitle(title);
+            } catch (Exception unErrore) { // intercetta l'errore
+                //--manca il DB
+            }// fine del blocco try-catch
+        }// fine del blocco if
+
         if (bio == null) {
             bio = new Bio();
-        }// fine del blocco if
+        }// end of if cycle
 
         // regola altri parametri
         bio.setPageid(pageid);

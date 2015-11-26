@@ -7,6 +7,7 @@ import com.vaadin.ui.MenuBar;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
 import it.algos.vaad.wiki.LibWiki;
+import it.algos.vaad.wiki.entities.wiki.Wiki_;
 import it.algos.vaadbio.CicloDown;
 import it.algos.vaadbio.CicloElabora;
 import it.algos.vaadbio.DownloadBio;
@@ -20,6 +21,7 @@ import it.algos.webbase.web.form.AForm;
 import it.algos.webbase.web.lib.LibNum;
 import it.algos.webbase.web.module.ModulePop;
 import it.algos.webbase.web.navigator.NavPlaceholder;
+import it.algos.webbase.web.search.SearchManager;
 import it.algos.webbase.web.table.ATable;
 
 import javax.persistence.metamodel.Attribute;
@@ -76,6 +78,18 @@ public class BioMod extends ModulePop {
 
 
     /**
+     * Crea i campi visibili nella scheda (search)
+     * <p/>
+     * Come default spazzola tutti i campi della Entity <br>
+     * Può essere sovrascritto (facoltativo) nelle sottoclassi specifiche <br>
+     * Serve anche per l'ordine con cui vengono presentati i campi nella scheda <br>
+     */
+    @Override
+    protected Attribute<?, ?>[] creaFieldsSearch() {
+        return new Attribute[]{Bio_.pageid, Bio_.title};
+    }// end of method
+
+    /**
      * Returns the table used to shows the list. <br>
      * The concrete subclass must override for a specific Table.
      *
@@ -97,6 +111,11 @@ public class BioMod extends ModulePop {
      */
     public AForm createForm(Item item) {
         return (new BioForm(this, item));
+    }// end of method
+
+    @Override
+    public SearchManager createSearchManager() {
+        return new BioSearch(this);
     }// end of method
 
     /**
@@ -359,7 +378,7 @@ public class BioMod extends ModulePop {
     public void esegueDownload() {
         ATable tavola = getTable();
         long idSelected = 0;
-        long pageid = 0;
+        String title ="";
         Bio bio = null;
 
         if (tavola != null) {
@@ -371,11 +390,11 @@ public class BioMod extends ModulePop {
         }// end of if cycle
 
         if (bio != null) {
-            pageid = bio.getPageid();
+            title = bio.getTitle();
         }// end of if cycle
 
-        if (pageid > 0) {
-            new DownloadBio(pageid);
+        if (!title.equals("")) {
+            new DownloadBio(title);
         }// end of if cycle
 
     }// end of method

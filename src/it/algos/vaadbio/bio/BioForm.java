@@ -18,8 +18,9 @@ public class BioForm extends AForm {
     private static String LAR_CAMPO = "100px";
     private static String LAR_CAMPO2 = "187px";
     private static String LAR_CAMPO3 = "400px";
-    private static String LAR_CAMPO4 = "760px";
-    private static int NUM_COL = 30;
+    private static String LAR_WIN = "1200px";
+    private static String LAR_TAB = "1000px";
+    private static int NUM_COL = 25;
     private static int NUM_ROWS = 20;
 
 
@@ -29,7 +30,7 @@ public class BioForm extends AForm {
     }// end of constructor
 
     private void doInit() {
-        setWidth("1000px");
+        setWidth(LAR_WIN);
     }// end of method
 
     /**
@@ -44,7 +45,7 @@ public class BioForm extends AForm {
     @Override
     protected Component createComponent() {
         TabSheet tabsheet = new TabSheet();
-        tabsheet.setWidth("1200px");
+        tabsheet.setWidth(LAR_TAB);
         tabsheet.addTab(creaTabWiki(), "Wiki");
         tabsheet.addTab(creaTabTemplates(), "Templates");
         return tabsheet;

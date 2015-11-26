@@ -234,6 +234,25 @@ public class Bio extends BaseEntity {
     }// end of method
 
     /**
+     * Recupera una istanza di Wikibio usando la query specifica
+     *
+     * @param title valore della key per la ricerca (NON indicizzata e più lenta)
+     * @return istanza di Bio, null se non trovata
+     */
+    public synchronized static Bio findByTitle(String title) {
+        Bio instance = null;
+        BaseEntity entity = AQuery.queryOne(Bio.class, Bio_.title, title);
+
+        if (entity != null) {
+            if (entity instanceof Bio) {
+                instance = (Bio) entity;
+            }// end of if cycle
+        }// end of if cycle
+
+        return instance;
+    }// end of method
+
+    /**
      * Recupera i pageids di tutti i records presenti
      *
      * @return lista di pageids (Long)
