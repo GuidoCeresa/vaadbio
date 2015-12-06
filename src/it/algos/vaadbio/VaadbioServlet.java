@@ -3,6 +3,10 @@ package it.algos.vaadbio;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.server.ServiceException;
 import com.vaadin.server.SessionInitEvent;
+import it.algos.vaad.wiki.WikiLogin;
+import it.algos.webbase.web.lib.LibCrypto;
+import it.algos.webbase.web.lib.LibSession;
+import it.algos.webbase.web.login.Login;
 import it.algos.webbase.web.servlet.AlgosServlet;
 
 import javax.servlet.annotation.WebServlet;
@@ -38,9 +42,40 @@ public class VaadbioServlet extends AlgosServlet {
     @Override
     public void sessionInit(SessionInitEvent event) throws ServiceException {
         super.sessionInit(event);
+        checkCookies();
+    }// end of method
 
-        // Do session start stuff here
 
+    /**
+     * Controlla se esistono cookies e tenta di connettersi usando i valori dei cookies
+     */
+    private boolean checkCookies() {
+        Login loginBase;
+        WikiLogin loginWiki;
+        boolean status = false;
+        String nick = "";
+        String password = "";
+        String clearPass = "";
+
+        // attempt to login from the cookies
+        loginBase = Login.getLogin();
+        if (loginBase != null) {
+            loginBase.loginFromCookies();
+            if (loginBase.isLogged()) {
+                nick = loginBase.getUser().getNickname();
+                password = loginBase.getUser().getPassword();
+                clearPass = LibCrypto.decrypt(password);
+            }// end of if cycle
+        }// end of if cycle
+
+        if (!nick.equals("") && !clearPass.equals("")) {
+            loginWiki = new WikiLogin(nick, clearPass);
+            status = loginWiki.isValido();
+            LibSession.setAttribute("logged", true);
+            LibSession.setAttribute(WikiLogin.WIKI_LOGIN_KEY_IN_SESSION, loginWiki);
+        }// end of if cycle
+
+        return status;
     }// end of method
 
 }// end of servlet class

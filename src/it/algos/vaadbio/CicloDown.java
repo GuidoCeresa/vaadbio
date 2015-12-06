@@ -19,55 +19,39 @@ import java.util.ArrayList;
  * <p>
  * Esegue un ciclo (NEW) di controllo e creazione di nuovi records esistenti nella categoria sul server e mancanti nel database
  * Esegue un ciclo (DELETE) di cancellazione di records esistenti nel database e mancanti nella categoria
- * Esegue un ciclo (UPGRADE) di controllo e aggiornamento di tutti i records esistenti nel database
+ * Esegue un ciclo (UPDATE) di controllo e aggiornamento di tutti i records esistenti nel database
  * <p>
  * Il ciclo viene chiamato da DaemonDownload (con frequenza giornaliera)
  * Il ciclo può essere invocato dal bottone 'Ciclo Down' nella tavola Bio
  * Il ciclo necessita del login come bot per il funzionamento normale
- * <p>
- * Controlla il flag USA_LIMITE_DOWNLOAD
- * Usa il numero massimo (MAX_DOWNLOAD) di voci da scaricare ad ogni ciclo (se USA_LIMITE_DOWNLOAD=true)
- * Legge la categoria BioBot
- * Legge le voci Bio esistenti
- * Trova la differenza negativa (records mancanti)
- * Scarica MAX_DOWNLOAD voci dal server e crea MAX_DOWNLOAD nuovi records di Bio
- * Trova la differenza positiva (records eccedenti)
- * Cancella tutti i records non più presenti nella categoria
- * <p>
- * Controlla il flag USA_LIMITE_DOWNLOAD_BIO_CICLO_UPDATE
- * Usa il numero massimo (MAX_DOWNLOAD_BIO_CICLO_UPDATE) di voci da aggiornare ad ogni ciclo (se USA_LIMITE_DOWNLOAD_BIO_CICLO_UPDATE=true)
- * Ordina i records di BioWiki secondo il campo ultimalettura (ascendente)
- * Legge per MAX_DOWNLOAD_BIO_CICLO_UPDATE voci il timestamp dell'ultima modifica effettuata
- * Seleziona le voci (tra le MAX_DOWNLOAD_BIO_CICLO_UPDATE) che sono state modificate dall'ultima lettura (timestamp > ultimalettura)
- * Legge le voci modificate ed aggiorna i records esistenti di Bio
- * Aggiorna la property ultimalettura per tutti gli altri records (dei MAX_DOWNLOAD_BIO_CICLO_UPDATE del ciclo)
- * Controlla il flag USA_ELABORA
- * Elabora le informazioni dopo che una pagina è stata scaricata/aggiornata dal server
- * Aggiorna la tavola Bio
  */
 public class CicloDown {
 
-    public static final String TAG_BIO = "BioBot";
-    public static final String TAG_CAT_DEBUG = "Nati nel 1420";
+
+    private final static String TAG_BIO = "BioBot";
+    private final static String TAG_CAT_DEBUG = "Nati nel 1420";
+
 
     public CicloDown() {
-        newAndDelete();
-        upgrade();
+        doInit();
     }// end of constructor
 
+
     /**
-     * Esegue un ciclo (NEW) di controllo e creazione di nuovi records esistenti sul server e mancanti nel database
-     * Esegue un ciclo (DELETE) di cancellazione di records esistenti nel database e mancanti nella categoria
      * <p>
      * Legge la categoria BioBot
      * Legge le voci Bio esistenti
+     * <p>
      * Trova la differenza negativa (records mancanti)
+     * Esegue un ciclo (NEW) di controllo e creazione di nuovi records esistenti sul server e mancanti nel database
      * Scarica la lista di voci mancanti dal server e crea i nuovi records di Bio
+     * <p>
      * Trova la differenza positiva (records eccedenti)
+     * Esegue un ciclo (DELETE) di cancellazione di records esistenti nel database e mancanti nella categoria
      * Cancella tutti i records non più presenti nella categoria
      */
     @SuppressWarnings("unchecked")
-    private void newAndDelete() {
+    private void doInit() {
         long inizio = System.currentTimeMillis();
         String nomeCategoria = "";
         ArrayList<Long> listaTotaleCategoria;
@@ -99,126 +83,14 @@ public class CicloDown {
         listaMancanti = LibWiki.delta(listaTotaleCategoria, listaEsistentiDataBase);
         listaEccedenti = LibWiki.delta(listaEsistentiDataBase, listaTotaleCategoria);
 
-        // Scarica MAX_DOWNLOAD voci dal server e crea MAX_DOWNLOAD nuovi records di Bio
-        downloadVociMancanti(listaMancanti);
+        // Scarica la lista di voci mancanti dal server e crea i nuovi records di Bio
+        new CicloNew(listaMancanti);
 
         // Cancella tutti i records non più presenti nella categoria
-//        deleteRecordsEccedenti(listaEccedenti);//@todo rimettere
+        new CicloDelete(listaEccedenti);
+
+
+        //        new CicloUpdate();
     }// end of method
-
-
-    /**
-     * Esegue un ciclo di sincronizzazione tra le pagine della categoria TAG_BIO ed i records della tavola Bio
-     * Esegue un ciclo di controllo e aggiornamento dei records esistenti nel database
-     * <p>
-     * Il ciclo viene chiamato da DaemonBioCicloUpdate (con frequenza oraria)
-     * Il ciclo può essere invocato dal bottone 'Update ciclo' nella tavola Wikibio
-     * Il ciclo necessita del login come bot per il funzionamento normale,
-     * oppure del flag USA_CICLI_ANCHE_SENZA_BOT per un funzionamento ridotto
-     * <p>
-     * Controlla il flag USA_LIMITE_DOWNLOAD_BIO_CICLO_UPDATE
-     * Usa il numero massimo (MAX_DOWNLOAD_BIO_CICLO_UPDATE) di voci da aggiornare ad ogni ciclo (se USA_LIMITE_DOWNLOAD_BIO_CICLO_UPDATE=true)
-     * Ordina i records di BioWiki secondo il campo ultimalettura (ascendente)
-     * Legge per MAX_DOWNLOAD_BIO_CICLO_UPDATE voci il timestamp dell'ultima modifica effettuata
-     * Seleziona le voci (tra le MAX_DOWNLOAD_BIO_CICLO_UPDATE) che sono state modificate dall'ultima lettura (timestamp > ultimalettura)
-     * Legge le voci modificate ed aggiorna i records esistenti di Wikibio
-     * Aggiorna la property ultimalettura per tutti gli altri records (dei MAX_DOWNLOAD_BIO_CICLO_UPDATE del ciclo)
-     */
-    @SuppressWarnings("all")
-    private void upgrade() {
-//        long inizio = System.currentTimeMillis();
-//        ArrayList<Long> listaVociDaControllare;
-//
-//        // Il ciclo necessita del login come bot per il funzionamento normale
-//        // oppure del flag USA_CICLI_ANCHE_SENZA_BOT per un funzionamento ridotto
-//        if (!LibBio.checkLoggin()) {
-//            Log.setDebug("bioCicloUpdate", "Ciclo interrotto. Non sei loggato come bot ed il flag usaCicliAncheSenzaBot è false");
-//            return;
-//        }// end of if cycle
-//
-//        // Crea la lista di voci (pageid) esistenti nel database, da controllare
-//        listaVociDaControllare = vociDaControllare();
-//
-//        // Crea la lista delle voci effettivamente modificate sul server wikipedia dall'ultimo controllo
-//        vociModificate(listaVociDaControllare, inizio);
-    }// end of method
-
-
-    /**
-     * Scarica la lista di voci mancanti dal server e crea i nuovi records di Bio
-     * <p>
-     * Controlla il flag USA_LIMITE_DOWNLOAD
-     * Usa il numero massimo (MAX_DOWNLOAD) di voci da scaricare ad ogni ciclo (se USA_LIMITE_DOWNLOAD=true)
-     * Scarica MAX_DOWNLOAD voci dal server e crea MAX_DOWNLOAD nuovi records di Bio
-     *
-     * @param listaMancanti elenco di pageid delle pagine da scaricare
-     */
-    private void downloadVociMancanti(ArrayList<Long> listaMancanti) {
-        long inizio = System.currentTimeMillis();
-        Voce voce;
-        int numVociRegistrate = 0;
-        int numVociUploadate = 0;
-        int vociMancanti = 0;
-        int vociDaScaricare = 0;
-
-        if (listaMancanti != null) {
-            vociMancanti = listaMancanti.size();
-        }// fine del blocco if
-
-        if (vociMancanti > 0) {
-            if (Pref.getBool(CostBio.USA_LIMITE_DOWNLOAD, false)) {
-                vociDaScaricare = Math.min(vociMancanti, Pref.getInt(CostBio.MAX_DOWNLOAD, 100));
-            } else {
-                vociDaScaricare = vociMancanti;
-            }// fine del blocco if-else
-
-            for (int k = 0; k < vociDaScaricare; k++) {
-                voce = download(listaMancanti.get(k));
-                if (voce == Voce.trovataCorretta) {
-                    numVociRegistrate++;
-                }// fine del blocco if
-                if (voce == Voce.uploadata) {
-                    numVociRegistrate++;
-                    numVociUploadate++;
-                }// fine del blocco if
-            } // fine del ciclo for
-
-            if (Pref.getBool(CostBio.USA_LOG_DOWNLOAD, true)) {
-                Log.setInfo("bioCicloNew", "Create " + LibNum.format(numVociRegistrate) + " nuove voci (di cui " + LibNum.format(numVociUploadate) + " uploadate) in " + LibTime.difText(inizio));
-            }// fine del blocco if
-
-        }// fine del blocco if
-
-    }// end of method
-
-
-    /**
-     * Scarica la singola voce dal server e crea il nuovo record di Bio
-     * <p>
-     * Crea un nuovo record (solo se il pageid non esiste già)
-     * Modifica il record esistente con lo stesso pageid
-     * Esegue il metodo Elabora, col flag di update specifico per il ciclo di Download
-     *
-     * @param pageId della pagina
-     */
-    public Voce download(long pageId) {
-        Voce voce = Voce.nonTrovata;
-        DownloadBio downloadBio = new DownloadBio(pageId);
-        Bio bio;
-
-//        if (downloadBio.isStatus()) {
-//            voce = Voce.trovataCorretta;
-//            bio = downloadBio.getBio();
-//            //--se è attivo il flag ed i template sono diversi, parte il ciclo di aggiornamento
-//            new ElaboraBio(bio, Pref.getBool(CostBio.USA_UPLOAD_DOWNLOADATA, false));
-//        }// fine del blocco if-else
-
-        return voce;
-    }// end of method
-
-
-    private enum Voce {
-        nonTrovata, trovataCorretta, uploadata
-    }// end of inner enumeration
 
 }// end of class

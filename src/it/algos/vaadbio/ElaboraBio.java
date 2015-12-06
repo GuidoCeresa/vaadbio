@@ -14,6 +14,7 @@ import it.algos.webbase.domain.pref.Pref;
 public class ElaboraBio {
 
     private boolean upload;
+    private boolean uploadata = false;
 
     public ElaboraBio(long pageid) {
         this(pageid, Pref.getBool(CostBio.USA_UPLOAD_ELABORATA, false));
@@ -76,5 +77,7 @@ public class ElaboraBio {
 
     }// end of method
 
-
+    public boolean isUploadata() {
+        return uploadata;
+    }// end of getter method
 }// end of class

@@ -1201,6 +1201,16 @@ public abstract class LibBio {
 
 
     /**
+     * Recupera i pageids di tutti i records, selezionati secondo la query ricevuta
+     *
+     * @param queryTxt per la selezione
+     * @return lista di pageids (Long)
+     */
+    public synchronized static ArrayList<Long> queryFind(String queryTxt) {
+        return queryFind(queryTxt, 0);
+    }// end of method
+
+    /**
      * Recupera i pageids dei primi (limit) records, selezionati secondo la query ricevuta
      *
      * @param queryTxt per la selezione
@@ -1208,12 +1218,30 @@ public abstract class LibBio {
      * @return lista di pageids (Long)
      */
     public synchronized static ArrayList<Long> queryFind(String queryTxt, int limit) {
+        return queryFind(queryTxt, limit, 0);
+    }// end of method
+
+    /**
+     * Recupera i pageids dei primi (limit) records, partendo da offSet, selezionati secondo la query ricevuta
+     *
+     * @param queryTxt per la selezione
+     * @param limit    di ricerca per la query
+     * @param offSet   di inizio per la query
+     * @return lista di pageids (Long)
+     */
+    public synchronized static ArrayList<Long> queryFind(String queryTxt, int limit, int offSet) {
         List lista;
         EntityManager manager = EM.createEntityManager();
         Query query = manager.createQuery(queryTxt);
+
         if (limit > 0) {
             query.setMaxResults(limit);
         }// fine del blocco if
+
+        if (offSet > 0) {
+            query.setFirstResult(limit);
+        }// fine del blocco if
+
         lista = query.getResultList();
         return new ArrayList<Long>(lista);
     }// end of method

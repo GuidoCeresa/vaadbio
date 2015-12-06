@@ -24,7 +24,10 @@ import java.sql.Timestamp;
  */
 public class DownloadBio {
 
-    private boolean status = false;
+    private boolean letta = false;
+    private boolean nuova = false;
+    private boolean registrata = false;
+    private boolean uploadata = false;
 
     private Bio bio;
 
@@ -77,6 +80,7 @@ public class DownloadBio {
             }// fine del blocco if
         } else {
             templateEsiste = true;
+            letta = true;
         }// end of if/else cycle
 
         try { // prova ad eseguire il codice
@@ -91,10 +95,12 @@ public class DownloadBio {
             } catch (Exception unErrore) { // intercetta l'errore
                 //--manca il DB
             }// fine del blocco try-catch
-        }// fine del blocco if
+        }// end of if cycle
+
 
         if (bio == null) {
             bio = new Bio();
+            nuova = true;
         }// end of if cycle
 
         // regola altri parametri
@@ -109,7 +115,7 @@ public class DownloadBio {
 
         try { // prova ad eseguire il codice
             bio.save();
-            setStatus(true);
+            registrata = true;
         } catch (Exception unErrore) { // intercetta l'errore
             if (Pref.getBool(CostBio.USA_LOG_DOWNLOAD, true)) {
                 Log.setWarn("bioCicloNew", "La pagina " + LibWiki.setQuadre(title) + ", non è stata registrata perché " + unErrore.getMessage());
@@ -123,9 +129,11 @@ public class DownloadBio {
 
     //--se è attivo il flag ed i template sono diversi, parte il ciclo di aggiornamento
     private void doElabora() {
-        if (this.isStatus()) {
+        ElaboraBio elabora;
+        if (letta && registrata) {
             bio = this.getBio();
-            new ElaboraBio(bio, Pref.getBool(CostBio.USA_UPLOAD_DOWNLOADATA, false));
+            elabora = new ElaboraBio(bio, Pref.getBool(CostBio.USA_UPLOAD_DOWNLOADATA, false));
+            uploadata = elabora.isUploadata();
         }// fine del blocco if-else
     }// end of method
 
@@ -137,13 +145,19 @@ public class DownloadBio {
         this.bio = bio;
     }//end of setter method
 
-    public boolean isStatus() {
-        return status;
+    public boolean isLetta() {
+        return letta;
     }// end of getter method
 
-    private void setStatus(boolean status) {
-        this.status = status;
-    }//end of setter method
+    public boolean isNuova() {
+        return nuova;
+    }// end of getter method
 
+    public boolean isRegistrata() {
+        return registrata;
+    }// end of getter method
 
+    public boolean isUploadata() {
+        return uploadata;
+    }// end of getter method
 }// end of class

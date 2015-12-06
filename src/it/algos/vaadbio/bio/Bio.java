@@ -195,6 +195,18 @@ public class Bio extends BaseEntity {
     }// end of general constructor
 
 
+    public synchronized static int count() {
+        int totRec = 0;
+        long totTmp = AQuery.getCount(Bio.class);
+
+        if (totTmp > 0) {
+            totRec = (int) totTmp;
+        }// fine del blocco if
+
+        return totRec;
+    }// end of method
+
+
     /**
      * Recupera una istanza di Bio usando la query standard della Primary Key
      *
@@ -252,8 +264,9 @@ public class Bio extends BaseEntity {
         return instance;
     }// end of method
 
+
     /**
-     * Recupera i pageids di tutti i records presenti
+     * Recupera i pageids di tutti i records presenti, ordinati per ultimaLettura ascendente
      *
      * @return lista di pageids (Long)
      */
@@ -269,8 +282,21 @@ public class Bio extends BaseEntity {
      * @return lista di pageids (Long)
      */
     public synchronized static ArrayList<Long> findAllPageid(int limit) {
-        return LibBio.queryFind("select bio.pageid from Bio bio order by bio.ultimaLettura asc", limit);
+        return findAllPageid(limit, 0);
     }// end of method
+
+
+    /**
+     * Recupera i pageids dei primi (limit) records, partendo da offSet, ordinati per ultimaLettura ascendente
+     *
+     * @param limit  di ricerca per la query
+     * @param offSet di inizio per la query
+     * @return lista di pageids (Long)
+     */
+    public synchronized static ArrayList<Long> findAllPageid(int limit, int offSet) {
+        return LibBio.queryFind("select bio.pageid from Bio bio order by bio.ultimaLettura asc", limit, offSet);
+    }// end of method
+
 
     /**
      * Recupera i pageids dei primi (limit) records, ordinati per ultimaElaborazione ascendente
