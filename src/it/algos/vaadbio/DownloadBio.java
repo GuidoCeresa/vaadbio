@@ -28,21 +28,22 @@ public class DownloadBio {
     private boolean nuova = false;
     private boolean registrata = false;
     private boolean uploadata = false;
+    private boolean esegueElabora = false;
 
     private Bio bio;
 
-    public DownloadBio(long pageId) {
-        doInit(Api.leggePage(pageId));
+    public DownloadBio(long pageId, boolean esegueElabora) {
+        doInit(Api.leggePage(pageId), esegueElabora);
     }// end of constructor
 
 
-    public DownloadBio(String title) {
-        doInit(Api.leggePage(title));
+    public DownloadBio(String wikiTitle, boolean esegueElabora) {
+        doInit(Api.leggePage(wikiTitle), esegueElabora);
     }// end of constructor
 
 
-    public DownloadBio(Page pagina) {
-        doInit(pagina);
+    public DownloadBio(Page pagina, boolean esegueElabora) {
+        doInit(pagina, esegueElabora);
     }// end of constructor
 
 
@@ -57,7 +58,8 @@ public class DownloadBio {
      *
      * @param pagina dal server
      */
-    private void doInit(Page pagina) {
+    private void doInit(Page pagina, boolean esegueElabora) {
+        this.esegueElabora = esegueElabora;
         Bio bio = null;
         long pageid;
         String title;
@@ -130,7 +132,7 @@ public class DownloadBio {
     //--se è attivo il flag ed i template sono diversi, parte il ciclo di aggiornamento
     private void doElabora() {
         ElaboraBio elabora;
-        if (letta && registrata) {
+        if (letta && registrata && esegueElabora) {
             bio = this.getBio();
             elabora = new ElaboraBio(bio, Pref.getBool(CostBio.USA_UPLOAD_DOWNLOADATA, false));
             uploadata = elabora.isUploadata();

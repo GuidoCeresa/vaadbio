@@ -1,11 +1,8 @@
 package it.algos.vaadbio;
 
 import it.algos.vaad.wiki.Api;
-import it.algos.vaad.wiki.LibWiki;
 import it.algos.vaad.wiki.Page;
-import it.algos.vaadbio.bio.Bio;
 import it.algos.vaadbio.lib.CostBio;
-import it.algos.vaadbio.lib.LibBio;
 import it.algos.webbase.domain.log.Log;
 import it.algos.webbase.domain.pref.Pref;
 import it.algos.webbase.web.lib.LibNum;
@@ -33,57 +30,12 @@ public class CicloNew {
     private final static String KEY_MAPPA_UPLOADATE = "uplodate";
 
 
-
     /**
      * Esegue un ciclo (NEW) di controllo e creazione di nuovi records esistenti nella categoria sul server e mancanti nel database
      */
     public CicloNew(ArrayList<Long> listaMancanti) {
         downloadVociMancanti(listaMancanti);
     }// end of constructor
-
-
-//    /**
-//     * Esegue un ciclo (NEW) di controllo e creazione di nuovi records esistenti sul server e mancanti nel database
-//     * <p>
-//     * Legge la categoria BioBot
-//     * Legge le voci Bio esistenti
-//     * Trova la differenza negativa (records mancanti)
-//     * Scarica la lista di voci mancanti dal server e crea i nuovi records di Bio
-//     */
-//    @SuppressWarnings("unchecked")
-//    private void doInit(ArrayList<Long> listaMancanti) {
-//        long inizio = System.currentTimeMillis();
-//        String nomeCategoria = "";
-//        ArrayList<Long> listaTotaleCategoria;
-//        ArrayList<Long> listaEsistentiDataBase;
-//        ArrayList<Long> listaMancanti;
-//
-//        // Il ciclo necessita del login come bot per il funzionamento normale
-//        // oppure del flag USA_CICLI_ANCHE_SENZA_BOT per un funzionamento ridotto
-//        if (!LibBio.checkLoggin()) {
-//            return;
-//        }// end of if cycle
-//
-//        // seleziona la categoria normale o di debug
-//        if (Pref.getBool(CostBio.USA_DEBUG, true)) {
-//            nomeCategoria = TAG_CAT_DEBUG;
-//        } else {
-//            nomeCategoria = TAG_BIO;
-//        }// fine del blocco if-else
-//
-//        // carica la categoria
-//        listaTotaleCategoria = Api.leggeCatLong(nomeCategoria);
-//        Log.setInfo("categoria", "Letti e caricati in memoria i pageids di " + LibNum.format(listaTotaleCategoria.size()) + " pagine della categoria '" + nomeCategoria + "' in " + LibTime.difText(inizio));
-//
-//        // recupera la lista dei records esistenti nel database
-//        listaEsistentiDataBase = Bio.findAllPageid();
-//
-//        // elabora le liste delle differenze per la sincronizzazione
-//        listaMancanti = LibWiki.delta(listaTotaleCategoria, listaEsistentiDataBase);
-//
-//        // Scarica MAX_DOWNLOAD voci dal server e crea MAX_DOWNLOAD nuovi records di Bio
-//        downloadVociMancanti(listaMancanti);
-//    }// end of method
 
 
     /**
@@ -127,6 +79,7 @@ public class CicloNew {
                 if (mappaVoci != null) {
                     numVociRegistrate += mappaVoci.get(KEY_MAPPA_REGISTRATE);
                     numVociUploadate += mappaVoci.get(KEY_MAPPA_UPLOADATE);
+                    int a=87;
                 }// end of if cycle
             }// end of for cycle
         }// end of if cycle
@@ -160,7 +113,7 @@ public class CicloNew {
             mappaVoci = new HashMap<String, Integer>();
             pages = Api.leggePages(bloccoPageids);
             for (Page page : pages) {
-                downloadBio = new DownloadBio(page);
+                downloadBio = new DownloadBio(page,true);
                 if (downloadBio.isNuova()) {
                     numVociRegistrate++;
                 }// fine del blocco if

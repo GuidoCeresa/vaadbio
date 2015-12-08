@@ -28,8 +28,8 @@ import java.util.ArrayList;
 public class CicloDown {
 
 
-    private final static String TAG_BIO = "BioBot";
-    private final static String TAG_CAT_DEBUG = "Nati nel 1420";
+    public final static String TAG_BIO = "BioBot";
+    public final static String TAG_CAT_DEBUG = "Nati nel 1420";
 
 
     public CicloDown() {

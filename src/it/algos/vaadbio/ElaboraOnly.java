@@ -23,6 +23,7 @@ public class ElaboraOnly {
     private HashMap<String, Object> mappaReali;   //mappa di TUTTI i parametri esistenti nel tmplBioServer
     private HashMap<String, Object> mappaBio;     //mappa dei parametri esistenti nella enumeration ParBio e presenti nel tmplBioServer
 
+    private boolean elaborato=false;
 
     public ElaboraOnly(Bio bio) {
         this.bio = bio;
@@ -87,6 +88,7 @@ public class ElaboraOnly {
 
         try { // prova ad eseguire il codice
             bio.save();
+            elaborato=true;
         } catch (Exception unErrore) { // intercetta l'errore
             //--Recupera i dati dal record della tavola Wikibio
             Log.setDebug("elabora", "Non sono riuscito ad elaborare la voce " + LibWiki.setQuadre(bio.getTitle()));
@@ -216,4 +218,7 @@ public class ElaboraOnly {
         return text;
     }// end of method
 
+    public boolean isElaborato() {
+        return elaborato;
+    }// end of getter method
 }// end of class

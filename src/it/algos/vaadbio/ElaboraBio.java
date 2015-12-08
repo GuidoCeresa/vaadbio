@@ -1,6 +1,5 @@
 package it.algos.vaadbio;
 
-import com.vaadin.ui.Upload;
 import it.algos.vaadbio.bio.Bio;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.webbase.domain.pref.Pref;
@@ -13,7 +12,6 @@ import it.algos.webbase.domain.pref.Pref;
  */
 public class ElaboraBio {
 
-    private boolean upload;
     private boolean uploadata = false;
 
     public ElaboraBio(long pageid) {
@@ -22,6 +20,14 @@ public class ElaboraBio {
 
     public ElaboraBio(long pageid, boolean upload) {
         doInit(pageid, upload);
+    }// end of constructor
+
+    public ElaboraBio(String wikiTitle) {
+        this(wikiTitle, Pref.getBool(CostBio.USA_UPLOAD_ELABORATA, false));
+    }// end of constructor
+
+    public ElaboraBio(String wikiTitle, boolean upload) {
+        doInit(wikiTitle, upload);
     }// end of constructor
 
     public ElaboraBio(Bio bio) {
@@ -58,21 +64,44 @@ public class ElaboraBio {
      * Controlla la equivalenza di tmplBioServer con tmplBioStandard
      * Eventuale Upload della pagina, seguito da un ulteriore Download della pagina
      *
+     * @param wikiTitle della voce da elaborare
+     */
+    private void doInit(String wikiTitle, boolean upload) {
+        Bio bio;
+
+        if (!wikiTitle.equals("")) {
+            bio = Bio.findByTitle(wikiTitle);
+            if (bio != null) {
+                doInit(bio, upload);
+            }// end of if cycle
+        }// end of if cycle
+
+    }// end of method
+
+    /**
+     * Elabora la singola pagina
+     * <p>
+     * Controlla la equivalenza di tmplBioServer con tmplBioStandard
+     * Eventuale Upload della pagina, seguito da un ulteriore Download della pagina
+     *
      * @param bio da elaborare
      */
     private void doInit(Bio bio, boolean upload) {
-        boolean templatesUguali;
-        this.upload = upload;
-        new ElaboraOnly(bio);
+        Bio bioDopoDownload;
+        long pageid;
+        boolean elaborato = new ElaboraOnly(bio).isElaborato();
 
-        if (upload) {
-            templatesUguali = bio.isTemplatesUguali();
-            if (!templatesUguali) {
-//                new Upload(bio);
-//                new DownloadBio(bio.getPageid());
-//                new ElaboraOnly(bio);
+        if (bio == null) {
+            return;
+        }// end of if cycle
+        pageid = bio.getPageid();
+
+        if (upload && elaborato) {
+            if (!bio.isTemplatesUguali()) {
+                new UploadBio(bio);
+                bioDopoDownload = new DownloadBio(pageid, false).getBio();
+                new ElaboraOnly(bioDopoDownload);
             }// end of if cycle
-
         }// end of if cycle
 
     }// end of method

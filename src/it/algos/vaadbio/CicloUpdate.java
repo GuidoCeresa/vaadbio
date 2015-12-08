@@ -108,7 +108,7 @@ public class CicloUpdate {
 
     /**
      * Update blocco di pagine (pageids)
-     * Esegue una singola QueryTimestamp e recupera una lista di pageids e timestamp
+     * Esegue una singola RequestWikiTimestamp e recupera una lista di pageids e timestamp
      *
      * @param listaBlocco lista (pageids) delle pagine da controllare
      * @return numero delle pagine effettivamente modificate
@@ -199,7 +199,7 @@ public class CicloUpdate {
 
         if (ultimaModificaServer > 0 && ultimaLetturaDatabase > 0) {
             if (ultimaModificaServer > ultimaLetturaDatabase) {
-                new DownloadBio(pageid);
+                new DownloadBio(pageid, true);
                 status = true;
             } else {
                 bio.setUltimaLettura(LibTime.adesso());

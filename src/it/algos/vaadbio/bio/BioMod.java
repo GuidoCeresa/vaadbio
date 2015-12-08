@@ -7,11 +7,10 @@ import com.vaadin.ui.MenuBar;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
 import it.algos.vaad.wiki.LibWiki;
-import it.algos.vaad.wiki.entities.wiki.Wiki_;
 import it.algos.vaadbio.CicloDown;
 import it.algos.vaadbio.CicloElabora;
 import it.algos.vaadbio.DownloadBio;
-import it.algos.vaadbio.ElaboraOnly;
+import it.algos.vaadbio.ElaboraBio;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.webbase.domain.log.Log;
 import it.algos.webbase.domain.pref.Pref;
@@ -79,7 +78,7 @@ public class BioMod extends ModulePop {
 
     /**
      * Crea i campi visibili nella scheda (search)
-     * <p/>
+     * <p>
      * Come default spazzola tutti i campi della Entity <br>
      * Può essere sovrascritto (facoltativo) nelle sottoclassi specifiche <br>
      * Serve anche per l'ordine con cui vengono presentati i campi nella scheda <br>
@@ -372,40 +371,23 @@ public class BioMod extends ModulePop {
         });// end of anonymous class
     }// end of method
 
+
     /**
      * Esegue il download della singola voce
      */
     public void esegueDownload() {
-        ATable tavola = getTable();
-        long idSelected = 0;
-        String title ="";
-        Bio bio = null;
-
-        if (tavola != null) {
-            idSelected = tavola.getSelectedKey();
-        }// end of if cycle
-
-        if (idSelected > 0) {
-            bio = Bio.find(idSelected);
-        }// end of if cycle
-
-        if (bio != null) {
-            title = bio.getTitle();
-        }// end of if cycle
-
-        if (!title.equals("")) {
-            new DownloadBio(title);
-        }// end of if cycle
-
+        esegueDownload(getTitle());
     }// end of method
 
     /**
      * Esegue il download della singola voce
      */
-    public void esegueDownload(String title) {
-        if (!title.equals("")) {
-            new DownloadBio(title);
-        }// end of if cycle
+    public void esegueDownload(String wikiTitle) {
+        if (!wikiTitle.equals("")) {
+            new DownloadBio(wikiTitle, true);
+        } else {
+            Notification.show("Devi selezionare una riga per scaricare la voce dal server wiki");
+        }// end of if/else cycle
     }// end of method
 
 
@@ -413,38 +395,36 @@ public class BioMod extends ModulePop {
      * Esegue l'elaborazione della singola voce
      */
     public void esegueElabora() {
-        ATable tavola = getTable();
-        long idSelected = 0;
-        Bio bio = null;
+        String wikiTitle = getTitle();
 
-        if (tavola != null) {
-            idSelected = tavola.getSelectedKey();
-        }// end of if cycle
-
-        if (idSelected > 0) {
-            bio = Bio.find(idSelected);
-        }// end of if cycle
-
-        if (bio != null) {
-            new ElaboraOnly(bio);
-        }// end of if cycle
-
+        if (!wikiTitle.equals("")) {
+            new ElaboraBio(wikiTitle, false);
+        } else {
+            Notification.show("Devi selezionare una riga per elaborare l'istanza");
+        }// end of if/else cycle
     }// end of method
 
     /**
      * Esegue l'upload della singola voce
      */
     public void esegueUpload() {
+        String wikiTitle = getTitle();
+
+        if (!wikiTitle.equals("")) {
+            new DownloadBio(wikiTitle, true);
+        } else {
+            Notification.show("Devi selezionare una riga per uploadare il record su wikipedia");
+        }// end of if/else cycle
     }// end of method
 
     /**
      * Apre la voce di wikipedia
      */
     private void esegueVoce() {
-        String title = getTitle();
+        String wikiTitle = getTitle();
 
-        if (title != null && !title.equals("")) {
-            this.getUI().getPage().open(WIKI_URL + title, "_blank");
+        if (wikiTitle != null && !wikiTitle.equals("")) {
+            this.getUI().getPage().open(WIKI_URL + wikiTitle, "_blank");
         } else {
             Notification.show("Devi selezionare una riga per visualizzare la pagina corrispondente su wikipedia");
         }// end of if/else cycle
