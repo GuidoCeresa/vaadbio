@@ -98,7 +98,7 @@ public class ElaboraBio {
 
         if (upload && elaborato) {
             if (!bio.isTemplatesUguali()) {
-                new UploadBio(bio);
+                uploadata = new UploadBio(bio).isScritta();
                 bioDopoDownload = new DownloadBio(pageid, false).getBio();
                 new ElaboraOnly(bioDopoDownload);
             }// end of if cycle

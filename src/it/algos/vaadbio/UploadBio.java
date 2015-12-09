@@ -95,7 +95,7 @@ public class UploadBio {
         }// end of if cycle
 
         if (scritta && Pref.getBool(CostBio.USA_LOG_UPLOAD_ELABORATA, true)) {
-            Log.setDebug("upload", "Uploadata sul server la voce: " + LibWiki.setQuadre(wikiTitle));
+            Log.setDebug("upload", "Caricata sul server la voce: " + LibWiki.setQuadre(wikiTitle));
         }// fine del blocco if
 
     }// end of method

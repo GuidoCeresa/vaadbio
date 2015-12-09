@@ -41,7 +41,7 @@ public class VersBootStrap implements ServletContextListener {
         // usi generali
         //--creata una nuova preferenza
         if (LibVers.installa(2)) {
-            LibPref.newVersBool(CostBio.USA_DEBUG, true, "Flag generale di debug (ce ne possono essere di specifici, validi solo se questo è vero)");
+            LibPref.newVersBool(CostBio.USA_DEBUG, false, "Flag generale di debug (ce ne possono essere di specifici, validi solo se questo è vero)");
         }// fine del blocco if
 
         //--creata una nuova preferenza
@@ -80,7 +80,7 @@ public class VersBootStrap implements ServletContextListener {
 
         //--creata una nuova preferenza
         if (LibVers.installa(9)) {
-            LibPref.newVersInt(CostBio.MAX_DOWNLOAD, 50000, "Numero massimo di pagine da scaricare/aggiornare nel cicloDown");
+            LibPref.newVersInt(CostBio.MAX_DOWNLOAD, 10000, "Numero massimo di pagine da scaricare/aggiornare nel cicloDown");
         }// fine del blocco if
 
         //--creata una nuova preferenza
@@ -90,7 +90,7 @@ public class VersBootStrap implements ServletContextListener {
 
         //--creata una nuova preferenza
         if (LibVers.installa(11)) {
-            LibPref.newVersBool(CostBio.USA_UPLOAD_DOWNLOADATA, false, "Upload di ogni singola voce nel cicloDown. Down, Ela, se tmpl diverso: Up, Down, Ela");
+            LibPref.newVersBool(CostBio.USA_UPLOAD_DOWNLOADATA, true, "Upload di ogni singola voce nel cicloDown. Down, Ela, se tmpl diverso: Up, Down, Ela");
         }// fine del blocco if
 
         //--creata una nuova preferenza

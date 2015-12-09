@@ -2,10 +2,10 @@ package it.algos.vaadbio.biologo;
 
 import com.vaadin.addon.jpacontainer.JPAContainerItem;
 import com.vaadin.event.ItemClickEvent;
-import com.vaadin.ui.Notification;
 import it.algos.vaad.lib.VaadWiki;
-import it.algos.vaadbio.bio.Bio;
-import it.algos.vaadbio.bio.BioMod;
+import it.algos.vaad.wiki.Api;
+import it.algos.vaad.wiki.Page;
+import it.algos.vaad.wiki.PagePar;
 import it.algos.webbase.domain.log.Log;
 import it.algos.webbase.web.module.ModulePop;
 import it.algos.webbase.web.table.ATable;
@@ -15,6 +15,16 @@ import it.algos.webbase.web.table.ATable;
  * Sovrascritta la classe esistente nel plugin Webbase, per aggiungere un listener
  */
 public class BioLogoTable extends ATable {
+
+    public static final String WIKI_BASE = "https://it.wikipedia.org/";
+    public static final String WIKI_URL = WIKI_BASE + "wiki/";
+    public static final String WIKI_TITLE = WIKI_BASE + "w/index.php?title=";
+    public static final String WIKI_DIFF_HEADER = WIKI_TITLE;
+    public static final String WIKI_DIFF_NEW = "&diff=";
+    public static final String WIKI_DIFF_OLD = "&oldid=";
+    public static final String WIKI_CRONO = WIKI_TITLE;
+    public static final String WIKI_CRONO_END = "&action=history";
+    public static final String WIKI_UTENTE = WIKI_URL + "Speciale:Contributi/";
 
     private static final String COLUMN_DESC = "descrizione";
 
@@ -63,19 +73,19 @@ public class BioLogoTable extends ATable {
         String tag2 = "Le mappe della voce";
         String tag3 = "Singolo download";
         String tag4 = "sul server la voce";
-        String title = "";
+        String wikiTitle = "";
 
         if (desc != null) {
-            if (desc.contains(tag1) || desc.contains(tag2)|| desc.contains(tag3)) {
-                title = VaadWiki.estraeDoppiaQuadra(desc);
-                if (!title.equals("")) {
-//                    this.getUI().getPage().open(BioMod.WIKI_URL + title, "_blank"); @todo abilitare
+            if (desc.contains(tag1) || desc.contains(tag2) || desc.contains(tag3)) {
+                wikiTitle = VaadWiki.estraeDoppiaQuadra(desc);
+                if (!wikiTitle.equals("")) {
+                    this.getUI().getPage().open(WIKI_URL + wikiTitle, "_blank");
                 }// fine del blocco if
             }// fine del blocco if
             if (desc.contains(tag4)) {
-                title = VaadWiki.estraeDoppiaQuadra(desc);
-                if (!title.equals("")) {
-                    esegueUltimaModifica(title);
+                wikiTitle = VaadWiki.estraeDoppiaQuadra(desc);
+                if (!wikiTitle.equals("")) {
+                    visualizzaUltimaModifica(wikiTitle);
                 }// fine del blocco if
             }// fine del blocco if
         }// fine del blocco if
@@ -85,20 +95,23 @@ public class BioLogoTable extends ATable {
     /**
      * Apre la differenza di versioni con l'ultima modifica
      */
-    private void esegueUltimaModifica(String title) {
-//        Bio bio = Bio.findTitle(title);
-//        long revId = 0;
-//        long parentId = 0;
-//
-//        if (bio != null) {
-//            title = bio.getTitle();
-//            revId = bio.getRevid();
-//            parentId = bio.getParentid();
-//        }// end of if cycle
-//
-//        if (title != null && revId > 0 && parentId > 0) {
-//            this.getUI().getPage().open(Bio.WIKI_DIFF_HEADER + title + Bio.WIKI_DIFF_NEW + revId + Bio.WIKI_DIFF_OLD + parentId, "_blank");
-//        }// end of if cycle
+    private void visualizzaUltimaModifica(String wikiTitle) {
+        Page page;
+        long revId = 0;
+        long parentId = 0;
+
+        if (!wikiTitle.equals("")) {
+            page = Api.leggePage(wikiTitle);
+            if (page != null) {
+                wikiTitle = page.getTitle();
+                revId = (Long) page.getMappaReadObj().get(PagePar.revid.toString());
+                parentId = (Long) page.getMappaReadObj().get(PagePar.parentid.toString());
+            }// end of if cycle
+        }// end of if cycle
+
+        if (wikiTitle != null && revId > 0 && parentId > 0) {
+            this.getUI().getPage().open(WIKI_DIFF_HEADER + wikiTitle + WIKI_DIFF_NEW + revId + WIKI_DIFF_OLD + parentId, "_blank");
+        }// end of if cycle
     }// end of method
 
 }// end of class

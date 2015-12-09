@@ -79,13 +79,12 @@ public class CicloNew {
                 if (mappaVoci != null) {
                     numVociRegistrate += mappaVoci.get(KEY_MAPPA_REGISTRATE);
                     numVociUploadate += mappaVoci.get(KEY_MAPPA_UPLOADATE);
-                    int a=87;
                 }// end of if cycle
             }// end of for cycle
         }// end of if cycle
 
         if (Pref.getBool(CostBio.USA_LOG_DOWNLOAD, true)) {
-            Log.setInfo("cicloNew", "Create " + LibNum.format(numVociRegistrate) + " nuove voci (di cui " + LibNum.format(numVociUploadate) + " uploadate) in " + LibTime.difText(inizio));
+            Log.setInfo("cicloNew", "Create " + LibNum.format(numVociRegistrate) + " nuove voci (di cui " + LibNum.format(numVociUploadate) + " ricaricate sul server) in " + LibTime.difText(inizio));
         }// fine del blocco if
 
     }// end of method
@@ -113,7 +112,7 @@ public class CicloNew {
             mappaVoci = new HashMap<String, Integer>();
             pages = Api.leggePages(bloccoPageids);
             for (Page page : pages) {
-                downloadBio = new DownloadBio(page,true);
+                downloadBio = new DownloadBio(page, true);
                 if (downloadBio.isNuova()) {
                     numVociRegistrate++;
                 }// fine del blocco if
