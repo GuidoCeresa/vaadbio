@@ -7,6 +7,7 @@ import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.lib.LibBio;
 import it.algos.webbase.domain.log.Log;
 import it.algos.webbase.domain.pref.Pref;
+import it.algos.webbase.web.lib.LibNum;
 import it.algos.webbase.web.lib.LibTime;
 
 import java.util.ArrayList;
@@ -59,6 +60,9 @@ public class CicloUpdate {
         ArrayList<Long> listaVociDaControllare = null;
         int dimBlocco = this.dimBlocco();
         int numVociDaControllare = 50000;
+        HashMap<String, Integer> mappaVoci;
+        int numVociModificate = 0;
+        int numVociUploadate = 0;
 
         // Il ciclo necessita del login come bot per il funzionamento normale
         // oppure del flag USA_CICLI_ANCHE_SENZA_BOT per un funzionamento ridotto
@@ -76,13 +80,17 @@ public class CicloUpdate {
 
         for (int k = 0; k < numVociDaControllare; k += dimBlocco) {
             listaVociDaControllare = Bio.findAllPageid(dimBlocco, k);
-            updateBlocco(listaVociDaControllare);
+            mappaVoci = updateBlocco(listaVociDaControllare);
+            if (mappaVoci != null) {
+                numVociModificate += mappaVoci.get(Ciclo.KEY_MAPPA_MODIFICATE);
+                numVociUploadate += mappaVoci.get(Ciclo.KEY_MAPPA_UPLOADATE);
+            }// end of if cycle
         }// end of for cycle
 
         // Crea la lista delle voci effettivamente modificate sul server wikipedia dall'ultimo controllo
 //        vociModificate(listaVociDaControllare, inizio);
 
-        Log.setInfo("update", "Controllate " + "27" + " nuove voci (di cui " + "45" + " uploadate) in " + LibTime.difText(inizio));
+        Log.setInfo("update", "Controllate " + LibNum.format(numVociDaControllare) + " voci (di cui " + LibNum.format(numVociModificate) + " modificate e " + LibNum.format(numVociUploadate) + " uploadate) in " + LibTime.difText(inizio));
     }// end of method
 
     /**
@@ -115,32 +123,29 @@ public class CicloUpdate {
      */
     private HashMap<String, Integer> updateBlocco(ArrayList listaBlocco) {
         HashMap<String, Integer> mappa;
-        int vociEsaminate = 0;
-        int vociModificate = 0;
-        int vociCancellate = 0;
-        RequestWikiTimestamp query;
+        int numVociModificate = 0;
+        int numVociUploadate = 0;
+        RequestWikiTimestamp request;
         ArrayList<WrapTime> listaWrapTime;
         ArrayList<WrapTime> listaWrapTimeMissing;
 
         if (listaBlocco != null && listaBlocco.size() > 0) {
-            vociEsaminate = listaBlocco.size();
-            query = new RequestWikiTimestamp(listaBlocco);
-            listaWrapTime = query.getListaWrapTime();
-            listaWrapTimeMissing = query.getListaWrapTimeMissing();
+            request = new RequestWikiTimestamp(listaBlocco);
+            listaWrapTime = request.getListaWrapTime();
+            listaWrapTimeMissing = request.getListaWrapTimeMissing();
 
             if (listaWrapTime != null && listaWrapTime.size() > 0) {
-                vociModificate = updateListaBlocco(listaWrapTime);
+                numVociModificate = updateListaBlocco(listaWrapTime);
             }// fine del blocco if
 
-            if (Pref.getBool(CostBio.USA_CANCELLA_VOCE_MANCANTE, true) && listaWrapTimeMissing != null && listaWrapTimeMissing.size() > 0) {
-//                vociCancellate = deleteVociMancanti(listaWrapTimeMissing);
-            }// end of if cycle
+//            if (Pref.getBool(CostBio.USA_CANCELLA_VOCE_MANCANTE, true) && listaWrapTimeMissing != null && listaWrapTimeMissing.size() > 0) {
+////                vociCancellate = deleteVociMancanti(listaWrapTimeMissing);
+//            }// end of if cycle
         }// fine del blocco if
 
         mappa = new HashMap<String, Integer>();
-//        mappa.put(KEY_VOCI_ESAMINATE, vociEsaminate);
-//        mappa.put(KEY_VOCI_MODIFICATE, vociModificate);
-//        mappa.put(KEY_VOCI_CANCELLATE, vociCancellate);
+        mappa.put(Ciclo.KEY_MAPPA_MODIFICATE, numVociModificate);
+        mappa.put(Ciclo.KEY_MAPPA_UPLOADATE, numVociUploadate);
         return mappa;
     }// end of method
 

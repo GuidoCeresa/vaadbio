@@ -13,7 +13,7 @@ import javax.servlet.ServletContextListener;
 public class SecBootStrap implements ServletContextListener {
 
     private String botRole = "bot";
-    private String botName = "biobot";
+    private String botName = "Biobot";
 
     /**
      * This method is called prior to the servlet context being

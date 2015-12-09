@@ -25,10 +25,6 @@ public class CicloNew {
     //--numero massimo accettato da mediawiki per le richieste multiple
     private final static int PAGES_PER_REQUEST = 500;
 
-    //--chiavi mappa volori numerici passati come valore di ritorno multiplo
-    private final static String KEY_MAPPA_REGISTRATE = "registrate";
-    private final static String KEY_MAPPA_UPLOADATE = "uplodate";
-
 
     /**
      * Esegue un ciclo (NEW) di controllo e creazione di nuovi records esistenti nella categoria sul server e mancanti nel database
@@ -77,8 +73,8 @@ public class CicloNew {
                 bloccoPageids = new ArrayList<Long>(listaMancanti.subList(k, k + vociPerBlocco));
                 mappaVoci = downloadBlocco(bloccoPageids);
                 if (mappaVoci != null) {
-                    numVociRegistrate += mappaVoci.get(KEY_MAPPA_REGISTRATE);
-                    numVociUploadate += mappaVoci.get(KEY_MAPPA_UPLOADATE);
+                    numVociRegistrate += mappaVoci.get(Ciclo.KEY_MAPPA_REGISTRATE);
+                    numVociUploadate += mappaVoci.get(Ciclo.KEY_MAPPA_UPLOADATE);
                 }// end of if cycle
             }// end of for cycle
         }// end of if cycle
@@ -123,8 +119,8 @@ public class CicloNew {
         }// end of if cycle
 
         if (mappaVoci != null) {
-            mappaVoci.put(KEY_MAPPA_REGISTRATE, numVociRegistrate);
-            mappaVoci.put(KEY_MAPPA_UPLOADATE, numVociUploadate);
+            mappaVoci.put(Ciclo.KEY_MAPPA_REGISTRATE, numVociRegistrate);
+            mappaVoci.put(Ciclo.KEY_MAPPA_UPLOADATE, numVociUploadate);
         }// end of if cycle
 
         return mappaVoci;

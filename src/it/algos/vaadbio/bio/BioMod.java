@@ -7,10 +7,7 @@ import com.vaadin.ui.MenuBar;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
 import it.algos.vaad.wiki.LibWiki;
-import it.algos.vaadbio.CicloDown;
-import it.algos.vaadbio.CicloElabora;
-import it.algos.vaadbio.DownloadBio;
-import it.algos.vaadbio.ElaboraBio;
+import it.algos.vaadbio.*;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.webbase.domain.log.Log;
 import it.algos.webbase.domain.pref.Pref;
@@ -41,11 +38,20 @@ public class BioMod extends ModulePop {
 
     // indirizzo interno del modulo (serve nei menu)
     public static String MENU_ADDRESS = "Bio";
+    private final String MSG = "Messaggio di controllo";
     private Action actionDownload = new Action("Download", FontAwesome.ARROW_DOWN);
     private Action actionElabora = new Action("Elabora", FontAwesome.REFRESH);
     private Action actionUpload = new Action("Upload", FontAwesome.ARROW_UP);
     private Action actionVoce = new Action("Pagina", FontAwesome.SEARCH);
     private Action actionCrono = new Action("Cronologia", FontAwesome.HISTORY);
+
+
+    private  boolean usaDebug = Pref.getBool(CostBio.USA_DEBUG, false);
+    private  boolean usaLimite = Pref.getBool(CostBio.USA_LIMITE_DOWNLOAD, false);
+    private  boolean usaLog = Pref.getBool(CostBio.USA_LOG_DOWNLOAD, false);
+    private  boolean usaUpdate = Pref.getBool(CostBio.USA_UPLOAD_DOWNLOADATA, false);
+    private  boolean usaCancella = Pref.getBool(CostBio.USA_CANCELLA_VOCE_MANCANTE, false);
+
 
 
     public BioMod() {
@@ -172,9 +178,9 @@ public class BioMod extends ModulePop {
         MenuBar.MenuItem menuItem = super.createMenuItem(menuBar, placeholder, FontAwesome.TASKS);
 
         addCommandCicloDown(menuItem);
+        addCommandCicloUpdate(menuItem);
         addCommandCicloElabora(menuItem);
         addCommandDownloadDialog(menuItem);
-//        addCommandDownload(menuItem);
         addCommandElabora(menuItem);
         addCommandUpload(menuItem);
 
@@ -188,22 +194,14 @@ public class BioMod extends ModulePop {
      * @param menuItem a cui agganciare il bottone/item
      */
     private void addCommandCicloDown(MenuBar.MenuItem menuItem) {
-        final String msg = "Messaggio di controllo";
-
-        // bottone New Ciclo
         menuItem.addItem("Ciclo down", FontAwesome.COG, new MenuBar.Command() {
             public void menuSelected(MenuBar.MenuItem selectedItem) {
+                String nomeCat = "";
                 if (Pref.getBool(CostBio.USA_DIALOGHI_CONFERMA, true)) {
-                    final String nomeCat;
-                    final boolean usaDebug = Pref.getBool(CostBio.USA_DEBUG, false);
-                    final boolean usaLimite = Pref.getBool(CostBio.USA_LIMITE_DOWNLOAD, false);
-                    final boolean usaLog = Pref.getBool(CostBio.USA_LOG_DOWNLOAD, false);
-                    final boolean usaUpdate = Pref.getBool(CostBio.USA_UPLOAD_DOWNLOADATA, false);
-                    final boolean usaCancella = Pref.getBool(CostBio.USA_CANCELLA_VOCE_MANCANTE, false);
                     if (usaDebug) {
-                        nomeCat = "<b><span style=\"color:red\">" + CicloDown.TAG_CAT_DEBUG + "</span></b>";
+                        nomeCat = "<b><span style=\"color:red\">" + Ciclo.TAG_CAT_DEBUG + "</span></b>";
                     } else {
-                        nomeCat = "<b><span style=\"color:red\">" + CicloDown.TAG_BIO + "</span></b>";
+                        nomeCat = "<b><span style=\"color:red\">" + Ciclo.TAG_BIO + "</span></b>";
                     }// end of if/else cycle
                     int maxDowloadNew = Pref.getInt(CostBio.MAX_DOWNLOAD, 1000);
                     String newMsg = "Esegue un ciclo di sincronizzazione tra le pagine della categoria " + nomeCat + " ed i records della tavola Bio<br/>";
@@ -235,12 +233,12 @@ public class BioMod extends ModulePop {
                     } else {
                         newMsg += "<br>Le preferenze <b><span style=\"color:red\">non</span></b> prevedono di cancellare le voci";
                     }// end of if/else cycle
-                    ConfirmDialog dialog = new ConfirmDialog(msg, newMsg,
+                    ConfirmDialog dialog = new ConfirmDialog(MSG, newMsg,
                             new ConfirmDialog.Listener() {
                                 @Override
                                 public void onClose(ConfirmDialog dialog, boolean confirmed) {
                                     if (confirmed) {
-                                        new CicloDown();
+                                        new Ciclo();
                                     }// end of if cycle
                                 }// end of inner method
                             });// end of anonymous inner class
@@ -251,20 +249,81 @@ public class BioMod extends ModulePop {
                         Notification.show("Avviso", "Devi prima entrare nel modulo Bio per eseguire questo comando", Notification.Type.WARNING_MESSAGE);
                     }// end of if/else cycle
                 } else {
-                    new CicloDown();
+                    new Ciclo();
                 }// fine del blocco if-else
             }// end of method
         });// end of anonymous class
     }// end of method
 
+
     /**
-     * Comando bottone/item Elabora Ciclo
+     * Comando bottone/item ciclo Update
+     *
+     * @param menuItem a cui agganciare il bottone/item
+     */
+    private void addCommandCicloUpdate(MenuBar.MenuItem menuItem) {
+
+        menuItem.addItem("Ciclo update", FontAwesome.COG, new MenuBar.Command() {
+            public void menuSelected(MenuBar.MenuItem selectedItem) {
+                final String nomeCat;
+                if (Pref.getBool(CostBio.USA_DIALOGHI_CONFERMA, true)) {
+                    if (usaDebug) {
+                        nomeCat = "<b><span style=\"color:red\">" + Ciclo.TAG_CAT_DEBUG + "</span></b>";
+                    } else {
+                        nomeCat = "<b><span style=\"color:red\">" + Ciclo.TAG_BIO + "</span></b>";
+                    }// end of if/else cycle
+                    int maxDowloadNew = Pref.getInt(CostBio.MAX_DOWNLOAD, 1000);
+                    String newMsg = "Esegue un ciclo di sincronizzazione tra le pagine della categoria " + nomeCat + " ed i records della tavola Bio<br/>";
+                    newMsg += "<br/>Esegue un ciclo (<b><span style=\"color:green\">update</span></b>) di controllo e aggiornamento di tutti i records esistenti nel database<br/>";
+                    if (usaDebug) {
+                        newMsg += "<br>Le preferenze prevedono di usare la categoria di debug " + nomeCat;
+                    } else {
+                        newMsg += "<br>Le preferenze prevedono di usare la categoria " + nomeCat;
+                    }// end of if/else cycle
+                    if (usaLimite) {
+                        newMsg += "<br>Le preferenze prevedono di controllare <b><span style=\"color:red\">" + LibNum.format(maxDowloadNew) + "</span></b> voci sul server";
+                    } else {
+                        newMsg += "<br>Le preferenze prevedono di controllare <b><span style=\"color:red\">tutte</span></b> le voci della categoria";
+                    }// end of if/else cycle
+                    if (usaLog) {
+                        newMsg += "<br>Le preferenze prevedono di registrare il risultato nei <b><span style=\"color:red\">log</span></b>";
+                    } else {
+                        newMsg += "<br>Le preferenze <b><span style=\"color:red\">non</span></b> prevedono di registrare il risultato nei log";
+                    }// end of if/else cycle
+                    if (usaUpdate) {
+                        newMsg += "<br>Le preferenze prevedono un <b><span style=\"color:red\">upload</span></b> della voce modificata se il templateStandard è diverso dal templateServer";
+                    } else {
+                        newMsg += "<br>Le preferenze <b><span style=\"color:red\">non</span></b> prevedono un upload della voce modificata";
+                    }// end of if/else cycle
+                    ConfirmDialog dialog = new ConfirmDialog(MSG, newMsg,
+                            new ConfirmDialog.Listener() {
+                                @Override
+                                public void onClose(ConfirmDialog dialog, boolean confirmed) {
+                                    if (confirmed) {
+                                        new CicloUpdate();
+                                    }// end of if cycle
+                                }// end of inner method
+                            });// end of anonymous inner class
+                    UI ui = getUI();
+                    if (ui != null) {
+                        dialog.show(ui);
+                    } else {
+                        Notification.show("Avviso", "Devi prima entrare nel modulo Bio per eseguire questo comando", Notification.Type.WARNING_MESSAGE);
+                    }// end of if/else cycle
+                } else {
+                    new Ciclo();
+                }// fine del blocco if-else
+            }// end of method
+        });// end of anonymous class
+    }// end of method
+
+
+    /**
+     * Comando bottone/item Ciclo Elabora
      *
      * @param menuItem a cui agganciare il bottone/item
      */
     private void addCommandCicloElabora(MenuBar.MenuItem menuItem) {
-        final String msg = "Messaggio di controllo";
-
         menuItem.addItem("Ciclo elabora", FontAwesome.COG, new MenuBar.Command() {
             public void menuSelected(MenuBar.MenuItem selectedItem) {
                 if (Pref.getBool(CostBio.USA_DIALOGHI_CONFERMA)) {
@@ -276,7 +335,7 @@ public class BioMod extends ModulePop {
                     newMsg += LibNum.format(maxElabora);
                     newMsg += " voci";
                     newMsg += "<br>Occorre diverso tempo";
-                    ConfirmDialog dialog = new ConfirmDialog(msg, newMsg,
+                    ConfirmDialog dialog = new ConfirmDialog(MSG, newMsg,
                             new ConfirmDialog.Listener() {
                                 @Override
                                 public void onClose(ConfirmDialog dialog, boolean confirmed) {
@@ -297,6 +356,7 @@ public class BioMod extends ModulePop {
             }// end of method
         });// end of anonymous class
     }// end of method
+
 
     /**
      * Comando bottone/item Download voce scelta da dialogo di ricerca
