@@ -294,7 +294,7 @@ public class Bio extends BaseEntity {
      * @return lista di pageids (Long)
      */
     public synchronized static ArrayList<Long> findAllPageid(int limit, int offSet) {
-        return LibBio.queryFind("select bio.pageid from Bio bio order by bio.ultimaLettura asc", limit, offSet);
+        return LibBio.queryFind("select bio.pageid from Bio bio order by bio.ultimaLettura,bio.pageid asc", limit, offSet);
     }// end of method
 
 
@@ -305,7 +305,7 @@ public class Bio extends BaseEntity {
      * @return lista di pageids (Long)
      */
     public synchronized static ArrayList<Long> findLast(int limit) {
-        return LibBio.queryFind("select bio.pageid from Bio bio order by bio.ultimaElaborazione asc", limit);
+        return LibBio.queryFind("select bio.pageid from Bio bio order by bio.ultimaElaborazione,bio.pageid asc", limit);
     }// end of method
 
 
