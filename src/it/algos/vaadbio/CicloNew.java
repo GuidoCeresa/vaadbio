@@ -91,11 +91,12 @@ public class CicloNew {
      * <p>
      * Esegue la RequestWikiReadMultiPages
      * Crea le PAGES_PER_REQUEST Pages ricevute
-     * Per ogni page crea o modifica il records corrispondente con lo stesso pageid
+     * Per ogni page crea o modifica il record corrispondente con lo stesso pageid
      * Esegue il metodo Elabora, col flag di update specifico per il ciclo di Download
      * Esegue il metodo Update, se previsto dal flag USA_UPLOAD_DOWNLOADATA
      *
      * @param bloccoPageids elenco di pageids delle pagine da scaricare
+     * @return info per il log
      */
     public HashMap<String, Integer> downloadBlocco(ArrayList<Long> bloccoPageids) {
         HashMap<String, Integer> mappaVoci = null;

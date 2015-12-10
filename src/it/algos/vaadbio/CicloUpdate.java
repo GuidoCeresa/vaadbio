@@ -1,5 +1,7 @@
 package it.algos.vaadbio;
 
+import it.algos.vaad.wiki.Api;
+import it.algos.vaad.wiki.Page;
 import it.algos.vaad.wiki.WrapTime;
 import it.algos.vaad.wiki.request.RequestWikiTimestamp;
 import it.algos.vaadbio.bio.Bio;
@@ -7,34 +9,42 @@ import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.lib.LibBio;
 import it.algos.webbase.domain.log.Log;
 import it.algos.webbase.domain.pref.Pref;
+import it.algos.webbase.web.lib.LibArray;
 import it.algos.webbase.web.lib.LibNum;
+import it.algos.webbase.web.lib.LibText;
 import it.algos.webbase.web.lib.LibTime;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * Created by gac on 23 nov 2015.
- * <p>
  * Esegue un ciclo (UPDATE) di controllo e aggiornamento di tutti i records esistenti nel database
  * Il ciclo necessita del login come bot per il funzionamento normale
  * <p>
+ * Legge le voci Bio esistenti
  * Controlla il flag USA_LIMITE_DOWNLOAD
  * Usa il numero massimo (MAX_DOWNLOAD) di voci da aggiornare ad ogni ciclo (se USA_LIMITE_DOWNLOAD=true)
- * Ordina i records di Bio secondo il campo ultimalettura (ascendente)
- * Legge per MAX_DOWNLOAD voci il timestamp dell'ultima modifica effettuata
- * Seleziona le voci (tra le MAX_DOWNLOAD) che sono state modificate dall'ultima lettura (timestamp > ultimalettura)
- * Legge le voci modificate ed aggiorna i records esistenti di Bio
- * Aggiorna la property ultimalettura per tutti gli altri records (dei MAX_DOWNLOAD del ciclo)
- * Controlla il flag USA_ELABORA
- * Elabora le informazioni dopo che una pagina è stata scaricata/aggiornata dal server
+ * <p>
+ * Divide il numero di voci totali esistenti nel database in blocchi di 5.000
+ * Per ogni blocco, ordina i records di Bio secondo il campo ultimalettura (ascendente). Comincia dal più vecchio.
+ * Legge per le voci del blocco il timestamp dell'ultima modifica effettuata
+ * Seleziona le voci del blocco che sono state modificate dall'ultima lettura (timestamp > ultimalettura)
+ * <p>
+ * Esegue una serie di RequestWikiReadMultiPages a blocchi di PAGES_PER_REQUEST per volta
+ * Crea le PAGES_PER_REQUEST Pages ricevute
+ * Per ogni page aggiorna il record esistente
+ * <p>
+ * Esegue il metodo Elabora, col flag di update specifico per il ciclo di Download
+ * Esegue il metodo Update, se previsto dal flag USA_UPLOAD_DOWNLOADATA
+ * Aggiorna la property ultimalettura per tutti gli altri records che non sono stati modificati
  * Aggiorna la tavola Bio
  */
 public class CicloUpdate {
 
 
     public CicloUpdate() {
-        update();
+        doUpdate();
     }// end of constructor
 
 
@@ -44,23 +54,35 @@ public class CicloUpdate {
      * <p>
      * Controlla il flag USA_LIMITE_DOWNLOAD
      * Usa il numero massimo (MAX_DOWNLOAD) di voci da aggiornare ad ogni ciclo (se USA_LIMITE_DOWNLOAD=true)
-     * Divide il numero di voci da aggiornare in blocchi di 500 (50 se non flaggato come bot)
-     * Per ogni blocco, ordina i records di Bio secondo il campo ultimalettura (ascendente). Comincia dal più vecchio.
-     * Legge per le voci del blocco il timestamp dell'ultima modifica effettuata
-     * Seleziona le voci del blocco che sono state modificate dall'ultima lettura (timestamp > ultimalettura)
-     * Legge le voci modificate ed aggiorna i records esistenti di Bio
-     * Aggiorna la property ultimalettura per tutti gli altri records del blocco
-     * Controlla il flag USA_ELABORA
-     * Elabora le informazioni dopo che una pagina è stata scaricata/aggiornata dal server
-     * Aggiorna la tavola Bio
+     * Legge le voci Bio esistenti sul database
+     * <p>
+     * Divide il numero di voci da controllare nel database in PAGES_PER_REQUEST blocchi
+     * Recupera ed ordina PAGES_PER_REQUEST records di Bio secondo il campo ultimalettura (ascendente). Comincia dal più vecchio.
+     * Esegue una RequestWikiTimestamp per creare una lista di WrapTime
+     * Estrae una lista delle voci che sono state effettivamente modificate dall'ultima lettura (timestamp > ultimalettura)
+     * Accumula le voci effettivamente modificate per ogni ciclo
+     * Scarica la lista globale delle voci effettivamente modificate
+     * <p>
+     * //     * Per tutta la lista di voci effettivamente modificate, esegue una serie di RequestWikiReadMultiPages a blocchi di PAGES_PER_REQUEST per volta
+     * //     * Crea le PAGES_PER_REQUEST Pages ricevute
+     * <p>
+     * //     * Per ogni page aggiorna il record esistente
+     * //     * Esegue il metodo Elabora, col flag di update specifico per il ciclo di Download
+     * //     * Esegue il metodo Update, se previsto dal flag USA_UPLOAD_DOWNLOADATA
+     * //     * Aggiorna la property ultimalettura per tutti gli altri records che non sono stati modificati
+     * //     * Aggiorna la tavola Bio
      */
     @SuppressWarnings("all")
-    private void update() {
+    private void doUpdate() {
         long inizio = System.currentTimeMillis();
-        ArrayList<Long> listaVociDaControllare = null;
-        int dimBlocco = this.dimBlocco();
+        ArrayList<Long> listaBloccoDaControllare = null;
+        ArrayList<Long> listaBloccoModificate = null;
+        ArrayList<Long> listaAllVociModificate = null;
+        int vociPerBlocco = this.dimBlocco();
+        ArrayList<WrapTime> listaWrapTimeBlocco;
+        ArrayList<WrapTime> listaWrapTime;
         int numVociDaControllare = 50000;
-        HashMap<String, Integer> mappaVoci;
+        HashMap<String, Integer> mappaInfoVoci;
         int numVociModificate = 0;
         int numVociUploadate = 0;
 
@@ -71,24 +93,35 @@ public class CicloUpdate {
             return;
         }// end of if cycle
 
-        // Crea la lista di voci (pageid) esistenti nel database, da controllare
+        // Recupera il numero globale di voci da controllare; tutto il database oppure un tot stabilito nelle preferenze
         if (Pref.getBool(CostBio.USA_LIMITE_DOWNLOAD, true)) {
             numVociDaControllare = Pref.getInt(CostBio.MAX_DOWNLOAD, 50000);
         } else {
             numVociDaControllare = Bio.count();
         }// end of if/else cycle
 
-        for (int k = 0; k < numVociDaControllare; k += dimBlocco) {
-            listaVociDaControllare = Bio.findAllPageid(dimBlocco, k);
-            mappaVoci = updateBlocco(listaVociDaControllare);
-            if (mappaVoci != null) {
-                numVociModificate += mappaVoci.get(Ciclo.KEY_MAPPA_MODIFICATE);
-                numVociUploadate += mappaVoci.get(Ciclo.KEY_MAPPA_UPLOADATE);
-            }// end of if cycle
+        for (int k = 0; k < numVociDaControllare; k += vociPerBlocco) {
+            //--Lista (pageids) di un blocco ordinato di records del database
+            listaBloccoDaControllare = Bio.findAllPageid(vociPerBlocco, k);
+
+            //--Esegue una RequestWikiTimestamp per creare una lista di WrapTime
+            listaWrapTimeBlocco = getWrapTimeBlocco(listaBloccoDaControllare);
+
+            //--Crea per questo blocco la lista (pageids) delle voci effettivamente modificate sul server wikipedia dall'ultimo controllo
+            listaBloccoModificate = checkWrapTime(listaWrapTimeBlocco);
+
+            //--Accumula la lista (pageids) di tutte le voci effettivamente modificate sul server wikipedia dall'ultimo controllo
+            listaAllVociModificate = LibArray.somma(listaAllVociModificate, listaBloccoModificate);
         }// end of for cycle
 
-        // Crea la lista delle voci effettivamente modificate sul server wikipedia dall'ultimo controllo
-//        vociModificate(listaVociDaControllare, inizio);
+        //--Aggiorna le voci della lista (pageids)
+        mappaInfoVoci = downloadVociMancanti(listaAllVociModificate);
+
+        //--Informazioni per il log
+        if (mappaInfoVoci != null) {
+            numVociModificate += mappaInfoVoci.get(Ciclo.KEY_MAPPA_MODIFICATE);
+            numVociUploadate += mappaInfoVoci.get(Ciclo.KEY_MAPPA_UPLOADATE);
+        }// end of if cycle
 
         Log.setInfo("update", "Controllate " + LibNum.format(numVociDaControllare) + " voci (di cui " + LibNum.format(numVociModificate) + " modificate e " + LibNum.format(numVociUploadate) + " uploadate) in " + LibTime.difText(inizio));
     }// end of method
@@ -115,45 +148,125 @@ public class CicloUpdate {
 
 
     /**
-     * Update blocco di pagine (pageids)
-     * Esegue una singola RequestWikiTimestamp e recupera una lista di pageids e timestamp
+     * Esegue una RequestWikiTimestamp per creare una lista di WrapTime
      *
-     * @param listaBlocco lista (pageids) delle pagine da controllare
-     * @return numero delle pagine effettivamente modificate
+     * @param listaBloccoDaControllare lista (pageids) delle pagine da controllare
+     * @return lista di wrapper WrapTime
      */
-    private HashMap<String, Integer> updateBlocco(ArrayList listaBlocco) {
-        HashMap<String, Integer> mappa;
-        int numVociModificate = 0;
-        int numVociUploadate = 0;
+    private ArrayList<WrapTime> getWrapTimeBlocco(ArrayList<Long> listaBloccoDaControllare) {
+        ArrayList<WrapTime> listaWrapTime = null;
         RequestWikiTimestamp request;
-        ArrayList<WrapTime> listaWrapTime;
-        ArrayList<WrapTime> listaWrapTimeMissing;
 
-        if (listaBlocco != null && listaBlocco.size() > 0) {
-            request = new RequestWikiTimestamp(listaBlocco);
+        if (listaBloccoDaControllare != null && listaBloccoDaControllare.size() > 0) {
+            request = new RequestWikiTimestamp(listaBloccoDaControllare);
             listaWrapTime = request.getListaWrapTime();
-            listaWrapTimeMissing = request.getListaWrapTimeMissing();
-
-            if (listaWrapTime != null && listaWrapTime.size() > 0) {
-                numVociModificate = updateListaBlocco(listaWrapTime);
-            }// fine del blocco if
-
-//            if (Pref.getBool(CostBio.USA_CANCELLA_VOCE_MANCANTE, true) && listaWrapTimeMissing != null && listaWrapTimeMissing.size() > 0) {
-////                vociCancellate = deleteVociMancanti(listaWrapTimeMissing);
-//            }// end of if cycle
         }// fine del blocco if
 
-        mappa = new HashMap<String, Integer>();
-        mappa.put(Ciclo.KEY_MAPPA_MODIFICATE, numVociModificate);
-        mappa.put(Ciclo.KEY_MAPPA_UPLOADATE, numVociUploadate);
-        return mappa;
+        return listaWrapTime;
     }// end of method
+
+    /**
+     * Elabora una lista (pageids) di voci effettivamente modificate sul server wikipedia dall'ultimo controllo
+     * <p>
+     * Recupera dalla lisa wrapper, una lista di soli pageids per la query
+     * Recupera una lista di pageids/ultimaLettura dal database (con una query)
+     * Spazzola la lista ricevuta
+     * Confronta per ogni voce se è stata effettivamente modificata dall'ultima lettura (timestamp > ultimalettura)
+     * Aggiunge alla lista in uscita solo se è stata modificata
+     *
+     * @param listaWrapTime lista di wrapper WrapTime
+     * @return lista di pagine effettivamente mofificate
+     */
+    private ArrayList<Long> checkWrapTime(ArrayList<WrapTime> listaWrapTime) {
+        ArrayList<Long> listaBloccoModificate = null;
+        ArrayList<Long> listaPageids = null;
+        String listaPageidsText = "";
+        String tag = " or";
+        ArrayList listaUltimaLettura = null;
+        long pageid;
+        Timestamp ultimalettura;
+        Timestamp timestamp;
+        HashMap<Long, WrapTime> mappaWrapTime;
+
+        if (listaWrapTime != null && listaWrapTime.size() > 0) {
+            listaBloccoModificate = new ArrayList<Long>();
+
+            listaPageids = new ArrayList<Long>();
+            mappaWrapTime = new HashMap<Long, WrapTime>();
+            for (WrapTime wrap : listaWrapTime) {
+                pageid = wrap.getPageid();
+                mappaWrapTime.put(pageid, wrap);
+                listaPageids.add(pageid);
+            }// end of for cycle
+
+            for (Long pageidTmp : listaPageids) {
+                listaPageidsText += " bio.pageid=" + pageidTmp + tag;
+            }// end of for cycle
+            listaPageidsText = LibText.levaCoda(listaPageidsText, tag);
+
+            listaUltimaLettura = LibBio.queryFind("select bio.pageid,bio.ultimaLettura from Bio bio where " + listaPageidsText);
+            for (int k = 0; k < listaUltimaLettura.size(); k++) {
+                pageid = (Long) ((Object[]) listaUltimaLettura.get(k))[0];
+
+                if (mappaWrapTime.get(pageid) != null) {
+                    timestamp = mappaWrapTime.get(pageid).getTimestamp();
+                    ultimalettura = (Timestamp) ((Object[]) listaUltimaLettura.get(k))[1];
+
+                    if (timestamp.getTime() > ultimalettura.getTime()) {
+                        listaBloccoModificate.add(pageid);
+                    }// end of if cycle
+
+                }// end of if cycle
+
+            }// end of for cycle
+
+        }// fine del blocco if
+
+        return listaBloccoModificate;
+    }// end of method
+
+
+//    /**
+//     * Per ogni blocco da controllare, recupera ed ordina i 5.000 records di Bio secondo il campo ultimalettura (ascendente). Comincia dal più vecchio.
+//     * Esegue una serie di RequestWikiTimestamp (a blocchi di PAGES_PER_REQUEST) per creare una lista di WrapTime
+//     *
+//     * @param listaBloccoControllare lista (pageids) delle pagine da controllare
+//     * @return numero delle pagine effettivamente modificate
+//     */
+//    private HashMap<String, Integer> updateBloccoControllare(ArrayList<Long> listaBloccoDaControllare) {
+//        HashMap<String, Integer> mappa;
+//        int numVociModificate = 0;
+//        int numVociUploadate = 0;
+//        RequestWikiTimestamp request;
+//        ArrayList<WrapTime> listaWrapTime;
+//        ArrayList<WrapTime> listaWrapTimeMissing;
+//
+//        if (listaBlocco != null && listaBlocco.size() > 0) {
+//            request = new RequestWikiTimestamp(listaBlocco);
+//            listaWrapTime = request.getListaWrapTime();
+//            listaWrapTimeMissing = request.getListaWrapTimeMissing();
+//
+//            if (listaWrapTime != null && listaWrapTime.size() > 0) {
+//                numVociModificate = updateListaBlocco(listaWrapTime);
+//            }// fine del blocco if
+//
+////            if (Pref.getBool(CostBio.USA_CANCELLA_VOCE_MANCANTE, true) && listaWrapTimeMissing != null && listaWrapTimeMissing.size() > 0) {
+//////                vociCancellate = deleteVociMancanti(listaWrapTimeMissing);
+////            }// end of if cycle
+//        }// fine del blocco if
+//
+//        mappa = new HashMap<String, Integer>();
+//        mappa.put(Ciclo.KEY_MAPPA_MODIFICATE, numVociModificate);
+//        mappa.put(Ciclo.KEY_MAPPA_UPLOADATE, numVociUploadate);
+//        return mappa;
+//    }// end of method
 
     /**
      * Update lista (WrapTime) blocco di pagine (pageids)
      *
      * @param listaWrapTime lista (wraptime) delle pagine da controllare
      * @return numero delle pagine effettivamente modificate
+     * @deprecated
      */
     private int updateListaBlocco(ArrayList<WrapTime> listaWrapTime) {
         int vociModificate = 0;
@@ -183,7 +296,8 @@ public class CicloUpdate {
      * Elabora le informazioni dopo che una pagina è stata scaricata/aggiornata dal server
      *
      * @param wrap wrapper con pageid e timestamp dell'ultima modifica sul server
-     * @return true se pagina scaricata e database aggiornatao
+     * @return true se pagina scaricata e database aggiornato
+     * @deprecated
      */
     private boolean updateSingolaPagina(WrapTime wrap) {
         boolean status = false;
@@ -214,5 +328,124 @@ public class CicloUpdate {
 
         return status;
     }// end of method
+
+
+    /**
+     * Scarica la lista di voci mancanti dal server e aggiorna i records di Bio
+     * Esegue una serie di Request a blocchi di PAGES_PER_REQUEST per volta
+     * <p>
+     * //     * Esegue la RequestWikiReadMultiPages
+     * //     * Crea le PAGES_PER_REQUEST Pages ricevute
+     * //     * Per ogni page crea o modifica il records corrispondente con lo stesso pageid
+     * //     * Esegue il metodo Elabora, col flag di update specifico per il ciclo di Download
+     * //     * Esegue il metodo Update, se previsto dal flag USA_UPLOAD_DOWNLOADATA
+     *
+     * @param listaAllVociModificate elenco di pageids delle pagine da scaricare
+     * @return info per il log
+     */
+    public HashMap<String, Integer> downloadVociMancanti(ArrayList<Long> listaAllVociModificate) {
+        HashMap<String, Integer> mappaVoci = null;
+        int vociPerBlocco = this.dimBlocco();
+        ArrayList<Long> bloccoPageids;
+        int numVociModificate = 0;
+        int numVociUploadate = 0;
+
+        if (listaAllVociModificate != null && listaAllVociModificate.size() > 0) {
+            for (int k = 0; k < vociPerBlocco; k = k + vociPerBlocco) {
+                bloccoPageids = new ArrayList<Long>(listaAllVociModificate.subList(k, k + vociPerBlocco));
+                mappaVoci = downloadBlocco(bloccoPageids);
+                if (mappaVoci != null) {
+                    numVociModificate += mappaVoci.get(Ciclo.KEY_MAPPA_MODIFICATE);
+                    numVociUploadate += mappaVoci.get(Ciclo.KEY_MAPPA_UPLOADATE);
+                }// end of if cycle
+            }// end of for cycle
+        }// end of if cycle
+
+        if (mappaVoci != null) {
+            mappaVoci.put(Ciclo.KEY_MAPPA_MODIFICATE, numVociModificate);
+            mappaVoci.put(Ciclo.KEY_MAPPA_UPLOADATE, numVociUploadate);
+        }// end of if cycle
+
+        return mappaVoci;
+    }// end of method
+
+    /**
+     * Esegue una RequestWikiReadMultiPages per un blocco di PAGES_PER_REQUEST tra quelle mancanti da scaricare
+     * <p>
+     * Esegue la RequestWikiReadMultiPages (tramite Api)
+     * Crea le PAGES_PER_REQUEST Pages ricevute
+     * Per ogni page crea o modifica il records corrispondente con lo stesso pageid
+     * Esegue il metodo Elabora, col flag di update specifico per il ciclo di Download
+     * Esegue il metodo Update, se previsto dal flag USA_UPLOAD_DOWNLOADATA
+     *
+     * @param listaAllVociModificate elenco di pageids delle pagine da scaricare
+     */
+    public HashMap<String, Integer> downloadBlocco(ArrayList<Long> listaAllVociModificate) {
+        HashMap<String, Integer> mappaVoci = null;
+        int numVociModificate = 0;
+        int numVociUploadate = 0;
+        ArrayList<Page> pages;
+        DownloadBio downloadBio;
+
+        if (listaAllVociModificate != null && listaAllVociModificate.size() > 0) {
+            mappaVoci = new HashMap<String, Integer>();
+            pages = Api.leggePages(listaAllVociModificate);
+            for (Page page : pages) {
+                downloadBio = new DownloadBio(page, true);
+                numVociModificate++;
+                if (downloadBio.isUploadata()) {
+                    numVociUploadate++;
+                }// fine del blocco if
+            }// end of for cycle
+        }// end of if cycle
+
+        if (mappaVoci != null) {
+            mappaVoci.put(Ciclo.KEY_MAPPA_MODIFICATE, numVociModificate);
+            mappaVoci.put(Ciclo.KEY_MAPPA_UPLOADATE, numVociUploadate);
+        }// end of if cycle
+
+        return mappaVoci;
+    }// end of method
+
+
+//    /**
+//     * Esegue una RequestWikiReadMultiPages per un blocco di PAGES_PER_REQUEST tra quelle mancanti da scaricare
+//     * <p>
+//     * Esegue la RequestWikiReadMultiPages
+//     * Crea le PAGES_PER_REQUEST Pages ricevute
+//     * Per ogni page crea o modifica il record corrispondente con lo stesso pageid
+//     * Esegue il metodo Elabora, col flag di update specifico per il ciclo di Download
+//     * Esegue il metodo Update, se previsto dal flag USA_UPLOAD_DOWNLOADATA
+//     *
+//     * @param bloccoPageids elenco di pageids delle pagine da scaricare
+//     */
+//    public HashMap<String, Integer> downloadBlocco(ArrayList<Long> bloccoPageids) {
+//        HashMap<String, Integer> mappaVoci = null;
+//        int numVociRegistrate = 0;
+//        int numVociUploadate = 0;
+//        ArrayList<Page> pages;
+//        DownloadBio downloadBio;
+//
+//        if (bloccoPageids != null && bloccoPageids.size() > 0) {
+//            mappaVoci = new HashMap<String, Integer>();
+//            pages = Api.leggePages(bloccoPageids);
+//            for (Page page : pages) {
+//                downloadBio = new DownloadBio(page, true);
+//                if (downloadBio.isNuova()) {
+//                    numVociRegistrate++;
+//                }// fine del blocco if
+//                if (downloadBio.isUploadata()) {
+//                    numVociUploadate++;
+//                }// fine del blocco if
+//            }// end of for cycle
+//        }// end of if cycle
+//
+//        if (mappaVoci != null) {
+//            mappaVoci.put(Ciclo.KEY_MAPPA_REGISTRATE, numVociRegistrate);
+//            mappaVoci.put(Ciclo.KEY_MAPPA_UPLOADATE, numVociUploadate);
+//        }// end of if cycle
+//
+//        return mappaVoci;
+//    }// end of method
 
 }// end of class
