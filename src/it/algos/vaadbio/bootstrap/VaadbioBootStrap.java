@@ -67,10 +67,7 @@ public class VaadbioBootStrap extends ABootStrap {
     public void contextDestroyed(ServletContextEvent servletContextEvent) {
 
         // arresta gli schedulers
-//        DaemonCicloDownload daemon = DaemonCicloDownload.getInstance();
-//        if (daemon != null) {
-//            daemon.stop();
-//        }// end of if cycle
+        DaemonCicloDownload.getInstance().stop();
 
         super.contextDestroyed(servletContextEvent);
     }// end of method
