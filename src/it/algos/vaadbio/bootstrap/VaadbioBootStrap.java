@@ -1,6 +1,7 @@
 package it.algos.vaadbio.bootstrap;
 
 import it.algos.vaadbio.VaadbioApp;
+import it.algos.vaadbio.daemons.DaemonCicloDownload;
 import it.algos.webbase.web.AlgosApp;
 import it.algos.webbase.web.bootstrap.ABootStrap;
 import it.algos.webbase.web.toolbar.Toolbar;
@@ -50,10 +51,7 @@ public class VaadbioBootStrap extends ABootStrap {
         AlgosApp.USE_VERS = false; //lo uso, ma lo creo in VaadbioUI per averlo nell'ordine voluto
 
         // avvia lo scheduler ciclo download new che esegue due volte al giorno
-//        DaemonBioCicloNew.getInstance().start();
-
-        // avvia lo scheduler ciclo download new che esegue ogni ora al minuto 0
-//        DaemonBioCicloUpdate.getInstance().start();
+        DaemonCicloDownload.getInstance().start();
 
         // avvia lo scheduler ciclo elabora new che esegue ogni ora al minuto 30
 //        DaemonBioCicloElabora.getInstance().start();
@@ -69,8 +67,7 @@ public class VaadbioBootStrap extends ABootStrap {
     public void contextDestroyed(ServletContextEvent servletContextEvent) {
 
         // arresta gli schedulers
-//        DaemonBioCicloNew.getInstance().stop();
-//        DaemonBioCicloUpdate.getInstance().stop();
+        DaemonCicloDownload.getInstance().stop();
 //        DaemonBioCicloElabora.getInstance().stop();
 
         super.contextDestroyed(servletContextEvent);

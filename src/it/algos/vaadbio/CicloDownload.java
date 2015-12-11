@@ -25,7 +25,7 @@ import java.util.ArrayList;
  * Il ciclo può essere invocato dal bottone 'Ciclo Down' nella tavola Bio
  * Il ciclo necessita del login come bot per il funzionamento normale
  */
-public class Ciclo {
+public class CicloDownload {
 
 
     public final static String TAG_BIO = "BioBot";
@@ -36,7 +36,7 @@ public class Ciclo {
     public final static String KEY_MAPPA_MODIFICATE = "modificate";
     public final static String KEY_MAPPA_UPLOADATE = "uplodate";
 
-    public Ciclo() {
+    public CicloDownload() {
         doInit();
     }// end of constructor
 
@@ -93,8 +93,9 @@ public class Ciclo {
         // Cancella tutti i records non più presenti nella categoria
         new CicloDelete(listaEccedenti);
 
+        // Aggiorna tutti i records esistenti
+        new CicloUpdate();
 
-        //new CicloUpdate();
     }// end of method
 
 }// end of class

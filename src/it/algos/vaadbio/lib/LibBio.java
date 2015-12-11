@@ -1239,7 +1239,7 @@ public abstract class LibBio {
         }// fine del blocco if
 
         if (offSet > 0) {
-            query.setFirstResult(limit);
+            query.setFirstResult(offSet);
         }// fine del blocco if
 
         lista = query.getResultList();

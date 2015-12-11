@@ -73,8 +73,8 @@ public class CicloNew {
                 bloccoPageids = new ArrayList<Long>(listaMancanti.subList(k, k + vociPerBlocco));
                 mappaVoci = downloadBlocco(bloccoPageids);
                 if (mappaVoci != null) {
-                    numVociRegistrate += mappaVoci.get(Ciclo.KEY_MAPPA_REGISTRATE);
-                    numVociUploadate += mappaVoci.get(Ciclo.KEY_MAPPA_UPLOADATE);
+                    numVociRegistrate += mappaVoci.get(CicloDownload.KEY_MAPPA_REGISTRATE);
+                    numVociUploadate += mappaVoci.get(CicloDownload.KEY_MAPPA_UPLOADATE);
                 }// end of if cycle
             }// end of for cycle
         }// end of if cycle
@@ -120,8 +120,8 @@ public class CicloNew {
         }// end of if cycle
 
         if (mappaVoci != null) {
-            mappaVoci.put(Ciclo.KEY_MAPPA_REGISTRATE, numVociRegistrate);
-            mappaVoci.put(Ciclo.KEY_MAPPA_UPLOADATE, numVociUploadate);
+            mappaVoci.put(CicloDownload.KEY_MAPPA_REGISTRATE, numVociRegistrate);
+            mappaVoci.put(CicloDownload.KEY_MAPPA_UPLOADATE, numVociUploadate);
         }// end of if cycle
 
         return mappaVoci;

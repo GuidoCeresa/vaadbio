@@ -82,9 +82,11 @@ public class CicloUpdate {
         ArrayList<WrapTime> listaWrapTimeBlocco;
         ArrayList<WrapTime> listaWrapTime;
         int numVociDaControllare = 50000;
-        HashMap<String, Integer> mappaInfoVoci;
+        HashMap<String, Integer> mappaInfoVoci = null;
         int numVociModificate = 0;
         int numVociUploadate = 0;
+        int numCicli;
+        int offset;
 
         // Il ciclo necessita del login come bot per il funzionamento normale
         // oppure del flag USA_CICLI_ANCHE_SENZA_BOT per un funzionamento ridotto
@@ -100,9 +102,16 @@ public class CicloUpdate {
             numVociDaControllare = Bio.count();
         }// end of if/else cycle
 
-        for (int k = 0; k < numVociDaControllare; k += vociPerBlocco) {
+        numCicli = LibArray.numCicli(numVociDaControllare, vociPerBlocco);
+        vociPerBlocco = Math.min(numVociDaControllare, vociPerBlocco);
+        for (int k = 0; k < numCicli; k++) {
+            offset = vociPerBlocco * k;
+            if (k == (numCicli - 1)) {
+                vociPerBlocco = numVociDaControllare - (vociPerBlocco * k);
+            }// end of if cycle
+
             //--Lista (pageids) di un blocco ordinato di records del database
-            listaBloccoDaControllare = Bio.findAllPageid(vociPerBlocco, k);
+            listaBloccoDaControllare = Bio.findAllPageid(vociPerBlocco, offset);
 
             //--Esegue una RequestWikiTimestamp per creare una lista di WrapTime
             listaWrapTimeBlocco = getWrapTimeBlocco(listaBloccoDaControllare);
@@ -119,8 +128,8 @@ public class CicloUpdate {
 
         //--Informazioni per il log
         if (mappaInfoVoci != null) {
-            numVociModificate = mappaInfoVoci.get(Ciclo.KEY_MAPPA_MODIFICATE);
-            numVociUploadate = mappaInfoVoci.get(Ciclo.KEY_MAPPA_UPLOADATE);
+            numVociModificate = mappaInfoVoci.get(CicloDownload.KEY_MAPPA_MODIFICATE);
+            numVociUploadate = mappaInfoVoci.get(CicloDownload.KEY_MAPPA_UPLOADATE);
             Log.setInfo("update", "Controllate " + LibNum.format(numVociDaControllare) + " voci (di cui " + LibNum.format(numVociModificate) + " modificate e " + LibNum.format(numVociUploadate) + " uploadate) in " + LibTime.difText(inizio));
         }// end of if cycle
 
@@ -129,6 +138,7 @@ public class CicloUpdate {
     /**
      * Divide il numero di voci da aggiornare in blocchi di 500 (50 se non flaggato come bot)
      */
+
     private int dimBlocco() {
         int dimBlocco = 0;
 
@@ -187,6 +197,7 @@ public class CicloUpdate {
         Timestamp ultimalettura;
         Timestamp timestamp;
         HashMap<Long, WrapTime> mappaWrapTime;
+        Bio bio;
 
         if (listaWrapTime != null && listaWrapTime.size() > 0) {
             listaBloccoModificate = new ArrayList<Long>();
@@ -214,9 +225,15 @@ public class CicloUpdate {
 
                     if (timestamp.getTime() > ultimalettura.getTime()) {
                         listaBloccoModificate.add(pageid);
-                    }// end of if cycle
+                    } else {
+                        bio = Bio.findByPageid(pageid);
+                        bio.setUltimaLettura(LibTime.adesso());
+                        bio.save();
+                    }// end of if/else cycle
+
                 }// end of if cycle
             }// end of for cycle
+
         }// fine del blocco if
 
         return listaBloccoModificate;
@@ -232,11 +249,9 @@ public class CicloUpdate {
      */
     public HashMap<String, Integer> downloadVociMancanti(ArrayList<Long> listaAllVociModificate) {
         HashMap<String, Integer> mappaVoci = null;
-        int vociPerBlocco;
         ArrayList<Long> bloccoPageids;
         int numVociModificate = 0;
         int numVociUploadate = 0;
-        int limiteSuperiore = 0;
         int numCicli;
 
         if (listaAllVociModificate != null && listaAllVociModificate.size() > 0) {
@@ -246,16 +261,16 @@ public class CicloUpdate {
                 bloccoPageids = LibArray.estraeSublistaLong(listaAllVociModificate, dimBlocco(), k);
                 mappaVoci = downloadSingoloBlocco(bloccoPageids);
                 if (mappaVoci != null) {
-                    numVociModificate += mappaVoci.get(Ciclo.KEY_MAPPA_MODIFICATE);
-                    numVociUploadate += mappaVoci.get(Ciclo.KEY_MAPPA_UPLOADATE);
+                    numVociModificate += mappaVoci.get(CicloDownload.KEY_MAPPA_MODIFICATE);
+                    numVociUploadate += mappaVoci.get(CicloDownload.KEY_MAPPA_UPLOADATE);
                 }// end of if cycle
             }// end of for cycle
 
         }// end of if cycle
 
         if (mappaVoci != null) {
-            mappaVoci.put(Ciclo.KEY_MAPPA_MODIFICATE, numVociModificate);
-            mappaVoci.put(Ciclo.KEY_MAPPA_UPLOADATE, numVociUploadate);
+            mappaVoci.put(CicloDownload.KEY_MAPPA_MODIFICATE, numVociModificate);
+            mappaVoci.put(CicloDownload.KEY_MAPPA_UPLOADATE, numVociUploadate);
         }// end of if cycle
 
         return mappaVoci;
@@ -292,8 +307,8 @@ public class CicloUpdate {
         }// end of if cycle
 
         if (mappaVoci != null) {
-            mappaVoci.put(Ciclo.KEY_MAPPA_MODIFICATE, numVociModificate);
-            mappaVoci.put(Ciclo.KEY_MAPPA_UPLOADATE, numVociUploadate);
+            mappaVoci.put(CicloDownload.KEY_MAPPA_MODIFICATE, numVociModificate);
+            mappaVoci.put(CicloDownload.KEY_MAPPA_UPLOADATE, numVociUploadate);
         }// end of if cycle
 
         return mappaVoci;

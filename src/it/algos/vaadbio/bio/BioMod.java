@@ -199,9 +199,9 @@ public class BioMod extends ModulePop {
                 String nomeCat = "";
                 if (Pref.getBool(CostBio.USA_DIALOGHI_CONFERMA, true)) {
                     if (usaDebug) {
-                        nomeCat = "<b><span style=\"color:red\">" + Ciclo.TAG_CAT_DEBUG + "</span></b>";
+                        nomeCat = "<b><span style=\"color:red\">" + CicloDownload.TAG_CAT_DEBUG + "</span></b>";
                     } else {
-                        nomeCat = "<b><span style=\"color:red\">" + Ciclo.TAG_BIO + "</span></b>";
+                        nomeCat = "<b><span style=\"color:red\">" + CicloDownload.TAG_BIO + "</span></b>";
                     }// end of if/else cycle
                     int maxDowloadNew = Pref.getInt(CostBio.MAX_DOWNLOAD, 1000);
                     String newMsg = "Esegue un ciclo di sincronizzazione tra le pagine della categoria " + nomeCat + " ed i records della tavola Bio<br/>";
@@ -238,7 +238,7 @@ public class BioMod extends ModulePop {
                                 @Override
                                 public void onClose(ConfirmDialog dialog, boolean confirmed) {
                                     if (confirmed) {
-                                        new Ciclo();
+                                        new CicloDownload();
                                     }// end of if cycle
                                 }// end of inner method
                             });// end of anonymous inner class
@@ -249,7 +249,7 @@ public class BioMod extends ModulePop {
                         Notification.show("Avviso", "Devi prima entrare nel modulo Bio per eseguire questo comando", Notification.Type.WARNING_MESSAGE);
                     }// end of if/else cycle
                 } else {
-                    new Ciclo();
+                    new CicloDownload();
                 }// fine del blocco if-else
             }// end of method
         });// end of anonymous class
@@ -268,9 +268,9 @@ public class BioMod extends ModulePop {
                 final String nomeCat;
                 if (Pref.getBool(CostBio.USA_DIALOGHI_CONFERMA, true)) {
                     if (usaDebug) {
-                        nomeCat = "<b><span style=\"color:red\">" + Ciclo.TAG_CAT_DEBUG + "</span></b>";
+                        nomeCat = "<b><span style=\"color:red\">" + CicloDownload.TAG_CAT_DEBUG + "</span></b>";
                     } else {
-                        nomeCat = "<b><span style=\"color:red\">" + Ciclo.TAG_BIO + "</span></b>";
+                        nomeCat = "<b><span style=\"color:red\">" + CicloDownload.TAG_BIO + "</span></b>";
                     }// end of if/else cycle
                     int maxDowloadNew = Pref.getInt(CostBio.MAX_DOWNLOAD, 1000);
                     String newMsg = "Esegue un ciclo di sincronizzazione tra le pagine della categoria " + nomeCat + " ed i records della tavola Bio<br/>";
@@ -311,7 +311,7 @@ public class BioMod extends ModulePop {
                         Notification.show("Avviso", "Devi prima entrare nel modulo Bio per eseguire questo comando", Notification.Type.WARNING_MESSAGE);
                     }// end of if/else cycle
                 } else {
-                    new Ciclo();
+                    new CicloDownload();
                 }// fine del blocco if-else
             }// end of method
         });// end of anonymous class
