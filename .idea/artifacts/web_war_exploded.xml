@@ -10,6 +10,7 @@
         <element id="directory" name="lib">
           <element id="library" level="project" name="webbase_jar" />
           <element id="library" level="project" name="vaad_jar" />
+          <element id="library" level="module" name="IvyIDEA" module-name="vaadbio" />
         </element>
       </element>
       <element id="directory" name="VAADIN">

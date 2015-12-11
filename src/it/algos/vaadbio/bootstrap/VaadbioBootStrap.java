@@ -10,24 +10,24 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 
 /**
-  * Bootstrap dell'applicazione
-  * Executed on container startup
-  * Setup non-UI logic here
-  * <p/>
-  * Classe eseguita solo quando l'applicazione viene caricata/parte nel server (Tomcat od altri) <br>
-  * Eseguita quindi ad ogni avvio/riavvio del server e NON ad ogni sessione <br>
-  * È OBBLIGATORIO aggiungere questa classe nei listeners del file web.WEB-INF.web.xml
-  */
+ * Bootstrap dell'applicazione
+ * Executed on container startup
+ * Setup non-UI logic here
+ * <p>
+ * Classe eseguita solo quando l'applicazione viene caricata/parte nel server (Tomcat od altri) <br>
+ * Eseguita quindi ad ogni avvio/riavvio del server e NON ad ogni sessione <br>
+ * È OBBLIGATORIO aggiungere questa classe nei listeners del file web.WEB-INF.web.xml
+ */
 public class VaadbioBootStrap extends ABootStrap {
 
     /**
      * Executed on container startup
      * Setup non-UI logic here
-     * <p/>
+     * <p>
      * This method is called prior to the servlet context being
      * initialized (when the Web application is deployed).
      * You can initialize servlet context related data here.
-     * <p/>
+     * <p>
      * Viene normalmente sovrascritta dalla sottoclasse per regolare alcuni flag dell'applicazione <br>
      * Deve (DEVE) richiamare anche il metodo della superclasse (questo)
      * prima (PRIMA) di eseguire le regolazioni specifiche <br>
@@ -67,8 +67,10 @@ public class VaadbioBootStrap extends ABootStrap {
     public void contextDestroyed(ServletContextEvent servletContextEvent) {
 
         // arresta gli schedulers
-        DaemonCicloDownload.getInstance().stop();
-//        DaemonBioCicloElabora.getInstance().stop();
+//        DaemonCicloDownload daemon = DaemonCicloDownload.getInstance();
+//        if (daemon != null) {
+//            daemon.stop();
+//        }// end of if cycle
 
         super.contextDestroyed(servletContextEvent);
     }// end of method
