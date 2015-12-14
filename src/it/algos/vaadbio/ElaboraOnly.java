@@ -174,6 +174,7 @@ public class ElaboraOnly {
 
             par.setBio(bio, value);
         } // fine del ciclo for-each
+        int a=87;
     }// end of method
 
     /**

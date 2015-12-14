@@ -13,13 +13,14 @@ import java.util.ArrayList;
  */
 public enum ParBio {
 
-
     titolo("Titolo", true, false, false, Bio_.titolo) {
         @Override
         public Bio setBio(Bio bio, Object value) {
-            if (value instanceof String) {
+            if (value != null && value instanceof String) {
                 bio.setTitolo((String) value);
-            }// fine del blocco if
+            } else {
+                bio.setTitolo(VUOTA);
+            }// end of if/else cycle
             return bio;
         }// end of method
 
@@ -31,9 +32,11 @@ public enum ParBio {
     nome("Nome", true, true, true, Bio_.nome) {
         @Override
         public Bio setBio(Bio bio, Object value) {
-            if (value instanceof String) {
+            if (value != null && value instanceof String) {
                 bio.setNome((String) value);
-            }// fine del blocco if
+            } else {
+                bio.setNome(VUOTA);
+            }// end of if/else cycle
             return bio;
         }// end of method
 
@@ -50,9 +53,11 @@ public enum ParBio {
     cognome("Cognome", true, true, true, Bio_.cognome) {
         @Override
         public Bio setBio(Bio bio, Object value) {
-            if (value instanceof String) {
+            if (value != null && value instanceof String) {
                 bio.setCognome((String) value);
-            }// fine del blocco if
+            } else {
+                bio.setCognome(VUOTA);
+            }// end of if/else cycle
             return bio;
         }// end of method
 
@@ -69,9 +74,11 @@ public enum ParBio {
     cognomePrima("CognomePrima", false, false, false, Bio_.cognomePrima) {
         @Override
         public Bio setBio(Bio bio, Object value) {
-            if (value instanceof String) {
+            if (value != null && value instanceof String) {
                 bio.setCognomePrima((String) value);
-            }// fine del blocco if
+            } else {
+                bio.setCognomePrima(VUOTA);
+            }// end of if/else cycle
             return bio;
         }// end of method
 
@@ -83,9 +90,11 @@ public enum ParBio {
     postCognome("PostCognome", false, false, false, Bio_.postCognome) {
         @Override
         public Bio setBio(Bio bio, Object value) {
-            if (value instanceof String) {
+            if (value != null && value instanceof String) {
                 bio.setPostCognome((String) value);
-            }// fine del blocco if
+            } else {
+                bio.setPostCognome(VUOTA);
+            }// end of if/else cycle
             return bio;
         }// end of method
 
@@ -97,9 +106,11 @@ public enum ParBio {
     postCognomeVirgola("PostCognomeVirgola", false, false, false, Bio_.postCognomeVirgola) {
         @Override
         public Bio setBio(Bio bio, Object value) {
-            if (value instanceof String) {
+            if (value != null && value instanceof String) {
                 bio.setPostCognomeVirgola((String) value);
-            }// fine del blocco if
+            } else {
+                bio.setPostCognomeVirgola(VUOTA);
+            }// end of if/else cycle
             return bio;
         }// end of method
 
@@ -111,9 +122,11 @@ public enum ParBio {
     forzaOrdinamento("ForzaOrdinamento", false, false, false, Bio_.forzaOrdinamento) {
         @Override
         public Bio setBio(Bio bio, Object value) {
-            if (value instanceof String) {
+            if (value != null && value instanceof String) {
                 bio.setForzaOrdinamento((String) value);
-            }// fine del blocco if
+            } else {
+                bio.setForzaOrdinamento(VUOTA);
+            }// end of if/else cycle
             return bio;
         }// end of method
 
@@ -125,9 +138,11 @@ public enum ParBio {
     preData("PreData", false, false, false, Bio_.preData) {
         @Override
         public Bio setBio(Bio bio, Object value) {
-            if (value instanceof String) {
+            if (value != null && value instanceof String) {
                 bio.setPreData((String) value);
-            }// fine del blocco if
+            } else {
+                bio.setPreData(VUOTA);
+            }// end of if/else cycle
             return bio;
         }// end of method
 
@@ -139,9 +154,11 @@ public enum ParBio {
     sesso("Sesso", true, true, true, Bio_.sesso) {
         @Override
         public Bio setBio(Bio bio, Object value) {
-            if (value instanceof String) {
+            if (value != null && value instanceof String) {
                 bio.setSesso((String) value);
-            }// fine del blocco if
+            } else {
+                bio.setSesso(VUOTA);
+            }// end of if/else cycle
             return bio;
         }// end of method
 
@@ -160,9 +177,11 @@ public enum ParBio {
     luogoNascita("LuogoNascita", true, true, true, Bio_.luogoNascita) {
         @Override
         public Bio setBio(Bio bio, Object value) {
-            if (value instanceof String) {
+            if (value != null && value instanceof String) {
                 bio.setLuogoNascita((String) value);
-            }// fine del blocco if
+            } else {
+                bio.setLuogoNascita(VUOTA);
+            }// end of if/else cycle
             return bio;
         }// end of method
 
@@ -179,9 +198,11 @@ public enum ParBio {
     luogoNascitaLink("LuogoNascitaLink", false, false, true, Bio_.luogoNascitaLink) {
         @Override
         public Bio setBio(Bio bio, Object value) {
-            if (value instanceof String) {
+            if (value != null && value instanceof String) {
                 bio.setLuogoNascitaLink((String) value);
-            }// fine del blocco if
+            } else {
+                bio.setLuogoNascitaLink(VUOTA);
+            }// end of if/else cycle
             return bio;
         }// end of method
 
@@ -198,9 +219,11 @@ public enum ParBio {
     luogoNascitaAlt("LuogoNascitaAlt", false, false, false, Bio_.luogoNascitaAlt) {
         @Override
         public Bio setBio(Bio bio, Object value) {
-            if (value instanceof String) {
+            if (value != null && value instanceof String) {
                 bio.setLuogoNascitaAlt((String) value);
-            }// fine del blocco if
+            } else {
+                bio.setLuogoNascitaAlt(VUOTA);
+            }// end of if/else cycle
             return bio;
         }// end of method
 
@@ -211,9 +234,11 @@ public enum ParBio {
     giornoMeseNascita("GiornoMeseNascita", true, true, true, Bio_.giornoMeseNascita) {
         @Override
         public Bio setBio(Bio bio, Object value) {
-            if (value instanceof String) {
+            if (value != null && value instanceof String) {
                 bio.setGiornoMeseNascita((String) value);
-            }// fine del blocco if
+            } else {
+                bio.setGiornoMeseNascita(VUOTA);
+            }// end of if/else cycle
             return bio;
         }// end of method
 
@@ -230,9 +255,11 @@ public enum ParBio {
     annoNascita("AnnoNascita", true, true, true, Bio_.annoNascita) {
         @Override
         public Bio setBio(Bio bio, Object value) {
-            if (value instanceof String) {
+            if (value != null && value instanceof String) {
                 bio.setAnnoNascita((String) value);
-            }// fine del blocco if
+            } else {
+                bio.setAnnoNascita(VUOTA);
+            }// end of if/else cycle
             return bio;
         }// end of method
 
@@ -248,9 +275,11 @@ public enum ParBio {
     noteNascita("NoteNascita", false, false, false, Bio_.noteNascita) {
         @Override
         public Bio setBio(Bio bio, Object value) {
-            if (value instanceof String) {
+            if (value != null && value instanceof String) {
                 bio.setNoteNascita((String) value);
-            }// fine del blocco if
+            } else {
+                bio.setNoteNascita(VUOTA);
+            }// end of if/else cycle
             return bio;
         }// end of method
 
@@ -264,9 +293,11 @@ public enum ParBio {
     luogoMorte("LuogoMorte", true, true, true, Bio_.luogoMorte) {
         @Override
         public Bio setBio(Bio bio, Object value) {
-            if (value instanceof String) {
+            if (value != null && value instanceof String) {
                 bio.setLuogoMorte((String) value);
-            }// fine del blocco if
+            } else {
+                bio.setLuogoMorte(VUOTA);
+            }// end of if/else cycle
             return bio;
         }// end of method
 
@@ -283,9 +314,11 @@ public enum ParBio {
     luogoMorteLink("LuogoMorteLink", false, false, true, Bio_.luogoMorteLink) {
         @Override
         public Bio setBio(Bio bio, Object value) {
-            if (value instanceof String) {
+            if (value != null && value instanceof String) {
                 bio.setLuogoMorteLink((String) value);
-            }// fine del blocco if
+            } else {
+                bio.setLuogoMorteLink(VUOTA);
+            }// end of if/else cycle
             return bio;
         }// end of method
 
@@ -302,9 +335,11 @@ public enum ParBio {
     luogoMorteAlt("LuogoMorteAlt", false, false, false, Bio_.luogoMorteAlt) {
         @Override
         public Bio setBio(Bio bio, Object value) {
-            if (value instanceof String) {
+            if (value != null && value instanceof String) {
                 bio.setLuogoMorteAlt((String) value);
-            }// fine del blocco if
+            } else {
+                bio.setLuogoMorteAlt(VUOTA);
+            }// end of if/else cycle
             return bio;
         }// end of method
 
@@ -316,9 +351,11 @@ public enum ParBio {
     giornoMeseMorte("GiornoMeseMorte", true, true, true, Bio_.giornoMeseMorte) {
         @Override
         public Bio setBio(Bio bio, Object value) {
-            if (value instanceof String) {
+            if (value != null && value instanceof String) {
                 bio.setGiornoMeseMorte((String) value);
-            }// fine del blocco if
+            } else {
+                bio.setGiornoMeseMorte(VUOTA);
+            }// end of if/else cycle
             return bio;
         }// end of method
 
@@ -335,9 +372,11 @@ public enum ParBio {
     annoMorte("AnnoMorte", true, true, true, Bio_.annoMorte) {
         @Override
         public Bio setBio(Bio bio, Object value) {
-            if (value instanceof String) {
+            if (value != null && value instanceof String) {
                 bio.setAnnoMorte((String) value);
-            }// fine del blocco if
+            } else {
+                bio.setAnnoMorte(VUOTA);
+            }// end of if/else cycle
             return bio;
         }// end of method
 
@@ -354,9 +393,11 @@ public enum ParBio {
     noteMorte("NoteMorte", false, false, false, Bio_.noteMorte) {
         @Override
         public Bio setBio(Bio bio, Object value) {
-            if (value instanceof String) {
+            if (value != null && value instanceof String) {
                 bio.setNoteMorte((String) value);
-            }// fine del blocco if
+            } else {
+                bio.setNoteMorte(VUOTA);
+            }// end of if/else cycle
             return bio;
         }// end of method
 
@@ -370,9 +411,11 @@ public enum ParBio {
     epoca("Epoca", false, false, false, Bio_.epoca) {
         @Override
         public Bio setBio(Bio bio, Object value) {
-            if (value instanceof String) {
+            if (value != null && value instanceof String) {
                 bio.setEpoca((String) value);
-            }// fine del blocco if
+            } else {
+                bio.setEpoca(VUOTA);
+            }// end of if/else cycle
             return bio;
         }// end of method
 
@@ -384,9 +427,11 @@ public enum ParBio {
     epoca2("Epoca2", false, false, false, Bio_.epoca2) {
         @Override
         public Bio setBio(Bio bio, Object value) {
-            if (value instanceof String) {
+            if (value != null && value instanceof String) {
                 bio.setEpoca2((String) value);
-            }// fine del blocco if
+            } else {
+                bio.setEpoca2(VUOTA);
+            }// end of if/else cycle
             return bio;
         }// end of method
 
@@ -398,9 +443,11 @@ public enum ParBio {
     preAttivita("PreAttività", false, false, false, Bio_.preAttivita) {
         @Override
         public Bio setBio(Bio bio, Object value) {
-            if (value instanceof String) {
+            if (value != null && value instanceof String) {
                 bio.setPreAttivita((String) value);
-            }// fine del blocco if
+            } else {
+                bio.setPreAttivita(VUOTA);
+            }// end of if/else cycle
             return bio;
         }// end of method
 
@@ -412,9 +459,11 @@ public enum ParBio {
     attivita("Attività", true, true, true, Bio_.attivita) {
         @Override
         public Bio setBio(Bio bio, Object value) {
-            if (value instanceof String) {
+            if (value != null && value instanceof String) {
                 bio.setAttivita((String) value);
-            }// fine del blocco if
+            } else {
+                bio.setAttivita(VUOTA);
+            }// end of if/else cycle
             return bio;
         }// end of method
 
@@ -431,9 +480,11 @@ public enum ParBio {
     attivita2("Attività2", false, false, true, Bio_.attivita2) {
         @Override
         public Bio setBio(Bio bio, Object value) {
-            if (value instanceof String) {
+            if (value != null && value instanceof String) {
                 bio.setAttivita2((String) value);
-            }// fine del blocco if
+            } else {
+                bio.setAttivita2(VUOTA);
+            }// end of if/else cycle
             return bio;
         }// end of method
 
@@ -450,9 +501,11 @@ public enum ParBio {
     attivita3("Attività3", false, false, true, Bio_.attivita3) {
         @Override
         public Bio setBio(Bio bio, Object value) {
-            if (value instanceof String) {
+            if (value != null && value instanceof String) {
                 bio.setAttivita3((String) value);
-            }// fine del blocco if
+            } else {
+                bio.setAttivita3(VUOTA);
+            }// end of if/else cycle
             return bio;
         }// end of method
 
@@ -469,9 +522,11 @@ public enum ParBio {
     attivitaAltre("AttivitàAltre", false, false, false, Bio_.attivitaAltre) {
         @Override
         public Bio setBio(Bio bio, Object value) {
-            if (value instanceof String) {
+            if (value != null && value instanceof String) {
                 bio.setAttivitaAltre((String) value);
-            }// fine del blocco if
+            } else {
+                bio.setAttivitaAltre(VUOTA);
+            }// end of if/else cycle
             return bio;
         }// end of method
 
@@ -485,9 +540,11 @@ public enum ParBio {
     nazionalita("Nazionalità", true, true, true, Bio_.nazionalita) {
         @Override
         public Bio setBio(Bio bio, Object value) {
-            if (value instanceof String) {
+            if (value != null && value instanceof String) {
                 bio.setNazionalita((String) value);
-            }// fine del blocco if
+            } else {
+                bio.setNazionalita(VUOTA);
+            }// end of if/else cycle
             return bio;
         }// end of method
 
@@ -504,9 +561,11 @@ public enum ParBio {
     cittadinanza("Cittadinanza", false, false, false, Bio_.cittadinanza) {
         @Override
         public Bio setBio(Bio bio, Object value) {
-            if (value instanceof String) {
+            if (value != null && value instanceof String) {
                 bio.setCittadinanza((String) value);
-            }// fine del blocco if
+            } else {
+                bio.setCittadinanza(VUOTA);
+            }// end of if/else cycle
             return bio;
         }// end of method
 
@@ -518,9 +577,11 @@ public enum ParBio {
     nazionalitaNaturalizzato("NazionalitàNaturalizzato", false, false, false, Bio_.nazionalitaNaturalizzato) {
         @Override
         public Bio setBio(Bio bio, Object value) {
-            if (value instanceof String) {
+            if (value != null && value instanceof String) {
                 bio.setNazionalitaNaturalizzato((String) value);
-            }// fine del blocco if
+            } else {
+                bio.setNazionalitaNaturalizzato(VUOTA);
+            }// end of if/else cycle
             return bio;
         }// end of method
 
@@ -532,9 +593,11 @@ public enum ParBio {
     postNazionalita("PostNazionalità", false, false, false, Bio_.postNazionalita) {
         @Override
         public Bio setBio(Bio bio, Object value) {
-            if (value instanceof String) {
+            if (value != null && value instanceof String) {
                 bio.setPostNazionalita((String) value);
-            }// fine del blocco if
+            } else {
+                bio.setPostNazionalita(VUOTA);
+            }// end of if/else cycle
             return bio;
         }// end of method
 
@@ -548,9 +611,11 @@ public enum ParBio {
     categorie("Categorie", false, false, false, Bio_.categorie) {
         @Override
         public Bio setBio(Bio bio, Object value) {
-            if (value instanceof String) {
+            if (value != null && value instanceof String) {
                 bio.setCategorie((String) value);
-            }// fine del blocco if
+            } else {
+                bio.setCategorie(VUOTA);
+            }// end of if/else cycle
             return bio;
         }// end of method
 
@@ -562,9 +627,11 @@ public enum ParBio {
     fineIncipit("FineIncipit", false, false, false, Bio_.fineIncipit) {
         @Override
         public Bio setBio(Bio bio, Object value) {
-            if (value instanceof String) {
+            if (value != null && value instanceof String) {
                 bio.setFineIncipit((String) value);
-            }// fine del blocco if
+            } else {
+                bio.setFineIncipit(VUOTA);
+            }// end of if/else cycle
             return bio;
         }// end of method
 
@@ -576,9 +643,11 @@ public enum ParBio {
     punto("Punto", false, false, false, Bio_.punto) {
         @Override
         public Bio setBio(Bio bio, Object value) {
-            if (value instanceof String) {
+            if (value != null && value instanceof String) {
                 bio.setPunto((String) value);
-            }// fine del blocco if
+            } else {
+                bio.setPunto(VUOTA);
+            }// end of if/else cycle
             return bio;
         }// end of method
 
@@ -590,9 +659,11 @@ public enum ParBio {
     immagine("Immagine", false, false, false, Bio_.immagine) {
         @Override
         public Bio setBio(Bio bio, Object value) {
-            if (value instanceof String) {
+            if (value != null && value instanceof String) {
                 bio.setImmagine((String) value);
-            }// fine del blocco if
+            } else {
+                bio.setImmagine(VUOTA);
+            }// end of if/else cycle
             return bio;
         }// end of method
 
@@ -604,9 +675,11 @@ public enum ParBio {
     didascalia("Didascalia", false, false, false, Bio_.didascalia) {
         @Override
         public Bio setBio(Bio bio, Object value) {
-            if (value instanceof String) {
+            if (value != null && value instanceof String) {
                 bio.setDidascalia((String) value);
-            }// fine del blocco if
+            } else {
+                bio.setDidascalia(VUOTA);
+            }// end of if/else cycle
             return bio;
         }// end of method
 
@@ -618,9 +691,11 @@ public enum ParBio {
     didascalia2("Didascalia2", false, false, false, Bio_.didascalia2) {
         @Override
         public Bio setBio(Bio bio, Object value) {
-            if (value instanceof String) {
+            if (value != null && value instanceof String) {
                 bio.setDidascalia2((String) value);
-            }// fine del blocco if
+            } else {
+                bio.setDidascalia2(VUOTA);
+            }// end of if/else cycle
             return bio;
         }// end of method
 
@@ -632,9 +707,11 @@ public enum ParBio {
     dimImmagine("DimImmagine", false, false, false, Bio_.dimImmagine) {
         @Override
         public Bio setBio(Bio bio, Object value) {
-            if (value instanceof String) {
+            if (value != null && value instanceof String) {
                 bio.setDimImmagine((String) value);
-            }// fine del blocco if
+            } else {
+                bio.setDimImmagine(VUOTA);
+            }// end of if/else cycle
             return bio;
         }// end of method
 
@@ -644,6 +721,7 @@ public enum ParBio {
         }// end of method
     };// end of last enumeration
 
+    private static String VUOTA = "";
     private String tag = "";
     private boolean visibileLista = false;
     private boolean campoNormale = false;
@@ -772,7 +850,7 @@ public enum ParBio {
     public String getKeyValue(Bio bio) {
         String value = getValue(bio);
 
-        if (!value.equals("")||this.isCampoNormale()) {
+        if (!value.equals("") || this.isCampoNormale()) {
             return "|" + tag + " = " + value + "\n";
         } else {
             return "";
