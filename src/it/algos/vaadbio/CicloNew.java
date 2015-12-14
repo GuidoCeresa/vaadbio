@@ -2,12 +2,14 @@ package it.algos.vaadbio;
 
 import it.algos.vaad.wiki.Api;
 import it.algos.vaad.wiki.Page;
+import it.algos.vaadbio.bio.Bio;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.webbase.domain.log.Log;
 import it.algos.webbase.domain.pref.Pref;
 import it.algos.webbase.web.lib.LibNum;
 import it.algos.webbase.web.lib.LibTime;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -52,6 +54,7 @@ public class CicloNew {
         int vociPerBlocco;
         ArrayList<Long> bloccoPageids;
         HashMap<String, Integer> mappaVoci;
+String ultima="";
 
         if (listaMancanti != null) {
             vociMancanti = listaMancanti.size();
@@ -80,6 +83,7 @@ public class CicloNew {
         }// end of if cycle
 
         if (Pref.getBool(CostBio.USA_LOG_DOWNLOAD, true)) {
+       ultima= Bio.findOldest();
             Log.setInfo("cicloNew", "Create " + LibNum.format(numVociRegistrate) + " nuove voci (di cui " + LibNum.format(numVociUploadate) + " ricaricate sul server) in " + LibTime.difText(inizio));
         }// fine del blocco if
 
@@ -126,6 +130,5 @@ public class CicloNew {
 
         return mappaVoci;
     }// end of method
-
 
 }// end of class

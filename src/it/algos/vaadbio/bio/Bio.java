@@ -2,6 +2,7 @@ package it.algos.vaadbio.bio;
 
 import it.algos.vaadbio.lib.LibBio;
 import it.algos.webbase.web.entity.BaseEntity;
+import it.algos.webbase.web.lib.LibTime;
 import it.algos.webbase.web.query.AQuery;
 import org.eclipse.persistence.annotations.Index;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -12,6 +13,7 @@ import javax.persistence.Lob;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Classe di tipo JavaBean
@@ -297,6 +299,29 @@ public class Bio extends BaseEntity {
         return LibBio.queryFind("select bio.pageid from Bio bio order by bio.ultimaLettura,bio.pageid asc", limit, offSet);
     }// end of method
 
+    /**
+     * Recupera la data dell'ultima lettura della voce più vecchia
+     *
+     * @return la più vecchia data di aggiornamento, in formato testo
+     */
+    public synchronized static String findOldest() {
+        String messaggio;
+        String oldDataTxt = "";
+        ArrayList listaTimestamp;
+        Timestamp oldTime;
+        Date oldData = null;
+
+        listaTimestamp = LibBio.queryFind("select bio.ultimaLettura from Bio bio order by bio.ultimaLettura,bio");
+
+        if (listaTimestamp != null && listaTimestamp.size() > 0) {
+            oldTime = (Timestamp)listaTimestamp.get(0);
+            oldData = LibTime.creaData(oldTime);
+            oldDataTxt = LibTime.getGioMeseAnno(oldData);
+        }// fine del blocco if
+        messaggio = "La voce più vecchia non aggiornata è del " + oldDataTxt;
+
+        return messaggio;
+    }// fine del metodo
 
     /**
      * Recupera i pageids dei primi (limit) records, ordinati per ultimaElaborazione ascendente

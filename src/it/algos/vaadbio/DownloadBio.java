@@ -69,6 +69,13 @@ public class DownloadBio {
             return;
         }// fine del blocco if
 
+        if (pagina.getTitle() == null) {
+            if (Pref.getBool(CostBio.USA_LOG_DOWNLOAD, true)) {
+                Log.setDebug("cicloNew", "Una pagina (non so quale) non è valida");
+            }// fine del blocco if
+            return;
+        }// fine del blocco if
+
         wikiTitle = pagina.getTitle();
         pageid = pagina.getPageid();
         testoVoce = pagina.getText();
@@ -76,7 +83,7 @@ public class DownloadBio {
 
         if (tmplBio.equals("")) {
             if (Pref.getBool(CostBio.USA_LOG_DOWNLOAD, true)) {
-                Log.setWarn("bioCicloNew", "La pagina " + LibWiki.setQuadre(wikiTitle) + ", è stata registrata ma manca il tmplBio");
+                Log.setDebug("cicloNew", "La pagina " + LibWiki.setQuadre(wikiTitle) + ", è stata registrata ma manca il tmplBio");
             }// fine del blocco if
         } else {
             templateEsiste = true;
@@ -124,7 +131,7 @@ public class DownloadBio {
         this.setBio(bio);
 
         //--se è attivo il flag ed i template sono diversi, parte il ciclo di aggiornamento
-        if (esegueElabora&&letta && registrata) {
+        if (esegueElabora && letta && registrata) {
             uploadata = new ElaboraBio(bio, Pref.getBool(CostBio.USA_UPLOAD_DOWNLOADATA, false)).isUploadata();
         }// end of if cycle
 

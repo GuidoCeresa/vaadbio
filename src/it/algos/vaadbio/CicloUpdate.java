@@ -9,11 +9,14 @@ import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.lib.LibBio;
 import it.algos.webbase.domain.log.Log;
 import it.algos.webbase.domain.pref.Pref;
+import it.algos.webbase.web.entity.EM;
 import it.algos.webbase.web.lib.LibArray;
 import it.algos.webbase.web.lib.LibNum;
 import it.algos.webbase.web.lib.LibText;
 import it.algos.webbase.web.lib.LibTime;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -87,6 +90,8 @@ public class CicloUpdate {
         int numVociUploadate = 0;
         int numCicli;
         int offset;
+        String ultima = "";
+        String message = "";
 
         // Il ciclo necessita del login come bot per il funzionamento normale
         // oppure del flag USA_CICLI_ANCHE_SENZA_BOT per un funzionamento ridotto
@@ -121,16 +126,25 @@ public class CicloUpdate {
 
             //--Accumula la lista (pageids) di tutte le voci effettivamente modificate sul server wikipedia dall'ultimo controllo
             listaAllVociModificate = LibArray.somma(listaAllVociModificate, listaBloccoModificate);
+
+            //--Fix voci controllate
+            fixVociControllate(LibArray.differenzaDisordinata(listaBloccoDaControllare, listaBloccoModificate));
         }// end of for cycle
 
         //--Aggiorna le voci della lista (pageids)
         mappaInfoVoci = downloadVociMancanti(listaAllVociModificate);
 
+
         //--Informazioni per il log
         if (mappaInfoVoci != null) {
+            ultima = Bio.findOldest();
             numVociModificate = mappaInfoVoci.get(CicloDownload.KEY_MAPPA_MODIFICATE);
             numVociUploadate = mappaInfoVoci.get(CicloDownload.KEY_MAPPA_UPLOADATE);
-            Log.setInfo("update", "Controllate " + LibNum.format(numVociDaControllare) + " voci (di cui " + LibNum.format(numVociModificate) + " modificate e " + LibNum.format(numVociUploadate) + " uploadate) in " + LibTime.difText(inizio));
+            message += "Controllate " + LibNum.format(numVociDaControllare) + " voci (di cui ";
+            message += LibNum.format(numVociModificate) + " modificate e ";
+            message += LibNum.format(numVociUploadate) + " uploadate) in " + LibTime.difText(inizio) + " ";
+            message += ultima;
+            Log.setInfo("update", message);
         }// end of if cycle
 
     }// end of method
@@ -225,10 +239,6 @@ public class CicloUpdate {
 
                     if (timestamp.getTime() > ultimalettura.getTime()) {
                         listaBloccoModificate.add(pageid);
-                    } else {
-                        bio = Bio.findByPageid(pageid);
-                        bio.setUltimaLettura(LibTime.adesso());
-                        bio.save();
                     }// end of if/else cycle
 
                 }// end of if cycle
@@ -312,6 +322,35 @@ public class CicloUpdate {
         }// end of if cycle
 
         return mappaVoci;
+    }// end of method
+
+    /**
+     * Esegue query (update) per regolare il flag ultimalettura di tutte le voci non modificate ma comunque controllate
+     */
+    public void fixVociControllate(ArrayList<Long> listaAllVociControllate) {
+        Timestamp adesso = LibTime.adesso();
+        String queryTxt = "";
+        String tag = " or ";
+
+        if (listaAllVociControllate != null && listaAllVociControllate.size() > 1) {
+            queryTxt += "(";
+            for (Long pageid : listaAllVociControllate) {
+                queryTxt += "bio.pageid=";
+                queryTxt += pageid;
+                queryTxt += tag;
+            }// end of for cycle
+            queryTxt = LibText.levaCoda(queryTxt, tag);
+            queryTxt += ")";
+
+            EntityManager manager = EM.createEntityManager();
+            EntityTransaction etx = manager.getTransaction();
+            etx.begin();
+            manager.createQuery("update Bio bio set bio.ultimaLettura = '" + adesso + "' where " + queryTxt).executeUpdate();
+            etx.commit();
+            manager.close();
+
+        }// end of if cycle
+
     }// end of method
 
 
