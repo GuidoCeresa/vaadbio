@@ -2,15 +2,14 @@ package it.algos.vaadbio.bootstrap;
 
 import it.algos.vaadbio.giorno.Giorno;
 import it.algos.vaadbio.lib.CostBio;
+import it.algos.vaadbio.lib.LibTimeBio;
 import it.algos.webbase.web.lib.LibPref;
-import it.algos.webbase.web.lib.LibTime;
 import it.algos.webbase.web.lib.LibVers;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Log delle versioni, modifiche e patch installate
@@ -151,12 +150,13 @@ public class VersBootStrap implements ServletContextListener {
      * La colonna b, è il progressivo del giorno negli anni bisestili
      */
     private void creaGiorni() {
-        ArrayList<HashMap> lista;
-        HashMap mappa;
-        int normale;
-        int bisestile;
+        ArrayList<HashMap> listaAnno;
+        String mese;
         String nome;
         String titolo;
+        int normale;
+        int bisestile;
+        Giorno giorno;
 
         if (Giorno.count() > 0) {
             return;
@@ -165,30 +165,16 @@ public class VersBootStrap implements ServletContextListener {
         //--cancella tutti i records
 
         //costruisce i 366 records
-//        lista = LibTime.getAllGiorni()
-//        lista.each {
-//            mappa = (Map) it
-//            normale = 0
-//            bisestile = 0
-//            nome = ''
-//            titolo = ''
-//            if (mappa.normale) {
-//                normale = mappa.normale
-//            }// fine del blocco if
-//            if (mappa.bisestile) {
-//                bisestile = mappa.bisestile
-//            }// fine del blocco if
-//            if (mappa.nome) {
-//                nome = mappa.nome
-//            }// fine del blocco if
-//            if (mappa.titolo) {
-//                titolo = mappa.titolo
-//            }// fine del blocco if
-//
-//            new Giorno(normale:normale, bisestile:bisestile, nome:nome, titolo:titolo).save()
-//        }//fine di each
-//
-//        log.info 'Operazione effettuata. Sono stati creati tutti i giorni necessari per il bot'
+        listaAnno = LibTimeBio.getAllGiorni();
+        for (HashMap mappaGiorno : listaAnno) {
+            mese = (String) mappaGiorno.get(CostBio.KEY_MAPPA_GIORNI_MESE_TESTO);
+            nome = (String) mappaGiorno.get(CostBio.KEY_MAPPA_GIORNI_NOME);
+            titolo = (String) mappaGiorno.get(CostBio.KEY_MAPPA_GIORNI_TITOLO);
+            normale = (int) mappaGiorno.get(CostBio.KEY_MAPPA_GIORNI_NORMALE);
+            bisestile = (int) mappaGiorno.get(CostBio.KEY_MAPPA_GIORNI_BISESTILE);
+            new Giorno(mese, nome, titolo, normale, bisestile).save();
+        }// end of for cycle
+
     }// end of method
 
     /**

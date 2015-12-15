@@ -177,8 +177,9 @@ public class Bio extends BaseEntity {
 
     // campi di collegamenti alle altre tavole specializzate
     @ManyToOne
-    private Giorno giornoMeseNascitaPunta;
-//    private Giorno giornoNatoLista = null;
+    private Giorno giornoNatoPunta;
+    @ManyToOne
+    private Giorno giornoMortoPunta ;
 //    Giorno giornoMortoLista = null;
 //    Anno annoNatoLista = null;
 //    Anno annoMortoLista = null;
@@ -858,11 +859,19 @@ public class Bio extends BaseEntity {
         this.nazionalitaValido = nazionalitaValido;
     }//end of setter method
 
-    public Giorno getGiornoMeseNascitaPunta() {
-        return giornoMeseNascitaPunta;
+    public Giorno getGiornoNatoPunta() {
+        return giornoNatoPunta;
     }// end of getter method
 
-    public void setGiornoMeseNascitaPunta(Giorno giornoMeseNascitaPunta) {
-        this.giornoMeseNascitaPunta = giornoMeseNascitaPunta;
+    public void setGiornoNatoPunta(Giorno giornoNatoPunta) {
+        this.giornoNatoPunta = giornoNatoPunta;
+    }//end of setter method
+
+    public Giorno getGiornoMortoPunta() {
+        return giornoMortoPunta;
+    }// end of getter method
+
+    public void setGiornoMortoPunta(Giorno giornoMortoPunta) {
+        this.giornoMortoPunta = giornoMortoPunta;
     }//end of setter method
 }// end of entity class

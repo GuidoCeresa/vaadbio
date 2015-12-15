@@ -232,6 +232,7 @@ public class ElaboraOnly {
 
         if (bio != null) {
             bio.setGiornoMeseNascitaValido(checkGiornoNato(bio));
+            bio.setGiornoMeseMorteValido(checkGiornoMorto(bio));
 
 //            bioGrails.annoNascitaLink = getAnnoNato(bioWiki)
 //            bioGrails.giornoMeseMorteLink = getGiornoMorto(bioWiki)
@@ -254,7 +255,8 @@ public class ElaboraOnly {
     public void elaboraLink(Bio bio) {
 
         if (bio != null) {
-            bio.setGiornoMeseNascitaPunta(getGiornoNato(bio));
+            bio.setGiornoNatoPunta(getGiornoNato(bio));
+            bio.setGiornoMortoPunta(getGiornoMorto(bio));
 
 //            bioGrails.annoNascitaLink = getAnnoNato(bioWiki)
 //            bioGrails.giornoMeseMorteLink = getGiornoMorto(bioWiki)
@@ -289,10 +291,26 @@ public class ElaboraOnly {
         return giornoValido;
     } // fine del metodo
 
+    private String checkGiornoMorto(Bio bio) {
+        String giornoValido = "";
+        String giornoGrezzo = "";
+
+        if (bio != null) {
+            giornoGrezzo = bio.getGiornoMeseMorte();
+
+            if (!giornoGrezzo.contains(" ")) {
+                return "";
+            }// end of if cycle
+            giornoValido = giornoGrezzo.trim();
+        }// fine del blocco if
+
+        return giornoValido;
+    } // fine del metodo
+
+
     private Giorno getGiornoNato(Bio bio) {
         Giorno giorno = null;
         String giornoWiki;
-        String title = "";
 
         if (bio != null) {
             giornoWiki = bio.getGiornoMeseNascitaValido();
@@ -303,28 +321,28 @@ public class ElaboraOnly {
                 giornoWiki = Giorno.fix(giornoWiki);
                 giorno = Giorno.findByNome(giornoWiki);
                 if (giorno == null) {
-                    giorno = new Giorno(giornoWiki);
+                    giorno = Giorno.findByTitolo(giornoWiki);
                 }// end of if cycle
+            }// fine del blocco if
+        }// fine del blocco if
 
-//                try { // prova ad eseguire il codice
-//                    giorno = Giorno.findByNome(giornoWiki)
-//                    if (!giorno) {
-//                        giorno = Giorno.findByTitolo(giornoWiki)
-////                        if (giorno) {
-////                            log.warn "BioService-getGiornoNato: Voce ${title}, beccato ${giornoWiki} !"
-////                        }// fine del blocco if
-//                    }// fine del blocco if
-//                    if (giorno) {
-//                        giorno.sporcoNato = true
-//                        giorno.save(flush:true)
-//                    }// fine del blocco if
-//                } catch (Exception unErrore) { // intercetta l'errore
-//                    log.error unErrore
-//                }// fine del blocco try-catch
-//                if (!giorno) {
-//                    title = bioWiki.title
-////                    log.warn "BioService-getGiornoNato: Voce ${title}, ${giornoWiki} non sembra un giorno valido"
-//                }// fine del blocco if
+        return giorno;
+    } // fine del metodo
+
+    private Giorno getGiornoMorto(Bio bio) {
+        Giorno giorno = null;
+        String giornoWiki;
+
+        if (bio != null) {
+            giornoWiki = bio.getGiornoMeseMorteValido();
+
+            if (giornoWiki != null && !giornoWiki.equals("")) {
+                giornoWiki = LibBio.fixCampoGiorno(giornoWiki);
+                giornoWiki = Giorno.fix(giornoWiki);
+                giorno = Giorno.findByNome(giornoWiki);
+                if (giorno == null) {
+                    giorno = Giorno.findByTitolo(giornoWiki);
+                }// end of if cycle
             }// fine del blocco if
         }// fine del blocco if
 
