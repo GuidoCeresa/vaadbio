@@ -3,6 +3,7 @@ package it.algos.vaadbio.lib;
 
 import com.vaadin.addon.jpacontainer.JPAContainerItem;
 import com.vaadin.data.Item;
+import it.algos.vaad.wiki.LibWiki;
 import it.algos.vaad.wiki.WikiLogin;
 import it.algos.vaadbio.bio.Bio;
 import it.algos.webbase.domain.pref.Pref;
@@ -13,7 +14,6 @@ import it.algos.webbase.web.lib.LibText;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
-import java.sql.Timestamp;
 import java.util.*;
 
 //import it.algos.vaadbio.biolista.BioLista;
@@ -26,6 +26,7 @@ import java.util.*;
  * .
  */
 public abstract class LibBio {
+
 
     /**
      * tag per la singola quadra di apertura
@@ -1209,7 +1210,7 @@ public abstract class LibBio {
      */
     public synchronized static ArrayList<Long> queryFind(String queryTxt) {
         return queryFind(queryTxt, 0);
-    }// end of method
+    }// end of static method
 
     /**
      * Recupera i pageids dei primi (limit) records, selezionati secondo la query ricevuta
@@ -1220,7 +1221,7 @@ public abstract class LibBio {
      */
     public synchronized static ArrayList<Long> queryFind(String queryTxt, int limit) {
         return queryFind(queryTxt, limit, 0);
-    }// end of method
+    }// end of static method
 
     /**
      * Recupera i pageids dei primi (limit) records, partendo da offSet, selezionati secondo la query ricevuta
@@ -1245,8 +1246,31 @@ public abstract class LibBio {
 
         lista = query.getResultList();
         return new ArrayList<Long>(lista);
-    }// end of method
+    }// end of static method
 
 
+//    //--regola la lunghezza del campo
+//    //--elimina il teasto successivo al ref
+//    //--elimina il testo successivo alle note
+//    //--elimina il testo successivo alle graffe
+//    //--tronca comunque il testo a 255 caratteri
+//    public String fixCampo( String testoIn) {
+//        String testoOut = testoIn;
+//
+//        if (testoOut != null && !testoOut.equals("")) {
+//            testoOut = testoOut.trim();
+//            testoOut = LibText.levaDopoRef(testoOut);
+//            testoOut = LibText.levaDopoNote(testoOut);
+//            testoOut = LibText.levaDopoGraffe(testoOut);
+//            testoOut = LibWiki.setNoQuadre(testoOut);
+//            testoOut = testoOut.trim();
+//        }// fine del blocco if
+//
+//        if (testoOut != null && testoOut.length() > 253) {
+//            testoOut = testoOut.substring(0, 252);
+//        }// fine del blocco if
+//
+//        return testoOut;
+//    } // fine del metodo
 
 }// end of abstract static class

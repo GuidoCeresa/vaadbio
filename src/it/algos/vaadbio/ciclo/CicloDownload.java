@@ -1,4 +1,4 @@
-package it.algos.vaadbio;
+package it.algos.vaadbio.ciclo;
 
 import it.algos.vaad.wiki.Api;
 import it.algos.vaad.wiki.LibWiki;
@@ -31,10 +31,6 @@ public class CicloDownload {
     public final static String TAG_BIO = "BioBot";
     public final static String TAG_CAT_DEBUG = "Nati nel 1420";
 
-    //--chiavi mappa volori numerici passati come valore di ritorno multiplo
-    public final static String KEY_MAPPA_REGISTRATE = "registrate";
-    public final static String KEY_MAPPA_MODIFICATE = "modificate";
-    public final static String KEY_MAPPA_UPLOADATE = "uplodate";
 
     public CicloDownload() {
         doInit();

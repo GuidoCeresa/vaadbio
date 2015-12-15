@@ -1,11 +1,16 @@
 package it.algos.vaadbio.bootstrap;
 
+import it.algos.vaadbio.giorno.Giorno;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.webbase.web.lib.LibPref;
+import it.algos.webbase.web.lib.LibTime;
 import it.algos.webbase.web.lib.LibVers;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Log delle versioni, modifiche e patch installate
@@ -130,9 +135,61 @@ public class VersBootStrap implements ServletContextListener {
             LibPref.newVersBool(CostBio.USA_LOG_UPLOAD_ELABORATA, true, "Uso del log di registrazione per la singola voce uploadata", "Livello debug");
         }// fine del blocco if
 
+        //--crea i records della tavola Giorno
+        if (LibVers.installa(19)) {
+            this.creaGiorni();
+            LibVers.nuova("Giorno", "Creati 366 records per tutti i giorni dell'anno (anche bisestile)");
+        }// fine del blocco if
+
 
     }// end of method
 
+    /**
+     * Crea 366 records per tutti i giorni dell'anno
+     * <p>
+     * La colonna n, è il progressivo del giorno negli anni normali
+     * La colonna b, è il progressivo del giorno negli anni bisestili
+     */
+    private void creaGiorni() {
+        ArrayList<HashMap> lista;
+        HashMap mappa;
+        int normale;
+        int bisestile;
+        String nome;
+        String titolo;
+
+        if (Giorno.count() > 0) {
+            return;
+        }// end of if cycle
+
+        //--cancella tutti i records
+
+        //costruisce i 366 records
+//        lista = LibTime.getAllGiorni()
+//        lista.each {
+//            mappa = (Map) it
+//            normale = 0
+//            bisestile = 0
+//            nome = ''
+//            titolo = ''
+//            if (mappa.normale) {
+//                normale = mappa.normale
+//            }// fine del blocco if
+//            if (mappa.bisestile) {
+//                bisestile = mappa.bisestile
+//            }// fine del blocco if
+//            if (mappa.nome) {
+//                nome = mappa.nome
+//            }// fine del blocco if
+//            if (mappa.titolo) {
+//                titolo = mappa.titolo
+//            }// fine del blocco if
+//
+//            new Giorno(normale:normale, bisestile:bisestile, nome:nome, titolo:titolo).save()
+//        }//fine di each
+//
+//        log.info 'Operazione effettuata. Sono stati creati tutti i giorni necessari per il bot'
+    }// end of method
 
     /**
      * This method is invoked when the Servlet Context

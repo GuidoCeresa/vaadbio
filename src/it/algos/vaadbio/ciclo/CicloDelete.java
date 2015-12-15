@@ -1,4 +1,4 @@
-package it.algos.vaadbio;
+package it.algos.vaadbio.ciclo;
 
 import it.algos.vaadbio.bio.Bio;
 import it.algos.vaadbio.lib.CostBio;
@@ -49,7 +49,7 @@ public class CicloDelete {
 
             if (Pref.getBool(CostBio.USA_LOG_DOWNLOAD, true)) {
                 if (numRecordsCancellati > 0) {
-                    Log.setInfo("cicloDelete", "Cancellati " + LibNum.format(numRecordsCancellati) + " records (che non avevano più la corrispondente voce nella categoria) in " + LibTime.difText(inizio));
+                    Log.setInfo("delete", "Cancellati " + LibNum.format(numRecordsCancellati) + " records (che non avevano più la corrispondente voce nella categoria) in " + LibTime.difText(inizio));
                 }// end of if cycle
             }// fine del blocco if
         }// fine del blocco if

@@ -1,7 +1,8 @@
-package it.algos.vaadbio;
+package it.algos.vaadbio.ciclo;
 
 import it.algos.vaad.wiki.Api;
 import it.algos.vaad.wiki.Page;
+import it.algos.vaadbio.DownloadBio;
 import it.algos.vaadbio.bio.Bio;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.webbase.domain.log.Log;
@@ -75,15 +76,15 @@ public class CicloNew {
                 bloccoPageids = new ArrayList<Long>(listaMancanti.subList(k, k + vociPerBlocco));
                 mappaVoci = downloadBlocco(bloccoPageids);
                 if (mappaVoci != null) {
-                    numVociRegistrate += mappaVoci.get(CicloDownload.KEY_MAPPA_REGISTRATE);
-                    numVociUploadate += mappaVoci.get(CicloDownload.KEY_MAPPA_UPLOADATE);
+                    numVociRegistrate += mappaVoci.get(CostBio.KEY_MAPPA_REGISTRATE);
+                    numVociUploadate += mappaVoci.get(CostBio.KEY_MAPPA_UPLOADATE);
                 }// end of if cycle
             }// end of for cycle
         }// end of if cycle
 
         if (Pref.getBool(CostBio.USA_LOG_DOWNLOAD, true)) {
             ultima = Bio.findOldestLetta();
-            Log.setInfo("cicloNew", "Create " + LibNum.format(numVociRegistrate) + " nuove voci (di cui " + LibNum.format(numVociUploadate) + " ricaricate sul server) in " + LibTime.difText(inizio));
+            Log.setInfo("new", "Create " + LibNum.format(numVociRegistrate) + " nuove voci (di cui " + LibNum.format(numVociUploadate) + " ricaricate sul server) in " + LibTime.difText(inizio));
         }// fine del blocco if
 
     }// end of method
@@ -123,8 +124,8 @@ public class CicloNew {
         }// end of if cycle
 
         if (mappaVoci != null) {
-            mappaVoci.put(CicloDownload.KEY_MAPPA_REGISTRATE, numVociRegistrate);
-            mappaVoci.put(CicloDownload.KEY_MAPPA_UPLOADATE, numVociUploadate);
+            mappaVoci.put(CostBio.KEY_MAPPA_REGISTRATE, numVociRegistrate);
+            mappaVoci.put(CostBio.KEY_MAPPA_UPLOADATE, numVociUploadate);
         }// end of if cycle
 
         return mappaVoci;

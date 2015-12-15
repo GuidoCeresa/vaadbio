@@ -1,5 +1,6 @@
-package it.algos.vaadbio;
+package it.algos.vaadbio.ciclo;
 
+import it.algos.vaadbio.ElaboraBio;
 import it.algos.vaadbio.bio.Bio;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.webbase.domain.log.Log;

@@ -124,7 +124,7 @@ public class DownloadBio {
             registrata = true;
         } catch (Exception unErrore) { // intercetta l'errore
             if (Pref.getBool(CostBio.USA_LOG_DOWNLOAD, true)) {
-                Log.setWarn("bioCicloNew", "La pagina " + LibWiki.setQuadre(wikiTitle) + ", non è stata registrata perché " + unErrore.getMessage());
+                Log.setWarn("new", "La pagina " + LibWiki.setQuadre(wikiTitle) + ", non è stata registrata perché " + unErrore.getMessage());
             }// fine del blocco if
         }// fine del blocco try-catch
 

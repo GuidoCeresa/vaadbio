@@ -87,6 +87,12 @@ public class ElaboraOnly {
         bio.setTemplateStandard(templateStandard);
         bio.setUltimaElaborazione(LibTime.adesso());
 
+        //--Elabora valori validi dei parametri significativi
+        validaParametri(bio);
+
+        //--Elabora i link alle tavole collegate
+        elaboraLink(bio);
+
         try { // prova ad eseguire il codice
             bio.save();
             elaborato = true;
@@ -221,6 +227,29 @@ public class ElaboraOnly {
     }// end of method
 
 
+    //--Elabora valori validi dei parametri significativi
+    private void validaParametri(Bio bio) {
+
+        if (bio != null) {
+            bio.setGiornoMeseNascitaValido(checkGiornoNato(bio));
+
+//            bioGrails.annoNascitaLink = getAnnoNato(bioWiki)
+//            bioGrails.giornoMeseMorteLink = getGiornoMorto(bioWiki)
+//            bioGrails.annoMorteLink = getAnnoMorto(bioWiki)
+//
+//            bioGrails.attivitaLink = AttivitaService.getAttivita(bioGrails.attivita)
+//            bioGrails.attivita2Link = AttivitaService.getAttivita(bioGrails.attivita2)
+//            bioGrails.attivita3Link = AttivitaService.getAttivita(bioGrails.attivita3)
+//            bioGrails.nazionalitaLink = NazionalitaService.getNazionalita(bioGrails.nazionalita)
+//            bioGrails.luogoNatoLink = LocalitaService.getLuogoNascita(bioWiki)
+//            bioGrails.luogoMortoLink = LocalitaService.getLuogoMorte(bioWiki)
+//            bioGrails.nomeLink = antroponimoService.getAntroponimo(bioWiki.nome)
+//            bioGrails.cognomeLink = cognomeService.getCognome(bioWiki.cognome)
+//            bioGrails.save(flush: false)
+        }// fine del blocco if
+    }// end of method
+
+
     //--Elabora i link alle tavole collegate
     public void elaboraLink(Bio bio) {
 
@@ -244,16 +273,39 @@ public class ElaboraOnly {
 
     } // fine del metodo
 
+    private String checkGiornoNato(Bio bio) {
+        String giornoValido = "";
+        String giornoGrezzo = "";
+
+        if (bio != null) {
+            giornoGrezzo = bio.getGiornoMeseNascita();
+
+            if (!giornoGrezzo.contains(" ")) {
+                return "";
+            }// end of if cycle
+            giornoValido = giornoGrezzo.trim();
+        }// fine del blocco if
+
+        return giornoValido;
+    } // fine del metodo
+
     private Giorno getGiornoNato(Bio bio) {
         Giorno giorno = null;
         String giornoWiki;
         String title = "";
 
-//        if (bioWiki) {
-//            giornoWiki = bioWiki.giornoMeseNascita
-//            if (giornoWiki) {
-//                giornoWiki = fixCampo(bioWiki, giornoWiki, 'giornoMeseNascita')
-//                giornoWiki = fixGiorno(giornoWiki)
+        if (bio != null) {
+            giornoWiki = bio.getGiornoMeseNascitaValido();
+
+
+            if (giornoWiki != null && !giornoWiki.equals("")) {
+                giornoWiki = LibBio.fixCampoGiorno(giornoWiki);
+                giornoWiki = Giorno.fix(giornoWiki);
+                giorno = Giorno.findByNome(giornoWiki);
+                if (giorno == null) {
+                    giorno = new Giorno(giornoWiki);
+                }// end of if cycle
+
 //                try { // prova ad eseguire il codice
 //                    giorno = Giorno.findByNome(giornoWiki)
 //                    if (!giorno) {
@@ -273,13 +325,15 @@ public class ElaboraOnly {
 //                    title = bioWiki.title
 ////                    log.warn "BioService-getGiornoNato: Voce ${title}, ${giornoWiki} non sembra un giorno valido"
 //                }// fine del blocco if
-//            }// fine del blocco if
-//        }// fine del blocco if
+            }// fine del blocco if
+        }// fine del blocco if
 
         return giorno;
     } // fine del metodo
 
+
     public boolean isElaborato() {
         return elaborato;
     }// end of getter method
+
 }// end of class

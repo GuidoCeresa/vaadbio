@@ -1,9 +1,10 @@
-package it.algos.vaadbio;
+package it.algos.vaadbio.ciclo;
 
 import it.algos.vaad.wiki.Api;
 import it.algos.vaad.wiki.Page;
 import it.algos.vaad.wiki.WrapTime;
 import it.algos.vaad.wiki.request.RequestWikiTimestamp;
+import it.algos.vaadbio.DownloadBio;
 import it.algos.vaadbio.bio.Bio;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.lib.LibBio;
@@ -138,8 +139,8 @@ public class CicloUpdate {
         //--Informazioni per il log
         if (mappaInfoVoci != null) {
             ultima = Bio.findOldestLetta();
-            numVociModificate = mappaInfoVoci.get(CicloDownload.KEY_MAPPA_MODIFICATE);
-            numVociUploadate = mappaInfoVoci.get(CicloDownload.KEY_MAPPA_UPLOADATE);
+            numVociModificate = mappaInfoVoci.get(CostBio.KEY_MAPPA_MODIFICATE);
+            numVociUploadate = mappaInfoVoci.get(CostBio.KEY_MAPPA_UPLOADATE);
             message += "Controllate " + LibNum.format(numVociDaControllare) + " voci (di cui ";
             message += LibNum.format(numVociModificate) + " modificate e ";
             message += LibNum.format(numVociUploadate) + " uploadate) in " + LibTime.difText(inizio) + " ";
@@ -271,16 +272,16 @@ public class CicloUpdate {
                 bloccoPageids = LibArray.estraeSublistaLong(listaAllVociModificate, dimBlocco(), k);
                 mappaVoci = downloadSingoloBlocco(bloccoPageids);
                 if (mappaVoci != null) {
-                    numVociModificate += mappaVoci.get(CicloDownload.KEY_MAPPA_MODIFICATE);
-                    numVociUploadate += mappaVoci.get(CicloDownload.KEY_MAPPA_UPLOADATE);
+                    numVociModificate += mappaVoci.get(CostBio.KEY_MAPPA_MODIFICATE);
+                    numVociUploadate += mappaVoci.get(CostBio.KEY_MAPPA_UPLOADATE);
                 }// end of if cycle
             }// end of for cycle
 
         }// end of if cycle
 
         if (mappaVoci != null) {
-            mappaVoci.put(CicloDownload.KEY_MAPPA_MODIFICATE, numVociModificate);
-            mappaVoci.put(CicloDownload.KEY_MAPPA_UPLOADATE, numVociUploadate);
+            mappaVoci.put(CostBio.KEY_MAPPA_MODIFICATE, numVociModificate);
+            mappaVoci.put(CostBio.KEY_MAPPA_UPLOADATE, numVociUploadate);
         }// end of if cycle
 
         return mappaVoci;
@@ -317,8 +318,8 @@ public class CicloUpdate {
         }// end of if cycle
 
         if (mappaVoci != null) {
-            mappaVoci.put(CicloDownload.KEY_MAPPA_MODIFICATE, numVociModificate);
-            mappaVoci.put(CicloDownload.KEY_MAPPA_UPLOADATE, numVociUploadate);
+            mappaVoci.put(CostBio.KEY_MAPPA_MODIFICATE, numVociModificate);
+            mappaVoci.put(CostBio.KEY_MAPPA_UPLOADATE, numVociUploadate);
         }// end of if cycle
 
         return mappaVoci;
