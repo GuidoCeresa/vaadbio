@@ -1,5 +1,6 @@
 package it.algos.vaadbio.bio;
 
+import it.algos.vaadbio.giorno.Giorno;
 import it.algos.vaadbio.lib.LibBio;
 import it.algos.webbase.web.entity.BaseEntity;
 import it.algos.webbase.web.lib.LibTime;
@@ -10,6 +11,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -26,7 +28,6 @@ import java.util.Date;
  * Created by gac on 23 nov 2015.
  */
 @Entity
-
 public class Bio extends BaseEntity {
 
     @NotNull
@@ -175,7 +176,9 @@ public class Bio extends BaseEntity {
 
 
     // campi di collegamenti alle altre tavole specializzate
-//    Giorno giornoNatoLista = null;
+    @ManyToOne
+    private Giorno giornoMeseNascitaPunta;
+//    private Giorno giornoNatoLista = null;
 //    Giorno giornoMortoLista = null;
 //    Anno annoNatoLista = null;
 //    Anno annoMortoLista = null;
@@ -304,24 +307,40 @@ public class Bio extends BaseEntity {
      *
      * @return la più vecchia data di aggiornamento, in formato testo
      */
-    public synchronized static String findOldest() {
+    public synchronized static String findOldestLetta() {
         String messaggio;
-        String oldDataTxt = "";
         ArrayList listaTimestamp;
-        Timestamp oldTime;
-        Date oldData = null;
 
         listaTimestamp = LibBio.queryFind("select bio.ultimaLettura from Bio bio order by bio.ultimaLettura,bio");
 
-        if (listaTimestamp != null && listaTimestamp.size() > 0) {
-            oldTime = (Timestamp)listaTimestamp.get(0);
-            oldData = LibTime.creaData(oldTime);
-            oldDataTxt = LibTime.getGioMeseAnno(oldData);
-        }// fine del blocco if
-        messaggio = "La voce più vecchia non aggiornata è del " + oldDataTxt;
-
+        messaggio = "La voce più vecchia non aggiornata è del " + LibTime.getData(listaTimestamp);
         return messaggio;
     }// fine del metodo
+
+    /**
+     * Recupera la data dell'ultima elaborazione della voce più vecchia
+     *
+     * @return la più vecchia data di aggiornamento, in formato testo
+     */
+    public synchronized static String findOldestElaborata() {
+        String messaggio;
+        ArrayList listaTimestamp;
+
+        listaTimestamp = LibBio.queryFind("select bio.ultimaElaborazione from Bio bio order by bio.ultimaElaborazione,bio");
+
+        messaggio = "Il record più vecchio non elaborato è del " + LibTime.getData(listaTimestamp);
+        return messaggio;
+    }// fine del metodo
+
+
+    /**
+     * Recupera i pageids dei primi (limit) records, ordinati per ultimaElaborazione ascendente
+     *
+     * @return lista di pageids (Long)
+     */
+    public synchronized static ArrayList<Long> findLast() {
+        return findLast(0);
+    }// end of method
 
     /**
      * Recupera i pageids dei primi (limit) records, ordinati per ultimaElaborazione ascendente
@@ -839,4 +858,11 @@ public class Bio extends BaseEntity {
         this.nazionalitaValido = nazionalitaValido;
     }//end of setter method
 
+    public Giorno getGiornoMeseNascitaPunta() {
+        return giornoMeseNascitaPunta;
+    }// end of getter method
+
+    public void setGiornoMeseNascitaPunta(Giorno giornoMeseNascitaPunta) {
+        this.giornoMeseNascitaPunta = giornoMeseNascitaPunta;
+    }//end of setter method
 }// end of entity class

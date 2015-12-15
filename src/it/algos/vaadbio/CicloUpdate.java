@@ -137,7 +137,7 @@ public class CicloUpdate {
 
         //--Informazioni per il log
         if (mappaInfoVoci != null) {
-            ultima = Bio.findOldest();
+            ultima = Bio.findOldestLetta();
             numVociModificate = mappaInfoVoci.get(CicloDownload.KEY_MAPPA_MODIFICATE);
             numVociUploadate = mappaInfoVoci.get(CicloDownload.KEY_MAPPA_UPLOADATE);
             message += "Controllate " + LibNum.format(numVociDaControllare) + " voci (di cui ";

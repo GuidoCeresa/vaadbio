@@ -46,14 +46,6 @@ public class BioMod extends ModulePop {
     private Action actionCrono = new Action("Cronologia", FontAwesome.HISTORY);
 
 
-    private  boolean usaDebug = Pref.getBool(CostBio.USA_DEBUG, false);
-    private  boolean usaLimite = Pref.getBool(CostBio.USA_LIMITE_DOWNLOAD, false);
-    private  boolean usaLog = Pref.getBool(CostBio.USA_LOG_DOWNLOAD, false);
-    private  boolean usaUpdate = Pref.getBool(CostBio.USA_UPLOAD_DOWNLOADATA, false);
-    private  boolean usaCancella = Pref.getBool(CostBio.USA_CANCELLA_VOCE_MANCANTE, false);
-
-
-
     public BioMod() {
         super(Bio.class, MENU_ADDRESS);
     }// end of constructor
@@ -196,8 +188,14 @@ public class BioMod extends ModulePop {
     private void addCommandCicloDown(MenuBar.MenuItem menuItem) {
         menuItem.addItem("Ciclo down", FontAwesome.COG, new MenuBar.Command() {
             public void menuSelected(MenuBar.MenuItem selectedItem) {
+                boolean usaDialoghi = Pref.getBool(CostBio.USA_DIALOGHI_CONFERMA, true);
+                boolean usaDebug = Pref.getBool(CostBio.USA_DEBUG, false);
+                boolean usaLimite = Pref.getBool(CostBio.USA_LIMITE_DOWNLOAD, false);
+                boolean usaLog = Pref.getBool(CostBio.USA_LOG_DOWNLOAD, false);
+                boolean usaUpdate = Pref.getBool(CostBio.USA_UPLOAD_DOWNLOADATA, false);
+                boolean usaCancella = Pref.getBool(CostBio.USA_CANCELLA_VOCE_MANCANTE, false);
                 String nomeCat = "";
-                if (Pref.getBool(CostBio.USA_DIALOGHI_CONFERMA, true)) {
+                if (usaDialoghi) {
                     if (usaDebug) {
                         nomeCat = "<b><span style=\"color:red\">" + CicloDownload.TAG_CAT_DEBUG + "</span></b>";
                     } else {
@@ -265,8 +263,14 @@ public class BioMod extends ModulePop {
 
         menuItem.addItem("Ciclo update", FontAwesome.COG, new MenuBar.Command() {
             public void menuSelected(MenuBar.MenuItem selectedItem) {
-                final String nomeCat;
-                if (Pref.getBool(CostBio.USA_DIALOGHI_CONFERMA, true)) {
+                boolean usaDialoghi = Pref.getBool(CostBio.USA_DIALOGHI_CONFERMA, true);
+                boolean usaDebug = Pref.getBool(CostBio.USA_DEBUG, false);
+                boolean usaLimite = Pref.getBool(CostBio.USA_LIMITE_DOWNLOAD, false);
+                boolean usaLog = Pref.getBool(CostBio.USA_LOG_DOWNLOAD, false);
+                boolean usaUpdate = Pref.getBool(CostBio.USA_UPLOAD_DOWNLOADATA, false);
+                boolean usaCancella = Pref.getBool(CostBio.USA_CANCELLA_VOCE_MANCANTE, false);
+                String nomeCat = "";
+                if (usaDialoghi) {
                     if (usaDebug) {
                         nomeCat = "<b><span style=\"color:red\">" + CicloDownload.TAG_CAT_DEBUG + "</span></b>";
                     } else {
@@ -326,15 +330,28 @@ public class BioMod extends ModulePop {
     private void addCommandCicloElabora(MenuBar.MenuItem menuItem) {
         menuItem.addItem("Ciclo elabora", FontAwesome.COG, new MenuBar.Command() {
             public void menuSelected(MenuBar.MenuItem selectedItem) {
-                if (Pref.getBool(CostBio.USA_DIALOGHI_CONFERMA)) {
-                    int maxElabora = Pref.getInt(CostBio.MAX_DOWNLOAD);
-                    String newMsg = "Elabora le informazioni dopo che una pagina è stata scaricata/aggiornata dal server";
-                    newMsg += "<br>Recupera i dati dal record della tavola BioWiki";
-                    newMsg += "<br>Crea/aggiorna il corrispondente record della tavola BioOriginale estraendo i singoli parametri";
-                    newMsg += "<br>Le preferenze prevedono di elaborare ";
-                    newMsg += LibNum.format(maxElabora);
-                    newMsg += " voci";
-                    newMsg += "<br>Occorre diverso tempo";
+                boolean usaDialoghi = Pref.getBool(CostBio.USA_DIALOGHI_CONFERMA, true);
+                boolean usaLimite = Pref.getBool(CostBio.USA_LIMITE_ELABORA, false);
+                boolean usaLog = Pref.getBool(CostBio.USA_LOG_UPLOAD_ELABORATA, false);
+                boolean usaUpdate = Pref.getBool(CostBio.USA_UPLOAD_ELABORATA, false);
+                if (usaDialoghi) {
+                    int maxElabora = Pref.getInt(CostBio.MAX_ELABORA,1000);
+                    String newMsg = "Elabora le informazioni dei records Bio nel database";
+                    if (usaLimite) {
+                        newMsg += "<br>Le preferenze prevedono di elaborare <b><span style=\"color:red\">" + LibNum.format(maxElabora) + "</span></b> records Bio nel database";
+                    } else {
+                        newMsg += "<br>Le preferenze prevedono di elaborare <b><span style=\"color:red\">tutti</span></b> i records Bio nel database";
+                    }// end of if/else cycle
+                    if (usaLog) {
+                        newMsg += "<br>Le preferenze prevedono di registrare il risultato nei <b><span style=\"color:red\">log</span></b>";
+                    } else {
+                        newMsg += "<br>Le preferenze <b><span style=\"color:red\">non</span></b> prevedono di registrare il risultato nei log";
+                    }// end of if/else cycle
+                    if (usaUpdate) {
+                        newMsg += "<br>Le preferenze prevedono un <b><span style=\"color:red\">upload</span></b> della voce elaborata se il templateStandard è diverso dal templateServer";
+                    } else {
+                        newMsg += "<br>Le preferenze <b><span style=\"color:red\">non</span></b> prevedono un upload della voce elaborata";
+                    }// end of if/else cycle
                     ConfirmDialog dialog = new ConfirmDialog(MSG, newMsg,
                             new ConfirmDialog.Listener() {
                                 @Override

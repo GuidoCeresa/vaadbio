@@ -2,6 +2,7 @@ package it.algos.vaadbio;
 
 import it.algos.vaad.wiki.LibWiki;
 import it.algos.vaadbio.bio.Bio;
+import it.algos.vaadbio.giorno.Giorno;
 import it.algos.vaadbio.lib.LibBio;
 import it.algos.vaadbio.lib.ParBio;
 import it.algos.webbase.domain.log.Log;
@@ -23,7 +24,7 @@ public class ElaboraOnly {
     private HashMap<String, Object> mappaReali;   //mappa di TUTTI i parametri esistenti nel tmplBioServer
     private HashMap<String, Object> mappaBio;     //mappa dei parametri esistenti nella enumeration ParBio e presenti nel tmplBioServer
 
-    private boolean elaborato=false;
+    private boolean elaborato = false;
 
     public ElaboraOnly(Bio bio) {
         this.bio = bio;
@@ -88,7 +89,7 @@ public class ElaboraOnly {
 
         try { // prova ad eseguire il codice
             bio.save();
-            elaborato=true;
+            elaborato = true;
         } catch (Exception unErrore) { // intercetta l'errore
             //--Recupera i dati dal record della tavola Wikibio
             Log.setDebug("elabora", "Non sono riuscito ad elaborare la voce " + LibWiki.setQuadre(bio.getTitle()));
@@ -169,12 +170,12 @@ public class ElaboraOnly {
             value = null;
 
 //            if (mappa.get(key) != null) {
-                value = mappa.get(key);
+            value = mappa.get(key);
 //            }// fine del blocco if
 
             par.setBio(bio, value);
         } // fine del ciclo for-each
-        int a=87;
+        int a = 87;
     }// end of method
 
     /**
@@ -218,6 +219,65 @@ public class ElaboraOnly {
 
         return text;
     }// end of method
+
+
+    //--Elabora i link alle tavole collegate
+    public void elaboraLink(Bio bio) {
+
+        if (bio != null) {
+            bio.setGiornoMeseNascitaPunta(getGiornoNato(bio));
+
+//            bioGrails.annoNascitaLink = getAnnoNato(bioWiki)
+//            bioGrails.giornoMeseMorteLink = getGiornoMorto(bioWiki)
+//            bioGrails.annoMorteLink = getAnnoMorto(bioWiki)
+//
+//            bioGrails.attivitaLink = AttivitaService.getAttivita(bioGrails.attivita)
+//            bioGrails.attivita2Link = AttivitaService.getAttivita(bioGrails.attivita2)
+//            bioGrails.attivita3Link = AttivitaService.getAttivita(bioGrails.attivita3)
+//            bioGrails.nazionalitaLink = NazionalitaService.getNazionalita(bioGrails.nazionalita)
+//            bioGrails.luogoNatoLink = LocalitaService.getLuogoNascita(bioWiki)
+//            bioGrails.luogoMortoLink = LocalitaService.getLuogoMorte(bioWiki)
+//            bioGrails.nomeLink = antroponimoService.getAntroponimo(bioWiki.nome)
+//            bioGrails.cognomeLink = cognomeService.getCognome(bioWiki.cognome)
+//            bioGrails.save(flush: false)
+        }// fine del blocco if
+
+    } // fine del metodo
+
+    private Giorno getGiornoNato(Bio bio) {
+        Giorno giorno = null;
+        String giornoWiki;
+        String title = "";
+
+//        if (bioWiki) {
+//            giornoWiki = bioWiki.giornoMeseNascita
+//            if (giornoWiki) {
+//                giornoWiki = fixCampo(bioWiki, giornoWiki, 'giornoMeseNascita')
+//                giornoWiki = fixGiorno(giornoWiki)
+//                try { // prova ad eseguire il codice
+//                    giorno = Giorno.findByNome(giornoWiki)
+//                    if (!giorno) {
+//                        giorno = Giorno.findByTitolo(giornoWiki)
+////                        if (giorno) {
+////                            log.warn "BioService-getGiornoNato: Voce ${title}, beccato ${giornoWiki} !"
+////                        }// fine del blocco if
+//                    }// fine del blocco if
+//                    if (giorno) {
+//                        giorno.sporcoNato = true
+//                        giorno.save(flush:true)
+//                    }// fine del blocco if
+//                } catch (Exception unErrore) { // intercetta l'errore
+//                    log.error unErrore
+//                }// fine del blocco try-catch
+//                if (!giorno) {
+//                    title = bioWiki.title
+////                    log.warn "BioService-getGiornoNato: Voce ${title}, ${giornoWiki} non sembra un giorno valido"
+//                }// fine del blocco if
+//            }// fine del blocco if
+//        }// fine del blocco if
+
+        return giorno;
+    } // fine del metodo
 
     public boolean isElaborato() {
         return elaborato;
