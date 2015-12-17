@@ -3,7 +3,6 @@ package it.algos.vaadbio.lib;
 
 import com.vaadin.addon.jpacontainer.JPAContainerItem;
 import com.vaadin.data.Item;
-import it.algos.vaad.wiki.LibWiki;
 import it.algos.vaad.wiki.WikiLogin;
 import it.algos.vaadbio.bio.Bio;
 import it.algos.webbase.domain.pref.Pref;
@@ -148,8 +147,8 @@ public abstract class LibBio {
      * @param testoTemplate del template Bio
      * @return mappa dei parametri esistenti nella enumeration e presenti nel testo
      */
-    public static LinkedHashMap getMappaBio(String testoTemplate) {
-        LinkedHashMap mappa = new LinkedHashMap();
+    public static LinkedHashMap<String, String> getMappaBio(String testoTemplate) {
+        LinkedHashMap<String, String> mappa=null;
         LinkedHashMap<Integer, String> mappaTmp = new LinkedHashMap<Integer, String>();
 //        Collection lista = null;
         String chiave;
@@ -164,8 +163,8 @@ public abstract class LibBio {
         ArrayList listaTag;
         int posEnd;
 
-        if (!testoTemplate.equals("")) {
-
+        if (testoTemplate != null && !testoTemplate.equals("")) {
+            mappa = new LinkedHashMap();
             for (ParBio par : ParBio.values()) {
                 valore = par.getTag();
                 listaTag = new ArrayList();

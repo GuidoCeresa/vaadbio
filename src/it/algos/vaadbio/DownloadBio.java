@@ -113,7 +113,7 @@ public class DownloadBio {
         bio.setPageid(pageid);
         bio.setTitle(wikiTitle);
         if (templateEsiste) {
-            bio.setTemplateServer(tmplBio);
+            bio.setTmplBioServer(tmplBio);
             bio.setTemplateEsiste(true);
         }// end of if cycle
         bio.setUltimaLettura(LibTime.adesso());

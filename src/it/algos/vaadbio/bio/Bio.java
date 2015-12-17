@@ -15,7 +15,6 @@ import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * Classe di tipo JavaBean
@@ -39,10 +38,10 @@ public class Bio extends BaseEntity {
     private String title = "";
 
     @Lob
-    private String templateServer = "";
+    private String tmplBioServer = "";
 
     @Lob
-    private String templateStandard = "";
+    private String tmplBioStandard = "";
 
     //--tempo di DOWNLOAD
     //--uso il formato Timestamp, per confrontarla col campo timestamp
@@ -370,20 +369,20 @@ public class Bio extends BaseEntity {
         this.title = title;
     }//end of setter method
 
-    public String getTemplateServer() {
-        return templateServer;
+    public String getTmplBioServer() {
+        return tmplBioServer;
     }// end of getter method
 
-    public void setTemplateServer(String templateServer) {
-        this.templateServer = templateServer;
+    public void setTmplBioServer(String templateServer) {
+        this.tmplBioServer = templateServer;
     }//end of setter method
 
-    public String getTemplateStandard() {
-        return templateStandard;
+    public String getTmplBioStandard() {
+        return tmplBioStandard;
     }// end of getter method
 
-    public void setTemplateStandard(String templateStandard) {
-        this.templateStandard = templateStandard;
+    public void setTmplBioStandard(String templateStandard) {
+        this.tmplBioStandard = templateStandard;
     }//end of setter method
 
     public Timestamp getUltimaLettura() {

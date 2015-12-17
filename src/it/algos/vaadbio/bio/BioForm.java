@@ -68,12 +68,12 @@ public class BioForm extends AForm {
     protected void createFields() {
         TextArea field;
         super.createFields();
-        Attribute[] attributes = {Bio_.templateServer, Bio_.templateStandard};
-        field = new TextArea(Bio_.templateServer.getName());
+        Attribute[] attributes = {Bio_.tmplBioServer, Bio_.tmplBioStandard};
+        field = new TextArea(Bio_.tmplBioServer.getName());
         field.setColumns(NUM_COL);
         field.setRows(NUM_ROWS);
         addField(attributes[0], field);
-        field = new TextArea(Bio_.templateStandard.getName());
+        field = new TextArea(Bio_.tmplBioStandard.getName());
         field.setColumns(NUM_COL);
         field.setRows(NUM_ROWS);
         addField(attributes[1], field);
@@ -111,8 +111,8 @@ public class BioForm extends AForm {
         HorizontalLayout layoutOr = new HorizontalLayout();
         layoutOr.setSpacing(true);
 
-        layoutOr.addComponent(getField(Bio_.templateServer));
-        layoutOr.addComponent(getField(Bio_.templateStandard));
+        layoutOr.addComponent(getField(Bio_.tmplBioServer));
+        layoutOr.addComponent(getField(Bio_.tmplBioStandard));
 
         originalBox = (CheckBoxField) getField(Bio_.templatesUguali);
         status = originalBox.getValue();

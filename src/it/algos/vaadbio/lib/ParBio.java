@@ -858,6 +858,21 @@ public enum ParBio {
     }// end of method
 
     /**
+     * Recupera dall'istanza la key ed il valore
+     * La property dell'istanza ha lo stesso nome della enumeration
+     *
+     * @param value del parametro
+     * @return testo della coppia key e value
+     */
+    public String getKeyValue(String value) {
+        if (!value.equals("") || this.isCampoNormale()) {
+            return "|" + tag + " = " + value + "\n";
+        } else {
+            return "";
+        }// end of if/else cycle
+    }// end of method
+
+    /**
      * Recupera il valore del parametro sesso da Originale
      * Inserisce il valore del parametro sesso in Valida
      *

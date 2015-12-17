@@ -22,7 +22,7 @@ public class ElaboraOnly {
     private Bio bio;
 
     private HashMap<String, Object> mappaReali;   //mappa di TUTTI i parametri esistenti nel tmplBioServer
-    private HashMap<String, Object> mappaBio;     //mappa dei parametri esistenti nella enumeration ParBio e presenti nel tmplBioServer
+    private HashMap<String, String> mappaBio;     //mappa dei parametri esistenti nella enumeration ParBio e presenti nel tmplBioServer
 
     private boolean elaborato = false;
 
@@ -63,7 +63,7 @@ public class ElaboraOnly {
             bio.setTemplateValido(false);
         }// end of if/else cycle
 
-        tmplBioServer = bio.getTemplateServer();
+        tmplBioServer = bio.getTmplBioServer();
         if (tmplBioServer != null && !tmplBioServer.equals("")) {
             mappaReali = LibBio.getMappaReali(tmplBioServer);
             mappaBio = LibBio.getMappaBio(tmplBioServer);
@@ -77,14 +77,14 @@ public class ElaboraOnly {
             templateStandard = creaNewTmpl(bio);
         }// end of if cycle
 
-        if (!templateStandard.equals("") && bio.getTemplateServer().equals(templateStandard)) {
+        if (!templateStandard.equals("") && bio.getTmplBioServer().equals(templateStandard)) {
             bio.setTemplatesUguali(true);
         } else {
             bio.setTemplatesUguali(false);
         }// end of if/else cycle
 
         bio.setTemplateEsiste(templateEsiste);
-        bio.setTemplateStandard(templateStandard);
+        bio.setTmplBioStandard(templateStandard);
         bio.setUltimaElaborazione(LibTime.adesso());
 
         //--Elabora valori validi dei parametri significativi
@@ -118,7 +118,7 @@ public class ElaboraOnly {
         String testoCompletoVoce;
 
         if (bio != null) {
-            tmplBioServer = bio.getTemplateServer();
+            tmplBioServer = bio.getTmplBioServer();
         }// end of if cycle
 
         // controlla l'esistenza del template
@@ -167,7 +167,7 @@ public class ElaboraOnly {
      * Regola i parametri della tavola in base alla mappa letta dal server
      * Aggiunge le date di riferimento lettura/scrittura
      */
-    public void fixMappa(Bio bio, HashMap<String, Object> mappa) {
+    public void fixMappa(Bio bio, HashMap<String, String> mappa) {
         String key;
         Object value;
 
@@ -215,7 +215,7 @@ public class ElaboraOnly {
     public String creaNewTmpl(Bio bio) {
         String text = "";
 
-        if (bio != null && !bio.getTemplateServer().equals("")) {
+        if (bio != null && !bio.getTmplBioServer().equals("")) {
             text = "{{Bio\n";
             for (ParBio par : ParBio.values()) {
                 text += par.getKeyValue(bio);

@@ -7,10 +7,11 @@ import com.vaadin.ui.MenuBar;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
 import it.algos.vaad.wiki.LibWiki;
-import it.algos.vaadbio.*;
+import it.algos.vaadbio.DownloadBio;
 import it.algos.vaadbio.ciclo.CicloDownload;
 import it.algos.vaadbio.ciclo.CicloElabora;
 import it.algos.vaadbio.ciclo.CicloUpdate;
+import it.algos.vaadbio.elabora.Elabora;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.webbase.domain.log.Log;
 import it.algos.webbase.domain.pref.Pref;
@@ -338,7 +339,7 @@ public class BioMod extends ModulePop {
                 boolean usaLog = Pref.getBool(CostBio.USA_LOG_UPLOAD_ELABORATA, false);
                 boolean usaUpdate = Pref.getBool(CostBio.USA_UPLOAD_ELABORATA, false);
                 if (usaDialoghi) {
-                    int maxElabora = Pref.getInt(CostBio.MAX_ELABORA,1000);
+                    int maxElabora = Pref.getInt(CostBio.MAX_ELABORA, 1000);
                     String newMsg = "Elabora le informazioni dei records Bio nel database";
                     if (usaLimite) {
                         newMsg += "<br>Le preferenze prevedono di elaborare <b><span style=\"color:red\">" + LibNum.format(maxElabora) + "</span></b> records Bio nel database";
@@ -475,10 +476,10 @@ public class BioMod extends ModulePop {
      * Esegue l'elaborazione della singola voce
      */
     public void esegueElabora() {
-        String wikiTitle = getTitle();
+        long pageid = getPageid();
 
-        if (!wikiTitle.equals("")) {
-            new ElaboraBio(wikiTitle, false);
+        if (pageid > 0) {
+            new Elabora(pageid);
         } else {
             Notification.show("Devi selezionare una riga per elaborare l'istanza");
         }// end of if/else cycle
@@ -545,6 +546,20 @@ public class BioMod extends ModulePop {
         }// fine del blocco if
 
         return title;
+    }// end of method
+
+    /**
+     * Recupera il pageid della voce selezionata
+     */
+    public long getPageid() {
+        long pageid = 0;
+        Bio bio = getBio();
+
+        if (bio != null) {
+            pageid = bio.getPageid();
+        }// end of if cycle
+
+        return pageid;
     }// end of method
 
     /**

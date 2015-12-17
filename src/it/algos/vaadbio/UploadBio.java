@@ -88,7 +88,7 @@ public class UploadBio {
             wikiTitle = bio.getTitle();
             oldTextVoce = Api.leggeVoce(wikiTitle);
             oldTempl = LibWiki.estraeTmplBioCompresi(oldTextVoce);
-            newTempl = bio.getTemplateStandard();
+            newTempl = bio.getTmplBioStandard();
             newTextVoce = LibText.sostituisce(oldTextVoce, oldTempl, newTempl);
 
             scritta = Api.scriveVoce(wikiTitle, newTextVoce, summary);
