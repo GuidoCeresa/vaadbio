@@ -33,13 +33,16 @@ public class DownloadPages {
      * @param listaPageids di pagine da scaricare dal server wiki
      */
     private void doInit(ArrayList<Long> listaPageids) {
+        WrapBio wrap;
         pages = Api.leggePages(listaPageids);
 
         if (pages != null && pages.size() > 0) {
             for (Page page : pages) {
-                if (new WrapBio(page).isRegistrata()) {
+                wrap = new WrapBio(page);
+                if (wrap.isRegistrata()) {
                     numVociRegistrate++;
                 }// end of if cycle
+                wrap = null;
             }// end of for cycle
         }// end of if cycle
 

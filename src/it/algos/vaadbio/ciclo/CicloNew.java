@@ -1,7 +1,5 @@
 package it.algos.vaadbio.ciclo;
 
-import it.algos.vaad.wiki.Page;
-import it.algos.vaadbio.DownloadBio;
 import it.algos.vaadbio.download.DownloadPages;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.webbase.domain.log.Log;
@@ -53,6 +51,7 @@ public class CicloNew {
         int vociPerBlocco;
         ArrayList<Long> bloccoPageids;
         HashMap<String, Integer> mappaVoci;
+        DownloadPages bloccoPagine;
 
         if (listaMancanti != null) {
             vociMancanti = listaMancanti.size();
@@ -72,7 +71,9 @@ public class CicloNew {
             vociPerBlocco = Math.min(vociDaScaricare, PAGES_PER_REQUEST);
             for (int k = 0; k < vociDaScaricare; k = k + vociPerBlocco) {
                 bloccoPageids = new ArrayList<Long>(listaMancanti.subList(k, k + vociPerBlocco));
-                numVociRegistrate += new DownloadPages(bloccoPageids).getNumVociRegistrate();
+                bloccoPagine = new DownloadPages(bloccoPageids);
+                numVociRegistrate += bloccoPagine.getNumVociRegistrate();
+                bloccoPagine = null;
 //                if (mappaVoci != null) {
 //                    numVociRegistrate += mappaVoci.get(CostBio.KEY_MAPPA_REGISTRATE);
 //                    numVociUploadate += mappaVoci.get(CostBio.KEY_MAPPA_UPLOADATE);
