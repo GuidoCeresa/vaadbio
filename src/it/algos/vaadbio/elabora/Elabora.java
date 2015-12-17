@@ -80,6 +80,14 @@ public class Elabora {
     }// end of constructor
 
     /**
+     * Estrae dal tmplBioServer i singoli parametri previsti nella enumeration ParBio
+     * Costruisce il tmplBioStandard usando i parametri validi (ove esistenti) ed i parametri originali. Elimina i parametri vuoti.
+     * <p>
+     * Elabora valori validi dei parametri significativi
+     * <p>
+     * Elabora i link alle tavole collegate
+     * <p>
+     * Registra l'istanza così modificata
      */
     private void doInit() {
         //--Costruisce il tmplBioStandard che serve per l'upload della singola voce sul server

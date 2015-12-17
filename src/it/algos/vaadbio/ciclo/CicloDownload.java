@@ -32,13 +32,15 @@ public class CicloDownload {
     public final static String TAG_CAT_DEBUG = "Nati nel 1420";
 
 
+    /**
+     * Costruttore completo
+     */
     public CicloDownload() {
         doInit();
     }// end of constructor
 
 
     /**
-     * <p>
      * Legge la categoria BioBot
      * Legge le voci Bio esistenti
      * <p>

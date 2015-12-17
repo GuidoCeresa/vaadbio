@@ -11,7 +11,7 @@ import it.algos.webbase.web.lib.LibTime;
 import java.util.ArrayList;
 
 /**
- * Esegue un ciclo di elaborazione dei records della tavola Bio
+ * Esegue un ciclo (ELABORA) di elaborazione dei records della tavola Bio
  * <p>
  * Il ciclo viene chiamato da DaemonElabora (con frequenza ?)
  * Il ciclo può essere invocato dal bottone 'Ciclo Elabora' nella tavola Bio
@@ -25,6 +25,9 @@ import java.util.ArrayList;
  */
 public class CicloElabora {
 
+    /**
+     * Costruttore completo
+     */
     public CicloElabora() {
         doInit();
     }// end of constructor
