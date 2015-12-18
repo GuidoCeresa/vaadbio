@@ -23,23 +23,31 @@ public class Anno extends BaseEntity {
     @NotEmpty
     private String nome = "";
 
-    @NotEmpty
     private String secolo = "";
 
     @Index
-    private int progressivo = 0;
+    private int ordinamento = 0;
 
     /**
      * Costruttore senza argomenti
      * Necessario per le specifiche JavaBean
      */
     public Anno() {
-        this("");
+        this("", "", 0);
     }// end of nullary constructor
 
-    public Anno(String nome) {
+    /**
+     * Costruttore completo
+     *
+     * @param nome        dell'anno
+     * @param secolo      dell'anno
+     * @param ordinamento nelle categorie
+     */
+    public Anno(String nome, String secolo, int ordinamento) {
         super();
         this.setNome(nome);
+        this.setSecolo(secolo);
+        this.setOrdinamento(ordinamento);
     }// end of general constructor
 
     /**
@@ -133,12 +141,12 @@ public class Anno extends BaseEntity {
         this.secolo = secolo;
     }//end of setter method
 
-    public int getProgressivo() {
-        return progressivo;
+    public int getOrdinamento() {
+        return ordinamento;
     }// end of getter method
 
-    public void setProgressivo(int progressivo) {
-        this.progressivo = progressivo;
+    public void setOrdinamento(int ordinamento) {
+        this.ordinamento = ordinamento;
     }//end of setter method
 
     /**

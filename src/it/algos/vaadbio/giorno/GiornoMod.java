@@ -16,6 +16,7 @@ public class GiornoMod extends ModulePop {
     // indirizzo interno del modulo (serve nei menu)
     public static String MENU_ADDRESS = "Giorno";
 
+
     public GiornoMod() {
         super(Giorno.class, MENU_ADDRESS);
     }// end of constructor

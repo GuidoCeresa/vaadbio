@@ -1,10 +1,12 @@
 package it.algos.vaadbio.bootstrap;
 
+import it.algos.vaadbio.anno.Anno;
 import it.algos.vaadbio.giorno.Giorno;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.lib.LibTimeBio;
 import it.algos.webbase.web.lib.LibPref;
 import it.algos.webbase.web.lib.LibVers;
+import it.algos.webbase.web.lib.Secolo;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -107,7 +109,6 @@ public class VersBootStrap implements ServletContextListener {
             LibPref.newVersInt(CostBio.NUM_PAGEIDS_REQUEST, 500, "Numero di pageids nella request di controllo voci modificate nel cicloDown");
         }// fine del blocco if
 
-
         // ciclo elabora
         //--creata una nuova preferenza
         if (LibVers.installa(14)) {
@@ -140,6 +141,11 @@ public class VersBootStrap implements ServletContextListener {
             LibVers.nuova("Giorno", "Creati 366 records per tutti i giorni dell'anno (anche bisestile)");
         }// fine del blocco if
 
+        //--crea i records della tavola Anno
+        if (LibVers.installa(20)) {
+            this.creaAnni();
+            LibVers.nuova("Anno", "Creati 3030 records per gli anni dal 1000 a.c. al 2030 d.c.");
+        }// fine del blocco if
 
     }// end of method
 
@@ -174,8 +180,51 @@ public class VersBootStrap implements ServletContextListener {
             bisestile = (int) mappaGiorno.get(CostBio.KEY_MAPPA_GIORNI_BISESTILE);
             new Giorno(mese, nome, titolo, normale, bisestile).save();
         }// end of for cycle
-
     }// end of method
+
+
+    /**
+     * Crea tutti i records
+     * Cancella prima quelli esistenti
+     * <p>
+     * Ante cristo dal 1000
+     * Dopo cristo fino al 2030
+     */
+    private void creaAnni() {
+        //--usato nell'ordinamento delle categorie
+        final int ANNO_INIZIALE = 2000;
+        int anteCristo = 1000;
+        int dopoCristo = 2030;
+        String tag = Secolo.TAG_AC;
+        int progressivo;
+        String titolo;
+        String secolo;
+
+        //--cancella tutti i records
+//        Anno.executeUpdate('delete Anno')
+
+        //costruisce gli anni prima di cristo dal 1000
+        for (int k = anteCristo; k > 0; k--) {
+            progressivo = ANNO_INIZIALE - k;
+            titolo = k + tag;
+            secolo = Secolo.getSecoloAC(k);
+            if (progressivo != ANNO_INIZIALE) {
+                new Anno(titolo, secolo, progressivo).save();
+            }// end of if cycle
+        }// end of for cycle
+
+        //costruisce gli anni dopo cristo fino al 2030
+        for (int k = 0; k <= dopoCristo; k++) {
+            progressivo = k + ANNO_INIZIALE;
+            titolo = k + "";
+            secolo = Secolo.getSecoloDC(k);
+            if (progressivo != ANNO_INIZIALE) {
+                new Anno(titolo, secolo, progressivo).save();
+            }// end of if cycle
+        }// end of for cycle
+
+    }// fine del metodo
+
 
     /**
      * This method is invoked when the Servlet Context
