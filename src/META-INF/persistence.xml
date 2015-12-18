@@ -8,6 +8,7 @@
         <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
 
         <class>it.algos.webbase.web.entity.BaseEntity</class>
+		<class>it.algos.vaadbio.anno.Anno</class>
 		<class>it.algos.vaadbio.giorno.Giorno</class>
 		<class>it.algos.vaadbio.bio.Bio</class>
 		<class>it.algos.webbase.domain.ruolo.Ruolo</class>

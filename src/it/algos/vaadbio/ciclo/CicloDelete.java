@@ -13,7 +13,7 @@ import java.util.ArrayList;
  * Esegue un ciclo (DELETE) di cancellazione di records esistenti nel database e mancanti nella categoria
  * Il ciclo necessita del login come bot per il funzionamento normale
  */
-public class CicloDelete {
+public class CicloDelete extends CicloDownload{
 
     /**
      * Esegue un ciclo (DELETE) di cancellazione di records esistenti nel database e mancanti nella categoria
@@ -22,6 +22,8 @@ public class CicloDelete {
         deleteRecordsEccedenti(listaEccedenti);
     }// end of constructor
 
+    protected void doInit() {
+    }// end of method
 
     /**
      * Cancella tutti i records non più presenti nella categoria

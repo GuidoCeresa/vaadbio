@@ -13,6 +13,7 @@ import it.algos.webbase.domain.utente.UtenteModulo;
 import it.algos.webbase.domain.vers.VersMod;
 import it.algos.webbase.web.lib.LibSession;
 import it.algos.webbase.web.ui.AlgosUI;
+import it.algos.vaadbio.anno.AnnoMod;
 import it.algos.vaadbio.giorno.GiornoMod;
 
 /**
@@ -82,6 +83,7 @@ public class VaadbioUI extends AlgosUI {
         this.addModulo(new BioLogoMod());
         this.addModulo(new PrefMod());
         this.addModulo(new GiornoMod());
+        this.addModulo(new AnnoMod());
         this.addModulo(new BioMod());
     }// end of method
 
