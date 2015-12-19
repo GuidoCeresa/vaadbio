@@ -81,12 +81,12 @@ public class VersBootStrap implements ServletContextListener {
         // ciclo download
         //--creata una nuova preferenza
         if (LibVers.installa(8)) {
-            LibPref.newVersBool(CostBio.USA_LIMITE_DOWNLOAD, false, "Uso di un limite di pagine nel cicloDown per scaricare/aggiornare dal server i records Bio");
+            LibPref.newVersBool(CostBio.USA_LIMITE_DOWNLOAD, true, "Uso di un limite di pagine nel cicloDown per scaricare/aggiornare dal server i records Bio");
         }// fine del blocco if
 
         //--creata una nuova preferenza
         if (LibVers.installa(9)) {
-            LibPref.newVersInt(CostBio.MAX_DOWNLOAD, 10000, "Numero massimo di pagine da scaricare/aggiornare nel cicloDown");
+            LibPref.newVersInt(CostBio.MAX_DOWNLOAD, 50000, "Numero massimo di pagine da scaricare/aggiornare nel cicloDown");
         }// fine del blocco if
 
         //--creata una nuova preferenza

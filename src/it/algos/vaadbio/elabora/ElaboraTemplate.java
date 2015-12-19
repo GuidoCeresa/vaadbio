@@ -8,10 +8,34 @@ import java.util.HashMap;
 
 /**
  * Elabora i contenuti di un template Bio
- * Presuppone SEMPRE che esista già l'istanza bio scaricata (adesso o precedentemente) dal server Wiki
  * <p>
+ * Costruisce il tmplBioStandard che serve per l'upload della singola voce sul server
+ * Presuppone SEMPRE che esista già l'istanza bio scaricata (adesso o precedentemente) dal server Wiki
  * Estrae dal templateServer una mappa di parametri corrispondenti ai campi della tavola Bio
- * Crea un templateStandard con i parametri
+ * <p>
+ * Crea un nuovo template in base ai valori della mappa
+ * I parametri mancanti vengono presi dalla enumeration ParBio
+ * Aggiunge il nome del template e le graffe iniziali e finali
+ * <p>
+ * Aggiunge i singoli parametri
+ * - parametri in eccesso vengono scartati
+ * - parametri errati vengono (se possibile secondo alcune regole) corretti
+ * - parametri mancanti (obbligatori) vengono aggiunti con valori di default
+ * <p>
+ * I campi/parametri sono ordinati come l'enumeration ParBio
+ * Riporta sempre i campi/parametri standard anche vuoti
+ * Riporta gli altri campi/parametri solo se hanno un valore
+ * <p>
+ * b) prima riga = {{Bio
+ * c) ultima riga = }} più \n
+ * d) dopo il nome dei parametri spazio poi uguale poi spazio poi il valore
+ * e) nessun commento aggiunto, esclusi gli eventuali parametri extra
+ * f) tutti i parametri con valore, più quelli base
+ * g) parametri base sempre presenti, anche se vuoti:
+ * -    nome, cognome, sesso,
+ * -    luogoNascita, luogoNascitaLink, giornoMeseNascita, annoNascita,
+ * -    luogoMorte, luogoMorteLink, giornoMeseMorte, annoMorte,
+ * -    attivita, attivita2, attivita3, nazionalita
  */
 public class ElaboraTemplate {
 
@@ -45,7 +69,7 @@ public class ElaboraTemplate {
      * @param bio istanza da cui estrarre il tmplBioServer originale
      */
     public ElaboraTemplate(Bio bio) {
-        if (bio != null) {
+         if (bio != null) {
             this.tmplBioServer = bio.getTmplBioServer();
             this.doInit();
         }// end of if cycle

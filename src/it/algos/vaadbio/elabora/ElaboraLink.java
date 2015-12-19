@@ -69,29 +69,11 @@ public class ElaboraLink {
     } // fine del metodo
 
 
-    private void fixAnnoNatoPunta(Bio bio) {
-        Anno anno = null;
-        String annoWiki;
-
-        if (bio != null) {
-            annoWiki = bio.getAnnoNascitaValido();
-
-            if (annoWiki != null && !annoWiki.equals("")) {
-//                giornoWiki = LibBio.fixCampoGiorno(giornoWiki);
-//                giornoWiki = Giorno.fix(giornoWiki);
-                anno = Anno.findByNome(annoWiki);
-            }// fine del blocco if
-
-            bio.setAnnoNatoPunta(anno);
-        }// fine del blocco if
-    } // fine del metodo
 
     private Giorno getGiorno(String giornoTestoValido) {
         Giorno giorno = null;
 
         if (giornoTestoValido != null && !giornoTestoValido.equals("")) {
-//            giornoTestoValido = LibBio.fixCampoGiorno(giornoTestoValido);
-//            giornoTestoValido = Giorno.fix(giornoTestoValido);
             giorno = Giorno.findByNome(giornoTestoValido);
             if (giorno == null) {
                 giorno = Giorno.findByTitolo(giornoTestoValido);
@@ -102,21 +84,36 @@ public class ElaboraLink {
     } // fine del metodo
 
 
-    private void fixAnnoMortoPunta(Bio bio) {
+    private void fixAnnoNatoPunta(Bio bio) {
         Anno anno = null;
-        String annoWiki;
+        String annoTestoValido;
 
         if (bio != null) {
-            annoWiki = bio.getAnnoMorteValido();
+            annoTestoValido = bio.getAnnoNascitaValido();
+            anno = getAnno(annoTestoValido);
+            bio.setAnnoNatoPunta(anno);
+        }// fine del blocco if
+    } // fine del metodo
 
-            if (annoWiki != null && !annoWiki.equals("")) {
-//                giornoWiki = LibBio.fixCampoGiorno(giornoWiki);
-//                giornoWiki = Giorno.fix(giornoWiki);
-                anno = Anno.findByNome(annoWiki);
-            }// fine del blocco if
+    private void fixAnnoMortoPunta(Bio bio) {
+        Anno anno = null;
+        String annoTestoValido;
 
+        if (bio != null) {
+            annoTestoValido = bio.getAnnoMorteValido();
+            anno = getAnno(annoTestoValido);
             bio.setAnnoMortoPunta(anno);
         }// fine del blocco if
+    } // fine del metodo
+
+    private Anno getAnno(String annoTestoValido) {
+        Anno anno = null;
+
+        if (annoTestoValido != null && !annoTestoValido.equals("")) {
+            anno = Anno.findByNome(annoTestoValido);
+        }// fine del blocco if
+
+        return anno;
     } // fine del metodo
 
 }// end of class

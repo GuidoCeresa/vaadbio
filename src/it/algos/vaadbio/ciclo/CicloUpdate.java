@@ -146,13 +146,11 @@ public class CicloUpdate extends CicloDownload {
             Log.setInfo("update", message);
         }// end of if cycle
 
-        if (numVociRegistrate > 0) {
             message += "Controllate " + LibNum.format(numVociDaControllare) + " voci (di cui ";
             message += LibNum.format(numVociModificate) + " modificate e ";
             message += LibNum.format(numVociUploadate) + " uploadate) in " + LibTime.difText(inizio) + " ";
             message += ultima;
             Log.setInfo("update", message);
-        }// end of if cycle
 
     }// end of method
 

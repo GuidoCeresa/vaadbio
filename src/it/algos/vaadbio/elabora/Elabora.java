@@ -91,13 +91,13 @@ public class Elabora {
      */
     private void doInit() {
         //--Costruisce il tmplBioStandard che serve per l'upload della singola voce sul server
-        creaTemplateStandard();
+        new ElaboraTemplate(bio);
 
         //--Elabora valori validi dei parametri significativi
-        validaParametri();
+        new ElaboraValidi(bio);
 
         //--Elabora i link alle tavole collegate
-        elaboraLink();
+        new ElaboraLink(bio);
 
         try { // prova ad eseguire il codice
             bio.setUltimaElaborazione(LibTime.adesso());
@@ -108,53 +108,9 @@ public class Elabora {
             if (Pref.getBool(CostBio.USA_LOG_ELABORA, true)) {
                 Log.setDebug("elabora", "Non sono riuscito ad elaborare la voce " + LibWiki.setQuadre(bio.getTitle()));
             }// end of if cycle
-
         }// fine del blocco try-catch
     }// end of method
 
-
-    /**
-     * Costruisce il tmplBioStandard che serve per l'upload della singola voce sul server
-     * <p>
-     * Crea un nuovo template in base ai valori della mappa
-     * I parametri mancanti vengono presi dalla enumeration ParBio
-     * Aggiunge il nome del template e le graffe iniziali e finali
-     * <p>
-     * Aggiunge i singoli parametri
-     * - parametri in eccesso vengono scartati
-     * - parametri errati vengono (se possibile secondo alcune regole) corretti
-     * - parametri mancanti (obbligatori) vengono aggiunti con valori di default
-     * <p>
-     * I campi/parametri sono ordinati come l'enumeration ParBio
-     * Riporta sempre i campi/parametri standard anche vuoti
-     * Riporta gli altri campi/parametri solo se hanno un valore
-     * <p>
-     * b) prima riga = {{Bio
-     * c) ultima riga = }} più \n
-     * d) dopo il nome dei parametri spazio poi uguale poi spazio poi il valore
-     * e) nessun commento aggiunto, esclusi gli eventuali parametri extra
-     * f) tutti i parametri con valore, più quelli base
-     * g) parametri base sempre presenti, anche se vuoti:
-     * -    nome, cognome, sesso,
-     * -    luogoNascita, luogoNascitaLink, giornoMeseNascita, annoNascita,
-     * -    luogoMorte, luogoMorteLink, giornoMeseMorte, annoMorte,
-     * -    attivita, attivita2, attivita3, nazionalita
-     */
-    private void creaTemplateStandard() {
-        String tmplBioStandard = new ElaboraTemplate(bio).getTmplBioStandard();
-        bio.setTmplBioStandard(tmplBioStandard);
-    }// end of method
-
-
-    /**
-     * Elabora valori validi dei parametri significativi
-     */
-    private void validaParametri() {
-        new ElaboraParametri(bio);
-    }// end of method
-
-    private void elaboraLink() {
-    }// end of method
 
     public boolean isElaborata() {
         return elaborata;
@@ -163,4 +119,5 @@ public class Elabora {
     public Bio getBio() {
         return bio;
     }// end of getter method
+
 }// end of class

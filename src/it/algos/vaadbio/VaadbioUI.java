@@ -79,12 +79,12 @@ public class VaadbioUI extends AlgosUI {
     @Override
     protected void addModuli() {
         this.addModulo(new UtenteModulo("User"));
-        this.addModulo(new VersMod());
-        this.addModulo(new BioLogoMod());
-        this.addModulo(new PrefMod());
-        this.addModulo(new GiornoMod());
-        this.addModulo(new AnnoMod());
-        this.addModulo(new BioMod());
+        this.addModulo(VersMod.getInstance());
+        this.addModulo(BioLogoMod.getInstance());
+        this.addModulo( PrefMod.getInstance());
+        this.addModulo( GiornoMod.getInstance());
+        this.addModulo( AnnoMod.getInstance());
+        this.addModulo(BioMod.getInstance());
     }// end of method
 
 }//end of UI class

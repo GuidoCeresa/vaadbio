@@ -314,7 +314,7 @@ public class Bio extends BaseEntity {
         String messaggio;
         ArrayList listaTimestamp;
 
-        listaTimestamp = LibBio.queryFind("select bio.ultimaLettura from Bio bio order by bio.ultimaLettura,bio");
+        listaTimestamp = LibBio.queryFind("select bio.ultimaLettura from Bio bio order by bio.ultimaLettura,bio", 1);
 
         messaggio = "La voce più vecchia non aggiornata è del " + LibTime.getData(listaTimestamp);
         return messaggio;
@@ -329,7 +329,7 @@ public class Bio extends BaseEntity {
         String messaggio;
         ArrayList listaTimestamp;
 
-        listaTimestamp = LibBio.queryFind("select bio.ultimaElaborazione from Bio bio order by bio.ultimaElaborazione,bio");
+        listaTimestamp = LibBio.queryFind("select bio.ultimaElaborazione from Bio bio order by bio.ultimaElaborazione,bio", 1);
 
         messaggio = "Il record più vecchio non elaborato è del " + LibTime.getData(listaTimestamp);
         return messaggio;

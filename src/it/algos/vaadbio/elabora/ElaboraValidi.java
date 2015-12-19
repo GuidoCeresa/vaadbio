@@ -7,14 +7,14 @@ import it.algos.vaadbio.lib.LibBio;
 /**
  * Elabora valori validi dei parametri significativi
  */
-public class ElaboraParametri {
+public class ElaboraValidi {
 
     /**
      * Costruttore
      *
      * @param bio istanza da cui estrarre il tmplBioServer originale
      */
-    public ElaboraParametri(Bio bio) {
+    public ElaboraValidi(Bio bio) {
         if (bio != null) {
             this.doInit(bio);
         }// end of if cycle
@@ -50,11 +50,6 @@ public class ElaboraParametri {
 
         if (bio != null) {
             giornoGrezzo = bio.getGiornoMeseNascita();
-
-            if (!giornoGrezzo.contains(" ")) {
-                return;
-            }// end of if cycle
-
             giornoValido = giornoGrezzo.trim();
             bio.setGiornoMeseNascitaValido(giornoValido);
         }// fine del blocco if
@@ -66,11 +61,6 @@ public class ElaboraParametri {
 
         if (bio != null) {
             giornoGrezzo = bio.getGiornoMeseMorte();
-
-            if (!giornoGrezzo.contains(" ")) {
-                return;
-            }// end of if cycle
-
             giornoValido = giornoGrezzo.trim();
             bio.setGiornoMeseMorteValido(giornoValido);
         }// fine del blocco if
