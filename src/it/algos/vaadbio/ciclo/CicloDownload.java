@@ -8,6 +8,7 @@ import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.lib.LibBio;
 import it.algos.webbase.domain.log.Log;
 import it.algos.webbase.domain.pref.Pref;
+import it.algos.webbase.web.lib.LibArray;
 import it.algos.webbase.web.lib.LibNum;
 import it.algos.webbase.web.lib.LibTime;
 
@@ -111,6 +112,9 @@ public class CicloDownload {
         int numVociDaScaricare = 0;
         int vociPerBlocco;
         ArrayList<Long> bloccoPageids;
+        int iniBlocco;
+        int endBlocco;
+        int numCicli;
 
         if (listaVociDaScaricare != null) {
             numVociDaScaricare = listaVociDaScaricare.size();
@@ -121,12 +125,33 @@ public class CicloDownload {
         }// end of if cycle
 
         if (numVociDaScaricare > 0) {
-            vociPerBlocco = Math.min(numVociDaScaricare, PAGES_PER_REQUEST);
+//            vociPerBlocco = Math.min(numVociDaScaricare, PAGES_PER_REQUEST);
 
-            for (int k = 0; k < numVociDaScaricare; k = k + vociPerBlocco) {
-                bloccoPageids = new ArrayList<Long>(listaVociDaScaricare.subList(k, k + vociPerBlocco));
+
+
+            numCicli = LibArray.numCicli(listaVociDaScaricare.size(), dimBlocco());
+
+            for (int k = 0; k < numCicli; k++) {
+                bloccoPageids = LibArray.estraeSublistaLong(listaVociDaScaricare, dimBlocco(), k);
+
+//                numVociRegistrate = downloadPagine(listaVociDaScaricare);
                 numVociRegistrate += new DownloadPages(bloccoPageids).getNumVociRegistrate();
+
+//                mappaVoci = downloadSingoloBlocco(bloccoPageids);
+//                if (mappaVoci != null) {
+//                    numVociModificate += mappaVoci.get(CostBio.KEY_MAPPA_MODIFICATE);
+//                    numVociUploadate += mappaVoci.get(CostBio.KEY_MAPPA_UPLOADATE);
+//                }// end of if cycle
             }// end of for cycle
+
+
+
+//            for (int k = 0; k < numVociDaScaricare; k = k + vociPerBlocco) {
+//                iniBlocco = k * vociPerBlocco;
+//                endBlocco = iniBlocco + vociPerBlocco;
+//                bloccoPageids = new ArrayList<Long>(listaVociDaScaricare.subList(iniBlocco, endBlocco));
+//                numVociRegistrate += new DownloadPages(bloccoPageids).getNumVociRegistrate();
+//            }// end of for cycle
 
         }// end of if cycle
 
