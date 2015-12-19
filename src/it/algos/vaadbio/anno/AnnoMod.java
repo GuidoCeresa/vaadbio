@@ -1,7 +1,10 @@
 package it.algos.vaadbio.anno;
 
 
+import com.vaadin.server.FontAwesome;
+import com.vaadin.ui.MenuBar;
 import it.algos.webbase.web.module.ModulePop;
+import it.algos.webbase.web.navigator.NavPlaceholder;
 
 import javax.persistence.metamodel.Attribute;
 
@@ -18,6 +21,21 @@ public class AnnoMod extends ModulePop {
     public AnnoMod() {
         super(Anno.class, MENU_ADDRESS);
     }// end of constructor
+
+    /**
+     * Create the MenuBar Item for this module
+     * <p>
+     * Invocato dal metodo AlgosUI.creaMenu()
+     * PUO essere sovrascritto dalla sottoclasse
+     *
+     * @param menuBar     a cui agganciare il menuitem
+     * @param placeholder in cui visualizzare il modulo
+     * @return menuItem appena creato
+     */
+    @Override
+    public MenuBar.MenuItem createMenuItem(MenuBar menuBar, NavPlaceholder placeholder) {
+        return super.createMenuItem(menuBar, placeholder, FontAwesome.TASKS);
+    }// end of method
 
     /**
      * Crea i campi visibili

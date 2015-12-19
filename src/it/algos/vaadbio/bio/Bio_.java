@@ -1,5 +1,7 @@
 package it.algos.vaadbio.bio;
 
+import it.algos.vaadbio.anno.Anno;
+import it.algos.vaadbio.giorno.Giorno;
 import it.algos.webbase.web.entity.BaseEntity_;
 import it.algos.webbase.web.field.TextArea;
 
@@ -86,5 +88,10 @@ public class Bio_ extends BaseEntity_ {
     public static volatile SingularAttribute<Bio, String> attivita2Valido;
     public static volatile SingularAttribute<Bio, String> attivita3Valido;
     public static volatile SingularAttribute<Bio, String> nazionalitaValido;
+
+    public static volatile SingularAttribute<Bio, Giorno> giornoNatoPunta;
+    public static volatile SingularAttribute<Bio, Giorno> giornoMortoPunta;
+    public static volatile SingularAttribute<Bio, Anno> annoNatoPunta;
+    public static volatile SingularAttribute<Bio, Anno> annoMortoPunta;
 
 }// end of entity class

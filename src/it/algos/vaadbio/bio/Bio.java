@@ -1,5 +1,6 @@
 package it.algos.vaadbio.bio;
 
+import it.algos.vaadbio.anno.Anno;
 import it.algos.vaadbio.giorno.Giorno;
 import it.algos.vaadbio.lib.LibBio;
 import it.algos.webbase.web.entity.BaseEntity;
@@ -178,11 +179,13 @@ public class Bio extends BaseEntity {
     @ManyToOne
     private Giorno giornoNatoPunta;
     @ManyToOne
-    private Giorno giornoMortoPunta ;
-//    Giorno giornoMortoLista = null;
-//    Anno annoNatoLista = null;
-//    Anno annoMortoLista = null;
-//    Attivita attivitaLista = null;
+    private Giorno giornoMortoPunta;
+    @ManyToOne
+    private Anno annoNatoPunta = null;
+    @ManyToOne
+    private Anno annoMortoPunta = null;
+
+//        attivitaLista = null;
 //    Attivita attivita2Lista = null;
 //    Attivita attivita3Lista = null;
 //    Nazionalita nazionalitaLista = null;
@@ -872,5 +875,21 @@ public class Bio extends BaseEntity {
 
     public void setGiornoMortoPunta(Giorno giornoMortoPunta) {
         this.giornoMortoPunta = giornoMortoPunta;
+    }//end of setter method
+
+    public Anno getAnnoNatoPunta() {
+        return annoNatoPunta;
+    }// end of getter method
+
+    public void setAnnoNatoPunta(Anno annoNatoPunta) {
+        this.annoNatoPunta = annoNatoPunta;
+    }//end of setter method
+
+    public Anno getAnnoMortoPunta() {
+        return annoMortoPunta;
+    }// end of getter method
+
+    public void setAnnoMortoPunta(Anno annoMortoPunta) {
+        this.annoMortoPunta = annoMortoPunta;
     }//end of setter method
 }// end of entity class

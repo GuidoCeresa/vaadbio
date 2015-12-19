@@ -63,7 +63,34 @@ public class BioMod extends ModulePop {
      */
     @Override
     protected Attribute<?, ?>[] creaFieldsList() {
-        return new Attribute[]{Bio_.pageid, Bio_.title, Bio_.templateEsiste, Bio_.templateValido, Bio_.templatesUguali, Bio_.ultimaLettura, Bio_.ultimaElaborazione};
+        return new Attribute[]{
+                Bio_.pageid,
+                Bio_.title,
+//                Bio_.templateEsiste,
+//                Bio_.templateValido,
+//                Bio_.templatesUguali,
+                Bio_.ultimaLettura,
+                Bio_.ultimaElaborazione,
+
+                Bio_.attivita,
+                Bio_.attivita2,
+                Bio_.attivita3,
+                Bio_.nazionalita,
+
+                Bio_.giornoMeseNascita,
+                Bio_.giornoMeseNascitaValido,
+                Bio_.giornoNatoPunta,
+                Bio_.giornoMeseMorte,
+                Bio_.giornoMeseMorteValido,
+                Bio_.giornoMortoPunta,
+
+                Bio_.annoNascita,
+                Bio_.annoNascitaValido,
+                Bio_.annoNatoPunta,
+                Bio_.annoMorte,
+                Bio_.annoMorteValido,
+                Bio_.annoMortoPunta
+        };
     }// end of method
 
     /**
