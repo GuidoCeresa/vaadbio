@@ -5,6 +5,7 @@ import com.vaadin.addon.jpacontainer.JPAContainerItem;
 import com.vaadin.data.Item;
 import it.algos.vaad.wiki.WikiLogin;
 import it.algos.vaadbio.bio.Bio;
+import it.algos.vaadbio.giorno.Giorno;
 import it.algos.webbase.domain.pref.Pref;
 import it.algos.webbase.web.entity.EM;
 import it.algos.webbase.web.lib.LibArray;
@@ -87,6 +88,16 @@ public abstract class LibBio {
      */
     public static final String PIPE = "|";
 
+    /**
+     * tag nullo/vuoto
+     */
+    public static final String VUOTO = "";
+
+    /**
+     * tag spazio
+     */
+    public static final String SPAZIO = " ";
+
 
     /**
      * Estrae una mappa chiave valore dal testo di un template
@@ -148,7 +159,7 @@ public abstract class LibBio {
      * @return mappa dei parametri esistenti nella enumeration e presenti nel testo
      */
     public static LinkedHashMap<String, String> getMappaBio(String testoTemplate) {
-        LinkedHashMap<String, String> mappa=null;
+        LinkedHashMap<String, String> mappa = null;
         LinkedHashMap<Integer, String> mappaTmp = new LinkedHashMap<Integer, String>();
 //        Collection lista = null;
         String chiave;
@@ -1052,10 +1063,71 @@ public abstract class LibBio {
     }// end of static method
 
     /**
+     * Regola questo campo
+     * <p>
+     * Elimina il teasto successivo al ref
+     * Elimina il testo successivo alle note
+     * Elimina il testo successivo alle graffe
+     * Elimina il testo successivo alla virgola
+     * Elimina il testo successivo al punto interrogativo
+     * Elimina eventuali quadre
+     * Tronca comunque il testo a 255 caratteri
+     *
+     * @param testoGrezzo in entrata da elaborare
+     * @return testoValido regolato in uscita
+     */
+    private static String fixCampoBase(String testoGrezzo) {
+        String testoValido;
+
+        if (testoGrezzo == null || testoGrezzo.equals(VUOTO)) {
+            return VUOTO;
+        }// end of if cycle
+
+        testoValido = testoGrezzo.trim();
+        testoValido = LibText.levaDopoRef(testoValido);
+        testoValido = LibText.levaDopoNote(testoValido);
+        testoValido = LibText.levaDopoGraffe(testoValido);
+        testoValido = LibText.levaDopoVirgola(testoValido);
+        testoValido = LibText.levaDopoInterrogativo(testoValido);
+        testoValido = LibBio.setNoQuadre(testoValido);
+        testoValido = testoValido.trim();
+
+        if (testoValido.length() > 253) {
+            testoValido = testoValido.substring(0, 252);
+        }// fine del blocco if
+
+        return testoValido;
+    }// end of static method
+
+    /**
+     * Regola questo campo
+     * <p>
+     * Elimina il testo successivo a varii tag
+     * Elimina il testo se NON contiene una spazio vuoto (tipico della data giorno-mese)
+     * Elabora una patch specifica del Giorno
+     *
+     * @param testoGrezzo in entrata da elaborare
+     * @return testoValido regolato in uscita
+     */
+    public static String fixGiornoValido(String testoGrezzo) {
+        String testoValido = "";
+
+        if (testoGrezzo == null || testoGrezzo.equals(VUOTO) || !testoGrezzo.contains(SPAZIO)) {
+            return VUOTO;
+        }// end of if cycle
+
+        testoValido = LibBio.fixCampoBase(testoGrezzo);
+        testoValido = Giorno.fix(testoValido);
+
+        return testoValido.trim();
+    } // fine del metodo
+
+    /**
      * Elimina il testo successivo alla virgola
      *
      * @param testoIn entrata da elaborare
      * @return testoOut regolato in uscita
+     * @deprecated
      */
     public static String fixCampoGiorno(String testoIn) {
         String testoOut = testoIn;

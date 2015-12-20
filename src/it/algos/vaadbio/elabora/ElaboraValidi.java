@@ -3,6 +3,7 @@ package it.algos.vaadbio.elabora;
 import it.algos.vaadbio.bio.Bio;
 import it.algos.vaadbio.giorno.Giorno;
 import it.algos.vaadbio.lib.LibBio;
+import it.algos.vaadbio.lib.ParBio;
 
 /**
  * Elabora valori validi dei parametri significativi
@@ -25,10 +26,16 @@ public class ElaboraValidi {
     private void doInit(Bio bio) {
 
         if (bio != null) {
-            fixGiornoNatoValido(bio);
-            fixGiornoMortoValido(bio);
-            fixAnnoNatoValido(bio);
-            fixAnnoMortoValido(bio);
+            for (ParBio par : ParBio.values()) {
+                par.setBioValida(bio);
+            } // fine del ciclo for-each
+        }// fine del blocco if
+
+        if (bio != null) {
+//            fixGiornoNatoValido(bio);
+//            fixGiornoMortoValido(bio);
+//            fixAnnoNatoValido(bio);
+//            fixAnnoMortoValido(bio);
 
 //            bioGrails.attivitaLink = AttivitaService.getAttivita(bioGrails.attivita)
 //            bioGrails.attivita2Link = AttivitaService.getAttivita(bioGrails.attivita2)
@@ -44,40 +51,40 @@ public class ElaboraValidi {
     }// end of method
 
 
-    private void fixGiornoNatoValido(Bio bio) {
-        String giornoValido = "";
-        String giornoGrezzo = "";
+//    private void fixGiornoNatoValido(Bio bio) {
+//        String giornoValido = "";
+//        String giornoGrezzo = "";
+//
+//        if (bio != null) {
+//            giornoGrezzo = bio.getGiornoMeseNascita();
+//            giornoValido = getGiornoValido(giornoGrezzo);
+//            bio.setGiornoMeseNascitaValido(giornoValido);
+//        }// fine del blocco if
+//    } // fine del metodo
+//
+//    private void fixGiornoMortoValido(Bio bio) {
+//        String giornoValido = "";
+//        String giornoGrezzo = "";
+//
+//        if (bio != null) {
+//            giornoGrezzo = bio.getGiornoMeseMorte();
+//            giornoValido = getGiornoValido(giornoGrezzo);
+//            bio.setGiornoMeseMorteValido(giornoValido);
+//        }// fine del blocco if
+//    } // fine del metodo
 
-        if (bio != null) {
-            giornoGrezzo = bio.getGiornoMeseNascita();
-            giornoValido = giornoGrezzo.trim();
-            bio.setGiornoMeseNascitaValido(giornoValido);
-        }// fine del blocco if
-    } // fine del metodo
-
-    private void fixGiornoMortoValido(Bio bio) {
-        String giornoValido = "";
-        String giornoGrezzo = "";
-
-        if (bio != null) {
-            giornoGrezzo = bio.getGiornoMeseMorte();
-            giornoValido = giornoGrezzo.trim();
-            bio.setGiornoMeseMorteValido(giornoValido);
-        }// fine del blocco if
-    } // fine del metodo
-
-    private String getGiornoValido(String giornoGrezzo) {
-        String giornoValido = "";
-
-        if (giornoGrezzo == null || giornoGrezzo.equals("") || !giornoGrezzo.contains(" ")) {
-            return "";
-        }// end of if cycle
-
-        giornoGrezzo = LibBio.fixCampoGiorno(giornoGrezzo);
-        giornoValido = Giorno.fix(giornoGrezzo);
-
-        return giornoValido;
-    } // fine del metodo
+//    private String getGiornoValido(String giornoGrezzo) {
+//        String giornoValido = "";
+//
+//        if (giornoGrezzo == null || giornoGrezzo.equals("") || !giornoGrezzo.contains(" ")) {
+//            return "";
+//        }// end of if cycle
+//
+//        giornoValido = LibBio.fixCampoGiorno(giornoGrezzo);
+//        giornoValido = Giorno.fix(giornoValido);
+//
+//        return giornoValido.trim();
+//    } // fine del metodo
 
     private void fixAnnoNatoValido(Bio bio) {
         String annoValido = "";
@@ -85,8 +92,7 @@ public class ElaboraValidi {
 
         if (bio != null) {
             annoGrezzo = bio.getAnnoNascita();
-
-            annoValido = annoGrezzo.trim();
+            annoValido = getAnnoValido(annoGrezzo);
             bio.setAnnoNascitaValido(annoValido);
         }// fine del blocco if
     } // fine del metodo
@@ -97,10 +103,21 @@ public class ElaboraValidi {
 
         if (bio != null) {
             annoGrezzo = bio.getAnnoMorte();
-
-            annoValido = annoGrezzo.trim();
+            annoValido = getAnnoValido(annoGrezzo);
             bio.setAnnoMorteValido(annoValido);
         }// fine del blocco if
+    } // fine del metodo
+
+    private String getAnnoValido(String annoGrezzo) {
+        String annoValido = "";
+
+        if (annoGrezzo == null || annoGrezzo.equals("")) {
+            return "";
+        }// end of if cycle
+
+        annoValido = LibBio.fixCampoLuogo(annoGrezzo);
+
+        return annoValido.trim();
     } // fine del metodo
 
 }// end of class

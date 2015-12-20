@@ -19,9 +19,16 @@ public class CicloDelete extends CicloDownload{
      * Esegue un ciclo (DELETE) di cancellazione di records esistenti nel database e mancanti nella categoria
      */
     public CicloDelete(ArrayList<Long> listaEccedenti) {
+        super();
         deleteRecordsEccedenti(listaEccedenti);
     }// end of constructor
 
+    /**
+     * Devo mettere questo metodo (che non fa nulla) per sovrascrivere il metodo della superclasse,
+     * che viene chiamato automaticamente dalla superclasse stessa
+     * Non posso implementare direttamente in questo metodo le funzionalità del metodo downloadVociMancanti,
+     * perché downloadVociMancanti usa un parametro
+     */
     protected void doInit() {
     }// end of method
 

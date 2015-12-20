@@ -1,6 +1,5 @@
 package it.algos.vaadbio.ciclo;
 
-import it.algos.vaadbio.download.DownloadPages;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.webbase.domain.log.Log;
 import it.algos.webbase.domain.pref.Pref;
@@ -24,9 +23,16 @@ public class CicloNew extends CicloDownload {
      * Costruttore completo
      */
     public CicloNew(ArrayList<Long> listaMancanti) {
+        super();
         downloadVociMancanti(listaMancanti);
     }// end of constructor
 
+    /**
+     * Devo mettere questo metodo (che non fa nulla) per sovrascrivere il metodo della superclasse,
+     * che viene chiamato automaticamente dalla superclasse stessa
+     * Non posso implementare direttamente in questo metodo le funzionalità del metodo downloadVociMancanti,
+     * perché downloadVociMancanti usa un parametro
+     */
     protected void doInit() {
     }// end of method
 
@@ -65,7 +71,6 @@ public class CicloNew extends CicloDownload {
         }// fine del blocco if
 
     }// end of method
-
 
 
 }// end of class

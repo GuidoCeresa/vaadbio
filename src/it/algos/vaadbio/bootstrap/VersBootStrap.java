@@ -64,7 +64,7 @@ public class VersBootStrap implements ServletContextListener {
         // daemons
         //--creata una nuova preferenza
         if (LibVers.installa(5)) {
-            LibPref.newVersBool(CostBio.USA_CRONO_DOWNLOAD, false, "Uso (tramite daemons in background) del cicloDown per scaricare/aggiornare dal server i records Bio.");
+            LibPref.newVersBool(CostBio.USA_CRONO_DOWNLOAD, false, "Uso (tramite daemons in background) del cicloDownload per scaricare/aggiornare dal server i records Bio.");
         }// fine del blocco if
 
         //--creata una nuova preferenza
@@ -109,6 +109,7 @@ public class VersBootStrap implements ServletContextListener {
             LibPref.newVersInt(CostBio.NUM_PAGEIDS_REQUEST, 500, "Numero di pageids nella request di controllo voci modificate nel cicloDown");
         }// fine del blocco if
 
+
         // ciclo elabora
         //--creata una nuova preferenza
         if (LibVers.installa(14)) {
@@ -134,6 +135,7 @@ public class VersBootStrap implements ServletContextListener {
         if (LibVers.installa(18)) {
             LibPref.newVersBool(CostBio.USA_LOG_UPLOAD_ELABORATA, true, "Uso del log di registrazione per la singola voce uploadata", "Livello debug");
         }// fine del blocco if
+
 
         //--crea i records della tavola Giorno
         if (LibVers.installa(19)) {

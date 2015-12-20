@@ -23,13 +23,13 @@ import java.util.ArrayList;
  * Controlla il flag USA_UPLOAD_ELABORATA
  * Ricarica (se USA_UPLOAD_ELABORATA=true) ogni singolo record
  */
-public class CicloElabora {
+public class CicloElabora extends CicloDownload {
 
     /**
      * Costruttore completo
      */
     public CicloElabora() {
-        doInit();
+        super();
     }// end of constructor
 
     /**

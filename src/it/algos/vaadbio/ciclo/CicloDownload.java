@@ -115,6 +115,7 @@ public class CicloDownload {
         int iniBlocco;
         int endBlocco;
         int numCicli;
+        DownloadPages downloadPages;
 
         if (listaVociDaScaricare != null) {
             numVociDaScaricare = listaVociDaScaricare.size();
@@ -128,22 +129,20 @@ public class CicloDownload {
 //            vociPerBlocco = Math.min(numVociDaScaricare, PAGES_PER_REQUEST);
 
 
-
             numCicli = LibArray.numCicli(listaVociDaScaricare.size(), dimBlocco());
 
             for (int k = 0; k < numCicli; k++) {
                 bloccoPageids = LibArray.estraeSublistaLong(listaVociDaScaricare, dimBlocco(), k);
 
 //                numVociRegistrate = downloadPagine(listaVociDaScaricare);
-                numVociRegistrate += new DownloadPages(bloccoPageids).getNumVociRegistrate();
-
+                downloadPages = new DownloadPages(bloccoPageids);
+                numVociRegistrate = downloadPages.getNumVociRegistrate();
 //                mappaVoci = downloadSingoloBlocco(bloccoPageids);
 //                if (mappaVoci != null) {
 //                    numVociModificate += mappaVoci.get(CostBio.KEY_MAPPA_MODIFICATE);
 //                    numVociUploadate += mappaVoci.get(CostBio.KEY_MAPPA_UPLOADATE);
 //                }// end of if cycle
             }// end of for cycle
-
 
 
 //            for (int k = 0; k < numVociDaScaricare; k = k + vociPerBlocco) {

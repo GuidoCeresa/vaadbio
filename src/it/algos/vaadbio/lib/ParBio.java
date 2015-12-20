@@ -2,6 +2,7 @@ package it.algos.vaadbio.lib;
 
 import it.algos.vaadbio.bio.Bio;
 import it.algos.vaadbio.bio.Bio_;
+import it.algos.vaadbio.giorno.Giorno;
 
 import javax.persistence.metamodel.Attribute;
 import javax.persistence.metamodel.SingularAttribute;
@@ -47,7 +48,7 @@ public enum ParBio {
 
         @Override
         public void setBioValida(Bio istanza) {
-            istanza.setNome(LibBio.fixCampo(istanza.getNome()));
+            istanza.setNomeValido(LibBio.fixCampo(istanza.getNome()));
         }// end of method
     },// end of single enumeration
     cognome("Cognome", true, true, true, Bio_.cognome) {
@@ -68,7 +69,7 @@ public enum ParBio {
 
         @Override
         public void setBioValida(Bio istanza) {
-            istanza.setCognome(LibBio.fixCampo(istanza.getCognome()));
+            istanza.setCognomeValido(LibBio.fixCampo(istanza.getCognome()));
         }// end of method
     },// end of single enumeration
     cognomePrima("CognomePrima", false, false, false, Bio_.cognomePrima) {
@@ -169,7 +170,7 @@ public enum ParBio {
 
         @Override
         public void setBioValida(Bio istanza) {
-            istanza.setSesso(LibBio.fixCampoSesso(istanza.getSesso()));
+            istanza.setSessoValido(LibBio.fixCampoSesso(istanza.getSesso()));
         }// end of method
     },// end of single enumeration
 
@@ -192,7 +193,7 @@ public enum ParBio {
 
         @Override
         public void setBioValida(Bio istanza) {
-            istanza.setLuogoNascita(LibBio.fixCampoLuogo(istanza.getLuogoNascita()));
+            istanza.setLuogoNascitaValido(LibBio.fixCampoLuogo(istanza.getLuogoNascita()));
         }// end of method
     },// end of single enumeration
     luogoNascitaLink("LuogoNascitaLink", false, false, true, Bio_.luogoNascitaLink) {
@@ -213,7 +214,7 @@ public enum ParBio {
 
         @Override
         public void setBioValida(Bio istanza) {
-            istanza.setLuogoNascitaLink(LibBio.fixCampoLuogo(istanza.getLuogoNascitaLink()));
+            istanza.setLuogoNascitaLinkValido(LibBio.fixCampoLuogo(istanza.getLuogoNascitaLink()));
         }// end of method
     },// end of single enumeration
     luogoNascitaAlt("LuogoNascitaAlt", false, false, false, Bio_.luogoNascitaAlt) {
@@ -249,7 +250,7 @@ public enum ParBio {
 
         @Override
         public void setBioValida(Bio istanza) {
-            istanza.setGiornoMeseNascita(LibBio.fixCampoGiorno(istanza.getGiornoMeseNascita()));
+            istanza.setGiornoMeseNascitaValido(LibBio.fixGiornoValido(istanza.getGiornoMeseNascita()));
         }// end of method
     },// end of single enumeration
     annoNascita("AnnoNascita", true, true, true, Bio_.annoNascita) {
@@ -269,7 +270,7 @@ public enum ParBio {
 
         @Override
         public void setBioValida(Bio istanza) {
-            istanza.setAnnoNascita(LibBio.fixCampoAnno(istanza.getAnnoNascita()));
+            istanza.setAnnoNascitaValido(LibBio.fixCampoAnno(istanza.getAnnoNascita()));
         }// end of method
     },// end of single enumeration
     noteNascita("NoteNascita", false, false, false, Bio_.noteNascita) {
@@ -308,7 +309,7 @@ public enum ParBio {
 
         @Override
         public void setBioValida(Bio istanza) {
-            istanza.setLuogoMorte(LibBio.fixCampoLuogo(istanza.getLuogoMorte()));
+            istanza.setLuogoMorteValido(LibBio.fixCampoLuogo(istanza.getLuogoMorte()));
         }// end of method
     },// end of single enumeration
     luogoMorteLink("LuogoMorteLink", false, false, true, Bio_.luogoMorteLink) {
@@ -329,7 +330,7 @@ public enum ParBio {
 
         @Override
         public void setBioValida(Bio istanza) {
-            istanza.setLuogoMorteLink(LibBio.fixCampoLuogo(istanza.getLuogoMorteLink()));
+            istanza.setLuogoMorteLinkValido(LibBio.fixCampoLuogo(istanza.getLuogoMorteLink()));
         }// end of method
     },// end of single enumeration
     luogoMorteAlt("LuogoMorteAlt", false, false, false, Bio_.luogoMorteAlt) {
@@ -366,7 +367,7 @@ public enum ParBio {
 
         @Override
         public void setBioValida(Bio istanza) {
-            istanza.setGiornoMeseMorte(LibBio.fixCampoGiorno(istanza.getGiornoMeseMorte()));
+            istanza.setGiornoMeseMorteValido(LibBio.fixGiornoValido(istanza.getGiornoMeseMorte()));
         }// end of method
     },// end of single enumeration
     annoMorte("AnnoMorte", true, true, true, Bio_.annoMorte) {
@@ -387,7 +388,7 @@ public enum ParBio {
 
         @Override
         public void setBioValida(Bio istanza) {
-            istanza.setAnnoMorte(LibBio.fixCampoAnno(istanza.getAnnoMorte()));
+            istanza.setAnnoMorteValido(LibBio.fixCampoAnno(istanza.getAnnoMorte()));
         }// end of method
     },// end of single enumeration
     noteMorte("NoteMorte", false, false, false, Bio_.noteMorte) {
@@ -474,7 +475,7 @@ public enum ParBio {
 
         @Override
         public void setBioValida(Bio istanza) {
-            istanza.setAttivita(LibBio.fixCampo(istanza.getAttivita()));
+            istanza.setAttivitaValido(LibBio.fixCampo(istanza.getAttivita()));
         }// end of method
     },// end of single enumeration
     attivita2("Attività2", false, false, true, Bio_.attivita2) {
@@ -495,7 +496,7 @@ public enum ParBio {
 
         @Override
         public void setBioValida(Bio istanza) {
-            istanza.setAttivita2(LibBio.fixCampo(istanza.getAttivita2()));
+            istanza.setAttivita2Valido(LibBio.fixCampo(istanza.getAttivita2()));
         }// end of method
     },// end of single enumeration
     attivita3("Attività3", false, false, true, Bio_.attivita3) {
@@ -516,7 +517,7 @@ public enum ParBio {
 
         @Override
         public void setBioValida(Bio istanza) {
-            istanza.setAttivita3(LibBio.fixCampo(istanza.getAttivita3()));
+            istanza.setAttivita3Valido(LibBio.fixCampo(istanza.getAttivita3()));
         }// end of method
     },// end of single enumeration
     attivitaAltre("AttivitàAltre", false, false, false, Bio_.attivitaAltre) {
@@ -555,7 +556,7 @@ public enum ParBio {
 
         @Override
         public void setBioValida(Bio istanza) {
-            istanza.setNazionalita(LibBio.fixCampo(istanza.getNazionalita()));
+            istanza.setNazionalitaValido(LibBio.fixCampo(istanza.getNazionalita()));
         }// end of method
     },// end of single enumeration
     cittadinanza("Cittadinanza", false, false, false, Bio_.cittadinanza) {

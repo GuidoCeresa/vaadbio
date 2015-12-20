@@ -17,7 +17,7 @@ public class DownloadPages {
 
     private ArrayList<Page> pages;
     private int numVociRegistrate = 0;
-
+    private ArrayList<WrapBio> wraps;
 
     /**
      * Costruttore
@@ -37,15 +37,16 @@ public class DownloadPages {
         pages = Api.leggePages(listaPageids);
 
         if (pages != null && pages.size() > 0) {
+            wraps = new ArrayList<WrapBio>();
             for (Page page : pages) {
                 wrap = new WrapBio(page);
                 if (wrap.isRegistrata()) {
                     numVociRegistrate++;
                 }// end of if cycle
-                wrap = null;
+                wraps.add(wrap);
             }// end of for cycle
         }// end of if cycle
-
+        int a = 87;
     }// end of method
 
 
@@ -55,6 +56,10 @@ public class DownloadPages {
 
     public int getNumVociRegistrate() {
         return numVociRegistrate;
+    }// end of getter method
+
+    public ArrayList<WrapBio> getWraps() {
+        return wraps;
     }// end of getter method
 
 }// end of class
