@@ -270,7 +270,7 @@ public enum ParBio {
 
         @Override
         public void setBioValida(Bio istanza) {
-            istanza.setAnnoNascitaValido(LibBio.fixCampoAnno(istanza.getAnnoNascita()));
+            istanza.setAnnoNascitaValido(LibBio.fixAnnoValido(istanza.getAnnoNascita()));
         }// end of method
     },// end of single enumeration
     noteNascita("NoteNascita", false, false, false, Bio_.noteNascita) {
@@ -388,7 +388,7 @@ public enum ParBio {
 
         @Override
         public void setBioValida(Bio istanza) {
-            istanza.setAnnoMorteValido(LibBio.fixCampoAnno(istanza.getAnnoMorte()));
+            istanza.setAnnoMorteValido(LibBio.fixAnnoValido(istanza.getAnnoMorte()));
         }// end of method
     },// end of single enumeration
     noteMorte("NoteMorte", false, false, false, Bio_.noteMorte) {

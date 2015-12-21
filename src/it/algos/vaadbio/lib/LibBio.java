@@ -1123,6 +1123,31 @@ public abstract class LibBio {
     } // fine del metodo
 
     /**
+     * Regola questo campo
+     * <p>
+     * Elimina il testo successivo a varii tag
+     *
+     * @param testoGrezzo in entrata da elaborare
+     * @return testoValido regolato in uscita
+     */
+    public static String fixAnnoValido(String testoGrezzo) {
+        String testoValido = "";
+        String tagCirca = "circa";
+
+        if (testoGrezzo == null || testoGrezzo.equals(VUOTO)) {
+            return VUOTO;
+        }// end of if cycle
+
+        if (testoGrezzo.contains(tagCirca)) {
+            return VUOTO;
+        }// end of if cycle
+
+        testoValido = LibBio.fixCampoBase(testoGrezzo);
+
+        return testoValido.trim();
+    } // fine del metodo
+
+    /**
      * Elimina il testo successivo alla virgola
      *
      * @param testoIn entrata da elaborare

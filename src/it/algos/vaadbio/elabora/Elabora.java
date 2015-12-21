@@ -92,8 +92,11 @@ public class Elabora {
      * Registra l'istanza così modificata
      */
     private void doInit() {
+        String tmplBioStandard;
+
         //--Costruisce il tmplBioStandard che serve per l'upload della singola voce sul server
-        new ElaboraTemplate(bio);
+        tmplBioStandard = new ElaboraTemplate(bio.getTmplBioServer()).getTmplBioStandard();
+        bio.setTmplBioStandard(tmplBioStandard);
 
         //--Elabora valori base di tutti i parametri
         new ElaboraParametri(bio);
