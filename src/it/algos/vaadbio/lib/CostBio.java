@@ -8,34 +8,37 @@ public abstract class CostBio {
 
 
     // generalissime
-    public static final String SPAZIO = " ";
+    public final static String SPAZIO = " ";
+    public final static String VUOTO = "";
+    public final static String A_CAPO = "\n";
+    public final static String MSG = "Messaggio di controllo";
 
     // generali
-    public static final String USA_DEBUG = "usaDebug";
-    public static final String USA_DIALOGHI_CONFERMA = "usaDialoghiConferma";
-    public static final String USA_CICLI_ANCHE_SENZA_BOT = "usaCicliAncheSenzaBot";
+    public final static String USA_DEBUG = "usaDebug";
+    public final static String USA_DIALOGHI_CONFERMA = "usaDialoghiConferma";
+    public final static String USA_CICLI_ANCHE_SENZA_BOT = "usaCicliAncheSenzaBot";
 
     // daemons
-    public static final String USA_CRONO_DOWNLOAD = "usaCronoDownload";
-    public static final String USA_CRONO_ELABORA = "usaCronoElabora";
-    public static final String USA_LOG_DAEMONS = "usaLogDaemons";
+    public final static String USA_CRONO_DOWNLOAD = "usaCronoDownload";
+    public final static String USA_CRONO_ELABORA = "usaCronoElabora";
+    public final static String USA_LOG_DAEMONS = "usaLogDaemons";
 
 
     // ciclo download
-    public static final String USA_LIMITE_DOWNLOAD = "usaLimiteDownload";
-    public static final String MAX_DOWNLOAD = "maxDownload";
-    public static final String USA_LOG_DOWNLOAD = "usaLogDownload";
-    public static final String USA_UPLOAD_DOWNLOADATA = "usaUploadDownloadata";
-    public static final String USA_CANCELLA_VOCE_MANCANTE = "usaCancellaVoceMancante";
-    public static final String NUM_PAGEIDS_REQUEST = "numPageidesRequest";
+    public final static String USA_LIMITE_DOWNLOAD = "usaLimiteDownload";
+    public final static String MAX_DOWNLOAD = "maxDownload";
+    public final static String USA_LOG_DOWNLOAD = "usaLogDownload";
+    public final static String USA_UPLOAD_DOWNLOADATA = "usaUploadDownloadata";
+    public final static String USA_CANCELLA_VOCE_MANCANTE = "usaCancellaVoceMancante";
+    public final static String NUM_PAGEIDS_REQUEST = "numPageidesRequest";
 
 
     // ciclo elabora
-    public static final String USA_LIMITE_ELABORA = "usaLimiteElabora";
-    public static final String MAX_ELABORA = "maxElabora";
-    public static final String USA_LOG_ELABORA = "usaLogElabora";
-    public static final String USA_UPLOAD_ELABORATA = "usaUploadElaborata";
-    public static final String USA_LOG_UPLOAD_ELABORATA = "usaLogUploadElaborata";
+    public final static String USA_LIMITE_ELABORA = "usaLimiteElabora";
+    public final static String MAX_ELABORA = "maxElabora";
+    public final static String USA_LOG_ELABORA = "usaLogElabora";
+    public final static String USA_UPLOAD_ELABORATA = "usaUploadElaborata";
+    public final static String USA_LOG_UPLOAD_ELABORATA = "usaLogUploadElaborata";
 
 
     //--chiavi mappa volori numerici passati come valore di ritorno multiplo

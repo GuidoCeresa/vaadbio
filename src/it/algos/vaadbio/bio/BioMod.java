@@ -42,7 +42,6 @@ public class BioMod extends ModulePop {
 
     // indirizzo interno del modulo (serve nei menu)
     public static String MENU_ADDRESS = "Bio";
-    private final String MSG = "Messaggio di controllo";
     private Action actionDownload = new Action("Download", FontAwesome.ARROW_DOWN);
     private Action actionElabora = new Action("Elabora", FontAwesome.REFRESH);
     private Action actionUpload = new Action("Upload", FontAwesome.ARROW_UP);
@@ -280,7 +279,7 @@ public class BioMod extends ModulePop {
                     } else {
                         newMsg += "<br>Le preferenze <b><span style=\"color:red\">non</span></b> prevedono di cancellare le voci";
                     }// end of if/else cycle
-                    ConfirmDialog dialog = new ConfirmDialog(MSG, newMsg,
+                    ConfirmDialog dialog = new ConfirmDialog(CostBio.MSG, newMsg,
                             new ConfirmDialog.Listener() {
                                 @Override
                                 public void onClose(ConfirmDialog dialog, boolean confirmed) {
@@ -348,7 +347,7 @@ public class BioMod extends ModulePop {
                     } else {
                         newMsg += "<br>Le preferenze <b><span style=\"color:red\">non</span></b> prevedono un upload della voce modificata";
                     }// end of if/else cycle
-                    ConfirmDialog dialog = new ConfirmDialog(MSG, newMsg,
+                    ConfirmDialog dialog = new ConfirmDialog(CostBio.MSG, newMsg,
                             new ConfirmDialog.Listener() {
                                 @Override
                                 public void onClose(ConfirmDialog dialog, boolean confirmed) {
@@ -401,7 +400,7 @@ public class BioMod extends ModulePop {
                     } else {
                         newMsg += "<br>Le preferenze <b><span style=\"color:red\">non</span></b> prevedono un upload della voce elaborata";
                     }// end of if/else cycle
-                    ConfirmDialog dialog = new ConfirmDialog(MSG, newMsg,
+                    ConfirmDialog dialog = new ConfirmDialog(CostBio.MSG, newMsg,
                             new ConfirmDialog.Listener() {
                                 @Override
                                 public void onClose(ConfirmDialog dialog, boolean confirmed) {

@@ -88,15 +88,6 @@ public abstract class LibBio {
      */
     public static final String PIPE = "|";
 
-    /**
-     * tag nullo/vuoto
-     */
-    public static final String VUOTO = "";
-
-    /**
-     * tag spazio
-     */
-    public static final String SPAZIO = " ";
 
 
     /**
@@ -1079,8 +1070,8 @@ public abstract class LibBio {
     private static String fixCampoBase(String testoGrezzo) {
         String testoValido;
 
-        if (testoGrezzo == null || testoGrezzo.equals(VUOTO)) {
-            return VUOTO;
+        if (testoGrezzo == null || testoGrezzo.equals(CostBio.VUOTO)) {
+            return CostBio.VUOTO;
         }// end of if cycle
 
         testoValido = testoGrezzo.trim();
@@ -1112,8 +1103,8 @@ public abstract class LibBio {
     public static String fixGiornoValido(String testoGrezzo) {
         String testoValido = "";
 
-        if (testoGrezzo == null || testoGrezzo.equals(VUOTO) || !testoGrezzo.contains(SPAZIO)) {
-            return VUOTO;
+        if (testoGrezzo == null || testoGrezzo.equals(CostBio.VUOTO) || !testoGrezzo.contains(CostBio.SPAZIO)) {
+            return CostBio.VUOTO;
         }// end of if cycle
 
         testoValido = LibBio.fixCampoBase(testoGrezzo);
@@ -1134,12 +1125,12 @@ public abstract class LibBio {
         String testoValido = "";
         String tagCirca = "circa";
 
-        if (testoGrezzo == null || testoGrezzo.equals(VUOTO)) {
-            return VUOTO;
+        if (testoGrezzo == null || testoGrezzo.equals(CostBio.VUOTO)) {
+            return CostBio.VUOTO;
         }// end of if cycle
 
         if (testoGrezzo.contains(tagCirca)) {
-            return VUOTO;
+            return CostBio.VUOTO;
         }// end of if cycle
 
         testoValido = LibBio.fixCampoBase(testoGrezzo);

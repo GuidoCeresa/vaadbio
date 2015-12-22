@@ -5,16 +5,16 @@ import com.vaadin.server.VaadinRequest;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
 import it.algos.vaad.wiki.WikiLogin;
+import it.algos.vaadbio.anno.AnnoMod;
 import it.algos.vaadbio.bio.BioMod;
 import it.algos.vaadbio.biologo.BioLogoMod;
+import it.algos.vaadbio.giorno.GiornoMod;
 import it.algos.vaadbio.lib.LibBio;
 import it.algos.webbase.domain.pref.PrefMod;
 import it.algos.webbase.domain.utente.UtenteModulo;
 import it.algos.webbase.domain.vers.VersMod;
 import it.algos.webbase.web.lib.LibSession;
 import it.algos.webbase.web.ui.AlgosUI;
-import it.algos.vaadbio.anno.AnnoMod;
-import it.algos.vaadbio.giorno.GiornoMod;
 
 /**
  * Crea l'interfaccia utente (User Interface) iniziale dell'applicazione
@@ -81,9 +81,9 @@ public class VaadbioUI extends AlgosUI {
         this.addModulo(new UtenteModulo("User"));
         this.addModulo(VersMod.getInstance());
         this.addModulo(BioLogoMod.getInstance());
-        this.addModulo( PrefMod.getInstance());
-        this.addModulo( GiornoMod.getInstance());
-        this.addModulo( AnnoMod.getInstance());
+        this.addModulo(PrefMod.getInstance());
+        this.addModulo(GiornoMod.getInstance());
+        this.addModulo(AnnoMod.getInstance());
         this.addModulo(BioMod.getInstance());
     }// end of method
 

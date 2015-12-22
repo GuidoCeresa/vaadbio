@@ -1,5 +1,6 @@
 package it.algos.vaadbio.giorno;
 
+import com.vaadin.addon.jpacontainer.filter.Filters;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.webbase.web.entity.BaseEntity;
 import it.algos.webbase.web.query.AQuery;
@@ -139,7 +140,7 @@ public class Giorno extends BaseEntity {
      */
     @SuppressWarnings("unchecked")
     public synchronized static ArrayList<Giorno> findAll() {
-        return (ArrayList<Giorno>) AQuery.getList(Giorno.class);
+        return (ArrayList<Giorno>) AQuery.getLista(Giorno.class);
     }// end of method
 
     public static String fix(String testoIn) {
