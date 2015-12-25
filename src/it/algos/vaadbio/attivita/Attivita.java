@@ -3,6 +3,7 @@ package it.algos.vaadbio.attivita;
 import it.algos.webbase.web.entity.BaseEntity;
 import it.algos.webbase.web.query.AQuery;
 import org.apache.commons.beanutils.BeanUtils;
+import org.eclipse.persistence.annotations.Index;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.Entity;
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 public class Attivita extends BaseEntity {
 
     @NotEmpty
+    @Index
     private String singolare = "";
 
     @NotEmpty

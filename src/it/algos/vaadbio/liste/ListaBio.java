@@ -122,6 +122,7 @@ public abstract class ListaBio {
         if (!testo.equals(CostBio.VUOTO)) {
             testo = testo.trim();
             if (debug) {
+                testo = titoloPagina + CostBio.A_CAPO + CostBio.A_CAPO + testo;
                 Api.scriveVoce(PAGINA_PROVA, testo);
 //                testo = LibWiki.setBold(titoloPagina) + CostBio.A_CAPO + testo;
 //                paginaModificata = new EditBio(PAGINA_PROVA, testo, summary);
@@ -190,7 +191,7 @@ public abstract class ListaBio {
 
         if (listaBiografie != null && listaBiografie.size() > 0) {
             for (String riga : listaBiografie) {
-                text+="*";
+                text += "*";
                 text += riga;
                 text += CostBio.A_CAPO;
             }// end of for cycle

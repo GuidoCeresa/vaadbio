@@ -128,7 +128,7 @@ public class ElaboraLink {
 
         if (bio != null) {
             attivitaValida = bio.getAttivitaValida();
-            attivita = gatAttivita(attivitaValida);
+            attivita = getAttivita(attivitaValida);
             bio.setAttivitaPunta(attivita);
         }// fine del blocco if
     } // fine del metodo
@@ -139,7 +139,7 @@ public class ElaboraLink {
 
         if (bio != null) {
             attivitaValida = bio.getAttivita2Valida();
-            attivita = gatAttivita(attivitaValida);
+            attivita = getAttivita(attivitaValida);
             bio.setAttivita2Punta(attivita);
         }// fine del blocco if
     } // fine del metodo
@@ -150,12 +150,12 @@ public class ElaboraLink {
 
         if (bio != null) {
             attivitaValida = bio.getAttivita3Valida();
-            attivita = gatAttivita(attivitaValida);
+            attivita = getAttivita(attivitaValida);
             bio.setAttivita3Punta(attivita);
         }// fine del blocco if
     } // fine del metodo
 
-    private Attivita gatAttivita(String attivitaValida) {
+    private Attivita getAttivita(String attivitaValida) {
         Attivita attivita = null;
 
         if (attivitaValida != null && !attivitaValida.equals(CostBio.VUOTO)) {

@@ -74,6 +74,11 @@ public class BioMod extends ModulePop {
                 Bio_.ultimaLettura,
                 Bio_.ultimaElaborazione,
 
+                Bio_.didascaliaGiornoNato,
+                Bio_.didascaliaGiornoMorto,
+                Bio_.didascaliaAnnoNato,
+                Bio_.didascaliaAnnoMorto,
+
                 Bio_.attivita,
                 Bio_.attivita2,
                 Bio_.attivita3,

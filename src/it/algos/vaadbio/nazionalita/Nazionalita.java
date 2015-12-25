@@ -3,6 +3,7 @@ package it.algos.vaadbio.nazionalita;
 import it.algos.webbase.web.entity.BaseEntity;
 import it.algos.webbase.web.query.AQuery;
 import org.apache.commons.beanutils.BeanUtils;
+import org.eclipse.persistence.annotations.Index;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.Entity;
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 public class Nazionalita extends BaseEntity {
 
     @NotEmpty
+    @Index
     private String singolare = "";
 
     @NotEmpty
@@ -29,15 +31,15 @@ public class Nazionalita extends BaseEntity {
      * Costruttore senza argomenti
      * Necessario per le specifiche JavaBean
      */
-	public Nazionalita() {
-		this("","");
+    public Nazionalita() {
+        this("", "");
     }// end of nullary constructor
 
     public Nazionalita(String singolare, String plurale) {
-		super();
+        super();
         this.setSingolare(singolare);
         this.setPlurale(plurale);
-	}// end of general constructor
+    }// end of general constructor
 
     /**
      * Recupera una istanza di Bolla usando la query standard della Primary Key
@@ -45,18 +47,18 @@ public class Nazionalita extends BaseEntity {
      * @param id valore della Primary Key
      * @return istanza di Bolla, null se non trovata
      */
-	public static Nazionalita find(long id) {
-		Nazionalita instance = null;
-		BaseEntity entity = AQuery.queryById(Nazionalita.class, id);
+    public static Nazionalita find(long id) {
+        Nazionalita instance = null;
+        BaseEntity entity = AQuery.queryById(Nazionalita.class, id);
 
-		if (entity != null) {
-			if (entity instanceof Nazionalita) {
-				instance = (Nazionalita) entity;
-			}// end of if cycle
-		}// end of if cycle
+        if (entity != null) {
+            if (entity instanceof Nazionalita) {
+                instance = (Nazionalita) entity;
+            }// end of if cycle
+        }// end of if cycle
 
-		return instance;
-	}// end of method
+        return instance;
+    }// end of method
 
     /**
      * Recupera una istanza di Nazionalita usando la query di una property specifica

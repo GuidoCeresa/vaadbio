@@ -1,6 +1,7 @@
 package it.algos.vaadbio.liste;
 
 import it.algos.vaadbio.giorno.Giorno;
+import it.algos.vaadbio.lib.CostBio;
 import it.algos.webbase.web.entity.EM;
 
 import javax.persistence.EntityManager;
@@ -42,12 +43,11 @@ public class ListaGiornoNato extends ListaGiorno {
     protected void elaboraListaBiografie() {
         Giorno giorno = super.getGiorno();
         String giornoTxt = giorno.getTitolo();
-        String queryTxt = "";
+        String queryTxt = CostBio.VUOTO;
 
         queryTxt += "select bio.didascaliaGiornoNato from Bio bio where bio.giornoMeseNascita='";
         queryTxt += giornoTxt;
-        queryTxt += "' order by bio.annoNascita,bio.cognome";
-        ArrayList<Long> lista = null;
+        queryTxt += "' order by bio.annoNatoPunta.ordinamento,bio.cognome";
         List vettore;
         EntityManager manager = EM.createEntityManager();
         Query query = manager.createQuery(queryTxt);
