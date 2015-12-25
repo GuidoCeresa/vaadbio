@@ -15,6 +15,7 @@ import it.algos.webbase.domain.utente.UtenteModulo;
 import it.algos.webbase.domain.vers.VersMod;
 import it.algos.webbase.web.lib.LibSession;
 import it.algos.webbase.web.ui.AlgosUI;
+import it.algos.vaadbio.nazionalita.NazionalitaMod;
 import it.algos.vaadbio.attivita.AttivitaMod;
 import it.algos.vaadbio.attivita.AttivitaMod;
 import it.algos.vaadbio.attivita.AttivitaMod;
@@ -55,7 +56,7 @@ public class VaadbioUI extends AlgosUI {
 //        AlgosUI.DEBUG_GUI = Pref.getBool(LibWiki.DEBUG, true);
         menuAddressModuloPartenza = "Wiki";
         super.init(request);
-        footerLayout.addComponent(new Label("Vaadbio versione 1.3 del 21 dic 2015"));
+        footerLayout.addComponent(new Label("Vaadbio versione 1.4 del 25 dic 2015"));
 
 //        this.checkLogin();
         boolean loggato = false;
@@ -86,6 +87,7 @@ public class VaadbioUI extends AlgosUI {
         this.addModulo(new BioLogoMod());
         this.addModulo(new PrefMod());
         this.addModulo(new AttivitaMod());
+        this.addModulo(new NazionalitaMod());
         this.addModulo(new GiornoMod());
         this.addModulo(new AnnoMod());
         this.addModulo(new BioMod());

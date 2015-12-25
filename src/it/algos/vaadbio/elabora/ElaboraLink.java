@@ -1,9 +1,11 @@
 package it.algos.vaadbio.elabora;
 
 import it.algos.vaadbio.anno.Anno;
+import it.algos.vaadbio.attivita.Attivita;
 import it.algos.vaadbio.bio.Bio;
 import it.algos.vaadbio.giorno.Giorno;
-import it.algos.vaadbio.lib.LibBio;
+import it.algos.vaadbio.lib.CostBio;
+import it.algos.vaadbio.nazionalita.Nazionalita;
 
 /**
  * Created by gac on 19 dic 2015.
@@ -32,6 +34,10 @@ public class ElaboraLink {
             fixGiornoMortoPunta(bio);
             fixAnnoNatoPunta(bio);
             fixAnnoMortoPunta(bio);
+            fixAttivita(bio);
+            fixAttivita2(bio);
+            fixAttivita3(bio);
+            fixNazionalita(bio);
 
 //            bioGrails.attivitaLink = AttivitaService.getAttivita(bioGrails.attivita)
 //            bioGrails.attivita2Link = AttivitaService.getAttivita(bioGrails.attivita2)
@@ -73,7 +79,7 @@ public class ElaboraLink {
     private Giorno getGiorno(String giornoTestoValido) {
         Giorno giorno = null;
 
-        if (giornoTestoValido != null && !giornoTestoValido.equals("")) {
+        if (giornoTestoValido != null && !giornoTestoValido.equals(CostBio.VUOTO)) {
             giorno = Giorno.findByNome(giornoTestoValido);
             if (giorno == null) {
                 giorno = Giorno.findByTitolo(giornoTestoValido);
@@ -109,11 +115,68 @@ public class ElaboraLink {
     private Anno getAnno(String annoTestoValido) {
         Anno anno = null;
 
-        if (annoTestoValido != null && !annoTestoValido.equals("")) {
+        if (annoTestoValido != null && !annoTestoValido.equals(CostBio.VUOTO)) {
             anno = Anno.findByNome(annoTestoValido);
         }// fine del blocco if
 
         return anno;
+    } // fine del metodo
+
+    private void fixAttivita(Bio bio) {
+        Attivita attivita = null;
+        String attivitaValida;
+
+        if (bio != null) {
+            attivitaValida = bio.getAttivitaValida();
+            attivita = gatAttivita(attivitaValida);
+            bio.setAttivitaPunta(attivita);
+        }// fine del blocco if
+    } // fine del metodo
+
+    private void fixAttivita2(Bio bio) {
+        Attivita attivita = null;
+        String attivitaValida;
+
+        if (bio != null) {
+            attivitaValida = bio.getAttivita2Valida();
+            attivita = gatAttivita(attivitaValida);
+            bio.setAttivita2Punta(attivita);
+        }// fine del blocco if
+    } // fine del metodo
+
+    private void fixAttivita3(Bio bio) {
+        Attivita attivita = null;
+        String attivitaValida;
+
+        if (bio != null) {
+            attivitaValida = bio.getAttivita3Valida();
+            attivita = gatAttivita(attivitaValida);
+            bio.setAttivita3Punta(attivita);
+        }// fine del blocco if
+    } // fine del metodo
+
+    private Attivita gatAttivita(String attivitaValida) {
+        Attivita attivita = null;
+
+        if (attivitaValida != null && !attivitaValida.equals(CostBio.VUOTO)) {
+            attivita = Attivita.findBySingolare(attivitaValida);
+        }// fine del blocco if
+
+        return attivita;
+    } // fine del metodo
+
+
+    private void fixNazionalita(Bio bio) {
+        Nazionalita nazionalita = null;
+        String nazionalitaValida;
+
+        if (bio != null) {
+            nazionalitaValida = bio.getNazionalitaValida();
+            if (nazionalitaValida != null && !nazionalitaValida.equals(CostBio.VUOTO)) {
+                nazionalita = Nazionalita.findBySingolare(nazionalitaValida);
+            }// fine del blocco if
+            bio.setNazionalitaPunta(nazionalita);
+        }// fine del blocco if
     } // fine del metodo
 
 }// end of class

@@ -8,6 +8,7 @@
         <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
 
         <class>it.algos.webbase.web.entity.BaseEntity</class>
+		<class>it.algos.vaadbio.nazionalita.Nazionalita</class>
 		<class>it.algos.vaadbio.attivita.Attivita</class>
 		<class>it.algos.vaadbio.attivita.Attivita</class>
 		<class>it.algos.vaadbio.attivita.Attivita</class>

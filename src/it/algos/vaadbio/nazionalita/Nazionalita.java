@@ -1,4 +1,4 @@
-package it.algos.vaadbio.attivita;
+package it.algos.vaadbio.nazionalita;
 
 import it.algos.webbase.web.entity.BaseEntity;
 import it.algos.webbase.web.query.AQuery;
@@ -17,7 +17,7 @@ import java.util.ArrayList;
  * 4) la classe non deve contenere nessun metodo per la gestione degli eventi
  */
 @Entity
-public class Attivita extends BaseEntity {
+public class Nazionalita extends BaseEntity {
 
     @NotEmpty
     private String singolare = "";
@@ -29,15 +29,15 @@ public class Attivita extends BaseEntity {
      * Costruttore senza argomenti
      * Necessario per le specifiche JavaBean
      */
-    public Attivita() {
-        this("", "");
+	public Nazionalita() {
+		this("","");
     }// end of nullary constructor
 
-    public Attivita(String singolare, String plurale) {
-        super();
+    public Nazionalita(String singolare, String plurale) {
+		super();
         this.setSingolare(singolare);
         this.setPlurale(plurale);
-    }// end of general constructor
+	}// end of general constructor
 
     /**
      * Recupera una istanza di Bolla usando la query standard della Primary Key
@@ -45,32 +45,32 @@ public class Attivita extends BaseEntity {
      * @param id valore della Primary Key
      * @return istanza di Bolla, null se non trovata
      */
-    public static Attivita find(long id) {
-        Attivita instance = null;
-        BaseEntity entity = AQuery.queryById(Attivita.class, id);
+	public static Nazionalita find(long id) {
+		Nazionalita instance = null;
+		BaseEntity entity = AQuery.queryById(Nazionalita.class, id);
 
-        if (entity != null) {
-            if (entity instanceof Attivita) {
-                instance = (Attivita) entity;
-            }// end of if cycle
-        }// end of if cycle
+		if (entity != null) {
+			if (entity instanceof Nazionalita) {
+				instance = (Nazionalita) entity;
+			}// end of if cycle
+		}// end of if cycle
 
-        return instance;
-    }// end of method
+		return instance;
+	}// end of method
 
     /**
-     * Recupera una istanza di Attivita usando la query di una property specifica
+     * Recupera una istanza di Nazionalita usando la query di una property specifica
      *
      * @param singolare valore della property Singolare
      * @return istanza di Bolla, null se non trovata
      */
-    public static Attivita findBySingolare(String singolare) {
-        Attivita instance = null;
-        BaseEntity entity = AQuery.queryOne(Attivita.class, Attivita_.singolare, singolare);
+    public static Nazionalita findBySingolare(String singolare) {
+        Nazionalita instance = null;
+        BaseEntity entity = AQuery.queryOne(Nazionalita.class, Nazionalita_.singolare, singolare);
 
         if (entity != null) {
-            if (entity instanceof Attivita) {
-                instance = (Attivita) entity;
+            if (entity instanceof Nazionalita) {
+                instance = (Nazionalita) entity;
             }// end of if cycle
         }// end of if cycle
 
@@ -78,18 +78,18 @@ public class Attivita extends BaseEntity {
     }// end of method
 
     /**
-     * Recupera una istanza di Attivita usando la query di una property specifica
+     * Recupera una istanza di Nazionalita usando la query di una property specifica
      *
      * @param plurale valore della property plurale
      * @return istanza di Bolla, null se non trovata
      */
-    public static Attivita findByPlurale(String plurale) {
-        Attivita instance = null;
-        BaseEntity entity = AQuery.queryOne(Attivita.class, Attivita_.plurale, plurale);
+    public static Nazionalita findByPlurale(String plurale) {
+        Nazionalita instance = null;
+        BaseEntity entity = AQuery.queryOne(Nazionalita.class, Nazionalita_.plurale, plurale);
 
         if (entity != null) {
-            if (entity instanceof Attivita) {
-                instance = (Attivita) entity;
+            if (entity instanceof Nazionalita) {
+                instance = (Nazionalita) entity;
             }// end of if cycle
         }// end of if cycle
 
@@ -103,7 +103,7 @@ public class Attivita extends BaseEntity {
      */
     public synchronized static int count() {
         int totRec = 0;
-        long totTmp = AQuery.getCount(Attivita.class);
+        long totTmp = AQuery.getCount(Nazionalita.class);
 
         if (totTmp > 0) {
             totRec = (int) totTmp;
@@ -115,11 +115,11 @@ public class Attivita extends BaseEntity {
     /**
      * Recupera una lista (array) di tutti i records della Domain Class
      *
-     * @return lista di tutte le istanze di Attivita
+     * @return lista di tutte le istanze di Nazionalita
      */
     @SuppressWarnings("unchecked")
-    public synchronized static ArrayList<Attivita> findAll() {
-        return (ArrayList<Attivita>) AQuery.getList(Attivita.class);
+    public synchronized static ArrayList<Nazionalita> findAll() {
+        return (ArrayList<Nazionalita>) AQuery.getList(Nazionalita.class);
     }// end of method
 
     @Override
@@ -148,13 +148,13 @@ public class Attivita extends BaseEntity {
      * Una DIVERSA istanza (indirizzo di memoria) con gi STESSI valori (property)
      * È obbligatoria invocare questo metodo all'interno di un codice try/catch
      *
-     * @return nuova istanza di Attivita con gli stessi valori dei parametri di questa istanza
+     * @return nuova istanza di Nazionalita con gli stessi valori dei parametri di questa istanza
      */
     @Override
     @SuppressWarnings("all")
-    public Attivita clone() throws CloneNotSupportedException {
+    public Nazionalita clone() throws CloneNotSupportedException {
         try {
-            return (Attivita) BeanUtils.cloneBean(this);
+            return (Nazionalita) BeanUtils.cloneBean(this);
         } catch (Exception ex) {
             throw new CloneNotSupportedException();
         }// fine del blocco try-catch

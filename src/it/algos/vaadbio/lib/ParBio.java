@@ -2,7 +2,6 @@ package it.algos.vaadbio.lib;
 
 import it.algos.vaadbio.bio.Bio;
 import it.algos.vaadbio.bio.Bio_;
-import it.algos.vaadbio.giorno.Giorno;
 
 import javax.persistence.metamodel.Attribute;
 import javax.persistence.metamodel.SingularAttribute;
@@ -475,7 +474,7 @@ public enum ParBio {
 
         @Override
         public void setBioValida(Bio istanza) {
-            istanza.setAttivitaValido(LibBio.fixCampo(istanza.getAttivita()));
+            istanza.setAttivitaValida(LibBio.fixCampo(istanza.getAttivita()));
         }// end of method
     },// end of single enumeration
     attivita2("Attività2", false, false, true, Bio_.attivita2) {
@@ -496,7 +495,7 @@ public enum ParBio {
 
         @Override
         public void setBioValida(Bio istanza) {
-            istanza.setAttivita2Valido(LibBio.fixCampo(istanza.getAttivita2()));
+            istanza.setAttivita2Valida(LibBio.fixCampo(istanza.getAttivita2()));
         }// end of method
     },// end of single enumeration
     attivita3("Attività3", false, false, true, Bio_.attivita3) {
@@ -517,7 +516,7 @@ public enum ParBio {
 
         @Override
         public void setBioValida(Bio istanza) {
-            istanza.setAttivita3Valido(LibBio.fixCampo(istanza.getAttivita3()));
+            istanza.setAttivita3Valida(LibBio.fixCampo(istanza.getAttivita3()));
         }// end of method
     },// end of single enumeration
     attivitaAltre("AttivitàAltre", false, false, false, Bio_.attivitaAltre) {
@@ -556,7 +555,7 @@ public enum ParBio {
 
         @Override
         public void setBioValida(Bio istanza) {
-            istanza.setNazionalitaValido(LibBio.fixCampo(istanza.getNazionalita()));
+            istanza.setNazionalitaValida(LibBio.fixCampo(istanza.getNazionalita()));
         }// end of method
     },// end of single enumeration
     cittadinanza("Cittadinanza", false, false, false, Bio_.cittadinanza) {

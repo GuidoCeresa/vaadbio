@@ -1,8 +1,10 @@
 package it.algos.vaadbio.bio;
 
 import it.algos.vaadbio.anno.Anno;
+import it.algos.vaadbio.attivita.Attivita;
 import it.algos.vaadbio.giorno.Giorno;
 import it.algos.vaadbio.lib.LibBio;
+import it.algos.vaadbio.nazionalita.Nazionalita;
 import it.algos.webbase.web.entity.BaseEntity;
 import it.algos.webbase.web.lib.LibTime;
 import it.algos.webbase.web.query.AQuery;
@@ -169,10 +171,10 @@ public class Bio extends BaseEntity {
     private String giornoMeseMorteValido = "";
     private String annoMorteValido = "";
 
-    private String attivitaValido = "";
-    private String attivita2Valido = "";
-    private String attivita3Valido = "";
-    private String nazionalitaValido = "";
+    private String attivitaValida = "";
+    private String attivita2Valida = "";
+    private String attivita3Valida = "";
+    private String nazionalitaValida = "";
 
 
     // campi di collegamenti alle altre tavole specializzate
@@ -184,18 +186,23 @@ public class Bio extends BaseEntity {
     private Anno annoNatoPunta = null;
     @ManyToOne
     private Anno annoMortoPunta = null;
+    @ManyToOne
+    private Attivita attivitaPunta = null;
+    @ManyToOne
+    private Attivita attivita2Punta = null;
+    @ManyToOne
+    private Attivita attivita3Punta = null;
+    @ManyToOne
+    private Nazionalita nazionalitaPunta = null;
 
-//        attivitaLista = null;
-//    Attivita attivita2Lista = null;
-//    Attivita attivita3Lista = null;
 //    Nazionalita nazionalitaLista = null;
 //    Localita luogoNatoLista= null;
 //    Localita luogoMortoLista = null;
 //    Nome nomeLista = null;
 //    Cognome cognomeLista = null;
 
-//    private String didascaliaBase;
-    private String didascaliaGiornoNato="";
+    //    private String didascaliaBase;
+    private String didascaliaGiornoNato = "";
 //    private String didascaliaGiornoMorto;
 //    private String didascaliaAnnoNato;
 //    private String didascaliaAnnoMorto;
@@ -836,36 +843,36 @@ public class Bio extends BaseEntity {
         this.annoMorteValido = annoMorteValido;
     }//end of setter method
 
-    public String getAttivitaValido() {
-        return attivitaValido;
+    public String getAttivitaValida() {
+        return attivitaValida;
     }// end of getter method
 
-    public void setAttivitaValido(String attivitaValido) {
-        this.attivitaValido = attivitaValido;
+    public void setAttivitaValida(String attivitaValido) {
+        this.attivitaValida = attivitaValido;
     }//end of setter method
 
-    public String getAttivita2Valido() {
-        return attivita2Valido;
+    public String getAttivita2Valida() {
+        return attivita2Valida;
     }// end of getter method
 
-    public void setAttivita2Valido(String attivita2Valido) {
-        this.attivita2Valido = attivita2Valido;
+    public void setAttivita2Valida(String attivita2Valido) {
+        this.attivita2Valida = attivita2Valido;
     }//end of setter method
 
-    public String getAttivita3Valido() {
-        return attivita3Valido;
+    public String getAttivita3Valida() {
+        return attivita3Valida;
     }// end of getter method
 
-    public void setAttivita3Valido(String attivita3Valido) {
-        this.attivita3Valido = attivita3Valido;
+    public void setAttivita3Valida(String attivita3Valido) {
+        this.attivita3Valida = attivita3Valido;
     }//end of setter method
 
-    public String getNazionalitaValido() {
-        return nazionalitaValido;
+    public String getNazionalitaValida() {
+        return nazionalitaValida;
     }// end of getter method
 
-    public void setNazionalitaValido(String nazionalitaValido) {
-        this.nazionalitaValido = nazionalitaValido;
+    public void setNazionalitaValida(String nazionalitaValido) {
+        this.nazionalitaValida = nazionalitaValido;
     }//end of setter method
 
     public Giorno getGiornoNatoPunta() {
@@ -908,4 +915,35 @@ public class Bio extends BaseEntity {
         this.didascaliaGiornoNato = didascaliaGiornoNato;
     }//end of setter method
 
+    public Attivita getAttivitaPunta() {
+        return attivitaPunta;
+    }// end of getter method
+
+    public void setAttivitaPunta(Attivita attivitaPunta) {
+        this.attivitaPunta = attivitaPunta;
+    }//end of setter method
+
+    public Attivita getAttivita2Punta() {
+        return attivita2Punta;
+    }// end of getter method
+
+    public void setAttivita2Punta(Attivita attivita2Punta) {
+        this.attivita2Punta = attivita2Punta;
+    }//end of setter method
+
+    public Attivita getAttivita3Punta() {
+        return attivita3Punta;
+    }// end of getter method
+
+    public void setAttivita3Punta(Attivita attivita3Punta) {
+        this.attivita3Punta = attivita3Punta;
+    }//end of setter method
+
+    public Nazionalita getNazionalitaPunta() {
+        return nazionalitaPunta;
+    }// end of getter method
+
+    public void setNazionalitaPunta(Nazionalita nazionalitaPunta) {
+        this.nazionalitaPunta = nazionalitaPunta;
+    }//end of setter method
 }// end of entity class

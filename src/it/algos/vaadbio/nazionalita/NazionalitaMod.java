@@ -1,16 +1,18 @@
-package it.algos.vaadbio.attivita;
+package it.algos.vaadbio.nazionalita;
 
 
-import com.vaadin.event.Action;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.MenuBar;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
+import it.algos.vaadbio.attivita.Attivita;
 import it.algos.vaadbio.ciclo.CicloDownload;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.webbase.domain.pref.Pref;
 import it.algos.webbase.web.dialog.ConfirmDialog;
 import it.algos.webbase.web.module.ModulePop;
+import javax.persistence.metamodel.Attribute;
+import com.vaadin.event.Action;
 import it.algos.webbase.web.table.ATable;
 
 /**
@@ -18,17 +20,17 @@ import it.algos.webbase.web.table.ATable;
  * Passa alla superclasse il nome e la classe specifica
  */
 @SuppressWarnings("serial")
-public class AttivitaMod extends ModulePop {
+public class NazionalitaMod extends ModulePop {
 
-    public static String MENU_ADDRESS = "Attivita";
+    public static String MENU_ADDRESS = "Nazionalita";
 
     private Action actionUpload = new Action("Upload lista", FontAwesome.ARROW_UP);
 
     /**
      * Costruttore standard senza parametri
      */
-    public AttivitaMod() {
-        super(Attivita.class, MENU_ADDRESS);
+    public NazionalitaMod() {
+        super(Nazionalita.class, MENU_ADDRESS);
         ATable tavola = getTable();
         addActionHandler(tavola);
     }// end of constructor
@@ -82,7 +84,7 @@ public class AttivitaMod extends ModulePop {
                 boolean usaLog = Pref.getBool(CostBio.USA_LOG_DOWNLOAD, false);
                 if (usaDialoghi) {
                     String newMsg;
-                    newMsg = "Esegue un ciclo (<b><span style=\"color:green\">update</span></b>) di aggiunta attività</br>";
+                    newMsg = "Esegue un ciclo (<b><span style=\"color:green\">update</span></b>) di aggiunta nazionalità</br>";
                     if (usaLog) {
                         newMsg += "<br>Le preferenze prevedono di registrare il risultato nei <b><span style=\"color:red\">log</span></b>";
                     } else {
@@ -115,16 +117,16 @@ public class AttivitaMod extends ModulePop {
      * Esegue il download
      */
     public void esegueDownload() {
-        AttivitaService.download();
+        NazionalitaService.download();
     }// end of method
 
     /**
      * Esegue l'upload per la lista dei nati
      */
     public void esegueUpload() {
-        Attivita attivita = getAttivita();
+        Nazionalita nazionalita = getNazionalita();
 
-        if (attivita != null) {
+        if (nazionalita != null) {
         } else {
             Notification.show("Devi selezionare una riga per creare la lista su wikipedia");
         }// end of if/else cycle
@@ -133,8 +135,8 @@ public class AttivitaMod extends ModulePop {
     /**
      * Recupera la voce selezionata
      */
-    public Attivita getAttivita() {
-        Attivita attivita = null;
+    public Nazionalita getNazionalita() {
+        Nazionalita nazionalita = null;
         long idSelected = 0;
         ATable tavola = getTable();
 
@@ -143,11 +145,12 @@ public class AttivitaMod extends ModulePop {
         }// end of if cycle
 
         if (idSelected > 0) {
-            attivita = Attivita.find(idSelected);
+            nazionalita = Nazionalita.find(idSelected);
         }// end of if cycle
 
-        return attivita;
+        return nazionalita;
     }// end of method
 
 }// end of class
+
 
