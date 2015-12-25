@@ -6,7 +6,12 @@ import it.algos.vaadbio.lib.CostBio;
 
 /**
  * Created by gac on 23 dic 2015.
- * .
+ * <p>
+ * Didascalia specializzata per le liste costruibili a partire dal template Bio.
+ * Cronologiche (in namespace principale) di nati e morti nel giorno o nell'anno
+ * Attività e nazionalità (in Progetto:Biografie).
+ * <p>
+ * Sovrascritta nelle sottoclassi concrete
  */
 public abstract class Didascalia {
 
@@ -362,6 +367,7 @@ public abstract class Didascalia {
 
     /**
      * Costruisce il blocco finale (potrebbe non esserci)
+     * Sovrascritto
      *
      * @return testo
      */
@@ -439,11 +445,11 @@ public abstract class Didascalia {
         }// fine del blocco if
 
         // costruisce il blocco finale (potrebbe non esserci)
-        if ( !annoMorte.equals(CostBio.VUOTO)) {
+        if (!annoMorte.equals(CostBio.VUOTO)) {
             text = tagParIni + CostBio.TAG_MORTO_CRONO;
             text += LibWiki.setQuadre(annoMorte);
             text += tagParEnd;
-                }// fine del blocco if
+        }// fine del blocco if
 
         if (text.equals(tagParIni + tagParEnd)) {
             text = CostBio.VUOTO;

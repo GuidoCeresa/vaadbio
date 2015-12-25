@@ -84,10 +84,10 @@ public class Bio_ extends BaseEntity_ {
     public static volatile SingularAttribute<Bio, String> giornoMeseMorteValido;
     public static volatile SingularAttribute<Bio, String> annoMorteValido;
 
-    public static volatile SingularAttribute<Bio, String> attivitaValido;
-    public static volatile SingularAttribute<Bio, String> attivita2Valido;
-    public static volatile SingularAttribute<Bio, String> attivita3Valido;
-    public static volatile SingularAttribute<Bio, String> nazionalitaValido;
+    public static volatile SingularAttribute<Bio, String> attivitaValida;
+    public static volatile SingularAttribute<Bio, String> attivita2Valida;
+    public static volatile SingularAttribute<Bio, String> attivita3Valida;
+    public static volatile SingularAttribute<Bio, String> nazionalitaValida;
 
     public static volatile SingularAttribute<Bio, Giorno> giornoNatoPunta;
     public static volatile SingularAttribute<Bio, Giorno> giornoMortoPunta;
@@ -95,5 +95,9 @@ public class Bio_ extends BaseEntity_ {
     public static volatile SingularAttribute<Bio, Anno> annoMortoPunta;
 
     public static volatile SingularAttribute<Bio, String> didascaliaGiornoNato;
+    public static volatile SingularAttribute<Bio, String> didascaliaGiornoMorto;
+    public static volatile SingularAttribute<Bio, String> didascaliaAnnoNato;
+    public static volatile SingularAttribute<Bio, String> didascaliaAnnoMorto;
+
 
 }// end of entity class

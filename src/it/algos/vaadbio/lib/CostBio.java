@@ -15,6 +15,9 @@ public abstract class CostBio {
     public final static String PUNTI = "...";
     public final static String TAG_NATO_CRONO = "n." + SPAZIO;
     public final static String TAG_MORTO_CRONO = "†" + SPAZIO;
+    public final static String TAG_PARENTESI_INI = SPAZIO + "(";
+    public final static String TAG_PARENTESI_END = ")";
+    public final static String TAG_SEPARATORE = SPAZIO + "-" + SPAZIO;
 
     // generali
     public final static String USA_DEBUG = "usaDebug";

@@ -20,7 +20,6 @@ import it.algos.webbase.web.dialog.EditDialog;
 import it.algos.webbase.web.form.AForm;
 import it.algos.webbase.web.lib.LibNum;
 import it.algos.webbase.web.module.ModulePop;
-import it.algos.webbase.web.navigator.NavPlaceholder;
 import it.algos.webbase.web.search.SearchManager;
 import it.algos.webbase.web.table.ATable;
 
@@ -104,7 +103,18 @@ public class BioMod extends ModulePop {
      * Serve anche per l'ordine con cui vengono presentati i campi nella scheda <br>
      */
     protected Attribute<?, ?>[] creaFieldsForm() {
-        return new Attribute[]{Bio_.pageid, Bio_.title, Bio_.templateEsiste, Bio_.templateValido, Bio_.templatesUguali, Bio_.ultimaLettura, Bio_.ultimaElaborazione,Bio_.didascaliaGiornoNato};
+        return new Attribute[]{Bio_.pageid,
+                Bio_.title,
+                Bio_.templateEsiste,
+                Bio_.templateValido,
+                Bio_.templatesUguali,
+                Bio_.ultimaLettura,
+                Bio_.ultimaElaborazione,
+                Bio_.didascaliaGiornoNato,
+                Bio_.didascaliaGiornoMorto,
+                Bio_.didascaliaAnnoNato,
+                Bio_.didascaliaAnnoMorto
+        };
     }// end of method
 
 

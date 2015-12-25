@@ -136,6 +136,18 @@ public class BioForm extends AForm {
         field.setWidth(LAR_CAMPO4);
         layout.addComponent(getField(Bio_.didascaliaGiornoNato));
 
+        field = super.bindMap.get(Bio_.didascaliaGiornoMorto.getName());
+        field.setWidth(LAR_CAMPO4);
+        layout.addComponent(getField(Bio_.didascaliaGiornoMorto));
+
+        field = super.bindMap.get(Bio_.didascaliaAnnoNato.getName());
+        field.setWidth(LAR_CAMPO4);
+        layout.addComponent(getField(Bio_.didascaliaAnnoNato));
+
+        field = super.bindMap.get(Bio_.didascaliaAnnoMorto.getName());
+        field.setWidth(LAR_CAMPO4);
+        layout.addComponent(getField(Bio_.didascaliaAnnoMorto));
+
         return incapsulaPerMargine(layout);
     }// end of method
 

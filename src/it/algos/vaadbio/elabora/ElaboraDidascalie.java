@@ -1,6 +1,9 @@
 package it.algos.vaadbio.elabora;
 
 import it.algos.vaadbio.bio.Bio;
+import it.algos.vaadbio.didascalia.DidascaliaMortiAnno;
+import it.algos.vaadbio.didascalia.DidascaliaMortiGiorno;
+import it.algos.vaadbio.didascalia.DidascaliaNatiAnno;
 import it.algos.vaadbio.didascalia.DidascaliaNatiGiorno;
 
 
@@ -26,6 +29,15 @@ public class ElaboraDidascalie {
     private void doInit(Bio bio) {
         String didascaliaGiornoNato = new DidascaliaNatiGiorno(bio).getTesto();
         bio.setDidascaliaGiornoNato(didascaliaGiornoNato);
+
+        String didascaliaGiornoMorto = new DidascaliaMortiGiorno(bio).getTesto();
+        bio.setDidascaliaGiornoMorto(didascaliaGiornoMorto);
+
+        String didascaliaAnnoNato = new DidascaliaNatiAnno(bio).getTesto();
+        bio.setDidascaliaAnnoNato(didascaliaAnnoNato);
+
+        String didascaliaAnnoMorto = new DidascaliaMortiAnno(bio).getTesto();
+        bio.setDidascaliaAnnoMorto(didascaliaAnnoMorto);
     }// end of method
 
 }// end of class

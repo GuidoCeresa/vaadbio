@@ -17,7 +17,7 @@ import it.algos.webbase.web.lib.LibSession;
 import it.algos.webbase.web.ui.AlgosUI;
 import it.algos.vaadbio.nazionalita.NazionalitaMod;
 import it.algos.vaadbio.attivita.AttivitaMod;
-import it.algos.vaadbio.attivita.AttivitaMod;
+
 import it.algos.vaadbio.attivita.AttivitaMod;
 
 /**

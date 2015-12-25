@@ -3,6 +3,7 @@ package it.algos.vaadbio.bio;
 import it.algos.vaadbio.anno.Anno;
 import it.algos.vaadbio.attivita.Attivita;
 import it.algos.vaadbio.giorno.Giorno;
+import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.lib.LibBio;
 import it.algos.vaadbio.nazionalita.Nazionalita;
 import it.algos.webbase.web.entity.BaseEntity;
@@ -41,10 +42,10 @@ public class Bio extends BaseEntity {
     private String title = "";
 
     @Lob
-    private String tmplBioServer = "";
+    private String tmplBioServer = CostBio.VUOTO;
 
     @Lob
-    private String tmplBioStandard = "";
+    private String tmplBioStandard = CostBio.VUOTO;
 
     //--tempo di DOWNLOAD
     //--uso il formato Timestamp, per confrontarla col campo timestamp
@@ -71,110 +72,110 @@ public class Bio extends BaseEntity {
     //--parametri originali del template Bio presenti nel template della voce ed estratti pari pari dal tmplBioServer
     //--serve mantenerli separati per ricerche ed ordinamenti
     @Column(columnDefinition = "text")
-    private String titolo = "";  //titolo tipo ''dottore'', non TITLE della pagina
+    private String titolo = CostBio.VUOTO;  //titolo tipo ''dottore'', non TITLE della pagina
     @Column(columnDefinition = "text")
-    private String nome = "";
+    private String nome = CostBio.VUOTO;
     @Column(columnDefinition = "text")
-    private String cognome = "";
+    private String cognome = CostBio.VUOTO;
     @Column(columnDefinition = "text")
-    private String cognomePrima = "";
+    private String cognomePrima = CostBio.VUOTO;
     @Column(columnDefinition = "text")
-    private String postCognome = "";
+    private String postCognome = CostBio.VUOTO;
     @Column(columnDefinition = "text")
-    private String postCognomeVirgola = "";
+    private String postCognomeVirgola = CostBio.VUOTO;
     @Column(columnDefinition = "text")
-    private String forzaOrdinamento = "";
+    private String forzaOrdinamento = CostBio.VUOTO;
     @Column(columnDefinition = "text")
-    private String preData = "";
+    private String preData = CostBio.VUOTO;
     @Column(columnDefinition = "text")
-    private String sesso = "";
+    private String sesso = CostBio.VUOTO;
 
     @Column(columnDefinition = "text")
-    private String luogoNascita = "";
+    private String luogoNascita = CostBio.VUOTO;
     @Column(columnDefinition = "text")
-    private String luogoNascitaLink = "";
+    private String luogoNascitaLink = CostBio.VUOTO;
     @Column(columnDefinition = "text")
-    private String luogoNascitaAlt = "";
+    private String luogoNascitaAlt = CostBio.VUOTO;
     @Column(columnDefinition = "text")
-    private String giornoMeseNascita = "";
+    private String giornoMeseNascita = CostBio.VUOTO;
     @Column(columnDefinition = "text")
-    private String annoNascita = "";
+    private String annoNascita = CostBio.VUOTO;
     @Column(columnDefinition = "text")
-    private String noteNascita = "";
+    private String noteNascita = CostBio.VUOTO;
 
     @Column(columnDefinition = "text")
-    private String luogoMorte = "";
+    private String luogoMorte = CostBio.VUOTO;
     @Column(columnDefinition = "text")
-    private String luogoMorteLink = "";
+    private String luogoMorteLink = CostBio.VUOTO;
     @Column(columnDefinition = "text")
-    private String luogoMorteAlt = "";
+    private String luogoMorteAlt = CostBio.VUOTO;
     @Column(columnDefinition = "text")
-    private String giornoMeseMorte = "";
+    private String giornoMeseMorte = CostBio.VUOTO;
     @Column(columnDefinition = "text")
-    private String annoMorte = "";
+    private String annoMorte = CostBio.VUOTO;
     @Column(columnDefinition = "text")
-    private String noteMorte = "";
+    private String noteMorte = CostBio.VUOTO;
 
     @Column(columnDefinition = "text")
-    private String preAttivita = "";
+    private String preAttivita = CostBio.VUOTO;
     @Column(columnDefinition = "text")
-    private String epoca = "";
+    private String epoca = CostBio.VUOTO;
     @Column(columnDefinition = "text")
-    private String epoca2 = "";
+    private String epoca2 = CostBio.VUOTO;
     @Column(columnDefinition = "text")
-    private String attivita = "";
+    private String attivita = CostBio.VUOTO;
     @Column(columnDefinition = "text")
-    private String attivita2 = "";
+    private String attivita2 = CostBio.VUOTO;
     @Column(columnDefinition = "text")
-    private String attivita3 = "";
+    private String attivita3 = CostBio.VUOTO;
     @Column(columnDefinition = "text")
-    private String attivitaAltre = "";
+    private String attivitaAltre = CostBio.VUOTO;
 
     @Column(columnDefinition = "text")
-    private String nazionalita = "";
+    private String nazionalita = CostBio.VUOTO;
     @Column(columnDefinition = "text")
-    private String nazionalitaNaturalizzato = "";
+    private String nazionalitaNaturalizzato = CostBio.VUOTO;
     @Column(columnDefinition = "text")
-    private String cittadinanza = "";
+    private String cittadinanza = CostBio.VUOTO;
     @Column(columnDefinition = "text")
-    private String postNazionalita = "";
+    private String postNazionalita = CostBio.VUOTO;
 
     @Column(columnDefinition = "text")
-    private String categorie = "";
+    private String categorie = CostBio.VUOTO;
     @Column(columnDefinition = "text")
-    private String fineIncipit = "";
+    private String fineIncipit = CostBio.VUOTO;
     @Column(columnDefinition = "text")
-    private String punto = "";
+    private String punto = CostBio.VUOTO;
     @Column(columnDefinition = "text")
-    private String immagine = "";
+    private String immagine = CostBio.VUOTO;
     @Column(columnDefinition = "text")
-    private String didascalia = "";
+    private String didascalia = CostBio.VUOTO;
     @Column(columnDefinition = "text")
-    private String didascalia2 = "";
+    private String didascalia2 = CostBio.VUOTO;
     @Column(columnDefinition = "text")
-    private String dimImmagine = "";
+    private String dimImmagine = CostBio.VUOTO;
 
 
     //--parametri modificati rispetto ai parametri originali con lo stesso nome, secondo logiche specifiche per ogni parametro
     //--parametri usati per creare i link alle tavole specializzate per costruire le didascalie usate nelle liste
-    private String nomeValido = "";
-    private String cognomeValido = "";
-    private String sessoValido = "";
+    private String nomeValido = CostBio.VUOTO;
+    private String cognomeValido = CostBio.VUOTO;
+    private String sessoValido = CostBio.VUOTO;
 
-    private String luogoNascitaValido = "";
-    private String luogoNascitaLinkValido = "";
-    private String giornoMeseNascitaValido = "";
-    private String annoNascitaValido = "";
+    private String luogoNascitaValido = CostBio.VUOTO;
+    private String luogoNascitaLinkValido = CostBio.VUOTO;
+    private String giornoMeseNascitaValido = CostBio.VUOTO;
+    private String annoNascitaValido = CostBio.VUOTO;
 
-    private String luogoMorteValido = "";
-    private String luogoMorteLinkValido = "";
-    private String giornoMeseMorteValido = "";
-    private String annoMorteValido = "";
+    private String luogoMorteValido = CostBio.VUOTO;
+    private String luogoMorteLinkValido = CostBio.VUOTO;
+    private String giornoMeseMorteValido = CostBio.VUOTO;
+    private String annoMorteValido = CostBio.VUOTO;
 
-    private String attivitaValida = "";
-    private String attivita2Valida = "";
-    private String attivita3Valida = "";
-    private String nazionalitaValida = "";
+    private String attivitaValida = CostBio.VUOTO;
+    private String attivita2Valida = CostBio.VUOTO;
+    private String attivita3Valida = CostBio.VUOTO;
+    private String nazionalitaValida = CostBio.VUOTO;
 
 
     // campi di collegamenti alle altre tavole specializzate
@@ -202,10 +203,10 @@ public class Bio extends BaseEntity {
 //    Cognome cognomeLista = null;
 
     //    private String didascaliaBase;
-    private String didascaliaGiornoNato = "";
-//    private String didascaliaGiornoMorto;
-//    private String didascaliaAnnoNato;
-//    private String didascaliaAnnoMorto;
+    private String didascaliaGiornoNato = CostBio.VUOTO;
+    private String didascaliaGiornoMorto = CostBio.VUOTO;
+    private String didascaliaAnnoNato = CostBio.VUOTO;
+    private String didascaliaAnnoMorto = CostBio.VUOTO;
 //    private String didascaliaListe;
 
     /**
@@ -907,14 +908,6 @@ public class Bio extends BaseEntity {
         this.annoMortoPunta = annoMortoPunta;
     }//end of setter method
 
-    public String getDidascaliaGiornoNato() {
-        return didascaliaGiornoNato;
-    }// end of getter method
-
-    public void setDidascaliaGiornoNato(String didascaliaGiornoNato) {
-        this.didascaliaGiornoNato = didascaliaGiornoNato;
-    }//end of setter method
-
     public Attivita getAttivitaPunta() {
         return attivitaPunta;
     }// end of getter method
@@ -946,4 +939,37 @@ public class Bio extends BaseEntity {
     public void setNazionalitaPunta(Nazionalita nazionalitaPunta) {
         this.nazionalitaPunta = nazionalitaPunta;
     }//end of setter method
+
+    public String getDidascaliaGiornoNato() {
+        return didascaliaGiornoNato;
+    }// end of getter method
+
+    public void setDidascaliaGiornoNato(String didascaliaGiornoNato) {
+        this.didascaliaGiornoNato = didascaliaGiornoNato;
+    }//end of setter method
+
+    public String getDidascaliaGiornoMorto() {
+        return didascaliaGiornoMorto;
+    }// end of getter method
+
+    public void setDidascaliaGiornoMorto(String didascaliaGiornoMorto) {
+        this.didascaliaGiornoMorto = didascaliaGiornoMorto;
+    }//end of setter method
+
+    public String getDidascaliaAnnoNato() {
+        return didascaliaAnnoNato;
+    }// end of getter method
+
+    public void setDidascaliaAnnoNato(String didascaliaAnnoNato) {
+        this.didascaliaAnnoNato = didascaliaAnnoNato;
+    }//end of setter method
+
+    public String getDidascaliaAnnoMorto() {
+        return didascaliaAnnoMorto;
+    }// end of getter method
+
+    public void setDidascaliaAnnoMorto(String didascaliaAnnoMorto) {
+        this.didascaliaAnnoMorto = didascaliaAnnoMorto;
+    }//end of setter method
+
 }// end of entity class

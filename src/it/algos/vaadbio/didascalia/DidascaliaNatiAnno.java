@@ -5,10 +5,10 @@ import it.algos.vaadbio.bio.Bio;
 import it.algos.vaadbio.lib.CostBio;
 
 /**
- * Created by gac on 23 dic 2015.
- * Didascalia specializzata per le liste di nati nel giorno.
+ * Created by gac on 25 dic 2015.
+ * Didascalia specializzata per le liste di nati nell'anno.
  */
-public class DidascaliaNatiGiorno extends DidascaliaNati {
+public class DidascaliaNatiAnno extends DidascaliaNati {
 
 
     /**
@@ -16,7 +16,7 @@ public class DidascaliaNatiGiorno extends DidascaliaNati {
      *
      * @param bio istanza da cui costruire la didascalia specifica
      */
-    public DidascaliaNatiGiorno(Bio bio) {
+    public DidascaliaNatiAnno(Bio bio) {
         super(bio);
     }// end of constructor
 
@@ -29,8 +29,8 @@ public class DidascaliaNatiGiorno extends DidascaliaNati {
     protected String getBloccoIniziale() {
         String text = CostBio.VUOTO;
 
-        if (!annoNascita.equals(CostBio.VUOTO)) {
-            text = LibWiki.setQuadre(annoNascita) + CostBio.TAG_SEPARATORE;
+        if (!giornoMeseNascita.equals(CostBio.VUOTO)) {
+            text = LibWiki.setQuadre(giornoMeseNascita) + CostBio.TAG_SEPARATORE;
         }// fine del blocco if
 
         return text;
