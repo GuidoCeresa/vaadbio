@@ -50,26 +50,12 @@ public class BioMod extends ModulePop {
 
 
     /**
-     * Costruttore senza parametri
-     * La classe implementa il pattern Singleton.
-     * Per una nuova istanza, usare il metodo statico getInstance.
-     * Usare questo costruttore SOLO con la Reflection dal metodo Module.getInstance
-     * Questo costruttore è pubblico SOLO per l'uso con la Reflection.
-     * Per il pattern Singleton dovrebbe essere privato.
-     *
-     * @deprecated
+     * Costruttore standard senza parametri
      */
     public BioMod() {
         super(Bio.class, MENU_ADDRESS);
     }// end of constructor
 
-    /**
-     * Crea una sola istanza di un modulo per sessione.
-     * Tutte le finestre e i tab di un browser sono nella stessa sessione.
-     */
-    public static BioMod getInstance() {
-        return (BioMod) ModulePop.getInstance(BioMod.class);
-    }// end of singleton constructor
 
     /**
      * Crea i campi visibili nella lista (table)
@@ -118,7 +104,7 @@ public class BioMod extends ModulePop {
      * Serve anche per l'ordine con cui vengono presentati i campi nella scheda <br>
      */
     protected Attribute<?, ?>[] creaFieldsForm() {
-        return new Attribute[]{Bio_.pageid, Bio_.title, Bio_.templateEsiste, Bio_.templateValido, Bio_.templatesUguali, Bio_.ultimaLettura, Bio_.ultimaElaborazione};
+        return new Attribute[]{Bio_.pageid, Bio_.title, Bio_.templateEsiste, Bio_.templateValido, Bio_.templatesUguali, Bio_.ultimaLettura, Bio_.ultimaElaborazione,Bio_.didascaliaGiornoNato};
     }// end of method
 
 
@@ -203,30 +189,47 @@ public class BioMod extends ModulePop {
     }// end of method
 
 
+//    /**
+//     * Create the MenuBar Item for this module
+//     * <p>
+//     * Invocato dal metodo AlgosUI.creaMenu()
+//     * PUO essere sovrascritto dalla sottoclasse
+//     *
+//     * @param menuBar     a cui agganciare il menuitem
+//     * @param placeholder in cui visualizzare il modulo
+//     * @return menuItem appena creato
+//     */
+//    @Override
+//    public MenuBar.MenuItem createMenuItem(MenuBar menuBar, NavPlaceholder placeholder) {
+//        MenuBar.MenuItem menuItem = super.createMenuItem(menuBar, placeholder, FontAwesome.TASKS);
+//
+//        addCommandCicloDown(menuItem);
+//        addCommandCicloUpdate(menuItem);
+//        addCommandCicloElabora(menuItem);
+//        addCommandDownloadDialog(menuItem);
+//        addCommandElabora(menuItem);
+//        addCommandUpload(menuItem);
+//
+//        return menuItem;
+//    }// end of method
+
     /**
-     * Create the MenuBar Item for this module
+     * Crea i sottomenu specifici del modulo
      * <p>
-     * Invocato dal metodo AlgosUI.creaMenu()
-     * PUO essere sovrascritto dalla sottoclasse
+     * Invocato dal metodo AlgosUI.addModulo()
+     * Sovrascritto dalla sottoclasse
      *
-     * @param menuBar     a cui agganciare il menuitem
-     * @param placeholder in cui visualizzare il modulo
-     * @return menuItem appena creato
+     * @param menuItem principale del modulo
      */
     @Override
-    public MenuBar.MenuItem createMenuItem(MenuBar menuBar, NavPlaceholder placeholder) {
-        MenuBar.MenuItem menuItem = super.createMenuItem(menuBar, placeholder, FontAwesome.TASKS);
-
+    public void addSottoMenu(MenuBar.MenuItem menuItem) {
         addCommandCicloDown(menuItem);
         addCommandCicloUpdate(menuItem);
         addCommandCicloElabora(menuItem);
         addCommandDownloadDialog(menuItem);
         addCommandElabora(menuItem);
         addCommandUpload(menuItem);
-
-        return menuItem;
     }// end of method
-
 
     /**
      * Comando bottone/item New Ciclo

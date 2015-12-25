@@ -194,6 +194,13 @@ public class Bio extends BaseEntity {
 //    Nome nomeLista = null;
 //    Cognome cognomeLista = null;
 
+//    private String didascaliaBase;
+    private String didascaliaGiornoNato="";
+//    private String didascaliaGiornoMorto;
+//    private String didascaliaAnnoNato;
+//    private String didascaliaAnnoMorto;
+//    private String didascaliaListe;
+
     /**
      * Costruttore senza argomenti
      * Necessario per le specifiche JavaBean
@@ -892,4 +899,13 @@ public class Bio extends BaseEntity {
     public void setAnnoMortoPunta(Anno annoMortoPunta) {
         this.annoMortoPunta = annoMortoPunta;
     }//end of setter method
+
+    public String getDidascaliaGiornoNato() {
+        return didascaliaGiornoNato;
+    }// end of getter method
+
+    public void setDidascaliaGiornoNato(String didascaliaGiornoNato) {
+        this.didascaliaGiornoNato = didascaliaGiornoNato;
+    }//end of setter method
+
 }// end of entity class

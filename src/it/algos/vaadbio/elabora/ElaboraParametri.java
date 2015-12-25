@@ -26,20 +26,17 @@ public class ElaboraParametri {
 
     //--Elabora valori base di tutti i parametri
     private void doInit(Bio bio) {
-        HashMap<String, String> mappaBio;
+        HashMap<String, String> mappaBio = estraeMappa(bio);
 
-        if (bio != null) {
-            mappaBio = estraeMappa(bio);
-            if (mappaBio == null || mappaBio.size() < 1) {
-                return;
+        if (mappaBio == null || mappaBio.size() < 1) {
+            return;
+        }// end of if cycle
+
+        for (ParBio par : ParBio.values()) {
+            if (mappaBio.get(par.getTag()) != null) {
+                par.setBio(bio, mappaBio.get(par.getTag()));
             }// end of if cycle
-
-            for (ParBio par : ParBio.values()) {
-                if (mappaBio.get(par.getTag()) != null) {
-                    par.setBio(bio, mappaBio.get(par.getTag()));
-                }// end of if cycle
-            } // fine del ciclo for-each
-        }// fine del blocco if
+        } // fine del ciclo for-each
 
     }// end of method
 

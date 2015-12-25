@@ -11,7 +11,7 @@ import it.algos.vaadbio.lib.CostBio;
  */
 public abstract class ListaGiorno extends ListaBio {
 
-    protected Giorno giorno;
+//    protected Giorno giorno;
 
     /**
      * Costruttore
@@ -19,8 +19,7 @@ public abstract class ListaGiorno extends ListaBio {
      * @param giorno di cui creare la lista
      */
     public ListaGiorno(Giorno giorno) {
-        super();
-        this.giorno = giorno;
+        super(giorno);
     }// fine del costruttore
 
 
@@ -61,7 +60,7 @@ public abstract class ListaGiorno extends ListaBio {
     }// fine del metodo
 
     public Giorno getGiorno() {
-        return giorno;
+        return (Giorno)getOggetto();
     }// end of getter method
 
 }// fine della classe

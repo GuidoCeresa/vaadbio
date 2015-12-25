@@ -94,4 +94,6 @@ public class Bio_ extends BaseEntity_ {
     public static volatile SingularAttribute<Bio, Anno> annoNatoPunta;
     public static volatile SingularAttribute<Bio, Anno> annoMortoPunta;
 
+    public static volatile SingularAttribute<Bio, String> didascaliaGiornoNato;
+
 }// end of entity class

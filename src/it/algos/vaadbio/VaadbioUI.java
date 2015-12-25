@@ -15,6 +15,9 @@ import it.algos.webbase.domain.utente.UtenteModulo;
 import it.algos.webbase.domain.vers.VersMod;
 import it.algos.webbase.web.lib.LibSession;
 import it.algos.webbase.web.ui.AlgosUI;
+import it.algos.vaadbio.attivita.AttivitaMod;
+import it.algos.vaadbio.attivita.AttivitaMod;
+import it.algos.vaadbio.attivita.AttivitaMod;
 
 /**
  * Crea l'interfaccia utente (User Interface) iniziale dell'applicazione
@@ -79,12 +82,13 @@ public class VaadbioUI extends AlgosUI {
     @Override
     protected void addModuli() {
         this.addModulo(new UtenteModulo("User"));
-        this.addModulo(VersMod.getInstance());
-        this.addModulo(BioLogoMod.getInstance());
-        this.addModulo(PrefMod.getInstance());
-        this.addModulo(GiornoMod.getInstance());
-        this.addModulo(AnnoMod.getInstance());
-        this.addModulo(BioMod.getInstance());
+        this.addModulo(new VersMod());
+        this.addModulo(new BioLogoMod());
+        this.addModulo(new PrefMod());
+        this.addModulo(new AttivitaMod());
+        this.addModulo(new GiornoMod());
+        this.addModulo(new AnnoMod());
+        this.addModulo(new BioMod());
     }// end of method
 
 }//end of UI class

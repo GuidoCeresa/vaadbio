@@ -1,6 +1,12 @@
 package it.algos.vaadbio.liste;
 
 import it.algos.vaadbio.giorno.Giorno;
+import it.algos.webbase.web.entity.EM;
+
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by gac on 21 dic 2015.
@@ -28,7 +34,6 @@ public class ListaGiornoNato extends ListaGiorno {
     }// fine del metodo
 
 
-
     /**
      * Costruisce una lista di biografie che hanno una valore valido per il link specifico
      * Sovrascritto
@@ -36,20 +41,22 @@ public class ListaGiornoNato extends ListaGiorno {
     @Override
     protected void elaboraListaBiografie() {
         Giorno giorno = super.getGiorno();
-//        Criteria criteria
-//        def results
-//
-//        if (giorno) {
-//            criteria = BioGrails.createCriteria()
-//            results = criteria.list {
-//                like("giornoMeseNascitaLink", giorno)
-//                and {
-//                    order("annoNascitaLink", "asc")
-//                    order("cognome", "asc")
-//                }
-//            }
-//            listaBiografie = results
-//        }// fine del blocco if
+        String giornoTxt = giorno.getTitolo();
+        String queryTxt = "";
+
+        queryTxt += "select bio.didascaliaGiornoNato from Bio bio where bio.giornoMeseNascita='";
+        queryTxt += giornoTxt;
+        queryTxt += "' order by bio.annoNascita,bio.cognome";
+        ArrayList<Long> lista = null;
+        List vettore;
+        EntityManager manager = EM.createEntityManager();
+        Query query = manager.createQuery(queryTxt);
+
+        vettore = query.getResultList();
+        if (vettore != null) {
+            listaBiografie = new ArrayList<String>(vettore);
+        }// end of if cycle
+        manager.close();
 
         super.elaboraListaBiografie();
     }// fine del metodo

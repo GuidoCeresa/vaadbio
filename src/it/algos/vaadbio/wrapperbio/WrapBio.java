@@ -82,6 +82,7 @@ public class WrapBio {
         }// fine del blocco try-catch
 
         if (bio == null) {
+            long inizio2 = System.currentTimeMillis();
             try { // prova ad eseguire il codice
                 bio = Bio.findByTitle(wikiTitle);
             } catch (Exception unErrore) { // intercetta l'errore

@@ -107,6 +107,9 @@ public class Elabora {
         //--Elabora i link alle tavole collegate
         new ElaboraLink(bio);
 
+        //--Elabora tutte le didascalie della voce
+        new ElaboraDidascalie(bio);
+
         try { // prova ad eseguire il codice
             bio.setUltimaElaborazione(LibTime.adesso());
             bio.save();

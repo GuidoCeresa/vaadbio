@@ -1,6 +1,7 @@
 package it.algos.vaadbio.giorno;
 
 
+import com.vaadin.event.Action;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.MenuBar;
 import com.vaadin.ui.Notification;
@@ -8,12 +9,13 @@ import com.vaadin.ui.UI;
 import it.algos.vaadbio.ciclo.CicloDownload;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.liste.ListaBio;
+import it.algos.vaadbio.liste.ListaGiornoMorto;
+import it.algos.vaadbio.liste.ListaGiornoNato;
 import it.algos.vaadbio.upload.UploadGiorni;
 import it.algos.webbase.domain.pref.Pref;
 import it.algos.webbase.web.dialog.ConfirmDialog;
-import it.algos.webbase.web.lib.LibNum;
 import it.algos.webbase.web.module.ModulePop;
-import it.algos.webbase.web.navigator.NavPlaceholder;
+import it.algos.webbase.web.table.ATable;
 
 /**
  * Gestione (minimale) del modulo
@@ -25,46 +27,62 @@ public class GiornoMod extends ModulePop {
     // indirizzo interno del modulo (serve nei menu)
     public static String MENU_ADDRESS = "Giorno";
 
+    private Action actionUploadNati = new Action("Upload nati", FontAwesome.ARROW_UP);
+    private Action actionUploadMorti = new Action("Upload morti", FontAwesome.ARROW_UP);
+    private Action actionUploadAll = new Action("Upload both", FontAwesome.ARROW_UP);
 
     /**
-     * Costruttore senza parametri
-     * La classe implementa il pattern Singleton.
-     * Per una nuova istanza, usare il metodo statico getInstance.
-     * Usare questo costruttore SOLO con la Reflection dal metodo Module.getInstance
-     * Questo costruttore è pubblico SOLO per l'uso con la Reflection.
-     * Per il pattern Singleton dovrebbe essere privato.
-     *
-     * @deprecated
+     * Costruttore standard senza parametri
      */
     public GiornoMod() {
         super(Giorno.class, MENU_ADDRESS);
+        ATable tavola = getTable();
+        addActionHandler(tavola);
     }// end of constructor
 
-    /**
-     * Crea una sola istanza di un modulo per sessione.
-     * Tutte le finestre e i tab di un browser sono nella stessa sessione.
-     */
-    public static GiornoMod getInstance() {
-        return (GiornoMod) ModulePop.getInstance(GiornoMod.class);
-    }// end of singleton constructor
 
     /**
-     * Create the MenuBar Item for this module
-     * <p>
-     * Invocato dal metodo AlgosUI.creaMenu()
-     * PUO essere sovrascritto dalla sottoclasse
+     * Registers a new action handler for this container
      *
-     * @param menuBar     a cui agganciare il menuitem
-     * @param placeholder in cui visualizzare il modulo
-     * @return menuItem appena creato
+     * @see com.vaadin.event.Action.Container#addActionHandler(Action.Handler)
+     */
+    private void addActionHandler(ATable tavola) {
+        tavola.addActionHandler(new Action.Handler() {
+            public Action[] getActions(Object target, Object sender) {
+                Action[] actions = null;
+                actions = new Action[3];
+                actions[0] = actionUploadNati;
+                actions[1] = actionUploadMorti;
+                actions[2] = actionUploadAll;
+                return actions;
+            }// end of inner method
+
+            public void handleAction(Action action, Object sender, Object target) {
+                if (action.equals(actionUploadNati)) {
+                    esegueUploadNati();
+                }// end of if cycle
+                if (action.equals(actionUploadMorti)) {
+                    esegueUploadMorti();
+                }// end of if cycle
+                if (action.equals(actionUploadAll)) {
+                    esegueUploadBoth();
+                }// end of if cycle
+            }// end of inner method
+        });// end of anonymous inner class
+
+    }// end of method
+
+    /**
+     * Crea i sottomenu specifici del modulo
+     * <p>
+     * Invocato dal metodo AlgosUI.addModulo()
+     * Sovrascritto dalla sottoclasse
+     *
+     * @param menuItem principale del modulo
      */
     @Override
-    public MenuBar.MenuItem createMenuItem(MenuBar menuBar, NavPlaceholder placeholder) {
-        MenuBar.MenuItem menuItem = super.createMenuItem(menuBar, placeholder, FontAwesome.TASKS);
-
+    public void addSottoMenu(MenuBar.MenuItem menuItem) {
         addCommandUploadGiorni(menuItem);
-
-        return menuItem;
     }// end of method
 
     /**
@@ -82,10 +100,10 @@ public class GiornoMod extends ModulePop {
                 boolean usaUpdate = Pref.getBool(CostBio.USA_UPLOAD_DOWNLOADATA, false);
                 boolean usaCancella = Pref.getBool(CostBio.USA_CANCELLA_VOCE_MANCANTE, false);
                 if (usaDialoghi) {
-                    String  nomePagina = "<b><span style=\"color:red\">" + ListaBio.PAGINA_PROVA + "</span></b>";
+                    String nomePagina = "<b><span style=\"color:red\">" + ListaBio.PAGINA_PROVA + "</span></b>";
                     String newMsg;
                     if (usaDebug) {
-                         newMsg = "Crea la lista dei nati nella pagina: " + nomePagina + "<br/>";
+                        newMsg = "Crea la lista dei nati nella pagina: " + nomePagina + "<br/>";
                     } else {
                         newMsg = "Esegue un ciclo (<b><span style=\"color:green\">lista</span></b>) per la creazione di 366+366 pagine di nati e di morti per ogni giorno dell'anno</br>";
                     }// end of if/else cycle
@@ -123,6 +141,66 @@ public class GiornoMod extends ModulePop {
                 }// fine del blocco if-else
             }// end of method
         });// end of anonymous class
+    }// end of method
+
+    /**
+     * Esegue l'upload per la lista dei nati
+     */
+    public void esegueUploadNati() {
+        Giorno giorno = getGiorno();
+
+        if (giorno != null) {
+            new ListaGiornoNato(giorno);
+        } else {
+            Notification.show("Devi selezionare una riga per creare la lista su wikipedia");
+        }// end of if/else cycle
+    }// end of method
+
+    /**
+     * Esegue l'upload per la lista dei morti
+     */
+    public void esegueUploadMorti() {
+        Giorno giorno = getGiorno();
+
+        if (giorno != null) {
+            new ListaGiornoMorto(giorno);
+        } else {
+            Notification.show("Devi selezionare una riga per creare la lista su wikipedia");
+        }// end of if/else cycle
+    }// end of method
+
+    /**
+     * Esegue l'upload per la lista dei nati
+     * Esegue l'upload per la lista dei morti
+     */
+    public void esegueUploadBoth() {
+        Giorno giorno = getGiorno();
+
+        if (giorno != null) {
+            new ListaGiornoNato(giorno);
+            new ListaGiornoMorto(giorno);
+        } else {
+            Notification.show("Devi selezionare una riga per creare la lista su wikipedia");
+        }// end of if/else cycle
+    }// end of method
+
+    /**
+     * Recupera la voce selezionata
+     */
+    public Giorno getGiorno() {
+        Giorno giorno = null;
+        long idSelected = 0;
+        ATable tavola = getTable();
+
+        if (tavola != null) {
+            idSelected = tavola.getSelectedKey();
+        }// end of if cycle
+
+        if (idSelected > 0) {
+            giorno = Giorno.find(idSelected);
+        }// end of if cycle
+
+        return giorno;
     }// end of method
 
 }// end of class

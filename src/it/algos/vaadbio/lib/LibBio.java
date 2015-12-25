@@ -89,7 +89,6 @@ public abstract class LibBio {
     public static final String PIPE = "|";
 
 
-
     /**
      * Estrae una mappa chiave valore dal testo di un template
      * Presuppone che le righe siano separate da pipe e return
@@ -1319,7 +1318,8 @@ public abstract class LibBio {
      * @return lista di pageids (Long)
      */
     public synchronized static ArrayList<Long> queryFind(String queryTxt, int limit, int offSet) {
-        List lista;
+        ArrayList<Long> lista = null;
+        List vettore;
         EntityManager manager = EM.createEntityManager();
         Query query = manager.createQuery(queryTxt);
 
@@ -1331,8 +1331,13 @@ public abstract class LibBio {
             query.setFirstResult(offSet);
         }// fine del blocco if
 
-        lista = query.getResultList();
-        return new ArrayList<Long>(lista);
+        vettore = query.getResultList();
+        if (vettore != null) {
+            lista = new ArrayList<Long>(vettore);
+        }// end of if cycle
+        manager.close();
+
+        return lista;
     }// end of static method
 
 
@@ -1359,5 +1364,50 @@ public abstract class LibBio {
 //
 //        return testoOut;
 //    } // fine del metodo
+
+
+    /**
+     * Aggiunge tag ref in testa e coda alla stringa.
+     * Aggiunge SOLO se gia non esiste
+     * Se arriva un oggetto non stringa, restituisce nullo
+     * Se arriva una stringa vuota, restituisce una stringa vuota
+     * Elimina spazi vuoti iniziali e finali
+     * Elimina eventuali ref già presenti, per evitare di metterli doppi
+     *
+     * @param stringaIn in ingresso
+     * @return stringa con tag ref aggiunti
+     */
+    public static String setRef(String stringaIn) {
+        String stringaOut = stringaIn;
+
+        stringaOut = REF_INI + stringaIn + REF_END;
+        stringaOut = stringaOut.trim();
+
+        return stringaOut;
+    } // fine del metodo
+
+    /**
+     * Aggiunge tag 'NoInclude' in testa e coda alla stringa.
+     * <p>
+     * Aggiunge SOLO se già non esiste TODO Non ancora
+     * Se arriva una stringa vuota, restituisce una stringa vuota
+     * Elimina spazi vuoti iniziali e finali
+     * Elimina eventuali 'NoInclude' già presenti, per evitare di metterli doppi TODO Non ancora
+     *
+     * @param stringaIn in ingresso
+     * @return stringa coi tag aggiunti
+     */
+    public static String setNoInclude(String stringaIn) {
+        String stringaOut = stringaIn.trim();
+        String tagIni = "<noinclude>";
+        String tagEnd = "</noinclude>";
+
+        if (!stringaIn.equals("")) {
+            stringaOut = tagIni + stringaOut + tagEnd;
+            stringaOut = stringaOut.trim();
+        }// fine del blocco if
+
+        return stringaOut;
+    } // fine del metodo
 
 }// end of abstract static class

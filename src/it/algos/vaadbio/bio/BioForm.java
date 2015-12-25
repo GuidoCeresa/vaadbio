@@ -18,6 +18,7 @@ public class BioForm extends AForm {
     private static String LAR_CAMPO = "100px";
     private static String LAR_CAMPO2 = "187px";
     private static String LAR_CAMPO3 = "400px";
+    private static String LAR_CAMPO4 = "800px";
     private static String LAR_WIN = "1200px";
     private static String LAR_TAB = "1000px";
     private static int NUM_COL = 25;
@@ -48,6 +49,8 @@ public class BioForm extends AForm {
         tabsheet.setWidth(LAR_TAB);
         tabsheet.addTab(creaTabWiki(), "Wiki");
         tabsheet.addTab(creaTabTemplates(), "Templates");
+        tabsheet.addTab(creaTabDidascalie(), "Didascalie");
+
         return tabsheet;
     }// end of method
 
@@ -122,5 +125,19 @@ public class BioForm extends AForm {
 
         return incapsulaPerMargine(layout);
     }// end of method
+
+
+    private Component creaTabDidascalie() {
+        VerticalLayout layout = new VerticalLayout();
+        layout.setSpacing(true);
+        Field field = null;
+
+        field = super.bindMap.get(Bio_.didascaliaGiornoNato.getName());
+        field.setWidth(LAR_CAMPO4);
+        layout.addComponent(getField(Bio_.didascaliaGiornoNato));
+
+        return incapsulaPerMargine(layout);
+    }// end of method
+
 
 }// end of class
