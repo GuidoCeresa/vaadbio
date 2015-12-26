@@ -1,22 +1,22 @@
 package it.algos.vaadbio.liste;
 
-import it.algos.vaadbio.giorno.Giorno;
+import it.algos.vaadbio.anno.Anno;
 import it.algos.vaadbio.lib.CostBio;
 
 /**
- * Created by gac on 21 dic 2015.
+ * Created by gac on 26 dic 2015.
  * <p>
- * Crea la lista dei nati nel giorno e la carica sul server wiki
+ * Crea la lista dei nati nell'anno e la carica sul server wiki
  */
-public class ListaGiornoNato extends ListaGiorno {
+public class ListaAnnoNato extends ListaAnno {
 
     /**
      * Costruttore
      *
-     * @param giorno di cui creare la lista
+     * @param anno di cui creare la lista
      */
-    public ListaGiornoNato(Giorno giorno) {
-        super(giorno);
+    public ListaAnnoNato(Anno anno) {
+        super(anno);
     }// fine del costruttore
 
     /**
@@ -34,15 +34,16 @@ public class ListaGiornoNato extends ListaGiorno {
      */
     @Override
     protected String getQueryCrono() {
+        Anno anno = super.getAnno();
+        String annoTxt = anno.getNome();
         String queryTxt = CostBio.VUOTO;
-        Giorno giorno = super.getGiorno();
-        String giornoTxt = giorno.getTitolo();
 
-        queryTxt += "select bio.didascaliaGiornoNato from Bio bio where bio.giornoMeseNascita='";
-        queryTxt += giornoTxt;
-        queryTxt += "' order by bio.annoNatoPunta.ordinamento,bio.cognome";
+        queryTxt += "select bio.didascaliaAnnoNato from Bio bio where bio.annoNascita='";
+        queryTxt += annoTxt;
+        queryTxt += "' order by bio.giornoNatoPunta.bisestile,bio.cognome";
 
         return queryTxt;
     }// fine del metodo
+
 
 }// fine della classe

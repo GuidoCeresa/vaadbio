@@ -5,11 +5,15 @@ import it.algos.vaad.wiki.LibWiki;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.lib.LibBio;
 import it.algos.webbase.domain.pref.Pref;
+import it.algos.webbase.web.entity.EM;
 import it.algos.webbase.web.lib.LibNum;
 import it.algos.webbase.web.lib.LibTime;
 
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by gac on 21 dic 2015.
@@ -79,12 +83,30 @@ public abstract class ListaBio {
 
     /**
      * Costruisce una lista di biografie che hanno una valore valido per il link specifico
-     * Sovrascritto
      */
-    protected void elaboraListaBiografie() {
+    private void elaboraListaBiografie() {
+        List vettore;
+        String queryTxt = getQueryCrono();
+        EntityManager manager = EM.createEntityManager();
+        Query query = manager.createQuery(queryTxt);
+
+        vettore = query.getResultList();
+        if (vettore != null) {
+            listaBiografie = new ArrayList<String>(vettore);
+        }// end of if cycle
+        manager.close();
+
         if (listaBiografie != null) {
             numPersone = listaBiografie.size();
         }// fine del blocco if
+    }// fine del metodo
+
+    /**
+     * Costruisce la query specifica per la ricerca della lista biografica
+     * Sovrascritto
+     */
+    protected String getQueryCrono() {
+        return CostBio.VUOTO;
     }// fine del metodo
 
     /**

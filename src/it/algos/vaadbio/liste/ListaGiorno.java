@@ -11,7 +11,6 @@ import it.algos.vaadbio.lib.CostBio;
  */
 public abstract class ListaGiorno extends ListaBio {
 
-//    protected Giorno giorno;
 
     /**
      * Costruttore
@@ -58,6 +57,7 @@ public abstract class ListaGiorno extends ListaBio {
     protected String getTagTitolo() {
         return CostBio.VUOTO;
     }// fine del metodo
+
 
     public Giorno getGiorno() {
         return (Giorno)getOggetto();

@@ -18,8 +18,6 @@ import it.algos.webbase.web.ui.AlgosUI;
 import it.algos.vaadbio.nazionalita.NazionalitaMod;
 import it.algos.vaadbio.attivita.AttivitaMod;
 
-import it.algos.vaadbio.attivita.AttivitaMod;
-
 /**
  * Crea l'interfaccia utente (User Interface) iniziale dell'applicazione
  * Qui viene regolato il theme base per tutta l'applicazione

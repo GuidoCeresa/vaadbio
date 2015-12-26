@@ -1,22 +1,22 @@
 package it.algos.vaadbio.liste;
 
-import it.algos.vaadbio.giorno.Giorno;
+import it.algos.vaadbio.anno.Anno;
 import it.algos.vaadbio.lib.CostBio;
 
 /**
- * Created by gac on 21 dic 2015.
+ * Created by gac on 26 dic 2015.
  * <p>
- * Crea la lista dei morti nel giorno e la carica sul server wiki
+ * Crea la lista dei morti nell'anno e la carica sul server wiki
  */
-public class ListaGiornoMorto extends ListaGiorno {
+public class ListaAnnoMorto extends ListaAnno {
 
     /**
      * Costruttore
      *
-     * @param giorno di cui creare la lista
+     * @param anno di cui creare la lista
      */
-    public ListaGiornoMorto(Giorno giorno) {
-        super(giorno);
+    public ListaAnnoMorto(Anno anno) {
+        super(anno);
     }// fine del costruttore
 
     /**
@@ -28,19 +28,20 @@ public class ListaGiornoMorto extends ListaGiorno {
         return "Morti ";
     }// fine del metodo
 
+
     /**
      * Costruisce la query specifica per la ricerca della lista biografica
      * Sovrascritto
      */
     @Override
     protected String getQueryCrono() {
+        Anno anno = super.getAnno();
+        String annoTxt = anno.getNome();
         String queryTxt = CostBio.VUOTO;
-        Giorno giorno = super.getGiorno();
-        String giornoTxt = giorno.getTitolo();
 
-        queryTxt += "select bio.didascaliaGiornoMorto from Bio bio where bio.giornoMeseMorte='";
-        queryTxt += giornoTxt;
-        queryTxt += "' order by bio.annoMortoPunta.ordinamento,bio.cognome";
+        queryTxt += "select bio.didascaliaAnnoMorto from Bio bio where bio.annoMorte='";
+        queryTxt += annoTxt;
+        queryTxt += "' order by bio.giornoMortoPunta.bisestile,bio.cognome";
 
         return queryTxt;
     }// fine del metodo
