@@ -11,6 +11,7 @@ public abstract class CostBio {
     public final static String SPAZIO = " ";
     public final static String VUOTO = "";
     public final static String A_CAPO = "\n";
+    public final static String ASTERISCO = "*";
     public final static String MSG = "Messaggio di controllo";
     public final static String PUNTI = "...";
     public final static String TAG_NATO_CRONO = "n." + SPAZIO;

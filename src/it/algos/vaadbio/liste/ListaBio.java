@@ -13,6 +13,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -32,8 +33,11 @@ public abstract class ListaBio {
     protected boolean usaTavolaContenuti = true; //@todo mettere la preferenza
 //    protected boolean usaTavolaContenuti = Pref.getBool(LibBio.USA_TAVOLA_CONTENUTI, true)
 
+    protected boolean usaDoppiaColonna = true; //@todo mettere la preferenza
+    protected boolean usaRaggruppamentoRigheMultiple = true;//@todo mettere la preferenza
+
     protected boolean usaHeadRitorno = true; // prima del template di avviso
-    protected String tagTemplateBio = "ListaBio"; // in alternativa 'StatBio'
+    protected String tagTemplateBio = "ListaBio"; // in alternativa 'StatBio'//@todo mettere la preferenza
     protected boolean usaInclude = true; // vero per Giorni ed Anni
     protected boolean usaHeadIncipit = true; // dopo il template di avviso
     protected String titoloPaginaMadre = "";
@@ -200,26 +204,63 @@ public abstract class ListaBio {
      */
     protected String elaboraBody() {
         String text = CostBio.VUOTO;
-
-//        boolean usaColonne = usaDoppiaColonna
-//        int maxRigheColonne = Pref.getInt(LibBio.MAX_RIGHE_COLONNE)
-//        testo = elaboraBodyDidascalie()
-//
-//        if (usaColonne && (numPersone > maxRigheColonne)) {
-//            testo = WikiLib.listaDueColonne(testo.trim())
-//        }// fine del blocco if
-//
-//        testo = elaboraTemplate(testo)
+        boolean usaColonne = this.usaDoppiaColonna;
+        int maxRigheColonne = 10;//@todo mettere la preferenza
+        boolean usaRaggruppamentoRigheMultiple = this.usaRaggruppamentoRigheMultiple;
 
         if (listaBiografie != null && listaBiografie.size() > 0) {
-            for (String riga : listaBiografie) {
-                text += "*";
-                text += riga;
-                text += CostBio.A_CAPO;
-            }// end of for cycle
+            if (usaRaggruppamentoRigheMultiple) {
+                text = righeRaggruppate();
+            } else {
+                text = righeSemplici();
+            }// end of if/else cycle
         }// end of if cycle
 
+        if (usaColonne && (numPersone > maxRigheColonne)) {
+            text = LibWiki.listaDueColonne(text.trim());
+        }// fine del blocco if
+
+        text = elaboraTemplate(text);
+
         return text;
+    }// fine del metodo
+
+    /**
+     * Raggruppa le didascalie per anno uguale
+     */
+    protected String righeRaggruppate() {
+        String text = CostBio.VUOTO;
+        LinkedHashMap<String, String> mappa = new LinkedHashMap<>();
+
+
+
+        return text;
+    }// fine del metodo
+
+
+    /**
+     * Nessun raggruppamento
+     */
+    protected String righeSemplici() {
+        String text = CostBio.VUOTO;
+
+        for (String riga : listaBiografie) {
+            text += "*";
+            text += riga;
+            text += CostBio.A_CAPO;
+        }// end of for cycle
+
+        return text;
+    }// fine del metodo
+
+
+    /**
+     * Incapsula il testo come parametro di un (eventuale) template
+     * Se non viene incapsulato, lascia una riga vuota iniziale
+     * Sovrascritto
+     */
+    protected String elaboraTemplate(String testoIn) {
+        return CostBio.A_CAPO + testoIn;
     }// fine del metodo
 
     /**

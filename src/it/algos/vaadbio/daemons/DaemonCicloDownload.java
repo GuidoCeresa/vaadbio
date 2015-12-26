@@ -1,7 +1,9 @@
 package it.algos.vaadbio.daemons;
 
+import it.algos.vaadbio.attivita.AttivitaService;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.ciclo.CicloDownload;
+import it.algos.vaadbio.nazionalita.NazionalitaService;
 import it.algos.webbase.domain.log.Log;
 import it.algos.webbase.domain.pref.Pref;
 import it.algos.webbase.web.bootstrap.ABootStrap;

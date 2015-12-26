@@ -269,6 +269,10 @@ public class BioMod extends ModulePop {
                     }// end of if/else cycle
                     int maxDowloadNew = Pref.getInt(CostBio.MAX_DOWNLOAD, 1000);
                     String newMsg = "Esegue un ciclo di sincronizzazione tra le pagine della categoria " + nomeCat + " ed i records della tavola Bio<br/>";
+                    if (!usaDebug) {
+                        newMsg += "<br/>Aggiorna la tavola (<b><span style=\"color:green\">Attività</span></b>) ";
+                        newMsg += "<br/>Aggiorna la tavola (<b><span style=\"color:green\">Nazionalità</span></b>) ";
+                    }// end of if cycle
                     newMsg += "<br/>Esegue un ciclo (<b><span style=\"color:green\">new</span></b>) di controllo e creazione di nuovi records esistenti nella categoria e mancanti nel database";
                     newMsg += "<br/>Esegue un ciclo (<b><span style=\"color:green\">delete</span></b>) di cancellazione di records esistenti nel database e mancanti nella categoria";
                     newMsg += "<br/>Esegue un ciclo (<b><span style=\"color:green\">update</span></b>) di controllo e aggiornamento di tutti i records esistenti nel database<br/>";

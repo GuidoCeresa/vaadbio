@@ -2,10 +2,12 @@ package it.algos.vaadbio.ciclo;
 
 import it.algos.vaad.wiki.Api;
 import it.algos.vaad.wiki.LibWiki;
+import it.algos.vaadbio.attivita.AttivitaService;
 import it.algos.vaadbio.bio.Bio;
 import it.algos.vaadbio.download.DownloadPages;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.lib.LibBio;
+import it.algos.vaadbio.nazionalita.NazionalitaService;
 import it.algos.webbase.domain.log.Log;
 import it.algos.webbase.domain.pref.Pref;
 import it.algos.webbase.web.lib.LibArray;
@@ -33,6 +35,7 @@ public class CicloDownload {
     public final static String TAG_CAT_DEBUG = "Nati nel 1420";
     //--numero massimo accettato da mediawiki per le richieste multiple
     private final static int PAGES_PER_REQUEST = 500;
+    private final static int NUMERO_VOCI_MINIMO_PER_OPERATIVITA_NORMALE = 295000;
 
 
     /**
@@ -44,6 +47,8 @@ public class CicloDownload {
 
 
     /**
+     * Aggiorna la tavola delle attività
+     * Aggiorna la tavola delle nazionalità
      * Legge la categoria BioBot
      * Legge le voci Bio esistenti
      * <p>
@@ -77,6 +82,16 @@ public class CicloDownload {
             nomeCategoria = TAG_BIO;
         }// fine del blocco if-else
 
+        // aggiorna la tavola delle attività
+        if (!Pref.getBool(CostBio.USA_DEBUG, true)) {
+            AttivitaService.download();
+        }// fine del blocco if-else
+
+        // aggiorna la tavola delle nazionalità
+        if (!Pref.getBool(CostBio.USA_DEBUG, true)) {
+            NazionalitaService.download();
+        }// fine del blocco if-else
+
         // carica la categoria
         listaTotaleCategoria = Api.leggeCatLong(nomeCategoria);
         Log.setInfo("categoria", "Letti e caricati in memoria i pageids di " + LibNum.format(listaTotaleCategoria.size()) + " pagine della categoria '" + nomeCategoria + "' in " + LibTime.difText(inizio));
@@ -95,7 +110,10 @@ public class CicloDownload {
         new CicloDelete(listaEccedenti);
 
         // Aggiorna tutti i records esistenti
-        new CicloUpdate();
+        if (listaEsistentiDataBase != null && listaEsistentiDataBase.size() > NUMERO_VOCI_MINIMO_PER_OPERATIVITA_NORMALE) {
+            new CicloUpdate();
+        }// end of if cycle
+
     }// end of method
 
 
