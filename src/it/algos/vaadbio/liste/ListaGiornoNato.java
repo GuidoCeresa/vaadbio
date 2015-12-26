@@ -38,11 +38,24 @@ public class ListaGiornoNato extends ListaGiorno {
         Giorno giorno = super.getGiorno();
         String giornoTxt = giorno.getTitolo();
 
-        queryTxt += "select bio.didascaliaGiornoNato from Bio bio where bio.giornoMeseNascita='";
+        queryTxt += "select bio.annoNatoPunta.nome,bio.didascaliaGiornoNato from Bio bio where bio.giornoMeseNascita='";
         queryTxt += giornoTxt;
         queryTxt += "' order by bio.annoNatoPunta.ordinamento,bio.cognome";
 
         return queryTxt;
     }// fine del metodo
+
+    /**
+     * Piede della pagina
+     * <p>
+     * Aggiungere (di solito) inizialmente la chiamata al metodo elaboraFooterSpazioIniziale <br>
+     * Sovrascritto
+     */
+    @Override
+    protected String elaboraFooter() {
+        return elaboraFooter("Liste di nati per giorno");
+    }// fine del metodo
+
+
 
 }// fine della classe

@@ -15,20 +15,22 @@ import it.algos.webbase.web.table.ATable;
 
 /**
  * Gestione (minimale) del modulo
- * Passa alla superclasse il nome e la classe specifica
  */
 @SuppressWarnings("serial")
 public class AttivitaMod extends ModulePop {
 
-    public static String MENU_ADDRESS = "Attivita";
-
     private Action actionUpload = new Action("Upload lista", FontAwesome.ARROW_UP);
 
     /**
-     * Costruttore standard senza parametri
+     * Costruttore senza parametri
+     * <p/>
+     * Invoca la superclasse passando i parametri:
+     * (obbligatorio) la Entity specifica
+     * (facoltativo) etichetta del menu (se manca usa il nome della Entity)
+     * (facoltativo) icona del menu (se manca usa un'icona standard)
      */
     public AttivitaMod() {
-        super(Attivita.class, MENU_ADDRESS);
+        super(Attivita.class, "Attività", FontAwesome.LIST_UL);
         ATable tavola = getTable();
         addActionHandler(tavola);
     }// end of constructor

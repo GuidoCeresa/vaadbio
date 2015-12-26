@@ -3,22 +3,18 @@ package it.algos.vaadbio.annogiorno;
 
 import com.vaadin.event.Action;
 import com.vaadin.server.FontAwesome;
+import com.vaadin.server.Resource;
 import com.vaadin.ui.MenuBar;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
 import it.algos.vaadbio.ciclo.CicloDownload;
-import it.algos.vaadbio.giorno.Giorno;
 import it.algos.vaadbio.lib.CostBio;
-import it.algos.vaadbio.liste.*;
+import it.algos.vaadbio.liste.ListaBio;
 import it.algos.vaadbio.upload.UploadAnni;
-import it.algos.vaadbio.upload.UploadGiorni;
 import it.algos.webbase.domain.pref.Pref;
 import it.algos.webbase.web.dialog.ConfirmDialog;
 import it.algos.webbase.web.module.ModulePop;
-import it.algos.webbase.web.navigator.NavPlaceholder;
 import it.algos.webbase.web.table.ATable;
-
-import javax.persistence.metamodel.Attribute;
 
 /**
  * Gestione (minimale) del modulo
@@ -32,12 +28,45 @@ public abstract class AnnoGiornoMod extends ModulePop {
     private Action actionUploadMorti = new Action("Upload morti", FontAwesome.ARROW_UP);
     private Action actionUploadAll = new Action("Upload both", FontAwesome.ARROW_UP);
 
+    /**
+     * Costruttore minimo
+     *
+     * @param entity di riferimento del modulo
+     */
+    public AnnoGiornoMod(Class entity) {
+        this(entity, "", null);
+    }// end of constructor
 
     /**
-     * Costruttore standard senza parametri
+     * Costruttore
+     *
+     * @param entity    di riferimento del modulo
+     * @param menuLabel etichetta visibile nella menu bar
      */
-    public AnnoGiornoMod(Class clazz,String address) {
-        super(clazz, address);
+    public AnnoGiornoMod(Class entity, String menuLabel) {
+        this(entity, menuLabel, null);
+    }// end of constructor
+
+    /**
+     * Costruttore
+     *
+     * @param entity   di riferimento del modulo
+     * @param menuIcon icona del menu
+     */
+    public AnnoGiornoMod(Class entity, Resource menuIcon) {
+        this(entity, "", menuIcon);
+    }// end of constructor
+
+    /**
+     * Costruttore completo
+     * <p>
+     *
+     * @param entity    di riferimento del modulo
+     * @param menuLabel etichetta visibile nella menu bar
+     * @param menuIcon  icona del menu
+     */
+    public AnnoGiornoMod(Class entity, String menuLabel, Resource menuIcon) {
+        super(entity, menuLabel, menuIcon);
         ATable tavola = getTable();
         addActionHandler(tavola);
     }// end of constructor

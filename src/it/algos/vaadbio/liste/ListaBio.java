@@ -11,10 +11,7 @@ import it.algos.webbase.web.lib.LibTime;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by gac on 21 dic 2015.
@@ -28,6 +25,7 @@ public abstract class ListaBio {
 
     protected String titoloPagina;
     protected ArrayList<String> listaBiografie;
+    protected LinkedHashMap<String, ArrayList<String>> mappaBiografie;
     protected int numPersone = 0;
 
     protected boolean usaTavolaContenuti = true; //@todo mettere la preferenza
@@ -74,7 +72,8 @@ public abstract class ListaBio {
 //        elaboraParametri()
         elaboraTitolo();
 
-        elaboraListaBiografie();
+//        elaboraListaBiografie();
+        elaboraMappaBiografie();
         elaboraPagina();
     }// fine del metodo
 
@@ -85,23 +84,64 @@ public abstract class ListaBio {
     protected void elaboraTitolo() {
     }// fine del metodo
 
+//    /**
+//     * Costruisce una lista di biografie che hanno una valore valido per il link specifico
+//     */
+//    private void elaboraListaBiografie() {
+//        List vettore;
+//        String queryTxt = getQueryCrono();
+//        EntityManager manager = EM.createEntityManager();
+//        Query query = manager.createQuery(queryTxt);
+//
+//        vettore = query.getResultList();
+//        if (vettore != null) {
+//            listaBiografie = new ArrayList<String>(vettore);
+//        }// end of if cycle
+//        manager.close();
+//
+//        if (listaBiografie != null) {
+//            numPersone = listaBiografie.size();
+//        }// fine del blocco if
+//    }// fine del metodo
+
     /**
-     * Costruisce una lista di biografie che hanno una valore valido per il link specifico
+     * Costruisce una mappa di biografie che hanno una valore valido per il link specifico
      */
-    private void elaboraListaBiografie() {
+    private void elaboraMappaBiografie() {
         List vettore;
         String queryTxt = getQueryCrono();
         EntityManager manager = EM.createEntityManager();
         Query query = manager.createQuery(queryTxt);
+        Object[] riga;
+        String anno;
+        String didascalia;
+        String didascaliaShort;
+        ArrayList<String> lista;
 
         vettore = query.getResultList();
         if (vettore != null) {
-            listaBiografie = new ArrayList<String>(vettore);
+            mappaBiografie = new LinkedHashMap<String, ArrayList<String>>();
+            for (Object rigaTmp : vettore) {
+                if (rigaTmp instanceof Object[]) {
+                    riga = (Object[]) rigaTmp;
+                    anno = (String) riga[0];
+                    didascalia = (String) riga[1];
+                    didascaliaShort = didascalia.substring(didascalia.indexOf(CostBio.TAG_SEPARATORE) + CostBio.TAG_SEPARATORE.length());
+                    if (mappaBiografie.containsKey(anno)) {
+                        lista = mappaBiografie.get(anno);
+                        lista.add(didascaliaShort);
+                    } else {
+                        lista = new ArrayList<>();
+                        lista.add(didascaliaShort);
+                        mappaBiografie.put(anno, lista);
+                    }// end of if/else cycle
+                }// end of if cycle
+            }// end of for cycle
         }// end of if cycle
         manager.close();
 
-        if (listaBiografie != null) {
-            numPersone = listaBiografie.size();
+        if (mappaBiografie != null) {
+            numPersone = mappaBiografie.size();
         }// fine del blocco if
     }// fine del metodo
 
@@ -208,7 +248,7 @@ public abstract class ListaBio {
         int maxRigheColonne = 10;//@todo mettere la preferenza
         boolean usaRaggruppamentoRigheMultiple = this.usaRaggruppamentoRigheMultiple;
 
-        if (listaBiografie != null && listaBiografie.size() > 0) {
+        if (mappaBiografie != null && mappaBiografie.size() > 0) {
             if (usaRaggruppamentoRigheMultiple) {
                 text = righeRaggruppate();
             } else {
@@ -230,9 +270,29 @@ public abstract class ListaBio {
      */
     protected String righeRaggruppate() {
         String text = CostBio.VUOTO;
-        LinkedHashMap<String, String> mappa = new LinkedHashMap<>();
+        ArrayList<String> lista;
 
+        for (Map.Entry<String, ArrayList<String>> mappa : mappaBiografie.entrySet()) {
+            if (mappa.getValue().size() == 1) {
+                text += CostBio.ASTERISCO;
+                text += LibWiki.setQuadre(mappa.getKey());
+                text += CostBio.TAG_SEPARATORE;
+                text += mappa.getValue().get(0);
+                text += CostBio.A_CAPO;
+            } else {
+                text += CostBio.ASTERISCO;
+                text += LibWiki.setQuadre(mappa.getKey());
+                text += CostBio.A_CAPO;
+                lista = mappa.getValue();
+                for (String didascalia : lista) {
+                    text += CostBio.ASTERISCO;
+                    text += CostBio.ASTERISCO;
+                    text += didascalia;
+                    text += CostBio.A_CAPO;
+                }// end of for cycle
+            }// end of if/else cycle
 
+        }// end of for cycle
 
         return text;
     }// fine del metodo
@@ -243,11 +303,26 @@ public abstract class ListaBio {
      */
     protected String righeSemplici() {
         String text = CostBio.VUOTO;
+        ArrayList<String> lista;
 
-        for (String riga : listaBiografie) {
-            text += "*";
-            text += riga;
-            text += CostBio.A_CAPO;
+        for (Map.Entry<String, ArrayList<String>> mappa : mappaBiografie.entrySet()) {
+            if (mappa.getValue().size() == 1) {
+                text += CostBio.ASTERISCO;
+                text += LibWiki.setQuadre(mappa.getKey());
+                text += CostBio.TAG_SEPARATORE;
+                text += mappa.getValue();
+                text += CostBio.A_CAPO;
+            } else {
+                lista = mappa.getValue();
+                for (String didascalia : lista) {
+                    text += CostBio.ASTERISCO;
+                    text += LibWiki.setQuadre(mappa.getKey());
+                    text += CostBio.TAG_SEPARATORE;
+                    text += didascalia;
+                    text += CostBio.A_CAPO;
+                }// end of for cycle
+            }// end of if/else cycle
+
         }// end of for cycle
 
         return text;
@@ -361,6 +436,8 @@ public abstract class ListaBio {
 
         return text;
     }// fine del metodo
+
+
 
     /**
      * Costruisce la frase di incipit iniziale

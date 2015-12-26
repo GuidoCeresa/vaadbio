@@ -56,6 +56,43 @@ public abstract class ListaAnno extends ListaBio {
     }// fine del metodo
 
 
+
+
+    /**
+     * Piede della pagina
+     * Elaborazione base
+     */
+    protected String elaboraFooter(String categoriaTxt) {
+        String text = CostBio.VUOTO;
+        int progressivoCategoria = getProgressivoAnno();
+
+        text += "<noinclude>";
+        text += CostBio.A_CAPO;
+        text += "{{Portale|biografie}}";
+        text += CostBio.A_CAPO;
+        text += "[[Categoria:" + categoriaTxt + "| " + progressivoCategoria + "]]";
+        text += CostBio.A_CAPO;
+        text += "[[Categoria:" + titoloPagina + "| ]]";
+        text += CostBio.A_CAPO;
+        text += "</noinclude>";
+
+        return text;
+    }// fine del metodo
+
+    /**
+     * Recupera il singolo Anno come progressivo dall'inizio
+     */
+    private int getProgressivoAnno() {
+        int annoProgressivo = 0;
+        Anno anno = getAnno();
+
+        if (anno!=null) {
+            annoProgressivo = anno.getOrdinamento();
+        }// fine del blocco if
+
+        return annoProgressivo;
+    }// fine del metodo
+
     /**
      * Recupera il tag specifico nati/morti
      * Sovrascritto

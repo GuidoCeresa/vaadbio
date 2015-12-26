@@ -1,6 +1,7 @@
 package it.algos.vaadbio.anno;
 
 
+import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.Notification;
 import it.algos.vaadbio.annogiorno.AnnoGiornoMod;
 import it.algos.vaadbio.liste.ListaAnnoMorto;
@@ -16,15 +17,19 @@ import javax.persistence.metamodel.Attribute;
 @SuppressWarnings("serial")
 public class AnnoMod extends AnnoGiornoMod {
 
-    // indirizzo interno del modulo (serve nei menu)
-    public static String MENU_ADDRESS = "Anno";
 
     /**
-     * Costruttore standard senza parametri
+     * Costruttore senza parametri
+     * <p/>
+     * Invoca la superclasse passando i parametri:
+     * (obbligatorio) la Entity specifica
+     * (facoltativo) etichetta del menu (se manca usa il nome della Entity)
+     * (facoltativo) icona del menu (se manca usa un'icona standard)
      */
     public AnnoMod() {
-        super(Anno.class, MENU_ADDRESS);
+        super(Anno.class, FontAwesome.LIST_UL);
     }// end of constructor
+
 
     /**
      * Crea i campi visibili

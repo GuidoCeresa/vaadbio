@@ -1,6 +1,7 @@
 package it.algos.vaadbio.giorno;
 
 
+import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.Notification;
 import it.algos.vaadbio.annogiorno.AnnoGiornoMod;
 import it.algos.vaadbio.liste.ListaGiornoMorto;
@@ -9,7 +10,6 @@ import it.algos.webbase.web.table.ATable;
 
 /**
  * Gestione (minimale) del modulo
- * Passa alla superclasse il nome e la classe specifica
  */
 @SuppressWarnings("serial")
 public class GiornoMod extends AnnoGiornoMod {
@@ -19,10 +19,15 @@ public class GiornoMod extends AnnoGiornoMod {
 
 
     /**
-     * Costruttore standard senza parametri
+     * Costruttore senza parametri
+     * <p/>
+     * Invoca la superclasse passando i parametri:
+     * (obbligatorio) la Entity specifica
+     * (facoltativo) etichetta del menu (se manca usa il nome della Entity)
+     * (facoltativo) icona del menu (se manca usa un'icona standard)
      */
     public GiornoMod() {
-        super(Giorno.class, MENU_ADDRESS);
+        super(Giorno.class, FontAwesome.LIST_UL);
     }// end of constructor
 
 

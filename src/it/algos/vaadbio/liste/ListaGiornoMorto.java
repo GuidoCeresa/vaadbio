@@ -38,12 +38,23 @@ public class ListaGiornoMorto extends ListaGiorno {
         Giorno giorno = super.getGiorno();
         String giornoTxt = giorno.getTitolo();
 
-        queryTxt += "select bio.didascaliaGiornoMorto from Bio bio where bio.giornoMeseMorte='";
+        queryTxt += "select bio.annoMortoPunta.nome,bio.didascaliaGiornoMorto from Bio bio where bio.giornoMeseMorte='";
         queryTxt += giornoTxt;
         queryTxt += "' order by bio.annoMortoPunta.ordinamento,bio.cognome";
 
         return queryTxt;
     }// fine del metodo
 
+
+    /**
+     * Piede della pagina
+     * <p>
+     * Aggiungere (di solito) inizialmente la chiamata al metodo elaboraFooterSpazioIniziale <br>
+     * Sovrascritto
+     */
+    @Override
+    protected String elaboraFooter() {
+        return elaboraFooter("Liste di morti per giorno");
+    }// fine del metodo
 
 }// fine della classe

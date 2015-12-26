@@ -49,6 +49,59 @@ public abstract class ListaGiorno extends ListaBio {
         titoloPagina = titolo;
     }// fine del metodo
 
+    /**
+     * Piede della pagina
+     * Elaborazione base
+     */
+    protected String elaboraFooter(String categoriaTxt) {
+        String text = CostBio.VUOTO;
+        String progressivoCategoria = getProgressivoGiorno();
+
+        text += "<noinclude>";
+        text += CostBio.A_CAPO;
+        text += "{{Portale|biografie}}";
+        text += CostBio.A_CAPO;
+        text += "[[Categoria:" + categoriaTxt + "| " + progressivoCategoria + "]]";
+        text += CostBio.A_CAPO;
+        text += "[[Categoria:" + titoloPagina + "| ]]";
+        text += CostBio.A_CAPO;
+        text += "</noinclude>";
+
+        return text;
+    }// fine del metodo
+
+
+    /**
+     * Recupera il singolo Giorno come ordinamento
+     * Comprende il 29 febbraio per gli anni bisestili
+     */
+    private String getProgressivoGiorno() {
+        String giornoTxt = CostBio.VUOTO;
+        int giornoNumero = 0;
+        Giorno giorno = getGiorno();
+        String tag = "0";
+
+        if (giorno != null) {
+            giornoNumero = giorno.getBisestile();
+        }// fine del blocco if
+
+        if (giornoNumero > 0) {
+            giornoTxt = CostBio.VUOTO + giornoNumero;
+        }// fine del blocco if
+
+        //--completamento a 3 cifre
+        if (!giornoTxt.equals(CostBio.VUOTO)) {
+            if (giornoTxt.length() == 1) {
+                giornoTxt = tag + giornoTxt;
+            }// fine del blocco if
+            if (giornoTxt.length() == 2) {
+                giornoTxt = tag + giornoTxt;
+            }// fine del blocco if
+        }// fine del blocco if
+
+        return giornoTxt;
+    }// fine del metodo
+
 
     /**
      * Recupera il tag specifico nati/morti

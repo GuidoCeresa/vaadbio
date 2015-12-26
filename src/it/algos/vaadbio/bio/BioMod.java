@@ -11,6 +11,7 @@ import it.algos.vaadbio.DownloadBio;
 import it.algos.vaadbio.ciclo.CicloDownload;
 import it.algos.vaadbio.ciclo.CicloElabora;
 import it.algos.vaadbio.ciclo.CicloUpdate;
+import it.algos.vaadbio.download.Download;
 import it.algos.vaadbio.elabora.Elabora;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.webbase.domain.log.Log;
@@ -52,7 +53,7 @@ public class BioMod extends ModulePop {
      * Costruttore standard senza parametri
      */
     public BioMod() {
-        super(Bio.class, MENU_ADDRESS);
+        super(Bio.class, FontAwesome.TASKS);
     }// end of constructor
 
 
@@ -531,7 +532,7 @@ public class BioMod extends ModulePop {
      */
     public void esegueDownload(String wikiTitle) {
         if (!wikiTitle.equals("")) {
-            new DownloadBio(wikiTitle, true);
+            new Download(wikiTitle);
         } else {
             Notification.show("Devi selezionare una riga per scaricare la voce dal server wiki");
         }// end of if/else cycle
@@ -558,7 +559,7 @@ public class BioMod extends ModulePop {
         String wikiTitle = getTitle();
 
         if (!wikiTitle.equals("")) {
-            new DownloadBio(wikiTitle, true);
+//            new DownloadBio(wikiTitle, true);
         } else {
             Notification.show("Devi selezionare una riga per uploadare il record su wikipedia");
         }// end of if/else cycle

@@ -38,12 +38,20 @@ public class ListaAnnoNato extends ListaAnno {
         String annoTxt = anno.getNome();
         String queryTxt = CostBio.VUOTO;
 
-        queryTxt += "select bio.didascaliaAnnoNato from Bio bio where bio.annoNascita='";
+        queryTxt += "select bio.giornoNatoPunta.titolo,bio.didascaliaAnnoNato from Bio bio where bio.annoNascita='";
         queryTxt += annoTxt;
         queryTxt += "' order by bio.giornoNatoPunta.bisestile,bio.cognome";
 
         return queryTxt;
     }// fine del metodo
 
+    /**
+     * Piede della pagina
+     * Sovrascritto
+     */
+    @Override
+    protected String elaboraFooter() {
+        return elaboraFooter("Liste di nati nell'anno");
+    }// fine del metodo
 
 }// fine della classe
