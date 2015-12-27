@@ -13,7 +13,7 @@ import java.util.Map;
  * Created by gac on 25 dic 2015.
  * .
  */
-public class AttivitaService {
+public abstract class AttivitaService {
 
     private static String TITOLO_MODULO = "Modulo:Bio/Plurale_attività";
 
@@ -71,5 +71,5 @@ public class AttivitaService {
         }// fine del blocco if
     } // fine del metodo
 
-}// end of class
+}// end of static class
 

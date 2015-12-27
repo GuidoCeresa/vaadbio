@@ -90,13 +90,13 @@ public abstract class AnnoGiornoMod extends ModulePop {
 
             public void handleAction(Action action, Object sender, Object target) {
                 if (action.equals(actionUploadNati)) {
-                    esegueUploadNati();
+                    esegueUploadNato();
                 }// end of if cycle
                 if (action.equals(actionUploadMorti)) {
-                    esegueUploadMorti();
+                    esegueUploadMorto();
                 }// end of if cycle
                 if (action.equals(actionUploadAll)) {
-                    esegueUploadBoth();
+                    esegueUploadBothNatoMorto();
                 }// end of if cycle
             }// end of inner method
         });// end of anonymous inner class
@@ -117,7 +117,7 @@ public abstract class AnnoGiornoMod extends ModulePop {
     }// end of method
 
     /**
-     * Comando bottone/item New Ciclo
+     * Comando bottone/item Upload
      *
      * @param menuItem a cui agganciare il bottone/item
      */
@@ -148,7 +148,7 @@ public abstract class AnnoGiornoMod extends ModulePop {
                                 @Override
                                 public void onClose(ConfirmDialog dialog, boolean confirmed) {
                                     if (confirmed) {
-                                        new UploadAnni();
+                                        esegueUploadAll();
                                     }// end of if cycle
                                 }// end of inner method
                             });// end of anonymous inner class
@@ -174,24 +174,31 @@ public abstract class AnnoGiornoMod extends ModulePop {
     }// end of method
 
     /**
-     * Esegue l'upload per la lista dei nati
+     * Esegue l'upload di tutti i record
      * Sovrascritto
      */
-    protected void esegueUploadNati() {
+    protected void esegueUploadAll() {
     }// end of method
 
     /**
-     * Esegue l'upload per la lista dei morti
+     * Esegue l'upload per la lista dei nati di questo record
      * Sovrascritto
      */
-    protected void esegueUploadMorti() {
+    protected void esegueUploadNato() {
     }// end of method
 
     /**
-     * Esegue l'upload per la lista dei nati
-     * Esegue l'upload per la lista dei morti
+     * Esegue l'upload per la lista dei morti di questo record
+     * Sovrascritto
      */
-    protected void esegueUploadBoth() {
+    protected void esegueUploadMorto() {
+    }// end of method
+
+    /**
+     * Esegue l'upload per la lista dei nati di questo record
+     * Esegue l'upload per la lista dei morti di questo record
+     */
+    protected void esegueUploadBothNatoMorto() {
     }// end of method
 
 

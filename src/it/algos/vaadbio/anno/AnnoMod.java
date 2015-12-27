@@ -6,6 +6,7 @@ import com.vaadin.ui.Notification;
 import it.algos.vaadbio.annogiorno.AnnoGiornoMod;
 import it.algos.vaadbio.liste.ListaAnnoMorto;
 import it.algos.vaadbio.liste.ListaAnnoNato;
+import it.algos.vaadbio.upload.UploadAnni;
 import it.algos.webbase.web.table.ATable;
 
 import javax.persistence.metamodel.Attribute;
@@ -20,7 +21,7 @@ public class AnnoMod extends AnnoGiornoMod {
 
     /**
      * Costruttore senza parametri
-     * <p/>
+     * <p>
      * Invoca la superclasse passando i parametri:
      * (obbligatorio) la Entity specifica
      * (facoltativo) etichetta del menu (se manca usa il nome della Entity)
@@ -46,7 +47,6 @@ public class AnnoMod extends AnnoGiornoMod {
     }// end of method
 
 
-
     /**
      * Messaggio del dialogo di avviso/conferma
      * Sovrascritto
@@ -56,12 +56,22 @@ public class AnnoMod extends AnnoGiornoMod {
         return "Esegue un ciclo (<b><span style=\"color:green\">lista</span></b>) per la creazione di 3030 pagine di nati e di morti per ogni anno</br>";
     }// end of method
 
+
     /**
-     * Esegue l'upload per la lista dei nati
+     * Esegue l'upload di tutti i record
      * Sovrascritto
      */
     @Override
-    protected void esegueUploadNati() {
+    protected void esegueUploadAll() {
+        new UploadAnni();
+    }// end of method
+
+    /**
+     * Esegue l'upload per la lista dei nati di questo record
+     * Sovrascritto
+     */
+    @Override
+    protected void esegueUploadNato() {
         Anno anno = getAnno();
 
         if (anno != null) {
@@ -72,11 +82,11 @@ public class AnnoMod extends AnnoGiornoMod {
     }// end of method
 
     /**
-     * Esegue l'upload per la lista dei morti
+     * Esegue l'upload per la lista dei morti di questo record
      * Sovrascritto
      */
     @Override
-    protected void esegueUploadMorti() {
+    protected void esegueUploadMorto() {
         Anno anno = getAnno();
 
         if (anno != null) {
@@ -87,12 +97,10 @@ public class AnnoMod extends AnnoGiornoMod {
     }// end of method
 
     /**
-     * Esegue l'upload per la lista dei nati
-     * Esegue l'upload per la lista dei morti
-     * Sovrascritto
+     * Esegue l'upload per la lista dei nati di questo record
+     * Esegue l'upload per la lista dei morti di questo record
      */
-    @Override
-    protected void esegueUploadBoth() {
+    protected void esegueUploadBothNatoMorto() {
         Anno anno = getAnno();
 
         if (anno != null) {
@@ -102,6 +110,7 @@ public class AnnoMod extends AnnoGiornoMod {
             Notification.show("Devi selezionare una riga per creare la lista su wikipedia");
         }// end of if/else cycle
     }// end of method
+
 
     /**
      * Recupera la voce selezionata

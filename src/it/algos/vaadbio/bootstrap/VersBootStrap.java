@@ -1,7 +1,9 @@
 package it.algos.vaadbio.bootstrap;
 
 import it.algos.vaadbio.anno.Anno;
+import it.algos.vaadbio.anno.AnnoService;
 import it.algos.vaadbio.giorno.Giorno;
+import it.algos.vaadbio.giorno.GiornoService;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.lib.LibTimeBio;
 import it.algos.webbase.web.lib.LibPref;
@@ -139,7 +141,7 @@ public class VersBootStrap implements ServletContextListener {
 
         //--crea i records della tavola Giorno
         if (LibVers.installa(19)) {
-            if (creaGiorni()) {
+            if (GiornoService.creaGiorni()) {
                 LibVers.nuova("Giorno", "Creati 366 records per tutti i giorni dell'anno (anche bisestile)");
             } else {
                 LibVers.nuova("Giorno", "I giorni esistevano già e non sono stati modificati");
@@ -148,7 +150,7 @@ public class VersBootStrap implements ServletContextListener {
 
         //--crea i records della tavola Anno
         if (LibVers.installa(20)) {
-            if (creaAnni()) {
+            if (AnnoService.creaAnni()) {
                 LibVers.nuova("Anno", "Creati 3030 records per gli anni dal 1000 a.c. al 2030 d.c.");
             } else {
                 LibVers.nuova("Anno", "Gli anni esistevano già e non sono stati modificati");
@@ -187,91 +189,6 @@ public class VersBootStrap implements ServletContextListener {
         }// fine del blocco if
 
     }// end of method
-
-    /**
-     * Crea 366 records per tutti i giorni dell'anno
-     * <p>
-     * La colonna n, è il progressivo del giorno negli anni normali
-     * La colonna b, è il progressivo del giorno negli anni bisestili
-     */
-    private boolean creaGiorni() {
-        boolean creati = false;
-        ArrayList<HashMap> listaAnno;
-        String mese;
-        String nome;
-        String titolo;
-        int normale;
-        int bisestile;
-        Giorno giorno;
-
-        if (Giorno.count() > 0) {
-            return false;
-        }// end of if cycle
-
-        //--cancella tutti i records
-
-        //costruisce i 366 records
-        listaAnno = LibTimeBio.getAllGiorni();
-        for (HashMap mappaGiorno : listaAnno) {
-            mese = (String) mappaGiorno.get(CostBio.KEY_MAPPA_GIORNI_MESE_TESTO);
-            nome = (String) mappaGiorno.get(CostBio.KEY_MAPPA_GIORNI_NOME);
-            titolo = (String) mappaGiorno.get(CostBio.KEY_MAPPA_GIORNI_TITOLO);
-            normale = (int) mappaGiorno.get(CostBio.KEY_MAPPA_GIORNI_NORMALE);
-            bisestile = (int) mappaGiorno.get(CostBio.KEY_MAPPA_GIORNI_BISESTILE);
-            new Giorno(mese, nome, titolo, normale, bisestile).save();
-        }// end of for cycle
-
-        return true;
-    }// end of method
-
-
-    /**
-     * Crea tutti i records
-     * Cancella prima quelli esistenti
-     * <p>
-     * Ante cristo dal 1000
-     * Dopo cristo fino al 2030
-     */
-    private boolean creaAnni() {
-        boolean creati = false;
-        //--usato nell'ordinamento delle categorie
-        final int ANNO_INIZIALE = 2000;
-        int anteCristo = 1000;
-        int dopoCristo = 2030;
-        String tag = Secolo.TAG_AC;
-        int progressivo;
-        String titolo;
-        String secolo;
-
-        if (Anno.count() > 0) {
-            return false;
-        }// end of if cycle
-
-        //--cancella tutti i records
-//        Anno.executeUpdate('delete Anno')
-
-        //costruisce gli anni prima di cristo dal 1000
-        for (int k = anteCristo; k > 0; k--) {
-            progressivo = ANNO_INIZIALE - k;
-            titolo = k + tag;
-            secolo = Secolo.getSecoloAC(k);
-            if (progressivo != ANNO_INIZIALE) {
-                new Anno(titolo, secolo, progressivo).save();
-            }// end of if cycle
-        }// end of for cycle
-
-        //costruisce gli anni dopo cristo fino al 2030
-        for (int k = 0; k <= dopoCristo; k++) {
-            progressivo = k + ANNO_INIZIALE;
-            titolo = k + "";
-            secolo = Secolo.getSecoloDC(k);
-            if (progressivo != ANNO_INIZIALE) {
-                new Anno(titolo, secolo, progressivo).save();
-            }// end of if cycle
-        }// end of for cycle
-
-        return true;
-    }// fine del metodo
 
 
     /**

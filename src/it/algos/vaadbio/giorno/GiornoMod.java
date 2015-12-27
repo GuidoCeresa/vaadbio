@@ -4,8 +4,10 @@ package it.algos.vaadbio.giorno;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.Notification;
 import it.algos.vaadbio.annogiorno.AnnoGiornoMod;
+import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.liste.ListaGiornoMorto;
 import it.algos.vaadbio.liste.ListaGiornoNato;
+import it.algos.vaadbio.upload.UploadGiorni;
 import it.algos.webbase.web.table.ATable;
 
 /**
@@ -40,12 +42,22 @@ public class GiornoMod extends AnnoGiornoMod {
         return "Esegue un ciclo (<b><span style=\"color:green\">lista</span></b>) per la creazione di 366+366 pagine di nati e di morti per ogni giorno dell'anno</br>";
     }// end of method
 
+
     /**
-     * Esegue l'upload per la lista dei nati
+     * Esegue l'upload di tutti i record
      * Sovrascritto
      */
     @Override
-    protected void esegueUploadNati() {
+    protected void esegueUploadAll() {
+        new UploadGiorni();
+    }// end of method
+
+    /**
+     * Esegue l'upload per la lista dei nati di questo record
+     * Sovrascritto
+     */
+    @Override
+    protected void esegueUploadNato() {
         Giorno giorno = getGiorno();
 
         if (giorno != null) {
@@ -56,11 +68,11 @@ public class GiornoMod extends AnnoGiornoMod {
     }// end of method
 
     /**
-     * Esegue l'upload per la lista dei morti
+     * Esegue l'upload per la lista dei morti di questo record
      * Sovrascritto
      */
     @Override
-    protected void esegueUploadMorti() {
+    protected void esegueUploadMorto() {
         Giorno giorno = getGiorno();
 
         if (giorno != null) {
@@ -71,12 +83,10 @@ public class GiornoMod extends AnnoGiornoMod {
     }// end of method
 
     /**
-     * Esegue l'upload per la lista dei nati
-     * Esegue l'upload per la lista dei morti
-     * Sovrascritto
+     * Esegue l'upload per la lista dei nati di questo record
+     * Esegue l'upload per la lista dei morti di questo record
      */
-    @Override
-    protected void esegueUploadBoth() {
+    protected void esegueUploadBothNatoMorto() {
         Giorno giorno = getGiorno();
 
         if (giorno != null) {
@@ -86,6 +96,8 @@ public class GiornoMod extends AnnoGiornoMod {
             Notification.show("Devi selezionare una riga per creare la lista su wikipedia");
         }// end of if/else cycle
     }// end of method
+
+
 
     /**
      * Recupera la voce selezionata
