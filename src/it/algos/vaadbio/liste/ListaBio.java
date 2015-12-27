@@ -28,17 +28,23 @@ public abstract class ListaBio {
     protected LinkedHashMap<String, ArrayList<String>> mappaBiografie;
     protected int numPersone = 0;
 
-    protected boolean usaTavolaContenuti = true; //@todo mettere la preferenza
-//    protected boolean usaTavolaContenuti = Pref.getBool(LibBio.USA_TAVOLA_CONTENUTI, true)
+    protected boolean usaHeadInclude; // vero per Giorni ed Anni
+    protected boolean usaHeadToc;
+    protected boolean usaHeadTocIndice;
+    protected boolean usaHeadRitorno; // prima del template di avviso
+    protected boolean usaHeadTemplateAvviso; // uso del template StatBio
+    protected String tagHeadTemplateAvviso; // template 'StatBio'
+    protected boolean usaHeadIncipit; // dopo il template di avviso
 
-    protected boolean usaDoppiaColonna = true; //@todo mettere la preferenza
-    protected boolean usaRaggruppamentoRigheMultiple = true;//@todo mettere la preferenza
+    protected boolean usaBodySottopagine;
+    protected boolean usaBodyRigheMultiple;
+    protected boolean usaBodyDoppiaColonna;
+    protected boolean usaBodyTemplate;
 
-    protected boolean usaHeadRitorno = true; // prima del template di avviso
-    protected String tagTemplateBio = "ListaBio"; // in alternativa 'StatBio'//@todo mettere la preferenza
-    protected boolean usaInclude = true; // vero per Giorni ed Anni
-    protected boolean usaHeadIncipit = true; // dopo il template di avviso
+    //        tagTemplateBio == Pref.getStr(LibBio.NOME_TEMPLATE_AVVISO_LISTE_GIORNI_ANNI, 'ListaBio')
     protected String titoloPaginaMadre = "";
+    protected boolean usaFooterPortale;
+    protected boolean usaFooterCategorie;
     private Object oggetto;  //Giorno, Anno, Attivita, Nazionalita, Antroponimo, ecc
 
     /**
@@ -50,32 +56,56 @@ public abstract class ListaBio {
         doInit();
     }// fine del costruttore
 
-    /**
-     * Trim iniziale
-     * <p>
-     * Ogni blocco esce trimmato (per l'inizio) e con un solo ritorno a capo per fine riga. <br>
-     */
-    private static String finale(String testoIn) {
-        String testoOut = testoIn;
-
-        // trim finale
-        if (!testoIn.equals(CostBio.VUOTO)) {
-            testoOut = testoIn.trim();
-        }// fine del blocco if
-
-        // valore di ritorno
-        return testoOut;
-    }// fine del metodo
 
     protected void doInit() {
 //        numDidascalie = 0
-//        elaboraParametri()
+        elaboraParametri();
         elaboraTitolo();
 
 //        elaboraListaBiografie();
         elaboraMappaBiografie();
         elaboraPagina();
     }// fine del metodo
+
+    /**
+     * Regola alcuni (eventuali) parametri specifici della sottoclasse
+     * <p>
+     * Nelle sottoclassi va SEMPRE richiamata la superclasse PRIMA di regolare localmente le variabili <br>
+     * Sovrascritto
+     */
+    protected void elaboraParametri() {
+        // head
+        usaHeadInclude = true; //--tipicamente sempre true. Si attiva solo se c'è del testo (iniziale) da includere
+        usaHeadToc = true; //--tipicamente sempre true.
+        usaHeadTocIndice = true; //--normalmente true. Sovrascrivibile da preferenze
+        usaHeadRitorno = false; //--normalmente false. Sovrascrivibile da preferenze
+        usaHeadTemplateAvviso = true; //--normalmente true. Sovrascrivibile nelle sottoclassi
+        tagHeadTemplateAvviso = "StatBio"; //--Sovrascrivibile da preferenze
+        usaHeadIncipit = false; //--normalmente false. Sovrascrivibile da preferenze
+
+        // body
+        usaBodySottopagine = true; //--normalmente true. Sovrascrivibile nelle sottoclassi
+        usaBodyRigheMultiple = false; //--normalmente false. Sovrascrivibile da preferenze
+        usaBodyDoppiaColonna = true; //--normalmente true. Sovrascrivibile nelle sottoclassi
+        usaBodyTemplate = false; //--normalmente false. Sovrascrivibile nelle sottoclassi
+
+        // footer
+        usaFooterPortale = false;
+        usaFooterCategorie = false;
+
+//        usaSuddivisioneUomoDonna = false
+//        usaSuddivisioneParagrafi = true
+//        usaAttivitaMultiple = false
+//        usaParagrafiAlfabetici = false
+//        usaTitoloParagrafoConLink = true
+//        usaTitoloSingoloParagrafo = false
+//        usaSottopagine = true
+//        maxVociParagrafo = 100
+//        tagLivelloParagrafo = '=='
+//        tagParagrafoNullo = 'Altre...'
+//        usaSottopaginaAltri == Pref.getBool(LibBio.USA_SOTTOPAGINA_ALTRI, false)
+    }// fine del metodo
+
 
     /**
      * Titolo della pagina da creare/caricare su wikipedia
@@ -188,7 +218,6 @@ public abstract class ListaBio {
         if (!testo.equals(CostBio.VUOTO)) {
             testo = testo.trim();
             if (debug) {
-                testo = titoloPagina + CostBio.A_CAPO + CostBio.A_CAPO + testo;
                 Api.scriveVoce(PAGINA_PROVA, testo);
 //                testo = LibWiki.setBold(titoloPagina) + CostBio.A_CAPO + testo;
 //                paginaModificata = new EditBio(PAGINA_PROVA, testo, summary);
@@ -244,9 +273,9 @@ public abstract class ListaBio {
      */
     protected String elaboraBody() {
         String text = CostBio.VUOTO;
-        boolean usaColonne = this.usaDoppiaColonna;
+        boolean usaColonne = this.usaBodyDoppiaColonna;
         int maxRigheColonne = 10;//@todo mettere la preferenza
-        boolean usaRaggruppamentoRigheMultiple = this.usaRaggruppamentoRigheMultiple;
+        boolean usaRaggruppamentoRigheMultiple = this.usaBodyRigheMultiple;
 
         if (mappaBiografie != null && mappaBiografie.size() > 0) {
             if (usaRaggruppamentoRigheMultiple) {
@@ -260,7 +289,9 @@ public abstract class ListaBio {
             text = LibWiki.listaDueColonne(text.trim());
         }// fine del blocco if
 
-        text = elaboraTemplate(text);
+        if (usaBodyTemplate) {
+            text = elaboraTemplate(text);
+        }// end of if cycle
 
         return text;
     }// fine del metodo
@@ -310,7 +341,7 @@ public abstract class ListaBio {
                 text += CostBio.ASTERISCO;
                 text += LibWiki.setQuadre(mappa.getKey());
                 text += CostBio.TAG_SEPARATORE;
-                text += mappa.getValue();
+                text += mappa.getValue().get(0);
                 text += CostBio.A_CAPO;
             } else {
                 lista = mappa.getValue();
@@ -328,14 +359,30 @@ public abstract class ListaBio {
         return text;
     }// fine del metodo
 
+    /**
+     * Trim iniziale
+     * <p>
+     * Ogni blocco esce trimmato (per l'inizio) e con un solo ritorno a capo per fine riga. <br>
+     */
+    private String finale(String testoIn) {
+        String testoOut = testoIn;
+
+        // trim finale
+        if (!testoIn.equals(CostBio.VUOTO)) {
+            testoOut = testoIn.trim();
+        }// fine del blocco if
+
+        // valore di ritorno
+        return testoOut;
+    }// fine del metodo
 
     /**
      * Incapsula il testo come parametro di un (eventuale) template
-     * Se non viene incapsulato, lascia una riga vuota iniziale
+     * Se non viene incapsulato, restituisce il testo in ingresso
      * Sovrascritto
      */
     protected String elaboraTemplate(String testoIn) {
-        return CostBio.A_CAPO + testoIn;
+        return testoIn;
     }// fine del metodo
 
     /**
@@ -357,11 +404,13 @@ public abstract class ListaBio {
     private String elaboraTOC() {
         String text = CostBio.VUOTO;
 
-        if (usaTavolaContenuti) {
-            text += TAG_INDICE;
-        } else {
-            text += TAG_NO_INDICE;
-        }// fine del blocco if-else
+        if (usaHeadToc) {
+            if (usaHeadTocIndice) {
+                text += TAG_INDICE;
+            } else {
+                text += TAG_NO_INDICE;
+            }// fine del blocco if-else
+        }// end of if cycle
 
         return text;
     }// fine del metodo
@@ -369,11 +418,12 @@ public abstract class ListaBio {
     /**
      * Costruisce il ritorno alla pagina 'madre'
      * <p>
-     * Sovrascrivibile <br>
+     * Non sovrascrivibile <br>
      * Parametrizzato (nelle sottoclassi) l'utilizzo e la formulazione <br>
      */
-    protected String elaboraRitorno() {
+    private String elaboraRitorno() {
         String text = CostBio.VUOTO;
+        String titoloPaginaMadre = getTitoloPaginaMadre();
 
         if (usaHeadRitorno) {
             if (!titoloPaginaMadre.equals(CostBio.VUOTO)) {
@@ -383,6 +433,15 @@ public abstract class ListaBio {
         }// fine del blocco if
 
         return text;
+    }// fine del metodo
+
+    /**
+     * Titolo della pagina 'madre'
+     * <p>
+     * Sovrascritto
+     */
+    protected String getTitoloPaginaMadre() {
+        return titoloPaginaMadre;
     }// fine del metodo
 
     /**
@@ -396,26 +455,28 @@ public abstract class ListaBio {
         String dataCorrente = LibTime.getGioMeseAnnoLungo(new Date());
         String personeTxt = LibNum.format(numPersone);
 
-        text += tagTemplateBio;
-        text += "|bio=";
-        text += personeTxt;
-        text += "|data=";
-        text += dataCorrente.trim();
-        text = LibWiki.setGraffe(text);
+        if (usaHeadTemplateAvviso) {
+            text += tagHeadTemplateAvviso;
+            text += "|bio=";
+            text += personeTxt;
+            text += "|data=";
+            text += dataCorrente.trim();
+            text = LibWiki.setGraffe(text);
+        }// end of if cycle
 
         return text;
     }// fine del metodo
 
     /**
-     * Incorpora ilo testo nel tag 'include'
+     * Incorpora il testo iniziale nel tag 'include'
      * <p>
      * Non sovrascrivibile <br>
-     * Parametrizzato (nelle sottoclassi) l'utilizzo <br>
+     * Tipicamente sempre true. Si attiva solo se c'è del testo (iniziale) da includere
      */
     private String elaboraInclude(String testoIn) {
         String testoOut = testoIn;
 
-        if (usaInclude) {
+        if (usaHeadInclude) {
             testoOut = LibBio.setNoInclude(testoIn);
         }// fine del blocco if
 
@@ -436,7 +497,6 @@ public abstract class ListaBio {
 
         return text;
     }// fine del metodo
-
 
 
     /**

@@ -139,14 +139,51 @@ public class VersBootStrap implements ServletContextListener {
 
         //--crea i records della tavola Giorno
         if (LibVers.installa(19)) {
-            this.creaGiorni();
-            LibVers.nuova("Giorno", "Creati 366 records per tutti i giorni dell'anno (anche bisestile)");
+            if (creaGiorni()) {
+                LibVers.nuova("Giorno", "Creati 366 records per tutti i giorni dell'anno (anche bisestile)");
+            } else {
+                LibVers.nuova("Giorno", "I giorni esistevano già e non sono stati modificati");
+            }// end of if/else cycle
         }// fine del blocco if
 
         //--crea i records della tavola Anno
         if (LibVers.installa(20)) {
-            this.creaAnni();
-            LibVers.nuova("Anno", "Creati 3030 records per gli anni dal 1000 a.c. al 2030 d.c.");
+            if (creaAnni()) {
+                LibVers.nuova("Anno", "Creati 3030 records per gli anni dal 1000 a.c. al 2030 d.c.");
+            } else {
+                LibVers.nuova("Anno", "Gli anni esistevano già e non sono stati modificati");
+            }// end of if/else cycle
+        }// fine del blocco if
+
+
+        //--creata una nuova preferenza
+        if (LibVers.installa(21)) {
+            LibPref.newVersBool(CostBio.USA_TOC_INDICE_CRONO, false, "Uso dell'indice dei paragrafi in testa alle liste cronologiche. Tipicamente sempre falso.");
+        }// fine del blocco if
+
+        //--creata una nuova preferenza
+        if (LibVers.installa(22)) {
+            LibPref.newVersBool(CostBio.USA_FOOTER_PORTALE_CRONO, true, "Uso del portale biografie nel footer delle liste cronologiche. Tipicamente sempre vero.");
+        }// fine del blocco if
+
+        //--creata una nuova preferenza
+        if (LibVers.installa(23)) {
+            LibPref.newVersBool(CostBio.USA_FOOTER_CATEGORIE_CRONO, true, "Uso delle cateegorie nel footer delle liste cronologiche. Tipicamente sempre vero.");
+        }// fine del blocco if
+
+        //--creata una nuova preferenza
+        if (LibVers.installa(24)) {
+            LibPref.newVersBool(CostBio.USA_RITORNO_CRONO, true, "Uso del ritorno alla pagina madre in testa alle liste cronologiche. Tipicamente sempre vero.");
+        }// fine del blocco if
+
+        //--creata una nuova preferenza
+        if (LibVers.installa(25)) {
+            LibPref.newVersStr(CostBio.TEMPLATE_AVVISO_CRONO, "ListaBio", "Nome del template di avviso in testa alle liste cronologiche. Tipicamente ListaBio.");
+        }// fine del blocco if
+
+        //--creata una nuova preferenza
+        if (LibVers.installa(26)) {
+            LibPref.newVersBool(CostBio.USA_BODY_RIGHE_MULTIPLE_CRONO, true, "Uso delle righe multiple nelle liste cronologiche. Di default vero.");
         }// fine del blocco if
 
     }// end of method
@@ -157,7 +194,8 @@ public class VersBootStrap implements ServletContextListener {
      * La colonna n, è il progressivo del giorno negli anni normali
      * La colonna b, è il progressivo del giorno negli anni bisestili
      */
-    private void creaGiorni() {
+    private boolean creaGiorni() {
+        boolean creati = false;
         ArrayList<HashMap> listaAnno;
         String mese;
         String nome;
@@ -167,7 +205,7 @@ public class VersBootStrap implements ServletContextListener {
         Giorno giorno;
 
         if (Giorno.count() > 0) {
-            return;
+            return false;
         }// end of if cycle
 
         //--cancella tutti i records
@@ -182,6 +220,8 @@ public class VersBootStrap implements ServletContextListener {
             bisestile = (int) mappaGiorno.get(CostBio.KEY_MAPPA_GIORNI_BISESTILE);
             new Giorno(mese, nome, titolo, normale, bisestile).save();
         }// end of for cycle
+
+        return true;
     }// end of method
 
 
@@ -192,7 +232,8 @@ public class VersBootStrap implements ServletContextListener {
      * Ante cristo dal 1000
      * Dopo cristo fino al 2030
      */
-    private void creaAnni() {
+    private boolean creaAnni() {
+        boolean creati = false;
         //--usato nell'ordinamento delle categorie
         final int ANNO_INIZIALE = 2000;
         int anteCristo = 1000;
@@ -201,6 +242,10 @@ public class VersBootStrap implements ServletContextListener {
         int progressivo;
         String titolo;
         String secolo;
+
+        if (Anno.count() > 0) {
+            return false;
+        }// end of if cycle
 
         //--cancella tutti i records
 //        Anno.executeUpdate('delete Anno')
@@ -225,6 +270,7 @@ public class VersBootStrap implements ServletContextListener {
             }// end of if cycle
         }// end of for cycle
 
+        return true;
     }// fine del metodo
 
 

@@ -46,12 +46,13 @@ public class ListaAnnoNato extends ListaAnno {
     }// fine del metodo
 
     /**
-     * Piede della pagina
+     * Categoria specifica da inserire a piede pagina
+     * <p>
      * Sovrascritto
      */
     @Override
-    protected String elaboraFooter() {
-        return elaboraFooter("Liste di nati nell'anno");
+    protected String getTestoCategoria() {
+        return "Liste di nati nell'anno";
     }// fine del metodo
 
 }// fine della classe

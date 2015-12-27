@@ -10,7 +10,7 @@ import it.algos.webbase.web.lib.Secolo;
  * Crea la lista dei nati nell'anno e la carica sul server wiki
  * Crea la lista dei morti nell'anno e la carica sul server wiki
  */
-public abstract class ListaAnno extends ListaBio {
+public abstract class ListaAnno extends ListaCrono {
 
     /**
      * Costruttore
@@ -55,42 +55,47 @@ public abstract class ListaAnno extends ListaBio {
         titoloPagina = titolo;
     }// fine del metodo
 
+    /**
+     * Titolo della pagina 'madre'
+     * <p>
+     * Sovrascritto
+     */
+    @Override
+    protected String getTitoloPaginaMadre() {
+        String titolo = CostBio.VUOTO;
+        Anno anno = this.getAnno();
 
+        if (anno != null) {
+            titolo += anno.getNome();
+        }// fine del blocco if
+
+        return titolo;
+    }// fine del metodo
 
 
     /**
-     * Piede della pagina
-     * Elaborazione base
+     * Incapsula il testo come parametro di un (eventuale) template
+     * Sovrascritto
      */
-    protected String elaboraFooter(String categoriaTxt) {
-        String text = CostBio.VUOTO;
-        int progressivoCategoria = getProgressivoAnno();
-
-        text += "<noinclude>";
-        text += CostBio.A_CAPO;
-        text += "{{Portale|biografie}}";
-        text += CostBio.A_CAPO;
-        text += "[[Categoria:" + categoriaTxt + "| " + progressivoCategoria + "]]";
-        text += CostBio.A_CAPO;
-        text += "[[Categoria:" + titoloPagina + "| ]]";
-        text += CostBio.A_CAPO;
-        text += "</noinclude>";
-
-        return text;
+    @Override
+    protected String elaboraTemplate(String testoIn) {
+        return elaboraTemplate(testoIn, "Lista persone per anno");
     }// fine del metodo
+
 
     /**
      * Recupera il singolo Anno come progressivo dall'inizio
      */
-    private int getProgressivoAnno() {
+    @Override
+    protected String getProgressivoCategoria() {
         int annoProgressivo = 0;
         Anno anno = getAnno();
 
-        if (anno!=null) {
+        if (anno != null) {
             annoProgressivo = anno.getOrdinamento();
         }// fine del blocco if
 
-        return annoProgressivo;
+        return CostBio.VUOTO + annoProgressivo;
     }// fine del metodo
 
     /**

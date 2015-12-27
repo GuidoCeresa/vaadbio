@@ -9,7 +9,7 @@ import it.algos.vaadbio.lib.CostBio;
  * Crea la lista dei nati nel giorno e la carica sul server wiki
  * Crea la lista dei morti nel giorno e la carica sul server wiki
  */
-public abstract class ListaGiorno extends ListaBio {
+public abstract class ListaGiorno extends ListaCrono {
 
 
     /**
@@ -28,7 +28,7 @@ public abstract class ListaGiorno extends ListaBio {
      */
     @Override
     protected void elaboraTitolo() {
-        String titolo = "";
+        String titolo = CostBio.VUOTO;
         String tag = getTagTitolo();
         String articolo = "il";
         String articoloBis = "l'";
@@ -49,33 +49,40 @@ public abstract class ListaGiorno extends ListaBio {
         titoloPagina = titolo;
     }// fine del metodo
 
+
     /**
-     * Piede della pagina
-     * Elaborazione base
+     * Titolo della pagina 'madre'
+     * <p>
+     * Sovrascritto
      */
-    protected String elaboraFooter(String categoriaTxt) {
-        String text = CostBio.VUOTO;
-        String progressivoCategoria = getProgressivoGiorno();
+    @Override
+    protected String getTitoloPaginaMadre() {
+        String titolo = CostBio.VUOTO;
+        Giorno giorno = this.getGiorno();
 
-        text += "<noinclude>";
-        text += CostBio.A_CAPO;
-        text += "{{Portale|biografie}}";
-        text += CostBio.A_CAPO;
-        text += "[[Categoria:" + categoriaTxt + "| " + progressivoCategoria + "]]";
-        text += CostBio.A_CAPO;
-        text += "[[Categoria:" + titoloPagina + "| ]]";
-        text += CostBio.A_CAPO;
-        text += "</noinclude>";
+        if (giorno != null) {
+            titolo += giorno.getTitolo();
+        }// fine del blocco if
 
-        return text;
+        return titolo;
     }// fine del metodo
 
+    /**
+     * Incapsula il testo come parametro di un (eventuale) template
+     * Sovrascritto
+     */
+    @Override
+    protected String elaboraTemplate(String testoIn) {
+        return elaboraTemplate(testoIn, "Lista persone per giorno");
+    }// fine del metodo
 
     /**
      * Recupera il singolo Giorno come ordinamento
      * Comprende il 29 febbraio per gli anni bisestili
+     * Sovrascritto
      */
-    private String getProgressivoGiorno() {
+    @Override
+    protected String getProgressivoCategoria() {
         String giornoTxt = CostBio.VUOTO;
         int giornoNumero = 0;
         Giorno giorno = getGiorno();
@@ -113,7 +120,7 @@ public abstract class ListaGiorno extends ListaBio {
 
 
     public Giorno getGiorno() {
-        return (Giorno)getOggetto();
+        return (Giorno) getOggetto();
     }// end of getter method
 
 }// fine della classe

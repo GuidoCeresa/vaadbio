@@ -45,15 +45,15 @@ public class ListaGiornoNato extends ListaGiorno {
         return queryTxt;
     }// fine del metodo
 
+
     /**
-     * Piede della pagina
+     * Categoria specifica da inserire a piede pagina
      * <p>
-     * Aggiungere (di solito) inizialmente la chiamata al metodo elaboraFooterSpazioIniziale <br>
      * Sovrascritto
      */
     @Override
-    protected String elaboraFooter() {
-        return elaboraFooter("Liste di nati per giorno");
+    protected String getTestoCategoria() {
+        return "Liste di nati per giorno";
     }// fine del metodo
 
 

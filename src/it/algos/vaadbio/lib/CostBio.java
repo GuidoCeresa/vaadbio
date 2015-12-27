@@ -47,6 +47,14 @@ public abstract class CostBio {
     public final static String USA_UPLOAD_ELABORATA = "usaUploadElaborata";
     public final static String USA_LOG_UPLOAD_ELABORATA = "usaLogUploadElaborata";
 
+    // liste
+    public final static String USA_FOOTER_PORTALE_CRONO = "usaFooterPortaleCrono";
+    public final static String USA_FOOTER_CATEGORIE_CRONO = "usaFooterCategorieCrono";
+    public final static String USA_TOC_INDICE_CRONO = "usaTocIndiceCrono";
+    public final static String USA_RITORNO_CRONO = "usaRitornoCrono";
+    public final static String TEMPLATE_AVVISO_CRONO = "templateAvvisoCrono";
+    public final static String USA_BODY_RIGHE_MULTIPLE_CRONO = "usaBodyRigheMultipleCrono";
+
 
     //--chiavi mappa volori numerici passati come valore di ritorno multiplo
     public final static String KEY_MAPPA_REGISTRATE = "registrate";

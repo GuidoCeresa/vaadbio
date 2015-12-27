@@ -46,5 +46,14 @@ public class ListaAnnoMorto extends ListaAnno {
         return queryTxt;
     }// fine del metodo
 
+    /**
+     * Categoria specifica da inserire a piede pagina
+     * <p>
+     * Sovrascritto
+     */
+    @Override
+    protected String getTestoCategoria() {
+        return "Liste di morti nell'anno";
+    }// fine del metodo
 
 }// fine della classe
