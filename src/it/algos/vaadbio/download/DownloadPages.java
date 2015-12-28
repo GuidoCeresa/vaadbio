@@ -3,6 +3,9 @@ package it.algos.vaadbio.download;
 import it.algos.vaad.wiki.Api;
 import it.algos.vaad.wiki.Page;
 import it.algos.vaadbio.wrapperbio.WrapBio;
+import it.algos.webbase.domain.log.Log;
+import it.algos.webbase.web.lib.LibNum;
+import it.algos.webbase.web.lib.LibTime;
 
 import java.util.ArrayList;
 
@@ -15,26 +18,28 @@ import java.util.ArrayList;
 public class DownloadPages {
 
 
-    private ArrayList<Page> pages;
+    private ArrayList<Page> pages; // di norma 500
     private int numVociRegistrate = 0;
     private ArrayList<WrapBio> wraps;
 
     /**
      * Costruttore
      *
-     * @param listaPageids di pagine da scaricare dal server wiki
+     * @param bloccoPageids lista (pageids) di pagine da scaricare dal server wiki
      */
-    public DownloadPages(ArrayList<Long> listaPageids) {
-        doInit(listaPageids);
+    public DownloadPages(ArrayList<Long> bloccoPageids) {
+        doInit(bloccoPageids);
     }// end of constructor
 
 
     /**
-     * @param listaPageids di pagine da scaricare dal server wiki
+     * @param bloccoPageids lista (pageids) di pagine da scaricare dal server wiki
      */
-    private void doInit(ArrayList<Long> listaPageids) {
+    private void doInit(ArrayList<Long> bloccoPageids) {
         WrapBio wrap;
-        pages = Api.leggePages(listaPageids);
+        pages = Api.leggePages(bloccoPageids);
+
+        long inizio = System.currentTimeMillis();
 
         if (pages != null && pages.size() > 0) {
             wraps = new ArrayList<WrapBio>();
@@ -46,7 +51,8 @@ public class DownloadPages {
                 wraps.add(wrap);
             }// end of for cycle
         }// end of if cycle
-        int a = 87;
+        Log.setInfo("test", "save " + LibNum.format(numVociRegistrate) + " nuove voci in " + LibTime.difText(inizio));
+        int a=87;
     }// end of method
 
 

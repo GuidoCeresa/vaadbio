@@ -5,7 +5,12 @@ import it.algos.vaadbio.bio.Bio;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.webbase.domain.log.Log;
 import it.algos.webbase.domain.pref.Pref;
+import it.algos.webbase.web.entity.EM;
 import it.algos.webbase.web.lib.LibTime;
+
+import javax.persistence.EntityManager;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 
 /**
  * Elabora la singola voce
@@ -29,14 +34,14 @@ public class Elabora {
 
     private Bio bio = null;
     private boolean elaborata = false;
-
+    private EntityManager manager;
 
     /**
      * Costruttore
      *
      * @param pageid della voce da cui estrarre l'istanza bio (esistente)
      */
-    public Elabora(long pageid) {
+    public Elabora(long pageid,EntityManager manager) {
         Bio bio = null;
 
         if (pageid > 0) {
@@ -45,6 +50,7 @@ public class Elabora {
 
         if (bio != null) {
             this.bio = bio;
+            this.manager = manager;
             this.doInit();
         }// end of if cycle
     }// end of constructor
@@ -80,6 +86,46 @@ public class Elabora {
     }// end of constructor
 
     /**
+     * Persists this entity to the database.
+     * <p>
+     */
+    @SuppressWarnings("rawtypes")
+    public static void save(Bio bio) {
+
+        EntityManager manager = EM.createEntityManager();
+
+        try {
+
+            manager.getTransaction().begin();
+            if ((getId() != null) && (getId() != 0)) {
+                manager.merge(this);
+            } else {
+                manager.persist(this);
+            }
+
+            manager.getTransaction().commit();
+
+        } catch (ConstraintViolationException e) {
+            // rollback transaction and log
+            manager.getTransaction().rollback();
+            String violations = "";
+            for (ConstraintViolation v : e.getConstraintViolations()) {
+                if (!violations.equals("")) {
+                    violations += "\n";
+                }
+                violations += "- " + v.toString();
+            }
+
+        } catch (Exception e) {
+            manager.getTransaction().rollback();
+            e.printStackTrace();
+        }
+
+        manager.close();
+
+    }// end of method
+
+    /**
      * Estrae dal tmplBioServer i singoli parametri previsti nella enumeration ParBio
      * Costruisce il tmplBioStandard usando i parametri validi (ove esistenti) ed i parametri originali. Elimina i parametri vuoti.
      * <p>
@@ -112,7 +158,7 @@ public class Elabora {
 
         try { // prova ad eseguire il codice
             bio.setUltimaElaborazione(LibTime.adesso());
-            bio.save();
+            save(bio);
             elaborata = true;
         } catch (Exception unErrore) { // intercetta l'errore
             //--Recupera i dati dal record della tavola Wikibio
@@ -122,7 +168,6 @@ public class Elabora {
         }// fine del blocco try-catch
     }// end of method
 
-
     public boolean isElaborata() {
         return elaborata;
     }// end of getter method
@@ -130,5 +175,4 @@ public class Elabora {
     public Bio getBio() {
         return bio;
     }// end of getter method
-
 }// end of class
