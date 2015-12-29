@@ -5,11 +5,9 @@ import it.algos.vaadbio.bio.Bio;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.webbase.domain.log.Log;
 import it.algos.webbase.domain.pref.Pref;
-import it.algos.webbase.web.entity.EM;
 import it.algos.webbase.web.lib.LibTime;
 
 import javax.persistence.EntityManager;
-import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 
 /**
@@ -41,7 +39,7 @@ public class Elabora {
      *
      * @param pageid della voce da cui estrarre l'istanza bio (esistente)
      */
-    public Elabora(long pageid,EntityManager manager) {
+    public Elabora(long pageid) {
         Bio bio = null;
 
         if (pageid > 0) {
@@ -50,7 +48,6 @@ public class Elabora {
 
         if (bio != null) {
             this.bio = bio;
-            this.manager = manager;
             this.doInit();
         }// end of if cycle
     }// end of constructor
@@ -78,52 +75,14 @@ public class Elabora {
      *
      * @param bio istanza da elaborare
      */
-    public Elabora(Bio bio) {
+    public Elabora(Bio bio, EntityManager manager) {
         if (bio != null) {
             this.bio = bio;
+            this.manager = manager;
             this.doInit();
         }// end of if cycle
     }// end of constructor
 
-    /**
-     * Persists this entity to the database.
-     * <p>
-     */
-    @SuppressWarnings("rawtypes")
-    public static void save(Bio bio) {
-
-        EntityManager manager = EM.createEntityManager();
-
-        try {
-
-            manager.getTransaction().begin();
-            if ((getId() != null) && (getId() != 0)) {
-                manager.merge(this);
-            } else {
-                manager.persist(this);
-            }
-
-            manager.getTransaction().commit();
-
-        } catch (ConstraintViolationException e) {
-            // rollback transaction and log
-            manager.getTransaction().rollback();
-            String violations = "";
-            for (ConstraintViolation v : e.getConstraintViolations()) {
-                if (!violations.equals("")) {
-                    violations += "\n";
-                }
-                violations += "- " + v.toString();
-            }
-
-        } catch (Exception e) {
-            manager.getTransaction().rollback();
-            e.printStackTrace();
-        }
-
-        manager.close();
-
-    }// end of method
 
     /**
      * Estrae dal tmplBioServer i singoli parametri previsti nella enumeration ParBio
@@ -158,7 +117,11 @@ public class Elabora {
 
         try { // prova ad eseguire il codice
             bio.setUltimaElaborazione(LibTime.adesso());
-            save(bio);
+            if (manager!=null) {
+                save(bio);
+            } else {
+                bio.save();
+            }// end of if/else cycle
             elaborata = true;
         } catch (Exception unErrore) { // intercetta l'errore
             //--Recupera i dati dal record della tavola Wikibio
@@ -166,6 +129,47 @@ public class Elabora {
                 Log.setDebug("elabora", "Non sono riuscito ad elaborare la voce " + LibWiki.setQuadre(bio.getTitle()));
             }// end of if cycle
         }// fine del blocco try-catch
+    }// end of method
+
+
+    /**
+     * Persists this entity to the database.
+     * <p>
+     */
+    @SuppressWarnings("rawtypes")
+    public void save(Bio bio) {
+
+//        EntityManager manager = EM.createEntityManager();
+
+        try {
+
+//            manager.getTransaction().begin();
+            if ((bio.getId() != null) && (bio.getId() != 0)) {
+                manager.merge(bio);
+            } else {
+                manager.persist(bio);
+            }
+
+//            manager.getTransaction().commit();
+
+        } catch (ConstraintViolationException e) {
+//            // rollback transaction and log
+//            manager.getTransaction().rollback();
+//            String violations = "";
+//            for (ConstraintViolation v : e.getConstraintViolations()) {
+//                if (!violations.equals("")) {
+//                    violations += "\n";
+//                }
+//                violations += "- " + v.toString();
+//            }
+
+        } catch (Exception e) {
+            manager.getTransaction().rollback();
+            e.printStackTrace();
+        }
+
+//        manager.close();
+
     }// end of method
 
     public boolean isElaborata() {

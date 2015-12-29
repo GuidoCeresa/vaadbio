@@ -40,7 +40,7 @@ public class Download {
         page = Api.leggePage(pageid);
 
         if (page != null) {
-            registrata = new WrapBio(page).isRegistrata();
+            registrata = new WrapBio(page,null).isRegistrata();
         }// end of if cycle
 
     }// end of method
@@ -52,7 +52,7 @@ public class Download {
         page = Api.leggePage(title);
 
         if (page != null) {
-            registrata = new WrapBio(page).isRegistrata();
+            registrata = new WrapBio(page,null).isRegistrata();
         }// end of if cycle
     }// end of method
 

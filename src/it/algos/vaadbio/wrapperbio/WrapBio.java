@@ -10,6 +10,8 @@ import it.algos.webbase.domain.log.Log;
 import it.algos.webbase.domain.pref.Pref;
 import it.algos.webbase.web.lib.LibTime;
 
+import javax.persistence.EntityManager;
+
 /**
  * Ciclo di gestione della voce DOPO che la pagina è stata scaricata dal server wiki
  * <p>
@@ -30,8 +32,8 @@ public class WrapBio {
      *
      * @param pagina dal server
      */
-    public WrapBio(Page pagina) {
-        doInit(pagina);
+    public WrapBio(Page pagina,EntityManager manager) {
+        doInit(pagina,manager);
     }// end of constructor
 
 
@@ -46,7 +48,7 @@ public class WrapBio {
      *
      * @param pagina dal server
      */
-    private void doInit(Page pagina) {
+    private void doInit(Page pagina,EntityManager manager) {
         Bio bio = null;
         long pageid;
         String wikiTitle;
@@ -103,7 +105,7 @@ public class WrapBio {
         bio.setUltimaLettura(LibTime.adesso());
 
         //--Elabora l'istanza
-        registrata = new Elabora(bio).isElaborata();
+        registrata = new Elabora(bio,manager).isElaborata();
     }// end of method
 
     public boolean isRegistrata() {

@@ -154,7 +154,7 @@ public class CicloDownload {
 
 //                numVociRegistrate = downloadPagine(listaVociDaScaricare);
                 downloadPages = new DownloadPages(bloccoPageids);
-                numVociRegistrate = downloadPages.getNumVociRegistrate();
+                numVociRegistrate += downloadPages.getNumVociRegistrate();
 //                mappaVoci = downloadSingoloBlocco(bloccoPageids);
 //                if (mappaVoci != null) {
 //                    numVociModificate += mappaVoci.get(CostBio.KEY_MAPPA_MODIFICATE);
