@@ -117,7 +117,7 @@ public class Elabora {
 
         try { // prova ad eseguire il codice
             bio.setUltimaElaborazione(LibTime.adesso());
-            if (manager!=null) {
+            if (manager != null) {
                 save(bio);
             } else {
                 bio.save();

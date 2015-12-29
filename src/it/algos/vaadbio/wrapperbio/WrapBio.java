@@ -32,8 +32,18 @@ public class WrapBio {
      *
      * @param pagina dal server
      */
-    public WrapBio(Page pagina,EntityManager manager) {
-        doInit(pagina,manager);
+    public WrapBio(Page pagina) {
+        this(pagina, null);
+    }// end of constructor
+
+
+    /**
+     * Costruttore
+     *
+     * @param pagina dal server
+     */
+    public WrapBio(Page pagina, EntityManager manager) {
+        doInit(pagina, manager);
     }// end of constructor
 
 
@@ -48,7 +58,7 @@ public class WrapBio {
      *
      * @param pagina dal server
      */
-    private void doInit(Page pagina,EntityManager manager) {
+    private void doInit(Page pagina, EntityManager manager) {
         Bio bio = null;
         long pageid;
         String wikiTitle;
@@ -105,7 +115,7 @@ public class WrapBio {
         bio.setUltimaLettura(LibTime.adesso());
 
         //--Elabora l'istanza
-        registrata = new Elabora(bio,manager).isElaborata();
+        registrata = new Elabora(bio, manager).isElaborata();
     }// end of method
 
     public boolean isRegistrata() {

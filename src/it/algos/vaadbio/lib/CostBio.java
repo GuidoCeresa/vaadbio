@@ -24,6 +24,7 @@ public abstract class CostBio {
     public final static String USA_DEBUG = "usaDebug";
     public final static String USA_DIALOGHI_CONFERMA = "usaDialoghiConferma";
     public final static String USA_CICLI_ANCHE_SENZA_BOT = "usaCicliAncheSenzaBot";
+    public final static String USA_BLOCCO_COMMIT = "usaBloccoCommit";
 
     // daemons
     public final static String USA_CRONO_DOWNLOAD = "usaCronoDownload";

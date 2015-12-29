@@ -187,6 +187,11 @@ public class VersBootStrap implements ServletContextListener {
             LibPref.newVersBool(CostBio.REGISTRA_SOLO_MODIFICHE_SOSTANZIALI_CRONO, true, "Uso la registrazione solo se la voce è significativamente diversa nelle liste cronologiche. Di default vero.");
         }// fine del blocco if
 
+        //--creata una nuova preferenza
+        if (LibVers.installa(28)) {
+            LibPref.newVersBool(CostBio.USA_BLOCCO_COMMIT, true, "Uso di un unico commit per un blocco di 500 records da registrare. Di default vero.");
+        }// fine del blocco if
+
     }// end of method
 
 
