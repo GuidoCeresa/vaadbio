@@ -54,6 +54,7 @@ public abstract class CostBio {
     public final static String USA_RITORNO_CRONO = "usaRitornoCrono";
     public final static String TEMPLATE_AVVISO_CRONO = "templateAvvisoCrono";
     public final static String USA_BODY_RIGHE_MULTIPLE_CRONO = "usaBodyRigheMultipleCrono";
+    public final static String REGISTRA_SOLO_MODIFICHE_SOSTANZIALI_CRONO = "usaEditSoloVoceDiversaCrono";
 
 
     //--chiavi mappa volori numerici passati come valore di ritorno multiplo

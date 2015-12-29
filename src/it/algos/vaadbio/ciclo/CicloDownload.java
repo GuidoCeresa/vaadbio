@@ -84,24 +84,36 @@ public class CicloDownload {
 
         // aggiorna la tavola delle attività
         if (!Pref.getBool(CostBio.USA_DEBUG, true)) {
+            inizio = System.currentTimeMillis();
             AttivitaService.download();
+            Log.setDebug("test", "attività in "  + LibTime.difText(inizio));
         }// fine del blocco if-else
 
         // aggiorna la tavola delle nazionalità
         if (!Pref.getBool(CostBio.USA_DEBUG, true)) {
+            inizio = System.currentTimeMillis();
             NazionalitaService.download();
+            Log.setDebug("test", "nazionalità in "  + LibTime.difText(inizio));
         }// fine del blocco if-else
 
         // carica la categoria
+        inizio = System.currentTimeMillis();
         listaTotaleCategoria = Api.leggeCatLong(nomeCategoria);
+        Log.setDebug("test", "categoria in "  + LibTime.difText(inizio));
         Log.setInfo("categoria", "Letti e caricati in memoria i pageids di " + LibNum.format(listaTotaleCategoria.size()) + " pagine della categoria '" + nomeCategoria + "' in " + LibTime.difText(inizio));
 
         // recupera la lista dei records esistenti nel database
+        inizio = System.currentTimeMillis();
         listaEsistentiDataBase = Bio.findAllPageid();
+        Log.setDebug("test", "esistenti in "  + LibTime.difText(inizio));
 
         // elabora le liste delle differenze per la sincronizzazione
+        inizio = System.currentTimeMillis();
         listaMancanti = LibWiki.delta(listaTotaleCategoria, listaEsistentiDataBase);
+        Log.setDebug("test", "mancanti in "  + LibTime.difText(inizio));
+        inizio = System.currentTimeMillis();
         listaEccedenti = LibWiki.delta(listaEsistentiDataBase, listaTotaleCategoria);
+        Log.setDebug("test", "eccedenti in "  + LibTime.difText(inizio));
 
         // Scarica la lista di voci mancanti dal server e crea i nuovi records di Bio
         new CicloNew(listaMancanti);
@@ -126,6 +138,7 @@ public class CicloDownload {
      * @param listaVociDaScaricare elenco (pageids) delle pagine mancanti o modificate, da scaricare
      */
     protected int downloadPagine(ArrayList<Long> listaVociDaScaricare) {
+        long inizio;
         int numVociRegistrate = 0;
         int numVociDaScaricare = 0;
         int vociPerBlocco;
@@ -150,7 +163,9 @@ public class CicloDownload {
             numCicli = LibArray.numCicli(listaVociDaScaricare.size(), dimBlocco());
 
             for (int k = 0; k < numCicli; k++) {
+                inizio = System.currentTimeMillis();
                 bloccoPageids = LibArray.estraeSublistaLong(listaVociDaScaricare, dimBlocco(), k);
+                Log.setDebug("test", "estraeSub in "  + LibTime.difText(inizio));
 
 //                numVociRegistrate = downloadPagine(listaVociDaScaricare);
                 downloadPages = new DownloadPages(bloccoPageids);

@@ -1,19 +1,13 @@
 package it.algos.vaadbio.bootstrap;
 
-import it.algos.vaadbio.anno.Anno;
 import it.algos.vaadbio.anno.AnnoService;
-import it.algos.vaadbio.giorno.Giorno;
 import it.algos.vaadbio.giorno.GiornoService;
 import it.algos.vaadbio.lib.CostBio;
-import it.algos.vaadbio.lib.LibTimeBio;
 import it.algos.webbase.web.lib.LibPref;
 import it.algos.webbase.web.lib.LibVers;
-import it.algos.webbase.web.lib.Secolo;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Log delle versioni, modifiche e patch installate
@@ -186,6 +180,11 @@ public class VersBootStrap implements ServletContextListener {
         //--creata una nuova preferenza
         if (LibVers.installa(26)) {
             LibPref.newVersBool(CostBio.USA_BODY_RIGHE_MULTIPLE_CRONO, true, "Uso delle righe multiple nelle liste cronologiche. Di default vero.");
+        }// fine del blocco if
+
+        //--creata una nuova preferenza
+        if (LibVers.installa(27)) {
+            LibPref.newVersBool(CostBio.REGISTRA_SOLO_MODIFICHE_SOSTANZIALI_CRONO, true, "Uso la registrazione solo se la voce è significativamente diversa nelle liste cronologiche. Di default vero.");
         }// fine del blocco if
 
     }// end of method

@@ -38,15 +38,19 @@ public class DownloadPages {
      * @param bloccoPageids lista (pageids) di pagine da scaricare dal server wiki
      */
     private void doInit(ArrayList<Long> bloccoPageids) {
+        long inizio;
         WrapBio wrap;
+        inizio = System.currentTimeMillis();
         EntityManager manager = EM.createEntityManager();
+        Log.setDebug("test", "creazione manager in "  + LibTime.difText(inizio));
+        inizio = System.currentTimeMillis();
         pages = Api.leggePages(bloccoPageids);
-
-        long inizio = System.currentTimeMillis();
+        Log.setDebug("test", "lettura 500 pages in "  + LibTime.difText(inizio));
 
         if (pages != null && pages.size() > 0) {
             wraps = new ArrayList<WrapBio>();
             manager.getTransaction().begin();
+            inizio = System.currentTimeMillis();
             for (Page page : pages) {
                 wrap = new WrapBio(page, manager);
                 if (wrap.isRegistrata()) {
