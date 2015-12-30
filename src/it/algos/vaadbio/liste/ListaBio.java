@@ -324,8 +324,10 @@ public abstract class ListaBio {
         for (Map.Entry<String, ArrayList<String>> mappa : mappaBiografie.entrySet()) {
             if (mappa.getValue().size() == 1) {
                 text += CostBio.ASTERISCO;
-                text += LibWiki.setQuadre(mappa.getKey());
-                text += CostBio.TAG_SEPARATORE;
+                if (!mappa.getKey().equals(CostBio.VUOTO)) {
+                    text += LibWiki.setQuadre(mappa.getKey());
+                    text += CostBio.TAG_SEPARATORE;
+                }// end of if cycle
                 text += mappa.getValue().get(0);
                 text += CostBio.A_CAPO;
             } else {
