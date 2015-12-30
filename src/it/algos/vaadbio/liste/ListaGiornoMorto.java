@@ -38,9 +38,9 @@ public class ListaGiornoMorto extends ListaGiorno {
         Giorno giorno = super.getGiorno();
         String giornoTxt = giorno.getTitolo();
 
-        queryTxt += "select bio.annoMortoPunta.nome,bio.didascaliaGiornoMorto from Bio bio where bio.giornoMeseMorte='";
+        queryTxt += "select bio.annoMorteValido,bio.didascaliaGiornoMorto from Bio bio where bio.giornoMeseMorteValido='";
         queryTxt += giornoTxt;
-        queryTxt += "' order by bio.annoMortoPunta.ordinamento,bio.cognome";
+        queryTxt += "' order by bio.annoMorteValido,bio.cognome";
 
         return queryTxt;
     }// fine del metodo

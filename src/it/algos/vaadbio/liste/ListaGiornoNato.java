@@ -38,9 +38,9 @@ public class ListaGiornoNato extends ListaGiorno {
         Giorno giorno = super.getGiorno();
         String giornoTxt = giorno.getTitolo();
 
-        queryTxt += "select bio.annoNatoPunta.nome,bio.didascaliaGiornoNato from Bio bio where bio.giornoMeseNascita='";
+        queryTxt += "select bio.annoNascitaValido,bio.didascaliaGiornoNato from Bio bio where bio.giornoMeseNascitaValido='";
         queryTxt += giornoTxt;
-        queryTxt += "' order by bio.annoNatoPunta.ordinamento,bio.cognome";
+        queryTxt += "' order by bio.annoNascitaValido,bio.cognome";
 
         return queryTxt;
     }// fine del metodo

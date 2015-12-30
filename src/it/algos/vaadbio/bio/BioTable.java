@@ -23,15 +23,15 @@ public class BioTable extends ATable {
 
     }// end of constructor
 
-    /**
-     * Creates the container
-     * <p/>
-     *
-     * @return the container
-     */
-    protected Container createContainer() {
-        LazyEntityContainer entityContainer = new LazyEntityContainer<Bio>(EM.createEntityManager(), Bio.class, 100, BaseEntity_.id.getName(), true, true, true);
-        return entityContainer;
-    }// end of method
+//    /**
+//     * Creates the container
+//     * <p/>
+//     *
+//     * @return the container
+//     */
+//    protected Container createContainer() {
+//        LazyEntityContainer entityContainer = new LazyEntityContainer<Bio>(EM.createEntityManager(), Bio.class, 100, BaseEntity_.id.getName(), true, true, true);
+//        return entityContainer;
+//    }// end of method
 
 }// end of class

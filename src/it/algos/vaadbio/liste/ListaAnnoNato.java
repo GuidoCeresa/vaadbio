@@ -2,6 +2,12 @@ package it.algos.vaadbio.liste;
 
 import it.algos.vaadbio.anno.Anno;
 import it.algos.vaadbio.lib.CostBio;
+import it.algos.webbase.web.entity.EM;
+
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by gac on 26 dic 2015.
@@ -38,9 +44,9 @@ public class ListaAnnoNato extends ListaAnno {
         String annoTxt = anno.getNome();
         String queryTxt = CostBio.VUOTO;
 
-        queryTxt += "select bio.giornoNatoPunta.titolo,bio.didascaliaAnnoNato from Bio bio where bio.annoNascita='";
+        queryTxt += "select bio.giornoMeseNascitaValido,bio.didascaliaAnnoNato from Bio bio where bio.annoNascitaValido='";
         queryTxt += annoTxt;
-        queryTxt += "' order by bio.giornoNatoPunta.bisestile,bio.cognome";
+        queryTxt += "' order by bio.giornoMeseNascitaValido,bio.cognome";
 
         return queryTxt;
     }// fine del metodo

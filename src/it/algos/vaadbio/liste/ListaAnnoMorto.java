@@ -39,9 +39,9 @@ public class ListaAnnoMorto extends ListaAnno {
         String annoTxt = anno.getNome();
         String queryTxt = CostBio.VUOTO;
 
-        queryTxt += "select bio.giornoMortoPunta.titolo,bio.didascaliaAnnoMorto from Bio bio where bio.annoMorte='";
+        queryTxt += "select bio.giornoMeseMorteValido,bio.didascaliaAnnoMorto from Bio bio where bio.annoMorteValido='";
         queryTxt += annoTxt;
-        queryTxt += "' order by bio.giornoMortoPunta.bisestile,bio.cognome";
+        queryTxt += "' order by bio.giornoMeseMorteValido,bio.cognome";
 
         return queryTxt;
     }// fine del metodo

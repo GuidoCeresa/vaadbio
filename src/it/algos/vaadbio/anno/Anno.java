@@ -113,7 +113,7 @@ public class Anno extends BaseEntity {
      */
     @SuppressWarnings("unchecked")
     public synchronized static ArrayList<Anno> findAll() {
-        return (ArrayList<Anno>) AQuery.getList(Anno.class);
+        return (ArrayList<Anno>) AQuery.getLista(Anno.class);
     }// end of method
 
     /**

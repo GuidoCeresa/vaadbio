@@ -2,10 +2,13 @@ package it.algos.vaadbio.liste;
 
 import it.algos.vaad.wiki.Api;
 import it.algos.vaad.wiki.LibWiki;
+import it.algos.vaadbio.anno.Anno;
+import it.algos.vaadbio.giorno.Giorno;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.lib.LibBio;
 import it.algos.webbase.domain.pref.Pref;
 import it.algos.webbase.web.entity.EM;
+import it.algos.webbase.web.lib.LibArray;
 import it.algos.webbase.web.lib.LibNum;
 import it.algos.webbase.web.lib.LibTime;
 
@@ -64,6 +67,7 @@ public abstract class ListaBio {
 
 //        elaboraListaBiografie();
         elaboraMappaBiografie();
+        ordinaMappaBiografie();
         elaboraPagina();
     }// fine del metodo
 
@@ -143,9 +147,9 @@ public abstract class ListaBio {
         EntityManager manager = EM.createEntityManager();
         Query query = manager.createQuery(queryTxt);
         Object[] riga;
-        String anno;
+        String giornoanno;
         String didascalia;
-        String didascaliaShort;
+        String didascaliaShort = CostBio.VUOTO;
         ArrayList<String> lista;
 
         vettore = query.getResultList();
@@ -154,16 +158,22 @@ public abstract class ListaBio {
             for (Object rigaTmp : vettore) {
                 if (rigaTmp instanceof Object[]) {
                     riga = (Object[]) rigaTmp;
-                    anno = (String) riga[0];
+                    giornoanno = (String) riga[0];
                     didascalia = (String) riga[1];
-                    didascaliaShort = didascalia.substring(didascalia.indexOf(CostBio.TAG_SEPARATORE) + CostBio.TAG_SEPARATORE.length());
-                    if (mappaBiografie.containsKey(anno)) {
-                        lista = mappaBiografie.get(anno);
+
+                    if (didascalia.contains(CostBio.TAG_SEPARATORE)) {
+                        didascaliaShort = didascalia.substring(didascalia.indexOf(CostBio.TAG_SEPARATORE) + CostBio.TAG_SEPARATORE.length());
+                    } else {
+                        didascaliaShort = didascalia;
+                    }// end of if/else cycle
+
+                    if (mappaBiografie.containsKey(giornoanno)) {
+                        lista = mappaBiografie.get(giornoanno);
                         lista.add(didascaliaShort);
                     } else {
                         lista = new ArrayList<>();
                         lista.add(didascaliaShort);
-                        mappaBiografie.put(anno, lista);
+                        mappaBiografie.put(giornoanno, lista);
                     }// end of if/else cycle
                 }// end of if cycle
             }// end of for cycle
@@ -171,6 +181,14 @@ public abstract class ListaBio {
         }// end of if cycle
         manager.close();
 
+    }// fine del metodo
+
+
+    /**
+     * Patch
+     * La mappa delle biografie arriva NON ordinata @todo Da sistemare
+     */
+    protected void ordinaMappaBiografie() {
     }// fine del metodo
 
     /**

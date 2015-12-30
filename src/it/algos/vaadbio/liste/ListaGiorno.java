@@ -1,7 +1,11 @@
 package it.algos.vaadbio.liste;
 
+import it.algos.vaadbio.anno.Anno;
 import it.algos.vaadbio.giorno.Giorno;
 import it.algos.vaadbio.lib.CostBio;
+
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 
 /**
  * Created by gac on 21 dic 2015.
@@ -53,6 +57,28 @@ public abstract class ListaGiorno extends ListaCrono {
 
         return titolo;
     }// fine del metodo
+
+
+    /**
+     * Patch
+     * La mappa delle biografie arriva NON ordinata @todo Da sistemare
+     */
+    @Override
+    protected void ordinaMappaBiografie() {
+        LinkedHashMap<String, ArrayList<String>> mappa = new LinkedHashMap<String, ArrayList<String>>();
+        String key;
+
+        mappa.put(CostBio.VUOTO, mappaBiografie.get(CostBio.VUOTO));
+        for (Anno anno : Anno.findAll()) {
+            key = anno.getNome();
+            if (mappaBiografie.containsKey(key)) {
+                mappa.put(key, mappaBiografie.get(key));
+            }// end of if cycle
+        }// end of for cycle
+
+        mappaBiografie = mappa;
+    }// fine del metodo
+
 
     /**
      * Incapsula il testo come parametro di un (eventuale) template
