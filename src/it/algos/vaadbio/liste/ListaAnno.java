@@ -28,31 +28,11 @@ public abstract class ListaAnno extends ListaCrono {
      */
     @Override
     protected void elaboraTitolo() {
-        String titolo = "";
         Anno anno = getAnno();
-        String tag = getTagTitolo();
-        String articolo = "nel";
-        String articoloBis = "nell'";
-        String tagAC = CostBio.SPAZIO + Secolo.TAG_AC;
 
         if (anno != null) {
-            titolo = anno.getNome();
+            titoloPagina = anno.getTitoloLista(getTagTitolo());
         }// fine del blocco if
-
-        if (!titolo.equals(CostBio.VUOTO)) {
-            if (titolo.equals("1")
-                    || titolo.equals("1" + Secolo.TAG_AC)
-                    || titolo.equals("11")
-                    || titolo.equals("11" + Secolo.TAG_AC)
-                    || titolo.startsWith("8")
-                    ) {
-                titolo = tag + articoloBis + titolo;
-            } else {
-                titolo = tag + articolo + CostBio.SPAZIO + titolo;
-            }// fine del blocco if-else
-        }// fine del blocco if
-
-        titoloPagina = titolo;
     }// fine del metodo
 
     /**

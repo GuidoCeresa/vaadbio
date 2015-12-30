@@ -136,6 +136,7 @@ public class BioMod extends ModulePop {
         return new Attribute[]{Bio_.pageid, Bio_.title};
     }// end of method
 
+
     /**
      * Returns the table used to shows the list. <br>
      * The concrete subclass must override for a specific Table.

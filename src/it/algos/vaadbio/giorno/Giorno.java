@@ -1,6 +1,5 @@
 package it.algos.vaadbio.giorno;
 
-import com.vaadin.addon.jpacontainer.filter.Filters;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.webbase.web.entity.BaseEntity;
 import it.algos.webbase.web.query.AQuery;
@@ -178,6 +177,24 @@ public class Giorno extends BaseEntity {
         return testoOut;
     } // fine del metodo
 
+    /**
+     * Titolo della pagina Nati/Morti da creare/caricare su wikipedia
+     */
+    public String getTitoloLista(String tag) {
+        String titoloLista = CostBio.VUOTO;
+        String articolo = "il";
+        String articoloBis = "l'";
+
+        if (!titolo.equals("")) {
+            if (titolo.startsWith("8") || titolo.startsWith("11")) {
+                titoloLista = tag + articoloBis + titolo;
+            } else {
+                titoloLista = tag + articolo + CostBio.SPAZIO + titolo;
+            }// fine del blocco if-else
+        }// fine del blocco if
+
+        return titoloLista;
+    }// fine del metodo
 
     @Override
     public String toString() {

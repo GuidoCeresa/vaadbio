@@ -11,6 +11,7 @@ import it.algos.vaadbio.ciclo.CicloDownload;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.liste.ListaBio;
 import it.algos.vaadbio.upload.UploadAnni;
+import it.algos.vaadbio.upload.UploadGiorni;
 import it.algos.webbase.domain.pref.Pref;
 import it.algos.webbase.web.dialog.ConfirmDialog;
 import it.algos.webbase.web.module.ModulePop;
@@ -24,6 +25,12 @@ import it.algos.webbase.web.table.ATable;
 public abstract class AnnoGiornoMod extends ModulePop {
 
 
+    protected static final String WIKI_BASE = "https://it.wikipedia.org/";
+    protected static final String WIKI_URL = WIKI_BASE + "wiki/";
+
+
+    private Action actionPaginaNati = new Action("Lista nati", FontAwesome.SEARCH);
+    private Action actionPaginaMorti = new Action("Lista morti", FontAwesome.SEARCH);
     private Action actionUploadNati = new Action("Upload nati", FontAwesome.ARROW_UP);
     private Action actionUploadMorti = new Action("Upload morti", FontAwesome.ARROW_UP);
     private Action actionUploadAll = new Action("Upload both", FontAwesome.ARROW_UP);
@@ -81,14 +88,22 @@ public abstract class AnnoGiornoMod extends ModulePop {
         tavola.addActionHandler(new Action.Handler() {
             public Action[] getActions(Object target, Object sender) {
                 Action[] actions = null;
-                actions = new Action[3];
-                actions[0] = actionUploadNati;
-                actions[1] = actionUploadMorti;
-                actions[2] = actionUploadAll;
+                actions = new Action[5];
+                actions[0] = actionPaginaNati;
+                actions[1] = actionPaginaMorti;
+                actions[2] = actionUploadNati;
+                actions[3] = actionUploadMorti;
+                actions[4] = actionUploadAll;
                 return actions;
             }// end of inner method
 
             public void handleAction(Action action, Object sender, Object target) {
+                if (action.equals(actionPaginaNati)) {
+                    eseguePaginaNati();
+                }// end of if cycle
+                if (action.equals(actionPaginaMorti)) {
+                    eseguePaginaMorti();
+                }// end of if cycle
                 if (action.equals(actionUploadNati)) {
                     esegueUploadNato();
                 }// end of if cycle
@@ -178,6 +193,20 @@ public abstract class AnnoGiornoMod extends ModulePop {
      * Sovrascritto
      */
     protected void esegueUploadAll() {
+    }// end of method
+
+    /**
+     * Apre la pagina di wikipedia della lista di nati corrispondente
+     * Sovrascritto
+     */
+    protected void eseguePaginaNati() {
+    }// end of method
+
+    /**
+     * Apre la pagina della lista di morti corrispondente
+     * Sovrascritto
+     */
+    protected void eseguePaginaMorti() {
     }// end of method
 
     /**

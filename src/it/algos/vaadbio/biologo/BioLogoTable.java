@@ -41,7 +41,7 @@ public class BioLogoTable extends ATable {
      * @param itemClickEvent the event
      */
     @Override
-    protected void itemClick(ItemClickEvent itemClickEvent) {
+    public void itemClick(ItemClickEvent itemClickEvent) {
         Log logo = null;
         String titoloColonna = itemClickEvent.getPropertyId().toString();
         JPAContainerItem container = (JPAContainerItem) itemClickEvent.getItem();

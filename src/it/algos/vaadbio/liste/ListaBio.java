@@ -167,12 +167,10 @@ public abstract class ListaBio {
                     }// end of if/else cycle
                 }// end of if cycle
             }// end of for cycle
+            numPersone = vettore.size();
         }// end of if cycle
         manager.close();
 
-        if (mappaBiografie != null) {
-            numPersone = mappaBiografie.size();
-        }// fine del blocco if
     }// fine del metodo
 
     /**
@@ -223,6 +221,8 @@ public abstract class ListaBio {
 //                paginaModificata = new EditBio(PAGINA_PROVA, testo, summary);
 //                registrata = paginaModificata.registrata;
             } else {
+                Api.scriveVoce(titoloPagina, testo);
+
 //                paginaModificata = new EditBio(titoloPagina, testo, summary);
 //                registrata = paginaModificata.registrata;
             }// fine del blocco if-else

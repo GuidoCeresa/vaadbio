@@ -1,6 +1,8 @@
 package it.algos.vaadbio.anno;
 
+import it.algos.vaadbio.lib.CostBio;
 import it.algos.webbase.web.entity.BaseEntity;
+import it.algos.webbase.web.lib.Secolo;
 import it.algos.webbase.web.query.AQuery;
 import org.apache.commons.beanutils.BeanUtils;
 import org.eclipse.persistence.annotations.Index;
@@ -113,6 +115,31 @@ public class Anno extends BaseEntity {
     public synchronized static ArrayList<Anno> findAll() {
         return (ArrayList<Anno>) AQuery.getList(Anno.class);
     }// end of method
+
+    /**
+     * Titolo della pagina Nati/Morti da creare/caricare su wikipedia
+     */
+    public String getTitoloLista(String tag) {
+        String titoloLista = CostBio.VUOTO;
+        String articolo = "nel";
+        String articoloBis = "nell'";
+
+
+        if (!nome.equals(CostBio.VUOTO)) {
+            if (nome.equals("1")
+                    || nome.equals("1" + Secolo.TAG_AC)
+                    || nome.equals("11")
+                    || nome.equals("11" + Secolo.TAG_AC)
+                    || nome.startsWith("8")
+                    ) {
+                titoloLista = tag + articoloBis + nome;
+            } else {
+                titoloLista = tag + articolo + CostBio.SPAZIO + nome;
+            }// fine del blocco if-else
+        }// fine del blocco if
+
+        return titoloLista;
+    }// fine del metodo
 
     @Override
     public String toString() {

@@ -16,13 +16,14 @@ import it.algos.webbase.web.table.ATable;
 @SuppressWarnings("serial")
 public class GiornoMod extends AnnoGiornoMod {
 
+
     // indirizzo interno del modulo (serve nei menu)
     public static String MENU_ADDRESS = "Giorno";
 
 
     /**
      * Costruttore senza parametri
-     * <p/>
+     * <p>
      * Invoca la superclasse passando i parametri:
      * (obbligatorio) la Entity specifica
      * (facoltativo) etichetta del menu (se manca usa il nome della Entity)
@@ -42,6 +43,38 @@ public class GiornoMod extends AnnoGiornoMod {
         return "Esegue un ciclo (<b><span style=\"color:green\">lista</span></b>) per la creazione di 366+366 pagine di nati e di morti per ogni giorno dell'anno</br>";
     }// end of method
 
+
+    /**
+     * Apre la pagina di wikipedia della lista di nati corrispondente
+     * Sovrascritto
+     */
+    @Override
+    protected void eseguePaginaNati() {
+        String titoloPagina = CostBio.VUOTO;
+        Giorno giorno = getGiorno();
+
+        if (giorno != null) {
+            titoloPagina = giorno.getTitoloLista("Nati ");
+            this.getUI().getPage().open(WIKI_URL + titoloPagina, "_blank");
+        }// end of if/else cycle
+
+    }// end of method
+
+    /**
+     * Apre la pagina di wikipedia della lista di morti corrispondente
+     * Sovrascritto
+     */
+    @Override
+    protected void eseguePaginaMorti() {
+        String titoloPagina = CostBio.VUOTO;
+        Giorno giorno = getGiorno();
+
+        if (giorno != null) {
+            titoloPagina = giorno.getTitoloLista("Morti ");
+            this.getUI().getPage().open(WIKI_URL + titoloPagina, "_blank");
+        }// end of if/else cycle
+
+    }// end of method
 
     /**
      * Esegue l'upload di tutti i record
@@ -96,7 +129,6 @@ public class GiornoMod extends AnnoGiornoMod {
             Notification.show("Devi selezionare una riga per creare la lista su wikipedia");
         }// end of if/else cycle
     }// end of method
-
 
 
     /**

@@ -28,26 +28,13 @@ public abstract class ListaGiorno extends ListaCrono {
      */
     @Override
     protected void elaboraTitolo() {
-        String titolo = CostBio.VUOTO;
-        String tag = getTagTitolo();
-        String articolo = "il";
-        String articoloBis = "l'";
         Giorno giorno = getGiorno();
 
         if (giorno != null) {
-            titolo = giorno.getTitolo();
+            titoloPagina = giorno.getTitoloLista(getTagTitolo());
         }// fine del blocco if
-
-        if (!titolo.equals("")) {
-            if (titolo.startsWith("8") || titolo.startsWith("11")) {
-                titolo = tag + articoloBis + titolo;
-            } else {
-                titolo = tag + articolo + CostBio.SPAZIO + titolo;
-            }// fine del blocco if-else
-        }// fine del blocco if
-
-        titoloPagina = titolo;
     }// fine del metodo
+
 
 
     /**

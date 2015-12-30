@@ -4,6 +4,8 @@ package it.algos.vaadbio.anno;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.Notification;
 import it.algos.vaadbio.annogiorno.AnnoGiornoMod;
+import it.algos.vaadbio.giorno.Giorno;
+import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.liste.ListaAnnoMorto;
 import it.algos.vaadbio.liste.ListaAnnoNato;
 import it.algos.vaadbio.upload.UploadAnni;
@@ -56,6 +58,38 @@ public class AnnoMod extends AnnoGiornoMod {
         return "Esegue un ciclo (<b><span style=\"color:green\">lista</span></b>) per la creazione di 3030 pagine di nati e di morti per ogni anno</br>";
     }// end of method
 
+
+    /**
+     * Apre la pagina di wikipedia della lista di nati corrispondente
+     * Sovrascritto
+     */
+    @Override
+    protected void eseguePaginaNati() {
+        String titoloPagina = CostBio.VUOTO;
+        Anno anno = getAnno();
+
+        if (anno != null) {
+            titoloPagina = anno.getTitoloLista("Nati ");
+            this.getUI().getPage().open(WIKI_URL + titoloPagina, "_blank");
+        }// end of if/else cycle
+
+    }// end of method
+
+    /**
+     * Apre la pagina di wikipedia della lista di morti corrispondente
+     * Sovrascritto
+     */
+    @Override
+    protected void eseguePaginaMorti() {
+        String titoloPagina = CostBio.VUOTO;
+        Anno anno = getAnno();
+
+        if (anno != null) {
+            titoloPagina = anno.getTitoloLista("Morti ");
+            this.getUI().getPage().open(WIKI_URL + titoloPagina, "_blank");
+        }// end of if/else cycle
+
+    }// end of method
 
     /**
      * Esegue l'upload di tutti i record
