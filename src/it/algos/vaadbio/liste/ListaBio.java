@@ -2,13 +2,10 @@ package it.algos.vaadbio.liste;
 
 import it.algos.vaad.wiki.Api;
 import it.algos.vaad.wiki.LibWiki;
-import it.algos.vaadbio.anno.Anno;
-import it.algos.vaadbio.giorno.Giorno;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.lib.LibBio;
 import it.algos.webbase.domain.pref.Pref;
 import it.algos.webbase.web.entity.EM;
-import it.algos.webbase.web.lib.LibArray;
 import it.algos.webbase.web.lib.LibNum;
 import it.algos.webbase.web.lib.LibTime;
 
@@ -213,8 +210,7 @@ public abstract class ListaBio {
         boolean debug = Pref.getBool(CostBio.USA_DEBUG, false);
         String summary = LibWiki.getSummary();
         String testo = CostBio.VUOTO;
-//        EditBio paginaModificata
-//        Risultato risultato
+        String titolo;
 
         if (numPersone > 0) {
             //header
@@ -233,17 +229,17 @@ public abstract class ListaBio {
         //registra la pagina
         if (!testo.equals(CostBio.VUOTO)) {
             testo = testo.trim();
-            if (debug) {
-                Api.scriveVoce(PAGINA_PROVA, testo);
-//                testo = LibWiki.setBold(titoloPagina) + CostBio.A_CAPO + testo;
-//                paginaModificata = new EditBio(PAGINA_PROVA, testo, summary);
-//                registrata = paginaModificata.registrata;
-            } else {
-                Api.scriveVoce(titoloPagina, testo);
 
-//                paginaModificata = new EditBio(titoloPagina, testo, summary);
-//                registrata = paginaModificata.registrata;
+            if (debug) {
+                titolo = PAGINA_PROVA;
+            } else {
+                titolo = titoloPagina;
             }// fine del blocco if-else
+
+            if (LibBio.checkModificaSostanzialeCrono(titolo, testo, tagHeadTemplateAvviso)) {
+                Api.scriveVoce(titolo, testo, summary);
+            }// end of if cycle
+
         }// fine del blocco if
 
     }// fine del metodo

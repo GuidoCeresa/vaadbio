@@ -68,7 +68,10 @@ public abstract class ListaGiorno extends ListaCrono {
         LinkedHashMap<String, ArrayList<String>> mappa = new LinkedHashMap<String, ArrayList<String>>();
         String key;
 
-        mappa.put(CostBio.VUOTO, mappaBiografie.get(CostBio.VUOTO));
+        if (mappaBiografie.get(CostBio.VUOTO)!=null) {
+            mappa.put(CostBio.VUOTO, mappaBiografie.get(CostBio.VUOTO));
+        }// end of if cycle
+
         for (Anno anno : Anno.findAll()) {
             key = anno.getNome();
             if (mappaBiografie.containsKey(key)) {

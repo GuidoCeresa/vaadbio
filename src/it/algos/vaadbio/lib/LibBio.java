@@ -3,6 +3,7 @@ package it.algos.vaadbio.lib;
 
 import com.vaadin.addon.jpacontainer.JPAContainerItem;
 import com.vaadin.data.Item;
+import it.algos.vaad.wiki.Api;
 import it.algos.vaad.wiki.WikiLogin;
 import it.algos.vaadbio.bio.Bio;
 import it.algos.vaadbio.giorno.Giorno;
@@ -1408,6 +1409,49 @@ public abstract class LibBio {
         }// fine del blocco if
 
         return stringaOut;
+    } // fine del metodo
+
+
+    /**
+     * Controlla che esistano modifiche sostanziali (non solo la data)
+     * <p>
+     * Se il flag è false, registra sempre
+     * Se il flag è vero, controlla la differenza del testo
+     *
+     * @param titoloVoce eventualmente da modificare
+     * @param testoNew   della modifica
+     * @return la modifica va effettuata
+     */
+    public static boolean checkModificaSostanzialeCrono(String titoloVoce, String testoNew, String tag) {
+        boolean status = false;
+        boolean registraSoloModificheSostanziali = Pref.getBool(CostBio.REGISTRA_SOLO_MODIFICHE_SOSTANZIALI_CRONO, true);
+        String testoOldSignificativo = CostBio.VUOTO;
+        String testoNewSignificativo = CostBio.VUOTO;
+        String tagEnd = "}}";
+        String testoOld = Api.leggeVoce(titoloVoce);
+        int pos1 = 0;
+        int pos2 = 0;
+
+        if (registraSoloModificheSostanziali) {
+            if (!testoOld.equals(CostBio.VUOTO) && !testoNew.equals(CostBio.VUOTO)) {
+                pos1 = testoOld.indexOf(tag);
+                pos2 = testoOld.indexOf(tagEnd, pos1);
+                testoOldSignificativo = testoOld.substring(pos2);
+
+                pos1 = testoNew.indexOf(tag);
+                pos2 = testoNew.indexOf(tagEnd, pos1);
+                testoNewSignificativo = testoNew.substring(pos2);
+            }// fine del blocco if
+            if (!testoOldSignificativo.equals(CostBio.VUOTO) && !testoNewSignificativo.equals(CostBio.VUOTO)) {
+                if (!testoNewSignificativo.equals(testoOldSignificativo)) {
+                    status = true;
+                }// fine del blocco if
+            }// fine del blocco if
+        } else {
+            status = true;
+        }// end of if/else cycle
+
+        return status;
     } // fine del metodo
 
 }// end of abstract static class

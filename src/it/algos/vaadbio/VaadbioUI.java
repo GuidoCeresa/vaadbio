@@ -53,7 +53,7 @@ public class VaadbioUI extends AlgosUI {
 
         menuAddressModuloPartenza = "Wiki";
         super.init(request);
-        footerLayout.addComponent(new Label("Vaadbio versione 1.6 del 30 dic 2015"));
+        footerLayout.addComponent(new Label("Vaadbio versione 1.7 del 4 gen 2016"));
 
 //        this.checkLogin();
         boolean loggato = false;

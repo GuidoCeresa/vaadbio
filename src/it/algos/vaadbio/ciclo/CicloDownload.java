@@ -35,7 +35,7 @@ public class CicloDownload {
     public final static String TAG_CAT_DEBUG = "Nati nel 1420";
     //--numero massimo accettato da mediawiki per le richieste multiple
     private final static int PAGES_PER_REQUEST = 500;
-    private final static int NUMERO_VOCI_MINIMO_PER_OPERATIVITA_NORMALE = 295000;
+    private final static int NUMERO_VOCI_MINIMO_PER_OPERATIVITA_NORMALE = 294000;
 
 
     /**
