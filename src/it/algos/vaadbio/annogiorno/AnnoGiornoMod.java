@@ -129,6 +129,7 @@ public abstract class AnnoGiornoMod extends ModulePop {
     @Override
     public void addSottoMenu(MenuBar.MenuItem menuItem) {
         addCommandUpload(menuItem);
+        addCommandUploadContrario(menuItem);
     }// end of method
 
     /**
@@ -180,6 +181,56 @@ public abstract class AnnoGiornoMod extends ModulePop {
         });// end of anonymous class
     }// end of method
 
+
+    /**
+     * Comando bottone/item Upload
+     *
+     * @param menuItem a cui agganciare il bottone/item
+     */
+    private void addCommandUploadContrario(MenuBar.MenuItem menuItem) {
+        menuItem.addItem("Upload contrario", FontAwesome.COG, new MenuBar.Command() {
+            public void menuSelected(MenuBar.MenuItem selectedItem) {
+                boolean usaDialoghi = Pref.getBool(CostBio.USA_DIALOGHI_CONFERMA, true);
+                boolean usaDebug = Pref.getBool(CostBio.USA_DEBUG, false);
+                boolean usaLog = Pref.getBool(CostBio.USA_LOG_DOWNLOAD, false);
+                if (usaDialoghi) {
+                    String nomePagina = "<b><span style=\"color:red\">" + ListaBio.PAGINA_PROVA + "</span></b>";
+                    String newMsg;
+                    if (usaDebug) {
+                        newMsg = "Crea la lista dei nati nella pagina: " + nomePagina + "<br/>";
+                    } else {
+                        newMsg = getMsg();
+                    }// end of if/else cycle
+                    if (usaDebug) {
+                        newMsg += "<br>Le preferenze prevedono di usare la singola pagina di debug: " + nomePagina;
+                    }// end of if cycle
+                    if (usaLog) {
+                        newMsg += "<br>Le preferenze prevedono di registrare il risultato nei <b><span style=\"color:red\">log</span></b>";
+                    } else {
+                        newMsg += "<br>Le preferenze <b><span style=\"color:red\">non</span></b> prevedono di registrare il risultato nei log";
+                    }// end of if/else cycle
+                    ConfirmDialog dialog = new ConfirmDialog(CostBio.MSG, newMsg,
+                            new ConfirmDialog.Listener() {
+                                @Override
+                                public void onClose(ConfirmDialog dialog, boolean confirmed) {
+                                    if (confirmed) {
+                                        esegueUploadAllContrario();
+                                    }// end of if cycle
+                                }// end of inner method
+                            });// end of anonymous inner class
+                    UI ui = getUI();
+                    if (ui != null) {
+                        dialog.show(ui);
+                    } else {
+                        Notification.show("Avviso", "Devi prima entrare nel modulo Bio per eseguire questo comando", Notification.Type.WARNING_MESSAGE);
+                    }// end of if/else cycle
+                } else {
+                    new CicloDownload();
+                }// fine del blocco if-else
+            }// end of method
+        });// end of anonymous class
+    }// end of method
+
     /**
      * Messaggio del dialogo di avviso/conferma
      * Sovrascritto
@@ -193,6 +244,13 @@ public abstract class AnnoGiornoMod extends ModulePop {
      * Sovrascritto
      */
     protected void esegueUploadAll() {
+    }// end of method
+
+    /**
+     * Esegue l'upload di tutti i record (in ordine inverso)
+     * Sovrascritto
+     */
+    protected void esegueUploadAllContrario() {
     }// end of method
 
     /**

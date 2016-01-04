@@ -101,6 +101,15 @@ public class AnnoMod extends AnnoGiornoMod {
     }// end of method
 
     /**
+     * Esegue l'upload di tutti i record (in ordine inverso)
+     * Sovrascritto
+     */
+    @Override
+    protected void esegueUploadAllContrario() {
+        new UploadAnni(false);
+    }// end of method
+
+    /**
      * Esegue l'upload per la lista dei nati di questo record
      * Sovrascritto
      */

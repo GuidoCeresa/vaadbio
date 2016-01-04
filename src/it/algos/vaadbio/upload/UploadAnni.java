@@ -1,7 +1,6 @@
 package it.algos.vaadbio.upload;
 
 import it.algos.vaadbio.anno.Anno;
-import it.algos.vaadbio.giorno.Giorno;
 import it.algos.vaadbio.liste.ListaAnnoMorto;
 import it.algos.vaadbio.liste.ListaAnnoNato;
 
@@ -18,21 +17,37 @@ public class UploadAnni {
 
 
     /**
-     * Costruttore completo
+     * Costruttore completo normale
      */
     public UploadAnni() {
-        doInit();
+        this(true);
+    }// end of constructor
+
+    /**
+     * Costruttore completo contrario
+     */
+    public UploadAnni(boolean daPrimaDiCristo) {
+        doInit(daPrimaDiCristo);
     }// end of constructor
 
 
     //--Esegue un ciclo di creazione (UPLOAD) delle liste di nati e morti per ogni giorno dell'anno
-    private void doInit() {
-        ArrayList<Anno> listaAnni= Anno.findAll();
+    private void doInit(boolean daPrimaDiCristo) {
+        ArrayList<Anno> listaAnni = Anno.findAll();
+        Anno annoContrario;
 
-        for (Anno anno : listaAnni) {
-            new ListaAnnoNato(anno);
-            new ListaAnnoMorto(anno);
-        }// end of for cycle
+        if (daPrimaDiCristo) {
+            for (Anno annoNormale : listaAnni) {
+                new ListaAnnoNato(annoNormale);
+                new ListaAnnoMorto(annoNormale);
+            }// end of for cycle
+        } else {
+            for (int k = 3029; k > 0; k--) {
+                annoContrario =listaAnni.get(k);
+                new ListaAnnoNato(annoContrario);
+                new ListaAnnoMorto(annoContrario);
+            }// end of for cycle
+        }// end of if/else cycle
 
     }// end of method
 

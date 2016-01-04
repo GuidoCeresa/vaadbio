@@ -64,7 +64,10 @@ public abstract class ListaAnno extends ListaCrono {
         LinkedHashMap<String, ArrayList<String>> mappa = new LinkedHashMap<String, ArrayList<String>>();
         String key;
 
-        mappa.put(CostBio.VUOTO, mappaBiografie.get(CostBio.VUOTO));
+        if (mappaBiografie.get(CostBio.VUOTO)!=null) {
+            mappa.put(CostBio.VUOTO, mappaBiografie.get(CostBio.VUOTO));
+        }// end of if cycle
+
         for (Giorno giorno : Giorno.findAll()) {
             key = giorno.getTitolo();
             if (mappaBiografie.containsKey(key)) {
