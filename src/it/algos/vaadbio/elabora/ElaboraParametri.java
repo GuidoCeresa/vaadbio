@@ -4,7 +4,7 @@ import it.algos.vaadbio.bio.Bio;
 import it.algos.vaadbio.lib.LibBio;
 import it.algos.vaadbio.lib.ParBio;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 /**
  * Created by gac on 19 dic 2015.
@@ -26,7 +26,7 @@ public class ElaboraParametri {
 
     //--Elabora valori base di tutti i parametri
     private void doInit(Bio bio) {
-        HashMap<String, String> mappaBio = estraeMappa(bio);
+        LinkedHashMap<String, String> mappaBio = LibBio.getMappaBio(bio);
 
         if (mappaBio == null || mappaBio.size() < 1) {
             return;
@@ -40,12 +40,12 @@ public class ElaboraParametri {
 
     }// end of method
 
-    /**
-     * Estrae dal templateServer una mappa di parametri corrispondenti ai campi della tavola Bio
-     */
-    private HashMap<String, String> estraeMappa(Bio bio) {
-        String tmplBioServer = bio.getTmplBioServer();
-        return LibBio.getMappaBio(tmplBioServer);
-    }// end of method
+//    /**
+//     * Estrae dal templateServer una mappa di parametri corrispondenti ai campi della tavola Bio
+//     */
+//    public static HashMap<String, String> estraeMappa(Bio bio) {
+//        String tmplBioServer = bio.getTmplBioServer();
+//        return LibBio.getMappaBio(tmplBioServer);
+//    }// end of method
 
 }// end of class

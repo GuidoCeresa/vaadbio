@@ -106,6 +106,8 @@ public class CicloUpdate extends CicloDownload {
             numVociDaControllare = Bio.count();
         }// end of if/else cycle
 
+        numVociDaControllare = 1000;//@todo LEVARE
+
         numCicli = LibArray.numCicli(numVociDaControllare, vociPerBlocco);
         vociPerBlocco = Math.min(numVociDaControllare, vociPerBlocco);
         for (int k = 0; k < numCicli; k++) {

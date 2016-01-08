@@ -32,9 +32,8 @@ import java.util.ArrayList;
 public class CicloDownload {
 
     public final static String TAG_BIO = "BioBot";
-    public final static String TAG_CAT_DEBUG = "Nati nel 1420";
-    //--numero massimo accettato da mediawiki per le richieste multiple
-    private final static int PAGES_PER_REQUEST = 500;
+    public final static String TAG_CAT_DEBUG = "Nati nel 1948";
+
     private final static int NUMERO_VOCI_MINIMO_PER_OPERATIVITA_NORMALE = 294000;
 
 
@@ -62,7 +61,7 @@ public class CicloDownload {
      */
     @SuppressWarnings("unchecked")
     protected void doInit() {
-        long inizio = System.currentTimeMillis();
+        long inizio;
         String nomeCategoria = "";
         ArrayList<Long> listaTotaleCategoria;
         ArrayList<Long> listaEsistentiDataBase;
@@ -76,44 +75,33 @@ public class CicloDownload {
         }// end of if cycle
 
         // seleziona la categoria normale o di debug
-        if (Pref.getBool(CostBio.USA_DEBUG, true)) {
+        if (Pref.getBool(CostBio.USA_DEBUG, false)) {
             nomeCategoria = TAG_CAT_DEBUG;
         } else {
             nomeCategoria = TAG_BIO;
         }// fine del blocco if-else
 
         // aggiorna la tavola delle attività
-        if (!Pref.getBool(CostBio.USA_DEBUG, true)) {
-            inizio = System.currentTimeMillis();
+        if (!Pref.getBool(CostBio.USA_DEBUG, false)) {
             AttivitaService.download();
-            Log.setDebug("test", "attività in "  + LibTime.difText(inizio));
         }// fine del blocco if-else
 
         // aggiorna la tavola delle nazionalità
-        if (!Pref.getBool(CostBio.USA_DEBUG, true)) {
-            inizio = System.currentTimeMillis();
+        if (!Pref.getBool(CostBio.USA_DEBUG, false)) {
             NazionalitaService.download();
-            Log.setDebug("test", "nazionalità in "  + LibTime.difText(inizio));
         }// fine del blocco if-else
 
         // carica la categoria
         inizio = System.currentTimeMillis();
         listaTotaleCategoria = Api.leggeCatLong(nomeCategoria);
-        Log.setDebug("test", "categoria in "  + LibTime.difText(inizio));
         Log.setInfo("categoria", "Letti e caricati in memoria i pageids di " + LibNum.format(listaTotaleCategoria.size()) + " pagine della categoria '" + nomeCategoria + "' in " + LibTime.difText(inizio));
 
         // recupera la lista dei records esistenti nel database
-        inizio = System.currentTimeMillis();
         listaEsistentiDataBase = Bio.findAllPageid();
-        Log.setDebug("test", "esistenti in "  + LibTime.difText(inizio));
 
         // elabora le liste delle differenze per la sincronizzazione
-        inizio = System.currentTimeMillis();
         listaMancanti = LibWiki.delta(listaTotaleCategoria, listaEsistentiDataBase);
-        Log.setDebug("test", "mancanti in "  + LibTime.difText(inizio));
-        inizio = System.currentTimeMillis();
         listaEccedenti = LibWiki.delta(listaEsistentiDataBase, listaTotaleCategoria);
-        Log.setDebug("test", "eccedenti in "  + LibTime.difText(inizio));
 
         // Scarica la lista di voci mancanti dal server e crea i nuovi records di Bio
         new CicloNew(listaMancanti);
@@ -138,13 +126,9 @@ public class CicloDownload {
      * @param listaVociDaScaricare elenco (pageids) delle pagine mancanti o modificate, da scaricare
      */
     protected int downloadPagine(ArrayList<Long> listaVociDaScaricare) {
-        long inizio;
         int numVociRegistrate = 0;
         int numVociDaScaricare = 0;
-        int vociPerBlocco;
         ArrayList<Long> bloccoPageids;
-        int iniBlocco;
-        int endBlocco;
         int numCicli;
         DownloadPages downloadPages;
 
@@ -157,17 +141,11 @@ public class CicloDownload {
         }// end of if cycle
 
         if (numVociDaScaricare > 0) {
-//            vociPerBlocco = Math.min(numVociDaScaricare, PAGES_PER_REQUEST);
-
-
             numCicli = LibArray.numCicli(listaVociDaScaricare.size(), dimBlocco());
 
             for (int k = 0; k < numCicli; k++) {
-                inizio = System.currentTimeMillis();
                 bloccoPageids = LibArray.estraeSublistaLong(listaVociDaScaricare, dimBlocco(), k);
-                Log.setDebug("test", "estraeSub in "  + LibTime.difText(inizio));
 
-//                numVociRegistrate = downloadPagine(listaVociDaScaricare);
                 downloadPages = new DownloadPages(bloccoPageids);
                 numVociRegistrate += downloadPages.getNumVociRegistrate();
 //                mappaVoci = downloadSingoloBlocco(bloccoPageids);

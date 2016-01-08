@@ -3,8 +3,8 @@ package it.algos.vaadbio.bio;
 import com.vaadin.data.Item;
 import com.vaadin.ui.*;
 import it.algos.webbase.web.field.CheckBoxField;
-import it.algos.webbase.web.form.AForm;
 import it.algos.webbase.web.form.AFormLayout;
+import it.algos.webbase.web.form.ModuleForm;
 import it.algos.webbase.web.module.ModulePop;
 
 import javax.persistence.metamodel.Attribute;
@@ -13,7 +13,7 @@ import javax.persistence.metamodel.Attribute;
  * Created by gac on 26 nov 2015.
  * .
  */
-public class BioForm extends AForm {
+public class BioForm extends ModuleForm {
 
     private static String LAR_CAMPO = "100px";
     private static String LAR_CAMPO2 = "187px";
@@ -26,7 +26,7 @@ public class BioForm extends AForm {
 
 
     public BioForm(ModulePop module, Item item) {
-        super(module, item);
+        super(item, module);
 //        doInit();
     }// end of constructor
 
@@ -68,7 +68,7 @@ public class BioForm extends AForm {
      * senza invocare il metodo della superclasse
      */
     @Override
-    protected void createFields() {
+    public void createFields() {
         TextArea field;
         super.createFields();
         Attribute[] attributes = {Bio_.tmplBioServer, Bio_.tmplBioStandard};
@@ -86,13 +86,13 @@ public class BioForm extends AForm {
         Layout layout = new AFormLayout();
         Field field = null;
 
-        field = super.bindMap.get(Bio_.pageid.getName());
+        field = getField(Bio_.pageid.getName());
         field.setWidth(LAR_CAMPO);
-        field = super.bindMap.get(Bio_.title.getName());
+        field = getField(Bio_.title.getName());
         field.setWidth(LAR_CAMPO3);
-        field = super.bindMap.get(Bio_.ultimaLettura.getName());
+        field = getField(Bio_.ultimaLettura.getName());
         field.setWidth(LAR_CAMPO2);
-        field = super.bindMap.get(Bio_.ultimaElaborazione.getName());
+        field = getField(Bio_.ultimaElaborazione.getName());
         field.setWidth(LAR_CAMPO2);
 
         layout.addComponent(getField(Bio_.pageid));
@@ -103,7 +103,7 @@ public class BioForm extends AForm {
         layout.addComponent(getField(Bio_.ultimaLettura));
         layout.addComponent(getField(Bio_.ultimaElaborazione));
 
-        return incapsulaPerMargine(layout);
+        return layout;
     }// end of method
 
     private Component creaTabTemplates() {
@@ -123,7 +123,7 @@ public class BioForm extends AForm {
         layout.addComponent(replicatedBox);
         layout.addComponent(layoutOr);
 
-        return incapsulaPerMargine(layout);
+        return layout;
     }// end of method
 
 
@@ -132,23 +132,23 @@ public class BioForm extends AForm {
         layout.setSpacing(true);
         Field field = null;
 
-        field = super.bindMap.get(Bio_.didascaliaGiornoNato.getName());
+        field = getField(Bio_.didascaliaGiornoNato.getName());
         field.setWidth(LAR_CAMPO4);
         layout.addComponent(getField(Bio_.didascaliaGiornoNato));
 
-        field = super.bindMap.get(Bio_.didascaliaGiornoMorto.getName());
+        field = getField(Bio_.didascaliaGiornoMorto.getName());
         field.setWidth(LAR_CAMPO4);
         layout.addComponent(getField(Bio_.didascaliaGiornoMorto));
 
-        field = super.bindMap.get(Bio_.didascaliaAnnoNato.getName());
+        field = getField(Bio_.didascaliaAnnoNato.getName());
         field.setWidth(LAR_CAMPO4);
         layout.addComponent(getField(Bio_.didascaliaAnnoNato));
 
-        field = super.bindMap.get(Bio_.didascaliaAnnoMorto.getName());
+        field = getField(Bio_.didascaliaAnnoMorto.getName());
         field.setWidth(LAR_CAMPO4);
         layout.addComponent(getField(Bio_.didascaliaAnnoMorto));
 
-        return incapsulaPerMargine(layout);
+        return layout;
     }// end of method
 
 

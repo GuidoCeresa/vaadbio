@@ -19,6 +19,7 @@ import it.algos.webbase.domain.pref.Pref;
 import it.algos.webbase.web.dialog.ConfirmDialog;
 import it.algos.webbase.web.dialog.EditDialog;
 import it.algos.webbase.web.form.AForm;
+import it.algos.webbase.web.form.ModuleForm;
 import it.algos.webbase.web.lib.LibNum;
 import it.algos.webbase.web.module.ModulePop;
 import it.algos.webbase.web.search.SearchManager;
@@ -157,7 +158,7 @@ public class BioMod extends ModulePop {
      * @param item singola istanza della classe
      * @return the Form
      */
-    public AForm createForm(Item item) {
+    public ModuleForm createForm(Item item) {
         return (new BioForm(this, item));
     }// end of method
 

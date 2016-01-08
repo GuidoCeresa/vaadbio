@@ -44,8 +44,7 @@ public class BioLogoTable extends ATable {
     public void itemClick(ItemClickEvent itemClickEvent) {
         Log logo = null;
         String titoloColonna = itemClickEvent.getPropertyId().toString();
-        JPAContainerItem container = (JPAContainerItem) itemClickEvent.getItem();
-        Object obj = container.getEntity();
+        Object obj = super.getSelectedEntity();
 
         if (obj instanceof Log) {
             logo = (Log) obj;

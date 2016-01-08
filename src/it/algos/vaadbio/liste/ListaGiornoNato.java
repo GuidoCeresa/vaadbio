@@ -36,11 +36,12 @@ public class ListaGiornoNato extends ListaGiorno {
     protected String getQueryCrono() {
         String queryTxt = CostBio.VUOTO;
         Giorno giorno = super.getGiorno();
-        String giornoTxt = giorno.getTitolo();
+        String giornoTxt = "'" + giorno.getTitolo() + "'";
 
-        queryTxt += "select bio.annoNascitaValido,bio.didascaliaGiornoNato from Bio bio where bio.giornoMeseNascitaValido='";
-        queryTxt += giornoTxt;
-        queryTxt += "' order by bio.annoNascitaValido,bio.cognome";
+//        queryTxt += "select bio.annoNascitaValido,bio.didascaliaGiornoNato from Bio bio where bio.giornoMeseNascitaValido='";
+//        queryTxt += giornoTxt;
+//        queryTxt += "' order by bio.annoNascitaValido,bio.cognome";
+        queryTxt = "select bio.annoNatoPunta.nome,bio.didascaliaGiornoNato,bio.annoNatoPunta.ordinamento from Bio bio where bio.giornoMeseNascitaValido=" + giornoTxt + " order by bio.annoNatoPunta.ordinamento,bio.annoNascitaValido,bio.cognome";
 
         return queryTxt;
     }// fine del metodo
@@ -55,7 +56,6 @@ public class ListaGiornoNato extends ListaGiorno {
     protected String getTestoCategoria() {
         return "Liste di nati per giorno";
     }// fine del metodo
-
 
 
 }// fine della classe

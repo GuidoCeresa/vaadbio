@@ -9,6 +9,7 @@ import it.algos.vaadbio.lib.CostBio;
 import it.algos.webbase.domain.log.Log;
 import it.algos.webbase.domain.pref.Pref;
 import it.algos.webbase.web.lib.LibTime;
+import org.vaadin.addons.lazyquerycontainer.LazyEntityContainer;
 
 import javax.persistence.EntityManager;
 
@@ -115,7 +116,7 @@ public class WrapBio {
         bio.setUltimaLettura(LibTime.adesso());
 
         //--Elabora l'istanza
-        registrata = new Elabora(bio, manager).isElaborata();
+        registrata = new Elabora(bio,  manager).isElaborata();
     }// end of method
 
     public boolean isRegistrata() {

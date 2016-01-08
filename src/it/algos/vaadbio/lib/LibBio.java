@@ -133,6 +133,24 @@ public abstract class LibBio {
         return mappa;
     }// end of static method
 
+    /**
+     * Estrae una mappa chiave valore per un fix di parametri, da una biografia
+     * <p>
+     * E impossibile sperare in uno schema fisso
+     * Occorre considerare le {{ graffe annidate, i | (pipe) annidati
+     * i mancati ritorni a capo, ecc., ecc.
+     * <p>
+     * Uso la lista dei parametri che può riconoscere
+     * (è meno flessibile, ma più sicuro)
+     * Cerco il primo parametro nel testo e poi spazzolo il testo per cercare
+     * il primo parametro noto e così via
+     *
+     * @param bio istanza della Entity
+     * @return mappa dei parametri esistenti nella enumeration e presenti nel testo
+     */
+    public static LinkedHashMap<String, String> getMappaBio(Bio bio) {
+        return getMappaBio(bio.getTmplBioServer());
+    }// end of static method
 
     /**
      * Estrae una mappa chiave valore per un fix di parametri, dal testo di una biografia

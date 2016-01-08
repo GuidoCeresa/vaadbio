@@ -184,7 +184,8 @@ public abstract class ListaBio {
     /**
      * Patch
      * La mappa delle biografie arriva NON ordinata @todo Da sistemare
-     *  @todo Ordine cognome (e se manca?)
+     *
+     * @todo Ordine cognome (e se manca?)
      */
     protected void ordinaMappaBiografie() {
     }// fine del metodo

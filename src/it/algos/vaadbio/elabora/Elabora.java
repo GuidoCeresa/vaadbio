@@ -8,7 +8,6 @@ import it.algos.webbase.domain.pref.Pref;
 import it.algos.webbase.web.lib.LibTime;
 
 import javax.persistence.EntityManager;
-import javax.validation.ConstraintViolationException;
 
 /**
  * Elabora la singola voce
@@ -117,11 +116,7 @@ public class Elabora {
 
         try { // prova ad eseguire il codice
             bio.setUltimaElaborazione(LibTime.adesso());
-            if (manager != null) {
-                save(bio);
-            } else {
-                bio.save();
-            }// end of if/else cycle
+            bio.save(manager);
             elaborata = true;
         } catch (Exception unErrore) { // intercetta l'errore
             //--Recupera i dati dal record della tavola Wikibio
@@ -132,45 +127,22 @@ public class Elabora {
     }// end of method
 
 
-    /**
-     * Persists this entity to the database.
-     * <p>
-     */
-    @SuppressWarnings("rawtypes")
-    public void save(Bio bio) {
-
-//        EntityManager manager = EM.createEntityManager();
-
-        try {
-
-//            manager.getTransaction().begin();
-            if ((bio.getId() != null) && (bio.getId() != 0)) {
-                manager.merge(bio);
-            } else {
-                manager.persist(bio);
-            }
-
-//            manager.getTransaction().commit();
-
-        } catch (ConstraintViolationException e) {
-//            // rollback transaction and log
-//            manager.getTransaction().rollback();
-//            String violations = "";
-//            for (ConstraintViolation v : e.getConstraintViolations()) {
-//                if (!violations.equals("")) {
-//                    violations += "\n";
-//                }
-//                violations += "- " + v.toString();
-//            }
-
-        } catch (Exception e) {
-            manager.getTransaction().rollback();
-            e.printStackTrace();
-        }
-
-//        manager.close();
-
-    }// end of method
+//    /**
+//     * Persists this entity to the database.
+//     * <p>
+//     */
+//    public void save(Bio bio) {
+//        Bio bioContainer = container.addEntity();
+//        LinkedHashMap<String, String> mappaBio = LibBio.getMappaBio(bio);
+//
+//        for (ParBio par : ParBio.values()) {
+//            if (mappaBio.get(par.getTag()) != null) {
+//                par.setBio(bioContainer, mappaBio.get(par.getTag()));
+//            }// end of if cycle
+//        } // fine del ciclo for-each
+//        bioContainer.setTitle(bio.getTitle());
+//
+//    }// end of method
 
     public boolean isElaborata() {
         return elaborata;

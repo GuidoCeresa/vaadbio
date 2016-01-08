@@ -13,7 +13,7 @@ import java.util.ArrayList;
  */
 public enum ParBio {
 
-    titolo("Titolo", true, false, false, Bio_.titolo) {
+    titolo("Titolo", true, false, false, false, false, Bio_.titolo) {
         @Override
         public Bio setBio(Bio bio, Object value) {
             if (value != null && value instanceof String) {
@@ -29,7 +29,7 @@ public enum ParBio {
             return bio.getTitolo();
         }// end of method
     },// end of single enumeration
-    nome("Nome", true, true, true, Bio_.nome) {
+    nome("Nome", true, true, true, false, false, Bio_.nome) {
         @Override
         public Bio setBio(Bio bio, Object value) {
             if (value != null && value instanceof String) {
@@ -50,7 +50,7 @@ public enum ParBio {
             istanza.setNomeValido(LibBio.fixCampo(istanza.getNome()));
         }// end of method
     },// end of single enumeration
-    cognome("Cognome", true, true, true, Bio_.cognome) {
+    cognome("Cognome", true, true, true, false, false, Bio_.cognome) {
         @Override
         public Bio setBio(Bio bio, Object value) {
             if (value != null && value instanceof String) {
@@ -71,7 +71,7 @@ public enum ParBio {
             istanza.setCognomeValido(LibBio.fixCampo(istanza.getCognome()));
         }// end of method
     },// end of single enumeration
-    cognomePrima("CognomePrima", false, false, false, Bio_.cognomePrima) {
+    cognomePrima("CognomePrima", false, false, false, false, false, Bio_.cognomePrima) {
         @Override
         public Bio setBio(Bio bio, Object value) {
             if (value != null && value instanceof String) {
@@ -87,7 +87,7 @@ public enum ParBio {
             return bio.getCognomePrima();
         }// end of method
     },// end of single enumeration
-    postCognome("PostCognome", false, false, false, Bio_.postCognome) {
+    postCognome("PostCognome", false, false, false, false, false, Bio_.postCognome) {
         @Override
         public Bio setBio(Bio bio, Object value) {
             if (value != null && value instanceof String) {
@@ -103,7 +103,7 @@ public enum ParBio {
             return bio.getPostCognome();
         }// end of method
     },// end of single enumeration
-    postCognomeVirgola("PostCognomeVirgola", false, false, false, Bio_.postCognomeVirgola) {
+    postCognomeVirgola("PostCognomeVirgola", false, false, false, false, false, Bio_.postCognomeVirgola) {
         @Override
         public Bio setBio(Bio bio, Object value) {
             if (value != null && value instanceof String) {
@@ -119,7 +119,7 @@ public enum ParBio {
             return bio.getPostCognomeVirgola();
         }// end of method
     },// end of single enumeration
-    forzaOrdinamento("ForzaOrdinamento", false, false, false, Bio_.forzaOrdinamento) {
+    forzaOrdinamento("ForzaOrdinamento", false, false, false, false, false, Bio_.forzaOrdinamento) {
         @Override
         public Bio setBio(Bio bio, Object value) {
             if (value != null && value instanceof String) {
@@ -135,7 +135,7 @@ public enum ParBio {
             return bio.getForzaOrdinamento();
         }// end of method
     },// end of single enumeration
-    preData("PreData", false, false, false, Bio_.preData) {
+    preData("PreData", false, false, false, false, false, Bio_.preData) {
         @Override
         public Bio setBio(Bio bio, Object value) {
             if (value != null && value instanceof String) {
@@ -151,7 +151,7 @@ public enum ParBio {
             return bio.getPreData();
         }// end of method
     },// end of single enumeration
-    sesso("Sesso", true, true, true, Bio_.sesso) {
+    sesso("Sesso", true, true, true, false, false, Bio_.sesso) {
         @Override
         public Bio setBio(Bio bio, Object value) {
             if (value != null && value instanceof String) {
@@ -174,7 +174,7 @@ public enum ParBio {
     },// end of single enumeration
 
 
-    luogoNascita("LuogoNascita", true, true, true, Bio_.luogoNascita) {
+    luogoNascita("LuogoNascita", true, true, true, false, false, Bio_.luogoNascita) {
         @Override
         public Bio setBio(Bio bio, Object value) {
             if (value != null && value instanceof String) {
@@ -195,7 +195,7 @@ public enum ParBio {
             istanza.setLuogoNascitaValido(LibBio.fixCampoLuogo(istanza.getLuogoNascita()));
         }// end of method
     },// end of single enumeration
-    luogoNascitaLink("LuogoNascitaLink", false, false, true, Bio_.luogoNascitaLink) {
+    luogoNascitaLink("LuogoNascitaLink", false, false, true, false, false, Bio_.luogoNascitaLink) {
         @Override
         public Bio setBio(Bio bio, Object value) {
             if (value != null && value instanceof String) {
@@ -216,7 +216,7 @@ public enum ParBio {
             istanza.setLuogoNascitaLinkValido(LibBio.fixCampoLuogo(istanza.getLuogoNascitaLink()));
         }// end of method
     },// end of single enumeration
-    luogoNascitaAlt("LuogoNascitaAlt", false, false, false, Bio_.luogoNascitaAlt) {
+    luogoNascitaAlt("LuogoNascitaAlt", false, false, false, false, false, Bio_.luogoNascitaAlt) {
         @Override
         public Bio setBio(Bio bio, Object value) {
             if (value != null && value instanceof String) {
@@ -231,7 +231,7 @@ public enum ParBio {
             return bio.getLuogoNascitaAlt();
         }// end of method
     },// end of single enumeration
-    giornoMeseNascita("GiornoMeseNascita", true, true, true, Bio_.giornoMeseNascita) {
+    giornoMeseNascita("GiornoMeseNascita", true, true, true, false, false, Bio_.giornoMeseNascita) {
         @Override
         public Bio setBio(Bio bio, Object value) {
             if (value != null && value instanceof String) {
@@ -252,7 +252,7 @@ public enum ParBio {
             istanza.setGiornoMeseNascitaValido(LibBio.fixGiornoValido(istanza.getGiornoMeseNascita()));
         }// end of method
     },// end of single enumeration
-    annoNascita("AnnoNascita", true, true, true, Bio_.annoNascita) {
+    annoNascita("AnnoNascita", true, true, true, false, false, Bio_.annoNascita) {
         @Override
         public Bio setBio(Bio bio, Object value) {
             if (value != null && value instanceof String) {
@@ -272,7 +272,7 @@ public enum ParBio {
             istanza.setAnnoNascitaValido(LibBio.fixAnnoValido(istanza.getAnnoNascita()));
         }// end of method
     },// end of single enumeration
-    noteNascita("NoteNascita", false, false, false, Bio_.noteNascita) {
+    noteNascita("NoteNascita", false, false, false, false, false, Bio_.noteNascita) {
         @Override
         public Bio setBio(Bio bio, Object value) {
             if (value != null && value instanceof String) {
@@ -290,7 +290,7 @@ public enum ParBio {
     },// end of single enumeration
 
 
-    luogoMorte("LuogoMorte", true, true, true, Bio_.luogoMorte) {
+    luogoMorte("LuogoMorte", true, true, true, false, false, Bio_.luogoMorte) {
         @Override
         public Bio setBio(Bio bio, Object value) {
             if (value != null && value instanceof String) {
@@ -311,7 +311,7 @@ public enum ParBio {
             istanza.setLuogoMorteValido(LibBio.fixCampoLuogo(istanza.getLuogoMorte()));
         }// end of method
     },// end of single enumeration
-    luogoMorteLink("LuogoMorteLink", false, false, true, Bio_.luogoMorteLink) {
+    luogoMorteLink("LuogoMorteLink", false, false, true, false, false, Bio_.luogoMorteLink) {
         @Override
         public Bio setBio(Bio bio, Object value) {
             if (value != null && value instanceof String) {
@@ -332,7 +332,7 @@ public enum ParBio {
             istanza.setLuogoMorteLinkValido(LibBio.fixCampoLuogo(istanza.getLuogoMorteLink()));
         }// end of method
     },// end of single enumeration
-    luogoMorteAlt("LuogoMorteAlt", false, false, false, Bio_.luogoMorteAlt) {
+    luogoMorteAlt("LuogoMorteAlt", false, false, false, false, false, Bio_.luogoMorteAlt) {
         @Override
         public Bio setBio(Bio bio, Object value) {
             if (value != null && value instanceof String) {
@@ -348,7 +348,7 @@ public enum ParBio {
             return bio.getLuogoMorteAlt();
         }// end of method
     },// end of single enumeration
-    giornoMeseMorte("GiornoMeseMorte", true, true, true, Bio_.giornoMeseMorte) {
+    giornoMeseMorte("GiornoMeseMorte", true, true, true, false, false, Bio_.giornoMeseMorte) {
         @Override
         public Bio setBio(Bio bio, Object value) {
             if (value != null && value instanceof String) {
@@ -369,7 +369,7 @@ public enum ParBio {
             istanza.setGiornoMeseMorteValido(LibBio.fixGiornoValido(istanza.getGiornoMeseMorte()));
         }// end of method
     },// end of single enumeration
-    annoMorte("AnnoMorte", true, true, true, Bio_.annoMorte) {
+    annoMorte("AnnoMorte", true, true, true, false, false, Bio_.annoMorte) {
         @Override
         public Bio setBio(Bio bio, Object value) {
             if (value != null && value instanceof String) {
@@ -390,7 +390,7 @@ public enum ParBio {
             istanza.setAnnoMorteValido(LibBio.fixAnnoValido(istanza.getAnnoMorte()));
         }// end of method
     },// end of single enumeration
-    noteMorte("NoteMorte", false, false, false, Bio_.noteMorte) {
+    noteMorte("NoteMorte", false, false, false, false, false, Bio_.noteMorte) {
         @Override
         public Bio setBio(Bio bio, Object value) {
             if (value != null && value instanceof String) {
@@ -408,7 +408,7 @@ public enum ParBio {
     },// end of single enumeration
 
 
-    epoca("Epoca", false, false, false, Bio_.epoca) {
+    epoca("Epoca", false, false, false, false, false, Bio_.epoca) {
         @Override
         public Bio setBio(Bio bio, Object value) {
             if (value != null && value instanceof String) {
@@ -424,7 +424,7 @@ public enum ParBio {
             return bio.getEpoca();
         }// end of method
     },// end of single enumeration
-    epoca2("Epoca2", false, false, false, Bio_.epoca2) {
+    epoca2("Epoca2", false, false, false, false, false, Bio_.epoca2) {
         @Override
         public Bio setBio(Bio bio, Object value) {
             if (value != null && value instanceof String) {
@@ -440,7 +440,7 @@ public enum ParBio {
             return bio.getEpoca2();
         }// end of method
     },// end of single enumeration
-    preAttivita("PreAttività", false, false, false, Bio_.preAttivita) {
+    preAttivita("PreAttività", false, false, false, false, false, Bio_.preAttivita) {
         @Override
         public Bio setBio(Bio bio, Object value) {
             if (value != null && value instanceof String) {
@@ -456,7 +456,7 @@ public enum ParBio {
             return bio.getPreAttivita();
         }// end of method
     },// end of single enumeration
-    attivita("Attività", true, true, true, Bio_.attivita) {
+    attivita("Attività", true, true, true, false, false, Bio_.attivita) {
         @Override
         public Bio setBio(Bio bio, Object value) {
             if (value != null && value instanceof String) {
@@ -477,7 +477,7 @@ public enum ParBio {
             istanza.setAttivitaValida(LibBio.fixCampo(istanza.getAttivita()));
         }// end of method
     },// end of single enumeration
-    attivita2("Attività2", false, false, true, Bio_.attivita2) {
+    attivita2("Attività2", false, false, true, false, false, Bio_.attivita2) {
         @Override
         public Bio setBio(Bio bio, Object value) {
             if (value != null && value instanceof String) {
@@ -498,7 +498,7 @@ public enum ParBio {
             istanza.setAttivita2Valida(LibBio.fixCampo(istanza.getAttivita2()));
         }// end of method
     },// end of single enumeration
-    attivita3("Attività3", false, false, true, Bio_.attivita3) {
+    attivita3("Attività3", false, false, true, false, false, Bio_.attivita3) {
         @Override
         public Bio setBio(Bio bio, Object value) {
             if (value != null && value instanceof String) {
@@ -519,7 +519,7 @@ public enum ParBio {
             istanza.setAttivita3Valida(LibBio.fixCampo(istanza.getAttivita3()));
         }// end of method
     },// end of single enumeration
-    attivitaAltre("AttivitàAltre", false, false, false, Bio_.attivitaAltre) {
+    attivitaAltre("AttivitàAltre", false, false, false, false, false, Bio_.attivitaAltre) {
         @Override
         public Bio setBio(Bio bio, Object value) {
             if (value != null && value instanceof String) {
@@ -537,7 +537,7 @@ public enum ParBio {
     },// end of single enumeration
 
 
-    nazionalita("Nazionalità", true, true, true, Bio_.nazionalita) {
+    nazionalita("Nazionalità", true, true, true, false, false, Bio_.nazionalita) {
         @Override
         public Bio setBio(Bio bio, Object value) {
             if (value != null && value instanceof String) {
@@ -558,7 +558,7 @@ public enum ParBio {
             istanza.setNazionalitaValida(LibBio.fixCampo(istanza.getNazionalita()));
         }// end of method
     },// end of single enumeration
-    cittadinanza("Cittadinanza", false, false, false, Bio_.cittadinanza) {
+    cittadinanza("Cittadinanza", false, false, false, false, false, Bio_.cittadinanza) {
         @Override
         public Bio setBio(Bio bio, Object value) {
             if (value != null && value instanceof String) {
@@ -574,7 +574,7 @@ public enum ParBio {
             return bio.getCittadinanza();
         }// end of method
     },// end of single enumeration
-    nazionalitaNaturalizzato("NazionalitàNaturalizzato", false, false, false, Bio_.nazionalitaNaturalizzato) {
+    nazionalitaNaturalizzato("NazionalitàNaturalizzato", false, false, false, false, false, Bio_.nazionalitaNaturalizzato) {
         @Override
         public Bio setBio(Bio bio, Object value) {
             if (value != null && value instanceof String) {
@@ -590,7 +590,7 @@ public enum ParBio {
             return bio.getNazionalitaNaturalizzato();
         }// end of method
     },// end of single enumeration
-    postNazionalita("PostNazionalità", false, false, false, Bio_.postNazionalita) {
+    postNazionalita("PostNazionalità", false, false, false, false, false, Bio_.postNazionalita) {
         @Override
         public Bio setBio(Bio bio, Object value) {
             if (value != null && value instanceof String) {
@@ -608,7 +608,7 @@ public enum ParBio {
     },// end of single enumeration
 
 
-    categorie("Categorie", false, false, false, Bio_.categorie) {
+    categorie("Categorie", false, false, false, false, false, Bio_.categorie) {
         @Override
         public Bio setBio(Bio bio, Object value) {
             if (value != null && value instanceof String) {
@@ -624,7 +624,7 @@ public enum ParBio {
             return bio.getCategorie();
         }// end of method
     },// end of single enumeration
-    fineIncipit("FineIncipit", false, false, false, Bio_.fineIncipit) {
+    fineIncipit("FineIncipit", false, false, false, false, false, Bio_.fineIncipit) {
         @Override
         public Bio setBio(Bio bio, Object value) {
             if (value != null && value instanceof String) {
@@ -640,7 +640,7 @@ public enum ParBio {
             return bio.getFineIncipit();
         }// end of method
     },// end of single enumeration
-    punto("Punto", false, false, false, Bio_.punto) {
+    punto("Punto", false, false, false, false, false, Bio_.punto) {
         @Override
         public Bio setBio(Bio bio, Object value) {
             if (value != null && value instanceof String) {
@@ -656,7 +656,7 @@ public enum ParBio {
             return bio.getPunto();
         }// end of method
     },// end of single enumeration
-    immagine("Immagine", false, false, false, Bio_.immagine) {
+    immagine("Immagine", false, false, false, false, false, Bio_.immagine) {
         @Override
         public Bio setBio(Bio bio, Object value) {
             if (value != null && value instanceof String) {
@@ -672,7 +672,7 @@ public enum ParBio {
             return bio.getImmagine();
         }// end of method
     },// end of single enumeration
-    didascalia("Didascalia", false, false, false, Bio_.didascalia) {
+    didascalia("Didascalia", false, false, false, false, false, Bio_.didascalia) {
         @Override
         public Bio setBio(Bio bio, Object value) {
             if (value != null && value instanceof String) {
@@ -688,7 +688,7 @@ public enum ParBio {
             return bio.getDidascalia();
         }// end of method
     },// end of single enumeration
-    didascalia2("Didascalia2", false, false, false, Bio_.didascalia2) {
+    didascalia2("Didascalia2", false, false, false, false, false, Bio_.didascalia2) {
         @Override
         public Bio setBio(Bio bio, Object value) {
             if (value != null && value instanceof String) {
@@ -704,7 +704,7 @@ public enum ParBio {
             return bio.getDidascalia2();
         }// end of method
     },// end of single enumeration
-    dimImmagine("DimImmagine", false, false, false, Bio_.dimImmagine) {
+    dimImmagine("DimImmagine", false, false, false, false, false, Bio_.dimImmagine) {
         @Override
         public Bio setBio(Bio bio, Object value) {
             if (value != null && value instanceof String) {
@@ -719,22 +719,76 @@ public enum ParBio {
         public String getValue(Bio bio) {
             return bio.getDimImmagine();
         }// end of method
+    },// end of single enumeration
+
+
+    nomeValido("nomeValido", false, false, false, true, false, Bio_.nomeValido) {
+        @Override
+        public Bio setBio(Bio bio, Object value) {
+            if (value != null && value instanceof String) {
+                bio.setNomeValido((String) value);
+            } else {
+                bio.setNomeValido(VUOTA);
+            }// end of if/else cycle
+            return bio;
+        }// end of method
+
+        @Override
+        public String getValue(Bio bio) {
+            return bio.getNomeValido();
+        }// end of method
+    },// end of single enumeration
+    cognomeValido("cognomeValido", false, false, false, true, false, Bio_.cognomeValido) {
+        @Override
+        public Bio setBio(Bio bio, Object value) {
+            if (value != null && value instanceof String) {
+                bio.setCognomeValido((String) value);
+            } else {
+                bio.setCognomeValido(VUOTA);
+            }// end of if/else cycle
+            return bio;
+        }// end of method
+
+        @Override
+        public String getValue(Bio bio) {
+            return bio.getCognomeValido();
+        }// end of method
+    },// end of single enumeration
+    sessoValido("sessoValido", false, false, false, true, false, Bio_.sessoValido) {
+        @Override
+        public Bio setBio(Bio bio, Object value) {
+            if (value != null && value instanceof String) {
+                bio.setSessoValido((String) value);
+            } else {
+                bio.setSessoValido(VUOTA);
+            }// end of if/else cycle
+            return bio;
+        }// end of method
+
+        @Override
+        public String getValue(Bio bio) {
+            return bio.getSessoValido();
+        }// end of method
     };// end of last enumeration
 
-    private static String VUOTA = "";
+    private static String VUOTA = CostBio.VUOTO;
     private String tag = "";
     private boolean visibileLista = false;
     private boolean campoNormale = false;
     private boolean campoSignificativo = false;
     private SingularAttribute<Bio, String> attributo;
+    private boolean campoValido = false;
+    private boolean campoPunta = false;
 
-    ParBio(String tag, boolean visibileLista, boolean campoNormale, boolean campoSignificativo, SingularAttribute<Bio, String> attributo) {
+    ParBio(String tag, boolean visibileLista, boolean campoNormale, boolean campoSignificativo, boolean campoValido, boolean campoPunta, SingularAttribute<Bio, String> attributo) {
         this.setTag(tag);
         this.setVisibileLista(visibileLista);
         this.setCampoNormale(campoNormale);
         this.setCampoSignificativo(campoSignificativo);
+        this.setCampoValido(campoValido);
+        this.setCampoPunta(campoPunta);
         this.setAttributo(attributo);
-    }
+    }// end of general constructor
 
     public static Attribute<?, ?>[] getCampiLista() {
         Attribute<?, ?>[] matrice;
@@ -805,6 +859,31 @@ public enum ParBio {
 
         return lista;
     }// end of method
+
+    public static ArrayList<ParBio> getCampiValidi() {
+        ArrayList<ParBio> lista = new ArrayList<ParBio>();
+
+        for (ParBio par : ParBio.values()) {
+            if (par.isCampoValido()) {
+                lista.add(par);
+            }// fine del blocco if
+        } // fine del ciclo for-each
+
+        return lista;
+    }// end of method
+
+    public static ArrayList<ParBio> getCampiPunta() {
+        ArrayList<ParBio> lista = new ArrayList<ParBio>();
+
+        for (ParBio par : ParBio.values()) {
+            if (par.isCampoPunta()) {
+                lista.add(par);
+            }// fine del blocco if
+        } // fine del ciclo for-each
+
+        return lista;
+    }// end of method
+
 
     /**
      * Inserisce nell'istanza il valore passato come parametro
@@ -920,5 +999,21 @@ public enum ParBio {
 
     public void setCampoNormale(boolean campoNormale) {
         this.campoNormale = campoNormale;
+    }//end of setter method
+
+    public boolean isCampoValido() {
+        return campoValido;
+    }// end of getter method
+
+    public void setCampoValido(boolean campoValido) {
+        this.campoValido = campoValido;
+    }//end of setter method
+
+    public boolean isCampoPunta() {
+        return campoPunta;
+    }// end of getter method
+
+    public void setCampoPunta(boolean campoPunta) {
+        this.campoPunta = campoPunta;
     }//end of setter method
 }
