@@ -1,6 +1,7 @@
 package it.algos.vaadbio.biologo;
 
-import com.vaadin.addon.jpacontainer.JPAContainerItem;
+import com.vaadin.data.Property;
+import com.vaadin.data.util.BeanItem;
 import com.vaadin.event.ItemClickEvent;
 import it.algos.vaad.lib.VaadWiki;
 import it.algos.vaad.wiki.Api;
@@ -9,6 +10,7 @@ import it.algos.vaad.wiki.PagePar;
 import it.algos.webbase.domain.log.Log;
 import it.algos.webbase.web.module.ModulePop;
 import it.algos.webbase.web.table.ATable;
+import org.vaadin.addons.lazyquerycontainer.CompositeItem;
 
 /**
  * Created by gac on 17 set 2015.
@@ -40,14 +42,17 @@ public class BioLogoTable extends ATable {
      *
      * @param itemClickEvent the event
      */
-    @Override
     public void itemClick(ItemClickEvent itemClickEvent) {
+        super.itemClick(itemClickEvent);
         Log logo = null;
         String titoloColonna = itemClickEvent.getPropertyId().toString();
-        Object obj = super.getSelectedEntity();
+        Object oby = itemClickEvent.getItemId();
+        Object oggetto = getContainerDataSource().getItem(oby);
 
-        if (obj instanceof Log) {
-            logo = (Log) obj;
+        if (oggetto instanceof CompositeItem) {
+            CompositeItem itemComp = (CompositeItem) oggetto;
+            BeanItem beanItem = (BeanItem) itemComp.getItem("bean");
+            logo = (Log) beanItem.getBean();
         }// fine del blocco if
 
         if (logo == null) {
