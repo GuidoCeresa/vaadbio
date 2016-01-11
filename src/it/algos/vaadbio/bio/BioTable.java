@@ -1,13 +1,13 @@
 package it.algos.vaadbio.bio;
 
 import it.algos.webbase.web.module.ModulePop;
-import it.algos.webbase.web.table.ATable;
+import it.algos.webbase.web.table.ModuleTable;
 
 /**
  * Created by gac on 25 nov 2015.
  * .
  */
-public class BioTable extends ATable {
+public class BioTable extends ModuleTable {
 
     public BioTable(ModulePop modulo) {
         super(modulo);

@@ -21,8 +21,6 @@ import java.util.ArrayList;
  */
 public class DownloadPages {
 
-    //--container statico per il database
-    public static EntityManager MANAGER = null;
 
     private ArrayList<Page> pages; // di norma 500
     private int numVociRegistrate = 0;
@@ -33,29 +31,21 @@ public class DownloadPages {
      *
      * @param bloccoPageids lista (pageids) di pagine da scaricare dal server wiki
      */
-    public DownloadPages(ArrayList<Long> bloccoPageids) {
-        doInit(bloccoPageids);
+    public DownloadPages(ArrayList<Long> bloccoPageids,EntityManager manager) {
+        doInit(bloccoPageids,manager);
     }// end of constructor
 
     /**
      * @param bloccoPageids lista (pageids) di pagine da scaricare dal server wiki
      */
-    private void doInit(ArrayList<Long> bloccoPageids) {
-        creaContainer();
-        if (Pref.getBool(CostBio.USA_BLOCCO_COMMIT, true)) {
-            doInitCommit(bloccoPageids);
+    private void doInit(ArrayList<Long> bloccoPageids,EntityManager manager) {
+        if (Pref.getBool(CostBio.USA_COMMIT_MULTI_RECORDS, true)) {
+            doInitCommit(bloccoPageids,manager);
         } else {
             doInitSenzaCommit(bloccoPageids);
         }// end of if/else cycle
     }// end of method
 
-    /**
-     * Crea l'Entity Manager
-     * Crea il container di collegamento con il database
-     */
-    private void creaContainer() {
-        MANAGER = EM.createEntityManager();
-    }// end of method
 
 
 //    /**
@@ -94,31 +84,29 @@ public class DownloadPages {
     /**
      * @param bloccoPageids lista (pageids) di pagine da scaricare dal server wiki
      */
-    private void doInitCommit(ArrayList<Long> bloccoPageids) {
+    private void doInitCommit(ArrayList<Long> bloccoPageids,EntityManager manager) {
         long inizio = 0;
         long fine = 0;
         WrapBio wrap;
 
         inizio = System.currentTimeMillis();
         pages = Api.leggePages(bloccoPageids);
-        Log.setDebug("test", "lettura di " + pages.size() + " pages in " + LibTime.difText(inizio));
+//        Log.setDebug("test", "lettura di " + pages.size() + " pages in " + LibTime.difText(inizio));
 
         if (pages != null && pages.size() > 0) {
             wraps = new ArrayList<WrapBio>();
             inizio = System.currentTimeMillis();
 
-            MANAGER.getTransaction().begin();
             for (Page page : pages) {
-                wrap = new WrapBio(page, MANAGER);
+                wrap = new WrapBio(page, manager);
                 if (wrap.isRegistrata()) {
                     numVociRegistrate++;
                 }// end of if cycle
                 wraps.add(wrap);
             }// end of for cycle
-            MANAGER.getTransaction().commit();
 
             fine = System.currentTimeMillis();
-            Log.setDebug("test", "save ciclo con unico commit  " + LibNum.format(numVociRegistrate) + " nuove voci in " + LibNum.format(fine - inizio));
+//            Log.setDebug("test", "save ciclo con unico commit  " + LibNum.format(numVociRegistrate) + " nuove voci in " + LibNum.format(fine - inizio));
         }// end of if cycle
     }// end of method
 
@@ -132,7 +120,7 @@ public class DownloadPages {
 
         inizio = System.currentTimeMillis();
         pages = Api.leggePages(bloccoPageids);
-        Log.setDebug("test", "lettura di " + pages.size() + " pages in " + LibTime.difText(inizio));
+//        Log.setDebug("test", "lettura di " + pages.size() + " pages in " + LibTime.difText(inizio));
 
         if (pages != null && pages.size() > 0) {
             wraps = new ArrayList<WrapBio>();
@@ -147,7 +135,7 @@ public class DownloadPages {
             }// end of for cycle
 
             fine = System.currentTimeMillis();
-            Log.setDebug("test", "save singolarmente senza commit " + LibNum.format(numVociRegistrate) + " nuove voci in " + LibNum.format(fine - inizio));
+//            Log.setDebug("test", "save singolarmente senza commit " + LibNum.format(numVociRegistrate) + " nuove voci in " + LibNum.format(fine - inizio));
         }// end of if cycle
     }// end of method
 

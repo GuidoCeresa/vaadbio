@@ -51,10 +51,12 @@ public class Bio extends BaseEntity {
     //--uso il formato Timestamp, per confrontarla col campo timestamp
     //--molto meglio che siano esattamente dello stesso tipo
     //--ultima lettura/aggiornamento della voce effettuata dal programma VaadBio
+    @Index
     private Timestamp ultimaLettura;
 
     //--tempo di ELABORAZIONE
     //--momento in cui il record Bio è stato elaborato estraendo i dati dal tmplBioServer e costruendo il tmplBioStandard
+    @Index
     private Timestamp ultimaElaborazione;
 
     //--esiste la pagina (altrimenti non ci sarebbe il record) con pageid e title, ma templateServer potrebbe essere vuoto

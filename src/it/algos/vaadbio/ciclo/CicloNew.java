@@ -1,5 +1,6 @@
 package it.algos.vaadbio.ciclo;
 
+import it.algos.vaadbio.bio.Bio;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.webbase.domain.log.Log;
 import it.algos.webbase.domain.pref.Pref;
@@ -48,10 +49,13 @@ public class CicloNew extends CicloDownload {
      */
     private void downloadVociMancanti(ArrayList<Long> listaVociMancanti) {
         long inizio = System.currentTimeMillis();
+        long fine = 0;
+        int numVociTotali;
         int numVociRegistrate = 0;
         int numVociUploadate = 0;
-        int numVociDaScaricare = 0;
+        int numVociDaScaricare;
         ArrayList<Long> listaVociDaScaricare;
+        String txtMessage;
 
         if (listaVociMancanti != null && listaVociMancanti.size() > 0) {
             numVociDaScaricare = listaVociMancanti.size();
@@ -65,12 +69,35 @@ public class CicloNew extends CicloDownload {
 
         listaVociDaScaricare = new ArrayList<Long>(listaVociMancanti.subList(0, numVociDaScaricare));
         numVociRegistrate = downloadPagine(listaVociDaScaricare);
+//        if (Pref.getBool(CostBio.USA_COMMIT_MULTI_RECORDS, true)) {
+//            numVociRegistrate = downloadPagine(listaVociDaScaricare);
+//            if (Pref.getBool(CostBio.USA_LOG_DEBUG, true)) {
+//                inizioCommit = System.currentTimeMillis();
+//            }// end of if cycle
+//            MANAGER.getTransaction().commit();
+//            if (Pref.getBool(CostBio.USA_LOG_DEBUG, true)) {
+//                fineCommit = System.currentTimeMillis();
+//                Log.setDebug("test", "Eseguito un commit unico per " + LibNum.format(numVociRegistrate) + " voci in " + LibNum.format(fineCommit - inizioCommit) + " milliSec.");
+//            }// end of if cycle
+//        } else {
+//        }// end of if/else cycle
 
+        //--info
+        fine = System.currentTimeMillis();
         if (Pref.getBool(CostBio.USA_LOG_DOWNLOAD, true)) {
-            Log.setInfo("new", "Create " + LibNum.format(numVociRegistrate) + " nuove voci in " + LibTime.difText(inizio));
+            if (Pref.getBool(CostBio.USA_COMMIT_MULTI_RECORDS, true)) {
+                txtMessage = " nuove voci con commit multirecords in ";
+            } else {
+                txtMessage = " nuove voci con commit di ogni singolo record in ";
+            }// end of if/else cycle
+            if (Pref.getBool(CostBio.USA_LOG_DEBUG, true)) {
+                numVociTotali = Bio.count();
+                Log.setDebug("new", "Create " + LibNum.format(numVociRegistrate) + "/" + LibNum.format(numVociTotali) + txtMessage + LibNum.format((fine - inizio) / 1000) + " sec.");
+            } else {
+                Log.setInfo("new", "Create " + LibNum.format(numVociRegistrate) + txtMessage + LibTime.difText(inizio));
+            }// end of if/else cycle
         }// fine del blocco if
 
     }// end of method
-
 
 }// end of class

@@ -10,10 +10,12 @@ import it.algos.vaadbio.lib.LibBio;
 import it.algos.vaadbio.nazionalita.NazionalitaService;
 import it.algos.webbase.domain.log.Log;
 import it.algos.webbase.domain.pref.Pref;
+import it.algos.webbase.web.entity.EM;
 import it.algos.webbase.web.lib.LibArray;
 import it.algos.webbase.web.lib.LibNum;
 import it.algos.webbase.web.lib.LibTime;
 
+import javax.persistence.EntityManager;
 import java.util.ArrayList;
 
 /**
@@ -32,18 +34,29 @@ import java.util.ArrayList;
 public class CicloDownload {
 
     public final static String TAG_BIO = "BioBot";
-    public final static String TAG_CAT_DEBUG = "Nati nel 1948";
+    public final static String TAG_CAT_DEBUG = "Nati nel 1980";
 
     private final static int NUMERO_VOCI_MINIMO_PER_OPERATIVITA_NORMALE = 294000;
+
+    //--container statico per il database
+    protected static EntityManager MANAGER = null;
 
 
     /**
      * Costruttore completo
      */
     public CicloDownload() {
+        creaContainer();
         doInit();
     }// end of constructor
 
+    /**
+     * Crea l'Entity Manager
+     * Crea il container di collegamento con il database
+     */
+    private void creaContainer() {
+        MANAGER = EM.createEntityManager();
+    }// end of method
 
     /**
      * Aggiorna la tavola delle attività
@@ -94,7 +107,7 @@ public class CicloDownload {
         // carica la categoria
         inizio = System.currentTimeMillis();
         listaTotaleCategoria = Api.leggeCatLong(nomeCategoria);
-        Log.setInfo("categoria", "Letti e caricati in memoria i pageids di " + LibNum.format(listaTotaleCategoria.size()) + " pagine della categoria '" + nomeCategoria + "' in " + LibTime.difText(inizio));
+        Log.setDebug("categoria", "Letti e caricati in memoria i pageids di " + LibNum.format(listaTotaleCategoria.size()) + " pagine della categoria '" + nomeCategoria + "' in " + LibTime.difText(inizio));
 
         // recupera la lista dei records esistenti nel database
         listaEsistentiDataBase = Bio.findAllPageid();
@@ -126,52 +139,116 @@ public class CicloDownload {
      * @param listaVociDaScaricare elenco (pageids) delle pagine mancanti o modificate, da scaricare
      */
     protected int downloadPagine(ArrayList<Long> listaVociDaScaricare) {
-        int numVociRegistrate = 0;
+        long inizio = System.currentTimeMillis();
         int numVociDaScaricare = 0;
+        int numVociRegistrate = 0;
+        ArrayList<Long> bloccoPageCommit;
         ArrayList<Long> bloccoPageids;
-        int numCicli;
+        int dimBloccoCommit = Pref.getInt(CostBio.NUM_RECORDS_COMMIT, 500);
+        int numCicliCommit;
+        long inizioCommit = 0;
+        long fineCommit = 0;
+        String mess;
+
+        if (listaVociDaScaricare != null && listaVociDaScaricare.size() > 0)
+            numVociDaScaricare = listaVociDaScaricare.size();
+        if (Pref.getBool(CostBio.USA_COMMIT_MULTI_RECORDS, true)) {
+            numCicliCommit = LibArray.numCicli(listaVociDaScaricare.size(), dimBloccoCommit);
+            for (int k = 0; k < numCicliCommit; k++) {
+                bloccoPageCommit = LibArray.estraeSublistaLong(listaVociDaScaricare, dimBloccoCommit, k);
+
+                MANAGER.getTransaction().begin();
+
+                numVociRegistrate += new DownloadPages(bloccoPageCommit, MANAGER).getNumVociRegistrate();
+
+                inizioCommit = System.currentTimeMillis();
+                MANAGER.getTransaction().commit();
+                fineCommit = System.currentTimeMillis();
+
+                if (Pref.getBool(CostBio.USA_LOG_DEBUG, true)) {
+                    mess = "Commit unico blocco di " + LibNum.format(dimBloccoCommit);
+                    mess += " Save " + LibNum.format(numVociRegistrate) + "/" + LibNum.format(numVociDaScaricare) + " voci";
+                    mess += " in " + LibNum.format(fineCommit - inizioCommit) + " milliSec./" + LibTime.difText(inizio);
+                    Log.setDebug("test", mess);
+                }// end of if cycle
+            }// end of for cycle
+        } else {
+            downloadPagesPerCommit(listaVociDaScaricare, null);
+        }// end of if/else cycle
+
+
+//        for (int k = 0; k < numCicliLetturaPagine; k++) {
+//            bloccoPageids = LibArray.estraeSublistaLong(listaVociDaScaricare, dimBloccoPages(), k);
+//
+//            if (Pref.getBool(CostBio.USA_COMMIT_MULTI_RECORDS, true)) {
+//
+//                MANAGER.getTransaction().begin();
+//                if (Pref.getBool(CostBio.USA_LOG_DEBUG, true)) {
+//                    inizioCommit = System.currentTimeMillis();
+//                }// end of if cycle
+//                downloadPages = new DownloadPages(bloccoPageids, MANAGER);
+//                MANAGER.getTransaction().commit();
+//                if (Pref.getBool(CostBio.USA_LOG_DEBUG, true)) {
+//                    fineCommit = System.currentTimeMillis();
+//                    Log.setDebug("test", "Eseguito un commit unico per " + LibNum.format(numVociRegistrate) + " voci in " + LibNum.format(fineCommit - inizioCommit) + " milliSec.");
+//                }// end of if cycle
+//
+//                numVociRegistrate += downloadPages.getNumVociRegistrate();
+////                mappaVoci = downloadSingoloBlocco(bloccoPageids);
+////                if (mappaVoci != null) {
+////                    numVociModificate += mappaVoci.get(CostBio.KEY_MAPPA_MODIFICATE);
+////                    numVociUploadate += mappaVoci.get(CostBio.KEY_MAPPA_UPLOADATE);
+////                }// end of if cycle
+//            }// end of for cycle
+//        }// end of for cycle
+//
+//
+////            for (int k = 0; k < numVociDaScaricare; k = k + vociPerBlocco) {
+////                iniBlocco = k * vociPerBlocco;
+////                endBlocco = iniBlocco + vociPerBlocco;
+////                bloccoPageids = new ArrayList<Long>(listaVociDaScaricare.subList(iniBlocco, endBlocco));
+////                numVociRegistrate += new DownloadPages(bloccoPageids).getNumVociRegistrate();
+////            }// end of for cycle
+
+
+        return numVociRegistrate;
+    }// end of method
+
+
+    /**
+     * Esegue una serie di RequestWikiReadMultiPages a blocchi di PAGES_PER_REQUEST per volta
+     * Esegue la RequestWikiReadMultiPages (tramite Api)
+     * Crea le PAGES_PER_REQUEST Pages ricevute
+     * Per ogni page crea o modifica il records corrispondente con lo stesso pageid
+     *
+     * @param listaVociDaScaricare elenco (pageids) delle pagine mancanti o modificate, da scaricare
+     */
+    private int downloadPagesPerCommit(ArrayList<Long> listaVociDaScaricare, EntityManager manager) {
+        int numVociRegistrate = 0;
+        ArrayList<Long> bloccoPageids;
+        int dimBloccoLettura = dimBloccoPages();
+        int numCicliLetturaPagine;
         DownloadPages downloadPages;
 
-        if (listaVociDaScaricare != null) {
-            numVociDaScaricare = listaVociDaScaricare.size();
-        }// fine del blocco if
+        if (listaVociDaScaricare != null && listaVociDaScaricare.size() > 0) {
+            numCicliLetturaPagine = LibArray.numCicli(listaVociDaScaricare.size(), dimBloccoLettura);
 
-        if (numVociDaScaricare < 1) {
-            return 0;
-        }// end of if cycle
-
-        if (numVociDaScaricare > 0) {
-            numCicli = LibArray.numCicli(listaVociDaScaricare.size(), dimBlocco());
-
-            for (int k = 0; k < numCicli; k++) {
-                bloccoPageids = LibArray.estraeSublistaLong(listaVociDaScaricare, dimBlocco(), k);
-
-                downloadPages = new DownloadPages(bloccoPageids);
+            for (int k = 0; k < numCicliLetturaPagine; k++) {
+                bloccoPageids = LibArray.estraeSublistaLong(listaVociDaScaricare, dimBloccoLettura, k);
+                downloadPages = new DownloadPages(bloccoPageids, manager);
                 numVociRegistrate += downloadPages.getNumVociRegistrate();
-//                mappaVoci = downloadSingoloBlocco(bloccoPageids);
-//                if (mappaVoci != null) {
-//                    numVociModificate += mappaVoci.get(CostBio.KEY_MAPPA_MODIFICATE);
-//                    numVociUploadate += mappaVoci.get(CostBio.KEY_MAPPA_UPLOADATE);
-//                }// end of if cycle
             }// end of for cycle
 
-
-//            for (int k = 0; k < numVociDaScaricare; k = k + vociPerBlocco) {
-//                iniBlocco = k * vociPerBlocco;
-//                endBlocco = iniBlocco + vociPerBlocco;
-//                bloccoPageids = new ArrayList<Long>(listaVociDaScaricare.subList(iniBlocco, endBlocco));
-//                numVociRegistrate += new DownloadPages(bloccoPageids).getNumVociRegistrate();
-//            }// end of for cycle
-
-        }// end of if cycle
+        }// fine del blocco if
 
         return numVociRegistrate;
     }// end of method
 
     /**
-     * Divide il numero di voci da aggiornare in blocchi di 500 (50 se non flaggato come bot)
+     * Numero di voci da scaricare dal server in blocco con un'unica API di lettura
+     * Tipicamente 500 (50 se non flaggato come bot)
      */
-    protected int dimBlocco() {
+    protected int dimBloccoPages() {
         int dimBlocco = 0;
 
         if (LibBio.isLoggatoBot()) {

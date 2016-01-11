@@ -10,13 +10,14 @@ import it.algos.vaad.wiki.PagePar;
 import it.algos.webbase.domain.log.Log;
 import it.algos.webbase.web.module.ModulePop;
 import it.algos.webbase.web.table.ATable;
+import it.algos.webbase.web.table.ModuleTable;
 import org.vaadin.addons.lazyquerycontainer.CompositeItem;
 
 /**
  * Created by gac on 17 set 2015.
  * Sovrascritta la classe esistente nel plugin Webbase, per aggiungere un listener
  */
-public class BioLogoTable extends ATable {
+public class BioLogoTable extends ModuleTable {
 
     public static final String WIKI_BASE = "https://it.wikipedia.org/";
     public static final String WIKI_URL = WIKI_BASE + "wiki/";

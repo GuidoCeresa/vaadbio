@@ -23,6 +23,7 @@ import java.util.ArrayList;
 public class Anno extends BaseEntity {
 
     @NotEmpty
+    @Index
     private String nome = "";
 
     private String secolo = "";

@@ -77,32 +77,32 @@ public class VersBootStrap implements ServletContextListener {
         // ciclo download
         //--creata una nuova preferenza
         if (LibVers.installa(8)) {
-            LibPref.newVersBool(CostBio.USA_LIMITE_DOWNLOAD, true, "Uso di un limite di pagine nel cicloDown per scaricare/aggiornare dal server i records Bio");
+            LibPref.newVersBool(CostBio.USA_LIMITE_DOWNLOAD, true, "Uso di un limite di pagine nel cicloDownload per scaricare/aggiornare dal server i records Bio");
         }// fine del blocco if
 
         //--creata una nuova preferenza
         if (LibVers.installa(9)) {
-            LibPref.newVersInt(CostBio.MAX_DOWNLOAD, 50000, "Numero massimo di pagine da scaricare/aggiornare nel cicloDown");
+            LibPref.newVersInt(CostBio.MAX_DOWNLOAD, 10000, "Numero massimo di pagine da scaricare/aggiornare nel cicloDownload");
         }// fine del blocco if
 
         //--creata una nuova preferenza
         if (LibVers.installa(10)) {
-            LibPref.newVersBool(CostBio.USA_LOG_DOWNLOAD, true, "Uso del log di registrazione nel cicloDown", "Livello debug");
+            LibPref.newVersBool(CostBio.USA_LOG_DOWNLOAD, true, "Uso del log di registrazione nel cicloDownload", "Livello debug");
         }// fine del blocco if
 
         //--creata una nuova preferenza
         if (LibVers.installa(11)) {
-            LibPref.newVersBool(CostBio.USA_UPLOAD_DOWNLOADATA, true, "Upload di ogni singola voce nel cicloDown. Down, Ela, se tmpl diverso: Up, Down, Ela");
+            LibPref.newVersBool(CostBio.USA_UPLOAD_DOWNLOADATA, false, "Upload di ogni singola voce nel cicloDownload. Down, Ela, se tmpl diverso: Up, Down, Ela");
         }// fine del blocco if
 
         //--creata una nuova preferenza
         if (LibVers.installa(12)) {
-            LibPref.newVersBool(CostBio.USA_CANCELLA_VOCE_MANCANTE, true, "BioCicloUpdate, cancella una voce rimasta nel DB e non più presente sul server wiki");
+            LibPref.newVersBool(CostBio.USA_CANCELLA_VOCE_MANCANTE, true, "CicloDownload, cancella una voce rimasta nel DB e non più presente sul server wiki");
         }// fine del blocco if
 
         //--creata una nuova preferenza
         if (LibVers.installa(13)) {
-            LibPref.newVersInt(CostBio.NUM_PAGEIDS_REQUEST, 500, "Numero di pageids nella request di controllo voci modificate nel cicloDown");
+            LibPref.newVersInt(CostBio.NUM_PAGEIDS_REQUEST, 500, "Numero di pageids nella request di controllo voci modificate nel cicloDownload. Tipicamente sempre 500");
         }// fine del blocco if
 
 
@@ -129,7 +129,7 @@ public class VersBootStrap implements ServletContextListener {
 
         //--creata una nuova preferenza
         if (LibVers.installa(18)) {
-            LibPref.newVersBool(CostBio.USA_LOG_UPLOAD_ELABORATA, true, "Uso del log di registrazione per la singola voce uploadata", "Livello debug");
+            LibPref.newVersBool(CostBio.USA_LOG_UPLOAD_ELABORATA, false, "Uso del log di registrazione per la singola voce uploadata", "Livello debug");
         }// fine del blocco if
 
 
@@ -189,7 +189,17 @@ public class VersBootStrap implements ServletContextListener {
 
         //--creata una nuova preferenza
         if (LibVers.installa(28)) {
-            LibPref.newVersBool(CostBio.USA_BLOCCO_COMMIT, true, "Uso di un unico commit per un blocco di 500 records da registrare. Di default vero.");
+            LibPref.newVersBool(CostBio.USA_LOG_DEBUG, false, "Uso del log di registrazione per il livello debug. Di default falso.");
+        }// fine del blocco if
+
+        //--creata una nuova preferenza
+        if (LibVers.installa(29)) {
+            LibPref.newVersBool(CostBio.USA_COMMIT_MULTI_RECORDS, true, "Uso di un commit multiplo per registrare un blocco di records corrispondenti alle voci da scaricare/aggiornare. Di default vero.");
+        }// fine del blocco if
+
+        //--creata una nuova preferenza
+        if (LibVers.installa(30)) {
+            LibPref.newVersInt(CostBio.NUM_RECORDS_COMMIT, 500, "Numero di records per ogni commit. Di default 500.");
         }// fine del blocco if
 
     }// end of method

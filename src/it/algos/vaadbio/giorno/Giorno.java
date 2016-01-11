@@ -23,9 +23,13 @@ public class Giorno extends BaseEntity {
 
     @NotEmpty
     private String mese = "";
+
     @NotEmpty
+    @Index
     private String nome = "";
+
     @NotEmpty
+    @Index
     private String titolo = "";
 
     @Index

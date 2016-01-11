@@ -7,7 +7,6 @@ import com.vaadin.ui.MenuBar;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
 import it.algos.vaad.wiki.LibWiki;
-import it.algos.vaadbio.DownloadBio;
 import it.algos.vaadbio.ciclo.CicloDownload;
 import it.algos.vaadbio.ciclo.CicloElabora;
 import it.algos.vaadbio.ciclo.CicloUpdate;
@@ -18,7 +17,6 @@ import it.algos.webbase.domain.log.Log;
 import it.algos.webbase.domain.pref.Pref;
 import it.algos.webbase.web.dialog.ConfirmDialog;
 import it.algos.webbase.web.dialog.EditDialog;
-import it.algos.webbase.web.form.AForm;
 import it.algos.webbase.web.form.ModuleForm;
 import it.algos.webbase.web.lib.LibNum;
 import it.algos.webbase.web.module.ModulePop;
@@ -263,6 +261,10 @@ public class BioMod extends ModulePop {
                 boolean usaLog = Pref.getBool(CostBio.USA_LOG_DOWNLOAD, false);
                 boolean usaUpdate = Pref.getBool(CostBio.USA_UPLOAD_DOWNLOADATA, false);
                 boolean usaCancella = Pref.getBool(CostBio.USA_CANCELLA_VOCE_MANCANTE, false);
+                boolean usaCommitUnico = Pref.getBool(CostBio.USA_COMMIT_MULTI_RECORDS, false);
+                boolean usaLogDebug = Pref.getBool(CostBio.USA_LOG_DEBUG, false);
+                int maxDowloadNew = Pref.getInt(CostBio.MAX_DOWNLOAD, 1000);
+                int numRecordsCommit = Pref.getInt(CostBio.NUM_RECORDS_COMMIT, 500);
                 String nomeCat = "";
                 if (usaDialoghi) {
                     if (usaDebug) {
@@ -270,7 +272,6 @@ public class BioMod extends ModulePop {
                     } else {
                         nomeCat = "<b><span style=\"color:red\">" + CicloDownload.TAG_BIO + "</span></b>";
                     }// end of if/else cycle
-                    int maxDowloadNew = Pref.getInt(CostBio.MAX_DOWNLOAD, 1000);
                     String newMsg = "Esegue un ciclo di sincronizzazione tra le pagine della categoria " + nomeCat + " ed i records della tavola Bio<br/>";
                     if (!usaDebug) {
                         newMsg += "<br/>Aggiorna la tavola (<b><span style=\"color:green\">Attività</span></b>) ";
@@ -303,6 +304,16 @@ public class BioMod extends ModulePop {
                         newMsg += "<br>Le preferenze prevedono di <b><span style=\"color:red\">cancellare</span></b> le voci non più presenti nella categoria";
                     } else {
                         newMsg += "<br>Le preferenze <b><span style=\"color:red\">non</span></b> prevedono di cancellare le voci";
+                    }// end of if/else cycle
+                    if (usaCommitUnico) {
+                        newMsg += "<br>Le preferenze prevedono di usare un commit multiplo di <b><span style=\"color:red\">" + LibNum.format(numRecordsCommit) + "</span></b> records";
+                    } else {
+                        newMsg += "<br>Le preferenze prevedono di usare <b><span style=\"color:red\">non</span></b> usare un commit multiplo per registrare i records nel database";
+                    }// end of if/else cycle
+                    if (usaLogDebug) {
+                        newMsg += "<br>Le preferenze prevedono di <b><span style=\"color:red\">usare</span></b> un log specifico per il debug";
+                    } else {
+                        newMsg += "<br>Le preferenze <b><span style=\"color:red\">non</span></b> prevedono di usare un log specifico per il debug";
                     }// end of if/else cycle
                     ConfirmDialog dialog = new ConfirmDialog(CostBio.MSG, newMsg,
                             new ConfirmDialog.Listener() {
@@ -468,7 +479,6 @@ public class BioMod extends ModulePop {
                     @Override
                     public void onClose(String title) {
                         esegueDownload(title);
-                        Log.setInfo("download", "Singolo download della voce " + LibWiki.setQuadre(title));
                     }// end of method
                 });// end of anonymous inner class
                 dialog.getField().setValue(titolo);
@@ -534,7 +544,9 @@ public class BioMod extends ModulePop {
      */
     public void esegueDownload(String wikiTitle) {
         if (!wikiTitle.equals("")) {
-            new Download(wikiTitle);
+            if (new Download(wikiTitle).isRegistrata()) {
+                Log.setInfo("download", "Singolo download della voce " + LibWiki.setQuadre(wikiTitle));
+            }// end of if cycle
         } else {
             Notification.show("Devi selezionare una riga per scaricare la voce dal server wiki");
         }// end of if/else cycle

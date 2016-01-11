@@ -20,11 +20,17 @@ public abstract class CostBio {
     public final static String TAG_PARENTESI_END = ")";
     public final static String TAG_SEPARATORE = SPAZIO + "-" + SPAZIO;
 
+    // pagine wiki
+    public final static String DISAMBIGUA = "{{disambigua}}";
+    public final static String REDIRECT = "#REDIRECT";
+    public final static String REDIRECT_B = "#redirect";
     // generali
     public final static String USA_DEBUG = "usaDebug";
     public final static String USA_DIALOGHI_CONFERMA = "usaDialoghiConferma";
     public final static String USA_CICLI_ANCHE_SENZA_BOT = "usaCicliAncheSenzaBot";
-    public final static String USA_BLOCCO_COMMIT = "usaBloccoCommit";
+    public final static String USA_LOG_DEBUG = "usaLogDebug";
+    public final static String USA_COMMIT_MULTI_RECORDS = "usaCommitMultiRecords";
+    public final static String NUM_RECORDS_COMMIT = "numRecordsCommit";
 
     // daemons
     public final static String USA_CRONO_DOWNLOAD = "usaCronoDownload";

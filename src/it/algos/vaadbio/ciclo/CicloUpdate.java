@@ -79,7 +79,7 @@ public class CicloUpdate extends CicloDownload {
         ArrayList<Long> listaBloccoDaControllare = null;
         ArrayList<Long> listaBloccoModificate = null;
         ArrayList<Long> listaVociModificate = null;
-        int vociPerBlocco = this.dimBlocco();
+        int vociPerBlocco = this.dimBloccoPages();
         ArrayList<WrapTime> listaWrapTimeBlocco;
         ArrayList<WrapTime> listaWrapTime;
         int numVociDaControllare = 50000;
@@ -89,8 +89,8 @@ public class CicloUpdate extends CicloDownload {
         int numVociUploadate = 0;
         int numCicli;
         int offset;
-        String ultima = "";
-        String message = "";
+        String ultima = CostBio.VUOTO;
+        String message = CostBio.VUOTO;
 
         // Il ciclo necessita del login come bot per il funzionamento normale
         // oppure del flag USA_CICLI_ANCHE_SENZA_BOT per un funzionamento ridotto
@@ -250,12 +250,12 @@ public class CicloUpdate extends CicloDownload {
         int numCicli;
 
         if (listaVociModificate != null && listaVociModificate.size() > 0) {
-            numCicli = LibArray.numCicli(listaVociModificate.size(), dimBlocco());
+            numCicli = LibArray.numCicli(listaVociModificate.size(), dimBloccoPages());
 
             for (int k = 0; k < numCicli; k++) {
-                listaVociDaScaricare = LibArray.estraeSublistaLong(listaVociModificate, dimBlocco(), k);
+                listaVociDaScaricare = LibArray.estraeSublistaLong(listaVociModificate, dimBloccoPages(), k);
 
-                numVociRegistrate = downloadPagine(listaVociDaScaricare);
+//                numVociRegistrate = downloadPagine(listaVociDaScaricare);
 
 //                mappaVoci = downloadSingoloBlocco(bloccoPageids);
 //                if (mappaVoci != null) {

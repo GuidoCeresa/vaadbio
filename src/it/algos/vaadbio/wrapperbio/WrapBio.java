@@ -9,7 +9,6 @@ import it.algos.vaadbio.lib.CostBio;
 import it.algos.webbase.domain.log.Log;
 import it.algos.webbase.domain.pref.Pref;
 import it.algos.webbase.web.lib.LibTime;
-import org.vaadin.addons.lazyquerycontainer.LazyEntityContainer;
 
 import javax.persistence.EntityManager;
 
@@ -64,7 +63,7 @@ public class WrapBio {
         long pageid;
         String wikiTitle;
         String tmplBio;
-        boolean templateEsiste = false;
+        String testoPagina;
 
         if (pagina == null) {
             return;
@@ -82,11 +81,21 @@ public class WrapBio {
         tmplBio = Api.estraeTmplBio(pagina);
 
         if (tmplBio.equals("")) {
+            registrata = false;
             if (Pref.getBool(CostBio.USA_LOG_DOWNLOAD, true)) {
+                testoPagina = pagina.getText();
+                if (testoPagina.startsWith(CostBio.DISAMBIGUA)) {
+                    Log.setDebug("cicloNew", "La pagina " + LibWiki.setQuadre(wikiTitle) + ", non è stata registrata perché è una disambigua");
+                    return;
+                }// end of if cycle
+                if (testoPagina.startsWith(CostBio.REDIRECT) || testoPagina.startsWith(CostBio.REDIRECT)) {
+                    Log.setDebug("cicloNew", "La pagina " + LibWiki.setQuadre(wikiTitle) + ", non è stata registrata perché è un redirect");
+                    return;
+                }// end of if cycle
                 Log.setDebug("cicloNew", "La pagina " + LibWiki.setQuadre(wikiTitle) + ", non è stata registrata perché  manca il tmplBio");
+                return;
             }// fine del blocco if
-        } else {
-            templateEsiste = true;
+            return;
         }// end of if/else cycle
 
         try { // prova ad eseguire il codice
@@ -109,14 +118,12 @@ public class WrapBio {
         // regola parametri non gestiti in Elabora
         bio.setPageid(pageid);
         bio.setTitle(wikiTitle);
-        if (templateEsiste) {
-            bio.setTmplBioServer(tmplBio);
-            bio.setTemplateEsiste(true);
-        }// end of if cycle
+        bio.setTmplBioServer(tmplBio);
+        bio.setTemplateEsiste(true);
         bio.setUltimaLettura(LibTime.adesso());
 
         //--Elabora l'istanza
-        registrata = new Elabora(bio,  manager).isElaborata();
+        registrata = new Elabora(bio, manager).isElaborata();
     }// end of method
 
     public boolean isRegistrata() {
