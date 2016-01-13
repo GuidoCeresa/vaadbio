@@ -1472,4 +1472,31 @@ public abstract class LibBio {
         return status;
     } // fine del metodo
 
+    /**
+     * Estrae una subLista parziale dalla lista.
+     *
+     * @param lista  da cui estrarre la subList
+     * @param posIni iniziale
+     * @param posEnd finale
+     * @return subLista
+     */
+    public static ArrayList subList(ArrayList<Long> lista, int posIni, int posEnd) {
+        ArrayList subLista = null;
+        List listaTmp = null;
+
+        if (lista != null && lista.size() > 0) {
+            if (posEnd > posIni) {
+                if (posEnd < lista.size()) {
+                    listaTmp = lista.subList(posIni, posEnd);
+                }// end of if cycle
+            }// end of if cycle
+        }// fine del blocco if
+
+        if (listaTmp != null && listaTmp instanceof List) {
+            subLista = new ArrayList(listaTmp);
+        }// end of if cycle
+
+        return subLista;
+    } // fine del metodo
+
 }// end of abstract static class

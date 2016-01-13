@@ -18,6 +18,7 @@ import javax.persistence.EntityTransaction;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Esegue un ciclo (UPDATE) di controllo e aggiornamento di tutti i records esistenti nel database
@@ -76,6 +77,7 @@ public class CicloUpdate extends CicloDownload {
     @SuppressWarnings("all")
     protected void doInit() {
         long inizio = System.currentTimeMillis();
+        ArrayList<Long> listaAllRecords = null;
         ArrayList<Long> listaBloccoDaControllare = null;
         ArrayList<Long> listaBloccoModificate = null;
         ArrayList<Long> listaVociModificate = null;
@@ -91,6 +93,8 @@ public class CicloUpdate extends CicloDownload {
         int offset;
         String ultima = CostBio.VUOTO;
         String message = CostBio.VUOTO;
+        int posIni = 0;
+        int posEnd = 0;
 
         // Il ciclo necessita del login come bot per il funzionamento normale
         // oppure del flag USA_CICLI_ANCHE_SENZA_BOT per un funzionamento ridotto
@@ -106,16 +110,19 @@ public class CicloUpdate extends CicloDownload {
             numVociDaControllare = Bio.count();
         }// end of if/else cycle
 
+        //--Lista (pageids) di tutti i records del database
+        listaAllRecords = Bio.findAllPageid();
+
         numCicli = LibArray.numCicli(numVociDaControllare, vociPerBlocco);
         vociPerBlocco = Math.min(numVociDaControllare, vociPerBlocco);
         for (int k = 0; k < numCicli; k++) {
             offset = vociPerBlocco * k;
-            if (k == (numCicli - 1)) {
-                vociPerBlocco = numVociDaControllare - (vociPerBlocco * k);
-            }// end of if cycle
 
             //--Lista (pageids) di un blocco ordinato di records del database
-            listaBloccoDaControllare = Bio.findAllPageid(vociPerBlocco, offset);
+            posIni = k * vociPerBlocco;
+            posEnd = posIni + vociPerBlocco;
+            posEnd = Math.min(numVociDaControllare, posEnd);
+            listaBloccoDaControllare= LibBio.subList(listaAllRecords,posIni,posEnd);
 
             //--Esegue una RequestWikiTimestamp per creare una lista di WrapTime
             listaWrapTimeBlocco = getWrapTimeBlocco(listaBloccoDaControllare);
