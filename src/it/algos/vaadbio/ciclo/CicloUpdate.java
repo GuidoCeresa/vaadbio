@@ -127,7 +127,7 @@ public class CicloUpdate extends CicloDownload {
             listaVociModificate = LibArray.somma(listaVociModificate, listaBloccoModificate);
 
             //--Fix voci controllate
-            fixVociControllate(LibArray.differenzaDisordinata(listaBloccoDaControllare, listaBloccoModificate));
+            fixVociControllate(LibArray.differenza(listaBloccoDaControllare, listaBloccoModificate));
         }// end of for cycle
 
         //--Aggiorna le voci della lista (pageids)
@@ -254,6 +254,7 @@ public class CicloUpdate extends CicloDownload {
 
             for (int k = 0; k < numCicli; k++) {
                 listaVociDaScaricare = LibArray.estraeSublistaLong(listaVociModificate, dimBloccoPages(), k);
+                numVociRegistrate = downloadPagine(listaVociDaScaricare);
 
 //                numVociRegistrate = downloadPagine(listaVociDaScaricare);
 
