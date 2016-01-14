@@ -138,7 +138,7 @@ public class CicloUpdate extends CicloDownload {
         }// end of for cycle
 
         //--Aggiorna le voci della lista (pageids)
-        numVociRegistrate = downloadVociMancanti(listaVociModificate);
+        numVociRegistrate = downloadPagine(listaVociModificate);
 
 
         //--Informazioni per il log
@@ -242,45 +242,45 @@ public class CicloUpdate extends CicloDownload {
     }// end of method
 
 
-    /**
-     * Scarica la lista di voci mancanti dal server e aggiorna i records di Bio
-     * Esegue una serie di Request a blocchi di PAGES_PER_REQUEST per volta
-     *
-     * @param listaVociModificate elenco di pageids delle pagine da scaricare
-     * @return info per il log
-     */
-    public int downloadVociMancanti(ArrayList<Long> listaVociModificate) {
-        int numVociRegistrate = 0;
-        HashMap<String, Integer> mappaVoci = null;
-        ArrayList<Long> listaVociDaScaricare;
-        int numVociUploadate = 0;
-        int numCicli;
-
-        if (listaVociModificate != null && listaVociModificate.size() > 0) {
-            numCicli = LibArray.numCicli(listaVociModificate.size(), dimBloccoPages());
-
-            for (int k = 0; k < numCicli; k++) {
-                listaVociDaScaricare = LibArray.estraeSublistaLong(listaVociModificate, dimBloccoPages(), k);
-                numVociRegistrate = downloadPagine(listaVociDaScaricare);
-
+//    /**
+//     * Scarica la lista di voci mancanti dal server e aggiorna i records di Bio
+//     * Esegue una serie di Request a blocchi di PAGES_PER_REQUEST per volta
+//     *
+//     * @param listaVociModificate elenco di pageids delle pagine da scaricare
+//     * @return info per il log
+//     */
+//    public int downloadVociMancanti(ArrayList<Long> listaVociModificate) {
+//        int numVociRegistrate = 0;
+//        HashMap<String, Integer> mappaVoci = null;
+//        ArrayList<Long> listaVociDaScaricare;
+//        int numVociUploadate = 0;
+//        int numCicli;
+//
+//        if (listaVociModificate != null && listaVociModificate.size() > 0) {
+//            numCicli = LibArray.numCicli(listaVociModificate.size(), dimBloccoPages());
+//
+//            for (int k = 0; k < numCicli; k++) {
+//                listaVociDaScaricare = LibArray.estraeSublistaLong(listaVociModificate, dimBloccoPages(), k);
 //                numVociRegistrate = downloadPagine(listaVociDaScaricare);
-
-//                mappaVoci = downloadSingoloBlocco(bloccoPageids);
-//                if (mappaVoci != null) {
-//                    numVociModificate += mappaVoci.get(CostBio.KEY_MAPPA_MODIFICATE);
-//                    numVociUploadate += mappaVoci.get(CostBio.KEY_MAPPA_UPLOADATE);
-//                }// end of if cycle
-            }// end of for cycle
-
-        }// end of if cycle
-
-//        if (mappaVoci != null) {
-//            mappaVoci.put(CostBio.KEY_MAPPA_MODIFICATE, numVociModificate);
-//            mappaVoci.put(CostBio.KEY_MAPPA_UPLOADATE, numVociUploadate);
+//
+////                numVociRegistrate = downloadPagine(listaVociDaScaricare);
+//
+////                mappaVoci = downloadSingoloBlocco(bloccoPageids);
+////                if (mappaVoci != null) {
+////                    numVociModificate += mappaVoci.get(CostBio.KEY_MAPPA_MODIFICATE);
+////                    numVociUploadate += mappaVoci.get(CostBio.KEY_MAPPA_UPLOADATE);
+////                }// end of if cycle
+//            }// end of for cycle
+//
 //        }// end of if cycle
-
-        return numVociRegistrate;
-    }// end of method
+//
+////        if (mappaVoci != null) {
+////            mappaVoci.put(CostBio.KEY_MAPPA_MODIFICATE, numVociModificate);
+////            mappaVoci.put(CostBio.KEY_MAPPA_UPLOADATE, numVociUploadate);
+////        }// end of if cycle
+//
+//        return numVociRegistrate;
+//    }// end of method
 
 
     /**
