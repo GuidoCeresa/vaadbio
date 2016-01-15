@@ -79,4 +79,6 @@ public abstract class CostBio {
     public final static String KEY_MAPPA_GIORNI_NOME = "nome";
     public final static String KEY_MAPPA_GIORNI_TITOLO = "titolo";
 
+
+
 }// end of static abstract class

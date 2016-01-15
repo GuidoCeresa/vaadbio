@@ -13,6 +13,8 @@ import it.algos.vaadbio.ciclo.CicloUpdate;
 import it.algos.vaadbio.download.Download;
 import it.algos.vaadbio.elabora.Elabora;
 import it.algos.vaadbio.lib.CostBio;
+import it.algos.vaadbio.statistiche.Sintesi;
+import it.algos.vaadbio.statistiche.Statistiche;
 import it.algos.webbase.domain.log.Log;
 import it.algos.webbase.domain.pref.Pref;
 import it.algos.webbase.web.dialog.ConfirmDialog;
@@ -245,6 +247,7 @@ public class BioMod extends ModulePop {
         addCommandDownloadDialog(menuItem);
         addCommandElabora(menuItem);
         addCommandUpload(menuItem);
+        addCommandStatistiche(menuItem);
     }// end of method
 
     /**
@@ -531,6 +534,19 @@ public class BioMod extends ModulePop {
         });// end of anonymous class
     }// end of method
 
+    /**
+     * Comando bottone/item Statistiche
+     *
+     * @param menuItem a cui agganciare il bottone/item
+     */
+    private void addCommandStatistiche(MenuBar.MenuItem menuItem) {
+        menuItem.addItem("Statistiche", FontAwesome.BEER, new MenuBar.Command() {
+            public void menuSelected(MenuBar.MenuItem selectedItem) {
+                esegueStatistiche();
+            }// end of method
+        });// end of anonymous class
+    }// end of method
+
 
     /**
      * Esegue il download della singola voce
@@ -577,6 +593,13 @@ public class BioMod extends ModulePop {
         } else {
             Notification.show("Devi selezionare una riga per uploadare il record su wikipedia");
         }// end of if/else cycle
+    }// end of method
+
+    /**
+     * Esegue la creazione delle pagine statistiche
+     */
+    public void esegueStatistiche() {
+        new Sintesi();
     }// end of method
 
     /**

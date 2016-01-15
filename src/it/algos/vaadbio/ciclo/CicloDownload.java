@@ -142,10 +142,12 @@ public class CicloDownload {
         long inizio = System.currentTimeMillis();
         int numVociDaScaricare = 0;
         int numVociRegistrate = 0;
-        ArrayList<Long> bloccoPageCommit;
+//        ArrayList<Long> bloccoPageCommit;
         ArrayList<Long> bloccoPageids;
-        int dimBloccoCommit = Pref.getInt(CostBio.NUM_RECORDS_COMMIT, 500);
-        int numCicliCommit;
+//        int dimBloccoCommit = Pref.getInt(CostBio.NUM_RECORDS_COMMIT, 500);
+        int dimBloccoLettura = dimBloccoPages();
+//        int numCicliCommit;
+        int numCicliLetturaPagine;
         long inizioCommit = 0;
         long fineCommit = 0;
         String mess;
@@ -153,27 +155,32 @@ public class CicloDownload {
         if (listaVociDaScaricare != null && listaVociDaScaricare.size() > 0)
             numVociDaScaricare = listaVociDaScaricare.size();
         if (Pref.getBool(CostBio.USA_COMMIT_MULTI_RECORDS, true)) {
-            numCicliCommit = LibArray.numCicli(listaVociDaScaricare.size(), dimBloccoCommit);
-            for (int k = 0; k < numCicliCommit; k++) {
-                bloccoPageCommit = LibArray.estraeSublistaLong(listaVociDaScaricare, dimBloccoCommit, k);
+            numCicliLetturaPagine = LibArray.numCicli(listaVociDaScaricare.size(), dimBloccoLettura);
+            for (int k = 0; k < numCicliLetturaPagine; k++) {
+                bloccoPageids = LibArray.estraeSublistaLong(listaVociDaScaricare, dimBloccoLettura, k);
 
                 MANAGER.getTransaction().begin();
 
-                numVociRegistrate += new DownloadPages(bloccoPageCommit, MANAGER).getNumVociRegistrate();
+                numVociRegistrate += new DownloadPages(bloccoPageids, MANAGER).getNumVociRegistrate();
 
                 inizioCommit = System.currentTimeMillis();
                 MANAGER.getTransaction().commit();
                 fineCommit = System.currentTimeMillis();
 
                 if (Pref.getBool(CostBio.USA_LOG_DEBUG, true)) {
-                    mess = "Commit unico blocco di " + LibNum.format(dimBloccoCommit);
+                    mess = "Commit unico blocco di " + LibNum.format(dimBloccoLettura);
                     mess += " Save " + LibNum.format(numVociRegistrate) + "/" + LibNum.format(numVociDaScaricare) + " voci";
                     mess += " in " + LibNum.format(fineCommit - inizioCommit) + " milliSec./" + LibTime.difText(inizio);
                     Log.setDebug("test", mess);
                 }// end of if cycle
             }// end of for cycle
         } else {
-            downloadPagesPerCommit(listaVociDaScaricare, null);
+            numCicliLetturaPagine = LibArray.numCicli(listaVociDaScaricare.size(), dimBloccoLettura);
+
+            for (int k = 0; k < numCicliLetturaPagine; k++) {
+                bloccoPageids = LibArray.estraeSublistaLong(listaVociDaScaricare, dimBloccoLettura, k);
+                numVociRegistrate += new DownloadPages(bloccoPageids, null).getNumVociRegistrate();
+            }// end of for cycle
         }// end of if/else cycle
 
 
@@ -215,34 +222,34 @@ public class CicloDownload {
     }// end of method
 
 
-    /**
-     * Esegue una serie di RequestWikiReadMultiPages a blocchi di PAGES_PER_REQUEST per volta
-     * Esegue la RequestWikiReadMultiPages (tramite Api)
-     * Crea le PAGES_PER_REQUEST Pages ricevute
-     * Per ogni page crea o modifica il records corrispondente con lo stesso pageid
-     *
-     * @param listaVociDaScaricare elenco (pageids) delle pagine mancanti o modificate, da scaricare
-     */
-    private int downloadPagesPerCommit(ArrayList<Long> listaVociDaScaricare, EntityManager manager) {
-        int numVociRegistrate = 0;
-        ArrayList<Long> bloccoPageids;
-        int dimBloccoLettura = dimBloccoPages();
-        int numCicliLetturaPagine;
-        DownloadPages downloadPages;
-
-        if (listaVociDaScaricare != null && listaVociDaScaricare.size() > 0) {
-            numCicliLetturaPagine = LibArray.numCicli(listaVociDaScaricare.size(), dimBloccoLettura);
-
-            for (int k = 0; k < numCicliLetturaPagine; k++) {
-                bloccoPageids = LibArray.estraeSublistaLong(listaVociDaScaricare, dimBloccoLettura, k);
-                downloadPages = new DownloadPages(bloccoPageids, manager);
-                numVociRegistrate += downloadPages.getNumVociRegistrate();
-            }// end of for cycle
-
-        }// fine del blocco if
-
-        return numVociRegistrate;
-    }// end of method
+//    /**
+//     * Esegue una serie di RequestWikiReadMultiPages a blocchi di PAGES_PER_REQUEST per volta
+//     * Esegue la RequestWikiReadMultiPages (tramite Api)
+//     * Crea le PAGES_PER_REQUEST Pages ricevute
+//     * Per ogni page crea o modifica il records corrispondente con lo stesso pageid
+//     *
+//     * @param listaVociDaScaricare elenco (pageids) delle pagine mancanti o modificate, da scaricare
+//     */
+//    private int downloadPagesPerCommit(ArrayList<Long> listaVociDaScaricare, EntityManager manager) {
+//        int numVociRegistrate = 0;
+//        ArrayList<Long> bloccoPageids;
+//        int dimBloccoLettura = dimBloccoPages();
+//        int numCicliLetturaPagine;
+//        DownloadPages downloadPages;
+//
+//        if (listaVociDaScaricare != null && listaVociDaScaricare.size() > 0) {
+//            numCicliLetturaPagine = LibArray.numCicli(listaVociDaScaricare.size(), dimBloccoLettura);
+//
+//            for (int k = 0; k < numCicliLetturaPagine; k++) {
+//                bloccoPageids = LibArray.estraeSublistaLong(listaVociDaScaricare, dimBloccoLettura, k);
+//                downloadPages = new DownloadPages(bloccoPageids, manager);
+//                numVociRegistrate += downloadPages.getNumVociRegistrate();
+//            }// end of for cycle
+//
+//        }// fine del blocco if
+//
+//        return numVociRegistrate;
+//    }// end of method
 
     /**
      * Numero di voci da scaricare dal server in blocco con un'unica API di lettura
