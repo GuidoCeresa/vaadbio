@@ -1359,6 +1359,27 @@ public abstract class LibBio {
         return lista;
     }// end of static method
 
+    /**
+     * Recupera il conteggio dei records, selezionati secondo la query ricevuta
+     *
+     * @param queryTxt per la selezione
+     * @return numero di records
+     */
+    public synchronized static int queryCount(String queryTxt) {
+        int numero = 0;
+        List vettore;
+        EntityManager manager = EM.createEntityManager();
+        Query query = manager.createQuery(queryTxt);
+
+        vettore = query.getResultList();
+        if (vettore != null) {
+            numero = vettore.size();
+        }// end of if cycle
+        manager.close();
+
+        return numero;
+    }// end of static method
+
 
 //    //--regola la lunghezza del campo
 //    //--elimina il teasto successivo al ref

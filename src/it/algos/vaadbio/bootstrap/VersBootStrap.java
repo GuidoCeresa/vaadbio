@@ -4,6 +4,7 @@ import it.algos.vaadbio.anno.AnnoService;
 import it.algos.vaadbio.giorno.GiornoService;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.webbase.web.lib.LibPref;
+import it.algos.webbase.web.lib.LibTime;
 import it.algos.webbase.web.lib.LibVers;
 
 import javax.servlet.ServletContextEvent;
@@ -200,6 +201,42 @@ public class VersBootStrap implements ServletContextListener {
         //--creata una nuova preferenza
         if (LibVers.installa(30)) {
             LibPref.newVersInt(CostBio.NUM_RECORDS_COMMIT, 500, "Numero di records per ogni commit. Di default 500.");
+        }// fine del blocco if
+
+
+        //--creata una nuova preferenza
+        if (LibVers.installa(31)) {
+            LibPref.newVersData(CostBio.STAT_DATA_ULTIMA_SINTESI, LibTime.adesso(), "Data di riferimento per l'aggiornamento delle statistiche.");
+        }// fine del blocco if
+
+        //--creata una nuova preferenza
+        if (LibVers.installa(32)) {
+            LibPref.newVersInt(CostBio.STAT_NUM_VOCI, 295000, "Numero di voci gestite. Di default poco meno della categoria.");
+        }// fine del blocco if
+
+        //--creata una nuova preferenza
+        if (LibVers.installa(33)) {
+            LibPref.newVersInt(CostBio.STAT_NUM_GIORNI, 366, "Numero di giorni gestiti nell'anno (bisestile compreso). Di default 366.");
+        }// fine del blocco if
+
+        //--creata una nuova preferenza
+        if (LibVers.installa(34)) {
+            LibPref.newVersInt(CostBio.STAT_NUM_ANNI, 3016, "Numero di anni gestiti (1.000 a.C. + 2016 d.C.). Di default 3016.");
+        }// fine del blocco if
+
+        //--creata una nuova preferenza
+        if (LibVers.installa(35)) {
+            LibPref.newVersInt(CostBio.STAT_NUM_ATTIVITA, 600, "Numero di attività gestite . Di default circa 600.");
+        }// fine del blocco if
+
+        //--creata una nuova preferenza
+        if (LibVers.installa(36)) {
+            LibPref.newVersInt(CostBio.STAT_NUM_NAZIONALITA, 300, "Numero di nazionalità gestite . Di default circa 300.");
+        }// fine del blocco if
+
+        //--creata una nuova preferenza
+        if (LibVers.installa(37)) {
+            LibPref.newVersInt(CostBio.STAT_GIORNI_ATTESA, 300, "Numero di giorni di attesa prima di aggiornare le statistiche . Di default circa 5.");
         }// fine del blocco if
 
     }// end of method

@@ -142,11 +142,8 @@ public class CicloDownload {
         long inizio = System.currentTimeMillis();
         int numVociDaScaricare = 0;
         int numVociRegistrate = 0;
-//        ArrayList<Long> bloccoPageCommit;
         ArrayList<Long> bloccoPageids;
-//        int dimBloccoCommit = Pref.getInt(CostBio.NUM_RECORDS_COMMIT, 500);
         int dimBloccoLettura = dimBloccoPages();
-//        int numCicliCommit;
         int numCicliLetturaPagine;
         long inizioCommit = 0;
         long fineCommit = 0;
@@ -183,73 +180,9 @@ public class CicloDownload {
             }// end of for cycle
         }// end of if/else cycle
 
-
-//        for (int k = 0; k < numCicliLetturaPagine; k++) {
-//            bloccoPageids = LibArray.estraeSublistaLong(listaVociDaScaricare, dimBloccoPages(), k);
-//
-//            if (Pref.getBool(CostBio.USA_COMMIT_MULTI_RECORDS, true)) {
-//
-//                MANAGER.getTransaction().begin();
-//                if (Pref.getBool(CostBio.USA_LOG_DEBUG, true)) {
-//                    inizioCommit = System.currentTimeMillis();
-//                }// end of if cycle
-//                downloadPages = new DownloadPages(bloccoPageids, MANAGER);
-//                MANAGER.getTransaction().commit();
-//                if (Pref.getBool(CostBio.USA_LOG_DEBUG, true)) {
-//                    fineCommit = System.currentTimeMillis();
-//                    Log.setDebug("test", "Eseguito un commit unico per " + LibNum.format(numVociRegistrate) + " voci in " + LibNum.format(fineCommit - inizioCommit) + " milliSec.");
-//                }// end of if cycle
-//
-//                numVociRegistrate += downloadPages.getNumVociRegistrate();
-////                mappaVoci = downloadSingoloBlocco(bloccoPageids);
-////                if (mappaVoci != null) {
-////                    numVociModificate += mappaVoci.get(CostBio.KEY_MAPPA_MODIFICATE);
-////                    numVociUploadate += mappaVoci.get(CostBio.KEY_MAPPA_UPLOADATE);
-////                }// end of if cycle
-//            }// end of for cycle
-//        }// end of for cycle
-//
-//
-////            for (int k = 0; k < numVociDaScaricare; k = k + vociPerBlocco) {
-////                iniBlocco = k * vociPerBlocco;
-////                endBlocco = iniBlocco + vociPerBlocco;
-////                bloccoPageids = new ArrayList<Long>(listaVociDaScaricare.subList(iniBlocco, endBlocco));
-////                numVociRegistrate += new DownloadPages(bloccoPageids).getNumVociRegistrate();
-////            }// end of for cycle
-
-
         return numVociRegistrate;
     }// end of method
 
-
-//    /**
-//     * Esegue una serie di RequestWikiReadMultiPages a blocchi di PAGES_PER_REQUEST per volta
-//     * Esegue la RequestWikiReadMultiPages (tramite Api)
-//     * Crea le PAGES_PER_REQUEST Pages ricevute
-//     * Per ogni page crea o modifica il records corrispondente con lo stesso pageid
-//     *
-//     * @param listaVociDaScaricare elenco (pageids) delle pagine mancanti o modificate, da scaricare
-//     */
-//    private int downloadPagesPerCommit(ArrayList<Long> listaVociDaScaricare, EntityManager manager) {
-//        int numVociRegistrate = 0;
-//        ArrayList<Long> bloccoPageids;
-//        int dimBloccoLettura = dimBloccoPages();
-//        int numCicliLetturaPagine;
-//        DownloadPages downloadPages;
-//
-//        if (listaVociDaScaricare != null && listaVociDaScaricare.size() > 0) {
-//            numCicliLetturaPagine = LibArray.numCicli(listaVociDaScaricare.size(), dimBloccoLettura);
-//
-//            for (int k = 0; k < numCicliLetturaPagine; k++) {
-//                bloccoPageids = LibArray.estraeSublistaLong(listaVociDaScaricare, dimBloccoLettura, k);
-//                downloadPages = new DownloadPages(bloccoPageids, manager);
-//                numVociRegistrate += downloadPages.getNumVociRegistrate();
-//            }// end of for cycle
-//
-//        }// fine del blocco if
-//
-//        return numVociRegistrate;
-//    }// end of method
 
     /**
      * Numero di voci da scaricare dal server in blocco con un'unica API di lettura

@@ -1,5 +1,6 @@
 package it.algos.vaadbio.nazionalita;
 
+import it.algos.vaadbio.lib.LibBio;
 import it.algos.webbase.web.entity.BaseEntity;
 import it.algos.webbase.web.query.AQuery;
 import org.apache.commons.beanutils.BeanUtils;
@@ -112,6 +113,16 @@ public class Nazionalita extends BaseEntity {
         }// fine del blocco if
 
         return totRec;
+    }// end of method
+
+    /**
+     * Recupera il valore del numero di records unici per plurale
+     *
+     * @return numero di records unici per plurale
+     */
+    public synchronized static int countDistinct() {
+        String query="select distinct nazionalita.plurale from Nazionalita nazionalita";
+        return LibBio.queryCount(query);
     }// end of method
 
     /**

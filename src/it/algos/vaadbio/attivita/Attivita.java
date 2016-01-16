@@ -1,5 +1,6 @@
 package it.algos.vaadbio.attivita;
 
+import it.algos.vaadbio.lib.LibBio;
 import it.algos.webbase.web.entity.BaseEntity;
 import it.algos.webbase.web.query.AQuery;
 import org.apache.commons.beanutils.BeanUtils;
@@ -113,6 +114,17 @@ public class Attivita extends BaseEntity {
 
         return totRec;
     }// end of method
+
+    /**
+     * Recupera il valore del numero di records unici per plurale
+     *
+     * @return numero di records unici per plurale
+     */
+    public synchronized static int countDistinct() {
+        String query="select distinct attivita.plurale from Attivita attivita";
+        return LibBio.queryCount(query);
+    }// end of method
+
 
     /**
      * Recupera una lista (array) di tutti i records della Domain Class

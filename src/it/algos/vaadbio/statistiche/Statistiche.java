@@ -16,16 +16,9 @@ import java.util.Date;
 public abstract class Statistiche {
 
     protected static String PATH = "Progetto:Biografie/";
-    protected static String PAGINA_PROVA = "Utente:Biobot/2";
-    protected String titoloPagina;
-
-    protected boolean usaHeadInclude; // vero per Sintesi
-    protected boolean usaHeadTemplateAvviso; // uso del template StatBio
-    protected String tagHeadTemplateAvviso; // template 'StatBio'
-    protected boolean usaHeadRitorno; // prima del template di avviso
-
 
     // campi di una mappa per la table
+    protected static final String KEY_MAPPA_ULTIMA_SINTESI = "mappaUltimaSintesi";
     protected static final String KEY_MAPPA_TITOLI = "mappaTableListaTitoli";
     protected static final String KEY_MAPPA_TITOLI_SCURI = "mappaTableTitoliScuri";
     protected static final String KEY_MAPPA_LISTA = "mappaTableListaRighe";
@@ -39,6 +32,13 @@ public abstract class Statistiche {
     protected static final String KEY_MAPPA_BACKGROUND_RIGHE = "mappaTableBackgroundRighe";
     protected static final String KEY_MAPPA_NUMERI_FORMATTATI = "mappaTableNumeriFormattati";
     protected static final String KEY_MAPPA_NUMERAZIONE_PROGRESSIVA = "mappaTableNumerazioneProgressiva";
+    protected static String PAGINA_PROVA = "Utente:Biobot/2";
+    protected static boolean usaSpazi;
+    protected String titoloPagina;
+    protected boolean usaHeadInclude; // vero per Sintesi
+    protected boolean usaHeadTemplateAvviso; // uso del template StatBio
+    protected String tagHeadTemplateAvviso; // template 'StatBio'
+    protected boolean usaHeadRitorno; // prima del template di avviso
 
     /**
      * Costruttore completo
@@ -54,6 +54,7 @@ public abstract class Statistiche {
     public void doInit() {
         elaboraParametri();
         elaboraPagina();
+        elaboraPreferenze();
     }// end of method
 
     /**
@@ -70,6 +71,7 @@ public abstract class Statistiche {
         tagHeadTemplateAvviso = "StatBio"; //--Sovrascrivibile da preferenze
 
         // body
+        usaSpazi = true;
 
         // footer
     }// fine del metodo
@@ -101,6 +103,7 @@ public abstract class Statistiche {
 
         //footer
         //di fila nella stessa riga, senza ritorno a capo (se inizia con <include>)
+        testo += CostBio.A_CAPO;
         testo += this.elaboraFooter();
 
         //registra la pagina
@@ -115,7 +118,6 @@ public abstract class Statistiche {
 
             Api.scriveVoce(titolo, testo, summary);
         }// fine del blocco if
-
     }// fine del metodo
 
 
@@ -217,6 +219,31 @@ public abstract class Statistiche {
         }// fine del blocco if
 
         return testoOut;
+    }// fine del metodo
+
+    /**
+     * Eventuali spazi vuoti prima e dopo il testo
+     * Vale per tutte le righe
+     */
+    protected String regolaSpazi(String testoIn) {
+        String testoOut = testoIn;
+
+        if (!testoOut.equals(CostBio.VUOTO)) {
+            if (usaSpazi) {
+                testoOut = CostBio.SPAZIO + testoIn + CostBio.SPAZIO;
+            }// fine del blocco if
+        }// fine del blocco if
+
+        // valore di ritorno
+        return testoOut;
+    }// fine del metodo
+
+
+    /**
+     * Registra nelle preferenze i nuovi valori che diventeranno i vecchi per la prossima sintesi
+     * Sovrascritto
+     */
+    protected void elaboraPreferenze() {
     }// fine del metodo
 
 }// end of class
