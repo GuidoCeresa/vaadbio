@@ -1,5 +1,6 @@
 package it.algos.vaadbio.statistiche;
 
+import it.algos.vaad.wiki.Cost;
 import it.algos.vaad.wiki.LibWiki;
 import it.algos.vaadbio.attivita.Attivita;
 import it.algos.vaadbio.bio.Bio;
@@ -10,7 +11,6 @@ import it.algos.vaadbio.nazionalita.Nazionalita;
 import it.algos.webbase.domain.pref.Pref;
 import it.algos.webbase.domain.pref.TypePref;
 import it.algos.webbase.web.lib.LibDate;
-import it.algos.webbase.web.lib.LibNum;
 import it.algos.webbase.web.lib.LibTime;
 
 import java.util.ArrayList;
@@ -71,9 +71,9 @@ public class Sintesi extends Statistiche {
         lista.add(getRigaNazionalita());
         lista.add(getRigaAttesa());
 
-        mappa.put(KEY_MAPPA_TITOLI, caption);
-        mappa.put(KEY_MAPPA_LISTA, lista);
-        mappa.put(KEY_MAPPA_LISTA_SORTABLE, false);
+        mappa.put(Cost.KEY_MAPPA_TITOLI, caption);
+        mappa.put(Cost.KEY_MAPPA_RIGHE_LISTA, lista);
+        mappa.put(Cost.KEY_MAPPA_SORTABLE_BOOLEAN, false);
 
         return LibWiki.creaTable(mappa);
     }// fine del metodo
@@ -88,10 +88,10 @@ public class Sintesi extends Statistiche {
         Date oldDate = Pref.getData(CostBio.STAT_DATA_ULTIMA_SINTESI, LibTime.adesso());
         String vecchiaData = LibTime.getGioMeseAnnoLungo(oldDate);
         String nuovaData = LibTime.getGioMeseAnnoLungo(new Date());
-        String differenze = "diff.";
+        String differenze = "&nbsp;&nbsp;&nbsp;&nbsp;Δ";
 
         //valore per le preferenze
-        mappaSintesi.put(CostBio.STAT_DATA_ULTIMA_SINTESI, nuovaData);
+        mappaSintesi.put(CostBio.STAT_DATA_ULTIMA_SINTESI, new Date());
 
         statistiche = regolaSpazi(statistiche);
         vecchiaData = regolaSpazi(vecchiaData);
@@ -109,87 +109,81 @@ public class Sintesi extends Statistiche {
     /**
      * Riga col numero di voci
      */
-    private ArrayList<String> getRigaVoci() {
+    private ArrayList getRigaVoci() {
         String prefCode = CostBio.STAT_NUM_VOCI;
         String descrizione = ":Categoria:BioBot|Template bio";
         int oldValue = Pref.getInt(prefCode, 300000);
         int newValue = Bio.count();
         String nota = "Una differenza di '''poche unità''' tra le pagine della categoria e le voci gestite dal bot è '''fisiologica''' e dovuta ad imprecisioni nella redazione del tmpl Bio";
-        boolean wikiLink = true;
 
-        return getRigaBase(wikiLink, descrizione, nota, oldValue, newValue, prefCode);
+        return getRigaBase(true, descrizione, nota, oldValue, newValue, prefCode);
     }// fine del metodo
 
 
     /**
      * Riga col numero di giorni
      */
-    private ArrayList<String> getRigaGiorni() {
+    private ArrayList getRigaGiorni() {
         String prefCode = CostBio.STAT_NUM_GIORNI;
         String descrizione = "Giorni interessati";
         int oldValue = Pref.getInt(prefCode, 366);
         int newValue = Giorno.count();
         String nota = "Previsto il [[29 febbraio]] per gli [[Anno bisestile|anni bisestili]]";
-        boolean wikiLink = false;
 
-        return getRigaBase(wikiLink, descrizione, nota, oldValue, newValue, prefCode);
+        return getRigaBase(false, descrizione, nota, oldValue, newValue, prefCode);
     }// fine del metodo
 
     /**
      * Riga col numero di anni
      */
-    private ArrayList<String> getRigaAnni() {
+    private ArrayList getRigaAnni() {
         String prefCode = CostBio.STAT_NUM_ANNI;
         int anniPreCristo = 1000;
         String descrizione = "Anni interessati";
         int oldValue = Pref.getInt(prefCode, 3000);
         int newValue = LibDate.getYear() + anniPreCristo;
         String nota = "Potenzialmente dal [[1000 a.C.]] al [[{{CURRENTYEAR}}]]";
-        boolean wikiLink = false;
 
-        return getRigaBase(wikiLink, descrizione, nota, oldValue, newValue, prefCode);
+        return getRigaBase(false, descrizione, nota, oldValue, newValue, prefCode);
     }// fine del metodo
 
     /**
      * Riga col numero di attività
      */
-    private ArrayList<String> getRigaAttivita() {
+    private ArrayList getRigaAttivita() {
         String prefCode = CostBio.STAT_NUM_ATTIVITA;
         String descrizione = PATH + "Attività|Attività utilizzate";
         int oldValue = Pref.getInt(prefCode, 600);
         int newValue = Attivita.countDistinct();
-        String nota="Le attività sono quelle '''convenzionalmente''' previste dalla comunità ed inserite nell'elenco utilizzato dal template Bio";
-        boolean wikiLink = true;
+        String nota = "Le attività sono quelle '''convenzionalmente''' previste dalla comunità ed inserite nell'elenco utilizzato dal template Bio";
 
-        return getRigaBase(wikiLink, descrizione, nota, oldValue, newValue, prefCode);
+        return getRigaBase(true, descrizione, nota, oldValue, newValue, prefCode);
     }// fine del metodo
 
     /**
      * Riga col numero di nazionalità
      */
-    private ArrayList<String> getRigaNazionalita() {
+    private ArrayList getRigaNazionalita() {
         String prefCode = CostBio.STAT_NUM_NAZIONALITA;
         String descrizione = PATH + "Nazionalità|Nazionalità utilizzate";
         int oldValue = Pref.getInt(prefCode, 300);
         int newValue = Nazionalita.countDistinct();
-        String nota="Le nazionalità sono quelle '''convenzionalmente''' previste dalla comunità ed inserite nell'elenco utilizzato dal template Bio";
-        boolean wikiLink = true;
+        String nota = "Le nazionalità sono quelle '''convenzionalmente''' previste dalla comunità ed inserite nell'elenco utilizzato dal template Bio";
 
-        return getRigaBase(wikiLink, descrizione, nota, oldValue, newValue, prefCode);
+        return getRigaBase(true, descrizione, nota, oldValue, newValue, prefCode);
     }// fine del metodo
 
     /**
      * Riga coi giorni di attesa
      */
-    private ArrayList<String> getRigaAttesa() {
+    private ArrayList getRigaAttesa() {
         String prefCode = CostBio.STAT_GIORNI_ATTESA;
         String descrizione = "Giorni di attesa";
         int oldValue = Pref.getInt(prefCode, 5);
         int newValue = NUOVA_ATTESA;
         String nota = "Giorni di attesa '''indicativi''' prima che ogni singola voce venga ricontrollata per registrare eventuali modifiche intervenute nei parametri significativi.";
-        boolean wikiLink = false;
 
-        return getRigaBase(wikiLink, descrizione, nota, oldValue, newValue, prefCode);
+        return getRigaBase(false, descrizione, nota, oldValue, newValue, prefCode);
     }// fine del metodo
 
 
@@ -203,13 +197,9 @@ public class Sintesi extends Statistiche {
      * @param newValue      stringa del valore attuale
      * @param prefCode      codice della preferenza da aggiornare
      */
-    private ArrayList<String> getRigaBase(boolean wikiLink, String descrizione, String eventualeNota, int oldValue, int newValue, String prefCode) {
-        ArrayList<String> riga = new ArrayList<String>();
-        int differenza = newValue - oldValue;
-
-        if (differenza == 0) {
-//            differenza ="";
-        }// fine del blocco if
+    private ArrayList getRigaBase(boolean wikiLink, String descrizione, String eventualeNota, int oldValue, int newValue, String prefCode) {
+        ArrayList riga = new ArrayList();
+        int diff = newValue - oldValue;
 
         if (wikiLink) {
             descrizione = LibWiki.setQuadre(descrizione);
@@ -222,9 +212,13 @@ public class Sintesi extends Statistiche {
         }// end of if cycle
 
         riga.add(descrizione);
-        riga.add(LibNum.format(oldValue));
-        riga.add(LibNum.format(newValue));
-        riga.add(LibNum.format(differenza));
+        riga.add(oldValue);
+        riga.add(newValue);
+        if (diff != 0) {
+            riga.add(diff);
+        } else {
+            riga.add(CostBio.SPAZIO);
+        }// end of if/else cycle
 
         //valore per le preferenze
         mappaSintesi.put(prefCode, newValue);

@@ -17,21 +17,6 @@ public abstract class Statistiche {
 
     protected static String PATH = "Progetto:Biografie/";
 
-    // campi di una mappa per la table
-    protected static final String KEY_MAPPA_ULTIMA_SINTESI = "mappaUltimaSintesi";
-    protected static final String KEY_MAPPA_TITOLI = "mappaTableListaTitoli";
-    protected static final String KEY_MAPPA_TITOLI_SCURI = "mappaTableTitoliScuri";
-    protected static final String KEY_MAPPA_LISTA = "mappaTableListaRighe";
-    protected static final String KEY_MAPPA_CAPTION = "mappaTableCaption";
-    protected static final String KEY_MAPPA_SORTABLE = "mappaTableSortable";
-    protected static final String KEY_MAPPA_LISTA_SORTABLE = "mappaTableListaSortable";
-    protected static final String KEY_MAPPA_FONT_SIZE = "mappaTableFontSize";
-    protected static final String KEY_MAPPA_COLOR_TITOLI = "mappaTableColorTitoli";
-    protected static final String KEY_MAPPA_COLOR_RIGHE = "mappaTableColorRighe";
-    protected static final String KEY_MAPPA_BACKGROUND_TITOLI = "mappaTableBackgroundTitoli";
-    protected static final String KEY_MAPPA_BACKGROUND_RIGHE = "mappaTableBackgroundRighe";
-    protected static final String KEY_MAPPA_NUMERI_FORMATTATI = "mappaTableNumeriFormattati";
-    protected static final String KEY_MAPPA_NUMERAZIONE_PROGRESSIVA = "mappaTableNumerazioneProgressiva";
     protected static String PAGINA_PROVA = "Utente:Biobot/2";
     protected static boolean usaSpazi;
     protected String titoloPagina;
