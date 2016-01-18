@@ -98,7 +98,7 @@ public abstract class Statistiche {
             if (debug) {
                 titolo = PAGINA_PROVA;
             } else {
-                titolo = titoloPagina;
+                titolo = PATH + titoloPagina;
             }// fine del blocco if-else
 
             Api.scriveVoce(titolo, testo, summary);
