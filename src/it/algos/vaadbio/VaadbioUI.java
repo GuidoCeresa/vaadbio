@@ -6,17 +6,17 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
 import it.algos.vaad.wiki.WikiLogin;
 import it.algos.vaadbio.anno.AnnoMod;
+import it.algos.vaadbio.attivita.AttivitaMod;
 import it.algos.vaadbio.bio.BioMod;
 import it.algos.vaadbio.biologo.BioLogoMod;
 import it.algos.vaadbio.giorno.GiornoMod;
 import it.algos.vaadbio.lib.LibBio;
+import it.algos.vaadbio.nazionalita.NazionalitaMod;
 import it.algos.webbase.domain.pref.PrefMod;
 import it.algos.webbase.domain.utente.UtenteModulo;
 import it.algos.webbase.domain.vers.VersMod;
 import it.algos.webbase.web.lib.LibSession;
 import it.algos.webbase.web.ui.AlgosUI;
-import it.algos.vaadbio.nazionalita.NazionalitaMod;
-import it.algos.vaadbio.attivita.AttivitaMod;
 
 /**
  * Crea l'interfaccia utente (User Interface) iniziale dell'applicazione
@@ -59,7 +59,8 @@ public class VaadbioUI extends AlgosUI {
 //        footerLayout.addComponent(new Label("Vaadbio versione 2.0 del 13 gen 2016"));
 //        footerLayout.addComponent(new Label("Vaadbio versione 2.1 del 14 gen 2016"));
 //        footerLayout.addComponent(new Label("Vaadbio versione 2.2 del 17 gen 2016"));
-        footerLayout.addComponent(new Label("Vaadbio versione 2.3 del 18 gen 2016"));
+//        footerLayout.addComponent(new Label("Vaadbio versione 2.3 del 18 gen 2016"));
+        footerLayout.addComponent(new Label("Vaadbio versione 2.4 del 20 gen 2016"));
 
 //        this.checkLogin();
         boolean loggato = false;

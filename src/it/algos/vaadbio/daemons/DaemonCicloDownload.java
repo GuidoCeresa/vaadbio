@@ -4,6 +4,9 @@ import it.algos.vaadbio.attivita.AttivitaService;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.ciclo.CicloDownload;
 import it.algos.vaadbio.nazionalita.NazionalitaService;
+import it.algos.vaadbio.statistiche.Sintesi;
+import it.algos.vaadbio.upload.UploadAnni;
+import it.algos.vaadbio.upload.UploadGiorni;
 import it.algos.webbase.domain.log.Log;
 import it.algos.webbase.domain.pref.Pref;
 import it.algos.webbase.web.bootstrap.ABootStrap;
@@ -75,6 +78,9 @@ public class DaemonCicloDownload extends Scheduler {
         public void execute(TaskExecutionContext context) throws RuntimeException {
             if (Pref.getBool(CostBio.USA_CRONO_DOWNLOAD, true)) {
                 new CicloDownload();
+                new UploadGiorni();
+                new UploadAnni();
+                new Sintesi();
             }// fine del blocco if
         }// end of method
     }// end of inner class
