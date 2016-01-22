@@ -1,10 +1,8 @@
 package it.algos.vaadbio.daemons;
 
-import it.algos.vaadbio.attivita.AttivitaService;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.ciclo.CicloDownload;
-import it.algos.vaadbio.nazionalita.NazionalitaService;
-import it.algos.vaadbio.statistiche.Sintesi;
+import it.algos.vaadbio.statistiche.StatSintesi;
 import it.algos.vaadbio.upload.UploadAnni;
 import it.algos.vaadbio.upload.UploadGiorni;
 import it.algos.webbase.domain.log.Log;
@@ -80,7 +78,7 @@ public class DaemonCicloDownload extends Scheduler {
                 new CicloDownload();
                 new UploadGiorni();
                 new UploadAnni();
-                new Sintesi();
+                new StatSintesi();
             }// fine del blocco if
         }// end of method
     }// end of inner class

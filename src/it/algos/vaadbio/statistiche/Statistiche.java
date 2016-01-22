@@ -15,15 +15,21 @@ import java.util.Date;
  */
 public abstract class Statistiche {
 
+    public final static String A_CAPO = "\n";
     protected static String PATH = "Progetto:Biografie/";
-
+    protected static String DISCUSSIONI_PATH = "Discussioni " + PATH;
+    protected static String TAG_INDICE = "__FORCETOC__";
+    protected static String TAG_NO_INDICE = "__NOTOC__";
     protected static String PAGINA_PROVA = "Utente:Biobot/2";
     protected static boolean usaSpazi;
     protected String titoloPagina;
+    protected boolean usaHeadToc;
+    protected boolean usaHeadTocIndice;
     protected boolean usaHeadInclude; // vero per Sintesi
     protected boolean usaHeadTemplateAvviso; // uso del template StatBio
     protected String tagHeadTemplateAvviso; // template 'StatBio'
     protected boolean usaHeadRitorno; // prima del template di avviso
+    protected boolean usaFooterNote;
 
     /**
      * Costruttore completo
@@ -50,6 +56,8 @@ public abstract class Statistiche {
      */
     protected void elaboraParametri() {
         // head
+        usaHeadToc = true; //--tipicamente sempre true.
+        usaHeadTocIndice = true; //--normalmente true. Sovrascrivibile da preferenze
         usaHeadInclude = true; //--tipicamente sempre true. Si attiva solo se c'è del testo (iniziale) da includere
         usaHeadRitorno = false; //--normalmente false. Sovrascrivibile da preferenze
         usaHeadTemplateAvviso = true; //--normalmente true. Sovrascrivibile nelle sottoclassi
@@ -59,6 +67,7 @@ public abstract class Statistiche {
         usaSpazi = true;
 
         // footer
+        usaFooterNote = true;
     }// fine del metodo
 
 
@@ -116,6 +125,9 @@ public abstract class Statistiche {
     private String elaboraHead() {
         String text = CostBio.VUOTO;
 
+        // Posiziona il TOC
+        text += elaboraTOC();
+
         // Posiziona il ritorno
         text += elaboraRitorno();
 
@@ -125,10 +137,29 @@ public abstract class Statistiche {
         // Ritorno ed avviso vanno (eventualmente) protetti con 'include'
         text = elaboraInclude(text);
 
-        // valore di ritorno
         return text;
     }// fine del metodo
 
+
+    /**
+     * Costruisce il TOC (tavola contenuti)
+     * <p>
+     * Non sovrascrivibile <br>
+     * Parametrizzato (nelle sottoclassi) l'utilizzo di una delle due possibilità <br>
+     */
+    private String elaboraTOC() {
+        String text = CostBio.VUOTO;
+
+        if (usaHeadToc) {
+            if (usaHeadTocIndice) {
+                text += TAG_INDICE;
+            } else {
+                text += TAG_NO_INDICE;
+            }// fine del blocco if-else
+        }// end of if cycle
+
+        return text;
+    }// fine del metodo
 
     /**
      * Corpo della pagina
@@ -136,17 +167,6 @@ public abstract class Statistiche {
      */
     protected String elaboraBody() {
         return CostBio.VUOTO;
-    }// fine del metodo
-
-
-    /**
-     * Piede della pagina
-     * <p>
-     * Aggiungere (di solito) inizialmente la chiamata al metodo elaboraFooterSpazioIniziale <br>
-     * Sovrascritto
-     */
-    protected String elaboraFooter() {
-        return "<noinclude>[[Categoria:Progetto Biografie|{{PAGENAME}}]]</noinclude>";
     }// fine del metodo
 
 
@@ -219,7 +239,6 @@ public abstract class Statistiche {
             }// fine del blocco if
         }// fine del blocco if
 
-        // valore di ritorno
         return testoOut;
     }// fine del metodo
 
@@ -229,6 +248,61 @@ public abstract class Statistiche {
      * Sovrascritto
      */
     protected void elaboraPreferenze() {
+    }// fine del metodo
+
+
+    /**
+     * Costruisce il testo finale della pagina
+     * Aggiungere (di solito) inizialmente la chiamata al metodo elaboraFooter <br>
+     * Sovrascritto
+     */
+    protected String elaboraFooter() {
+        String text = CostBio.VUOTO;
+
+        // Inizio del footer
+        text += elaboraFooterNote();
+
+        // Corpo del footer
+        text += elaboraFooterCorrelate();
+
+        // Categorie del footer
+        text += elaboraFooterCategorie();
+
+        return text;
+    }// fine del metodo
+
+
+    /**
+     * Inizio del footer
+     * Sovrascritto
+     */
+    protected String elaboraFooterNote() {
+        String text = CostBio.VUOTO;
+
+        if (usaFooterNote) {
+            text += "==Note==";
+            text += A_CAPO;
+            text += "<references/>";
+            text += A_CAPO;
+        }// end of if cycle
+
+        return text;
+    }// fine del metodo
+
+    /**
+     * Corpo del footer
+     * Sovrascritto
+     */
+    protected String elaboraFooterCorrelate() {
+        return CostBio.VUOTO;
+    }// fine del metodo
+
+    /**
+     * Categorie del footer
+     * Sovrascritto
+     */
+    protected String elaboraFooterCategorie() {
+        return A_CAPO + LibBio.setNoInclude("[[Categoria:Progetto Biografie|{{PAGENAME}}]]");
     }// fine del metodo
 
 }// end of class

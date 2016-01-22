@@ -13,8 +13,7 @@ import it.algos.vaadbio.ciclo.CicloUpdate;
 import it.algos.vaadbio.download.Download;
 import it.algos.vaadbio.elabora.Elabora;
 import it.algos.vaadbio.lib.CostBio;
-import it.algos.vaadbio.statistiche.Sintesi;
-import it.algos.vaadbio.statistiche.Statistiche;
+import it.algos.vaadbio.statistiche.StatSintesi;
 import it.algos.webbase.domain.log.Log;
 import it.algos.webbase.domain.pref.Pref;
 import it.algos.webbase.web.dialog.ConfirmDialog;
@@ -599,7 +598,7 @@ public class BioMod extends ModulePop {
      * Esegue la creazione delle pagine statistiche
      */
     public void esegueStatistiche() {
-        new Sintesi();
+        new StatSintesi();
     }// end of method
 
     /**

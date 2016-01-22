@@ -8,6 +8,7 @@ import it.algos.vaad.wiki.WikiLogin;
 import it.algos.vaadbio.bio.Bio;
 import it.algos.vaadbio.giorno.Giorno;
 import it.algos.webbase.domain.pref.Pref;
+import it.algos.webbase.web.entity.BaseEntity;
 import it.algos.webbase.web.entity.EM;
 import it.algos.webbase.web.lib.LibArray;
 import it.algos.webbase.web.lib.LibSession;
@@ -1378,6 +1379,97 @@ public abstract class LibBio {
         manager.close();
 
         return numero;
+    }// end of static method
+
+
+    /**
+     * Recupera il conteggio dei records, selezionati secondo la query ricevuta
+     *
+     * @param entity   dataBase di riferimento
+     * @param property unica da selezionare per il conteggio
+     * @return numero di records
+     */
+    public synchronized static int queryCountDistinct(String entity, String property) {
+        int numero = 0;
+        long lungo;
+        List vettore;
+        EntityManager manager = EM.createEntityManager();
+        Query query;
+        String queryTxt = CostBio.VUOTO;
+        String iniTag = "select COUNT(DISTINCT ";
+        String punto = ".";
+        String par = ")";
+        String from = "from";
+
+        if (entity != null && !entity.equals(CostBio.VUOTO) && property != null && !property.equals(CostBio.VUOTO)) {
+            queryTxt += iniTag;
+            queryTxt += CostBio.SPAZIO;
+            queryTxt += entity.toLowerCase();
+            queryTxt += punto;
+            queryTxt += property;
+            queryTxt += par;
+            queryTxt += CostBio.SPAZIO;
+            queryTxt += from;
+            queryTxt += CostBio.SPAZIO;
+            queryTxt += entity;
+            queryTxt += CostBio.SPAZIO;
+            queryTxt += entity.toLowerCase();
+        }// end of if cycle
+
+        query = manager.createQuery(queryTxt);
+
+        vettore = query.getResultList();
+        if (vettore != null && vettore.size() == 1 && vettore.get(0) instanceof Long) {
+            lungo = (long) vettore.get(0);
+            numero = (int) lungo;
+        }// end of if cycle
+        manager.close();
+
+        return numero;
+    }// end of static method
+
+
+    /**
+     * Recupera una lista (valori unici) della property selezionata per tutti i records
+     *
+     * @param entity   dataBase di riferimento
+     * @param property da selezionare
+     * @return lista di valori della property
+     */
+    public synchronized static ArrayList<String> queryFindDistinctStx(String entity, String property) {
+        ArrayList<String> listaUnici=null;
+        long lungo;
+        List entities;
+        EntityManager manager = EM.createEntityManager();
+        Query query;
+        String queryTxt = CostBio.VUOTO;
+        String iniTag = "select DISTINCT ";
+        String punto = ".";
+        String from = "from";
+
+        if (entity != null && !entity.equals(CostBio.VUOTO) && property != null && !property.equals(CostBio.VUOTO)) {
+            queryTxt += iniTag;
+            queryTxt += CostBio.SPAZIO;
+            queryTxt += entity.toLowerCase();
+            queryTxt += punto;
+            queryTxt += property;
+            queryTxt += CostBio.SPAZIO;
+            queryTxt += from;
+            queryTxt += CostBio.SPAZIO;
+            queryTxt += entity;
+            queryTxt += CostBio.SPAZIO;
+            queryTxt += entity.toLowerCase();
+        }// end of if cycle
+
+        query = manager.createQuery(queryTxt);
+
+        entities = query.getResultList();
+        if (entities != null && entities.size() > 0) {
+            listaUnici = new ArrayList<String>(entities);
+        }// end of if cycle
+        manager.close();
+
+        return listaUnici;
     }// end of static method
 
 

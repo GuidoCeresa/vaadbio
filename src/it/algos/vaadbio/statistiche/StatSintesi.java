@@ -29,7 +29,7 @@ import java.util.Map;
  * Recupera i dati per costruire la terza colonna
  * Elabora i dati per costruire la quarta colonna
  */
-public class Sintesi extends Statistiche {
+public class StatSintesi extends Statistiche {
 
     private static HashMap<String, Object> mappaSintesi = new HashMap();
     private static int NUOVA_ATTESA = 5;
@@ -37,7 +37,7 @@ public class Sintesi extends Statistiche {
     /**
      * Costruttore completo
      */
-    public Sintesi() {
+    public StatSintesi() {
         super();
     }// end of constructor
 
@@ -51,6 +51,7 @@ public class Sintesi extends Statistiche {
     protected void elaboraParametri() {
         super.elaboraParametri();
         titoloPagina = "Statistiche";
+        usaHeadTocIndice = false;
     }// fine del metodo
 
     /**
@@ -167,7 +168,7 @@ public class Sintesi extends Statistiche {
         String prefCode = CostBio.STAT_NUM_NAZIONALITA;
         String descrizione = PATH + "Nazionalità|Nazionalità utilizzate";
         int oldValue = Pref.getInt(prefCode, 300);
-        int newValue = Nazionalita.countDistinct();
+        int newValue = 87;
         String nota = "Le nazionalità sono quelle '''convenzionalmente''' previste dalla comunità ed inserite nell'elenco utilizzato dal template Bio";
 
         return getRigaBase(true, descrizione, nota, oldValue, newValue, prefCode);

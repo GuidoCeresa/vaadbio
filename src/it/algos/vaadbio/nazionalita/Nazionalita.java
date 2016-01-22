@@ -1,14 +1,23 @@
 package it.algos.vaadbio.nazionalita;
 
+import com.vaadin.data.Container;
+import com.vaadin.data.util.filter.Compare;
+import it.algos.vaadbio.bio.Bio;
+import it.algos.vaadbio.bio.Bio_;
+import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.lib.LibBio;
 import it.algos.webbase.web.entity.BaseEntity;
+import it.algos.webbase.web.entity.EM;
 import it.algos.webbase.web.query.AQuery;
 import org.apache.commons.beanutils.BeanUtils;
 import org.eclipse.persistence.annotations.Index;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.Entity;
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Classe di tipo JavaBean
@@ -120,10 +129,30 @@ public class Nazionalita extends BaseEntity {
      *
      * @return numero di records unici per plurale
      */
-    public synchronized static int countDistinct() {
-        String query="select distinct nazionalita.plurale from Nazionalita nazionalita";
-        return LibBio.queryCount(query);
+    public synchronized static int countDistinctPlurale() {
+        return LibBio.queryCountDistinct("Nazionalita", "plurale");
     }// end of method
+
+
+    /**
+     * Recupera una lista (array) del plurale di records distinti di Nazionalità
+     *
+     * @return lista dei valori distinti di plurale
+     */
+    public synchronized static ArrayList<String> findDistinctPlurale() {
+        return LibBio.queryFindDistinctStx("Nazionalita", "plurale");
+    }// end of method
+
+//    /**
+//     * Recupera il valore del numero di records unici per plurale
+//     *
+//     * @return numero di records unici per plurale
+//     */
+//    public synchronized static ArrayList<Nazionalita> findDistinctPlurale() {
+//        ArrayList<Nazionalita> lista;
+//
+//        return (ArrayList<Nazionalita>) AQuery.getLista(Nazionalita.class);
+//    }// end of method
 
     /**
      * Recupera una lista (array) di tutti i records della Domain Class
@@ -132,8 +161,76 @@ public class Nazionalita extends BaseEntity {
      */
     @SuppressWarnings("unchecked")
     public synchronized static ArrayList<Nazionalita> findAll() {
-        return (ArrayList<Nazionalita>) AQuery.getList(Nazionalita.class);
+        return (ArrayList<Nazionalita>) AQuery.getLista(Nazionalita.class);
     }// end of method
+
+    /**
+     * Recupera una lista (array) dei records con la property indicata
+     *
+     * @return lista di tutte le istanze di Nazionalita che rispondo al requisito
+     */
+    @SuppressWarnings("unchecked")
+    public synchronized static ArrayList<Nazionalita> findAllByPlurale(String plurale) {
+        ArrayList<Nazionalita> lista = null;
+        Container.Filter filtro;
+        List<? extends BaseEntity> entities = null;
+
+        filtro = new Compare.Equal(Nazionalita_.plurale.getName(), plurale);
+        entities = AQuery.getList(Nazionalita.class, filtro);
+
+        if (entities != null) {
+            lista = new ArrayList(entities);
+        }// end of if cycle
+
+        return lista;
+    }// end of method
+
+    /**
+     * Recupera il valore del numero di records di Bio che usano questa nazionalità
+     *
+     * @return numero di records che usano questa nazionalità
+     */
+    public int countBio() {
+        int numRecords = 0;
+        String text = CostBio.VUOTO;
+        long keyId = this.getId();
+//        String queryTxt = "select count(*) from Bio bio where bio.nazionalitapunta_id=" + keyId;
+//         queryTxt = "select * from Bio bio where bio.nazionalitapunta_id=" + keyId;
+//        String queryTxt = "select bio.title from Bio bio where bio.nazionalitaValida='" + getSingolare()+"'";
+//        String queryTxt = "select bio.title from Bio bio where bio.nazionalitaPunta_Id=" +keyId;
+//        String queryTxt = "select count(*) from Bio bio where bio.nazionalitaValida='" + getSingolare()+"'";
+        String queryTxt = "select bio.id from Bio bio where bio.nazionalitaValida='" + getSingolare()+"'";
+
+
+        List entities;
+        EntityManager manager = EM.createEntityManager();
+        Query query;
+        query = manager.createQuery(queryTxt);
+
+        entities = query.getResultList();
+        if (entities != null && entities.size() > 0) {
+//            listaUnici = new ArrayList<String>(entities);
+            return entities.size();
+        }// end of if cycle
+        manager.close();
+
+
+//        Container.Filter filtro;
+//        List<? extends BaseEntity> entities = null;
+//
+//        filtro = new Compare.Equal(Bio_.nazionalitaValida.toString(), this.getSingolare());
+//        entities = AQuery.getList(Bio.class, filtro);
+//
+//        if (entities != null) {
+//            numRecords = entities.size();
+//        }// end of if cycle
+
+
+
+//        Object pippo = LibBio.queryFind()
+//        return LibBio.queryCount(queryTxt);
+        return 0;
+    }// fine del metodo
 
     @Override
     public String toString() {

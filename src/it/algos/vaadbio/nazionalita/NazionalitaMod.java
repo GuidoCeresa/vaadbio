@@ -5,13 +5,12 @@ import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.MenuBar;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
-import it.algos.vaadbio.attivita.Attivita;
 import it.algos.vaadbio.ciclo.CicloDownload;
 import it.algos.vaadbio.lib.CostBio;
+import it.algos.vaadbio.statistiche.StatNazionalita;
 import it.algos.webbase.domain.pref.Pref;
 import it.algos.webbase.web.dialog.ConfirmDialog;
 import it.algos.webbase.web.module.ModulePop;
-import javax.persistence.metamodel.Attribute;
 import com.vaadin.event.Action;
 import it.algos.webbase.web.table.ATable;
 
@@ -72,6 +71,7 @@ public class NazionalitaMod extends ModulePop {
     @Override
     public void addSottoMenu(MenuBar.MenuItem menuItem) {
         addCommandDownload(menuItem);
+        addCommandStatistiche(menuItem);
     }// end of method
 
     /**
@@ -114,6 +114,19 @@ public class NazionalitaMod extends ModulePop {
         });// end of anonymous class
     }// end of method
 
+    /**
+     * Comando bottone/item Statistiche
+     *
+     * @param menuItem a cui agganciare il bottone/item
+     */
+    private void addCommandStatistiche(MenuBar.MenuItem menuItem) {
+        menuItem.addItem("Statistiche", FontAwesome.BEER, new MenuBar.Command() {
+            public void menuSelected(MenuBar.MenuItem selectedItem) {
+                esegueStatistiche();
+            }// end of method
+        });// end of anonymous class
+    }// end of method
+
 
     /**
      * Esegue il download
@@ -133,6 +146,15 @@ public class NazionalitaMod extends ModulePop {
             Notification.show("Devi selezionare una riga per creare la lista su wikipedia");
         }// end of if/else cycle
     }// end of method
+
+
+    /**
+     * Esegue la creazione delle pagine statistiche
+     */
+    public void esegueStatistiche() {
+        new StatNazionalita();
+    }// end of method
+
 
     /**
      * Recupera la voce selezionata

@@ -1,10 +1,13 @@
 package it.algos.vaadbio.bio;
 
 import it.algos.vaadbio.anno.Anno;
+import it.algos.vaadbio.attivita.Attivita;
 import it.algos.vaadbio.giorno.Giorno;
+import it.algos.vaadbio.nazionalita.Nazionalita;
 import it.algos.webbase.web.entity.BaseEntity_;
 import it.algos.webbase.web.field.TextArea;
 
+import javax.persistence.metamodel.ListAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 import java.sql.Timestamp;
@@ -93,6 +96,11 @@ public class Bio_ extends BaseEntity_ {
     public static volatile SingularAttribute<Bio, Giorno> giornoMortoPunta;
     public static volatile SingularAttribute<Bio, Anno> annoNatoPunta;
     public static volatile SingularAttribute<Bio, Anno> annoMortoPunta;
+
+    public static volatile SingularAttribute<Bio, Attivita> attivitaPunta;
+    public static volatile SingularAttribute<Bio, Attivita> attivita2Punta;
+    public static volatile SingularAttribute<Bio, Attivita> attivita3Punta;
+    public static volatile SingularAttribute<Bio, Nazionalita> nazionalitaPunta;
 
     public static volatile SingularAttribute<Bio, String> didascaliaGiornoNato;
     public static volatile SingularAttribute<Bio, String> didascaliaGiornoMorto;

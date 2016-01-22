@@ -36,7 +36,7 @@ public class CicloDownload {
     public final static String TAG_BIO = "BioBot";
     public final static String TAG_CAT_DEBUG = "Nati nel 1980";
 
-    private final static int NUMERO_VOCI_MINIMO_PER_OPERATIVITA_NORMALE = 300000;
+    private final static int NUMERO_VOCI_MINIMO_PER_OPERATIVITA_NORMALE = 295000;
 
     //--container statico per il database
     protected static EntityManager MANAGER = null;
