@@ -192,44 +192,49 @@ public class Nazionalita extends BaseEntity {
      */
     public int countBio() {
         int numRecords = 0;
-        String text = CostBio.VUOTO;
-        long keyId = this.getId();
-//        String queryTxt = "select count(*) from Bio bio where bio.nazionalitapunta_id=" + keyId;
-//         queryTxt = "select * from Bio bio where bio.nazionalitapunta_id=" + keyId;
-//        String queryTxt = "select bio.title from Bio bio where bio.nazionalitaValida='" + getSingolare()+"'";
-//        String queryTxt = "select bio.title from Bio bio where bio.nazionalitaPunta_Id=" +keyId;
-//        String queryTxt = "select count(*) from Bio bio where bio.nazionalitaValida='" + getSingolare()+"'";
-        String queryTxt = "select bio.id from Bio bio where bio.nazionalitaValida='" + getSingolare()+"'";
+        List<? extends BaseEntity> entities = null;
+        Container.Filter filtro;
+
+//        EntityManager manager = EM.createEntityManager();
 
 
-        List entities;
-        EntityManager manager = EM.createEntityManager();
-        Query query;
-        query = manager.createQuery(queryTxt);
-
-        entities = query.getResultList();
-        if (entities != null && entities.size() > 0) {
-//            listaUnici = new ArrayList<String>(entities);
-            return entities.size();
-        }// end of if cycle
-        manager.close();
+//        String text = CostBio.VUOTO;
+//        long keyId = this.getId();
+////        String queryTxt = "select count(*) from Bio bio where bio.nazionalitapunta_id=" + keyId;
+////         queryTxt = "select * from Bio bio where bio.nazionalitapunta_id=" + keyId;
+////        String queryTxt = "select bio.title from Bio bio where bio.nazionalitaValida='" + getSingolare()+"'";
+////        String queryTxt = "select bio.title from Bio bio where bio.nazionalitaPunta_Id=" +keyId;
+////        String queryTxt = "select count(*) from Bio bio where bio.nazionalitaValida='" + getSingolare()+"'";
+//        String queryTxt = "select bio.id from Bio bio where bio.nazionalitaValida='" + getSingolare()+"'";
 
 
-//        Container.Filter filtro;
-//        List<? extends BaseEntity> entities = null;
-//
-//        filtro = new Compare.Equal(Bio_.nazionalitaValida.toString(), this.getSingolare());
-//        entities = AQuery.getList(Bio.class, filtro);
-//
-//        if (entities != null) {
-//            numRecords = entities.size();
+//        Query query;
+//        query = manager.createQuery(queryTxt);
+
+//        entities = query.getResultList();
+//        if (entities != null && entities.size() > 0) {
+////            listaUnici = new ArrayList<String>(entities);
+//            return entities.size();
 //        }// end of if cycle
 
 
 
+        filtro = new Compare.Equal("nazionalitaPunta", this);
+        entities = AQuery.getList(Bio.class, filtro);
+
+//        filtro = new Compare.Equal("bio.nazionalitaPunta_id", this.getId());
+//        entities = AQuery.getList(Bio.class, filtro);
+
+        if (entities != null) {
+            numRecords = entities.size();
+        }// end of if cycle
+
+
+//        manager.close();
+
 //        Object pippo = LibBio.queryFind()
 //        return LibBio.queryCount(queryTxt);
-        return 0;
+        return numRecords;
     }// fine del metodo
 
     @Override
