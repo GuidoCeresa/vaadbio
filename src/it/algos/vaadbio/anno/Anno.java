@@ -1,5 +1,9 @@
 package it.algos.vaadbio.anno;
 
+import com.vaadin.data.Container;
+import com.vaadin.data.util.filter.Compare;
+import it.algos.vaadbio.bio.Bio;
+import it.algos.vaadbio.giorno.Giorno;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.webbase.web.entity.BaseEntity;
 import it.algos.webbase.web.lib.Secolo;
@@ -10,6 +14,8 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.Entity;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 /**
  * Classe di tipo JavaBean
@@ -52,6 +58,147 @@ public class Anno extends BaseEntity {
         this.setSecolo(secolo);
         this.setOrdinamento(ordinamento);
     }// end of general constructor
+
+    /**
+     * Recupera una lista (array) di records Bio che usano questa istanza di Anno
+     *
+     * @return lista delle istanze di Bio
+     */
+    public ArrayList<Bio> bioNati() {
+        ArrayList<Bio> lista = null;
+        List entities = null;
+        Container.Filter filtro;
+
+        filtro = new Compare.Equal("annoNatoPunta", this);
+        entities = AQuery.getList(Bio.class, filtro);
+
+        Comparator comp = new Comparator() {
+            @Override
+            public int compare(Object objA, Object objB) {
+                Giorno giorno;
+                int primo = 0;
+                int ultimo = 0;
+                Bio bioA = null;
+                Bio bioB = null;
+                if (objA instanceof Bio && objB instanceof Bio) {
+                    bioA = (Bio) objA;
+                    bioB = (Bio) objB;
+                }// end of if cycle
+                if (bioA.getGiornoNatoPunta() != null) {
+                    giorno = bioA.getGiornoNatoPunta();
+                    if (giorno != null) {
+                        primo = giorno.getBisestile();
+                    }// end of if cycle
+                }// end of if cycle
+                if (bioB.getGiornoNatoPunta() != null) {
+                    giorno = bioB.getGiornoNatoPunta();
+                    if (giorno != null) {
+                        ultimo = giorno.getBisestile();
+                    }// end of if cycle
+                }// end of if cycle
+
+                if (primo == ultimo) {
+                    return (bioA.getCognome()).compareTo(bioB.getCognome());
+                } else {
+                    return primo - ultimo;
+                }// end of if/else cycle
+            }
+        };
+        entities.sort(comp);
+
+        if (entities != null) {
+            lista = new ArrayList<>(entities);
+        }// end of if cycle
+
+        return lista;
+    }// fine del metodo
+
+
+    /**
+     * Recupera una lista (array) di records Bio che usano questa istanza di Anno
+     *
+     * @return lista delle istanze di Bio
+     */
+    public ArrayList<Bio> bioMorti() {
+        ArrayList<Bio> lista = null;
+        List entities = null;
+        Container.Filter filtro;
+
+        filtro = new Compare.Equal("annoMortoPunta", this);
+        entities = AQuery.getList(Bio.class, filtro);
+
+        Comparator comp = new Comparator() {
+            @Override
+            public int compare(Object objA, Object objB) {
+                Giorno giorno;
+                int primo = 0;
+                int ultimo = 0;
+                Bio bioA = null;
+                Bio bioB = null;
+                if (objA instanceof Bio && objB instanceof Bio) {
+                    bioA = (Bio) objA;
+                    bioB = (Bio) objB;
+                }// end of if cycle
+                if (bioA.getGiornoMortoPunta() != null) {
+                    giorno = bioA.getGiornoMortoPunta();
+                    if (giorno != null) {
+                        primo = giorno.getBisestile();
+                    }// end of if cycle
+                }// end of if cycle
+                if (bioB.getGiornoMortoPunta() != null) {
+                    giorno = bioB.getGiornoMortoPunta();
+                    if (giorno != null) {
+                        ultimo = giorno.getBisestile();
+                    }// end of if cycle
+                }// end of if cycle
+
+                if (primo == ultimo) {
+                    return (bioA.getCognome()).compareTo(bioB.getCognome());
+                } else {
+                    return primo - ultimo;
+                }// end of if/else cycle
+            }
+        };
+        entities.sort(comp);
+
+        if (entities != null) {
+            lista = new ArrayList<>(entities);
+        }// end of if cycle
+
+        return lista;
+    }// fine del metodo
+
+    /**
+     * Recupera il valore del numero di records di Bio che usano questo giorno
+     *
+     * @return numero di records che usano questo giorno
+     */
+    public int countBioNati() {
+        int numRecords = 0;
+        ArrayList<Bio> lista = bioNati();
+
+        if (lista != null) {
+            numRecords = lista.size();
+        }// end of if cycle
+
+        return numRecords;
+    }// fine del metodo
+
+    /**
+     * Recupera il valore del numero di records di Bio che usano questo giorno
+     *
+     * @return numero di records che usano questo giorno
+     */
+    public int countBioMorti() {
+        int numRecords = 0;
+        ArrayList<Bio> lista = bioMorti();
+
+        if (lista != null) {
+            numRecords = lista.size();
+        }// end of if cycle
+
+        return numRecords;
+    }// fine del metodo
 
     /**
      * Recupera una istanza di Bolla usando la query standard della Primary Key

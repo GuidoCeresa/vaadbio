@@ -58,11 +58,9 @@ public abstract class ListaBio {
 
 
     protected void doInit() {
-//        numDidascalie = 0
         elaboraParametri();
         elaboraTitolo();
 
-//        elaboraListaBiografie();
         elaboraMappaBiografie();
         ordinaMappaBiografie();
         elaboraPagina();
@@ -115,32 +113,14 @@ public abstract class ListaBio {
     protected void elaboraTitolo() {
     }// fine del metodo
 
-//    /**
-//     * Costruisce una lista di biografie che hanno una valore valido per il link specifico
-//     */
-//    private void elaboraListaBiografie() {
-//        List vettore;
-//        String queryTxt = getQueryCrono();
-//        EntityManager manager = EM.createEntityManager();
-//        Query query = manager.createQuery(queryTxt);
-//
-//        vettore = query.getResultList();
-//        if (vettore != null) {
-//            listaBiografie = new ArrayList<String>(vettore);
-//        }// end of if cycle
-//        manager.close();
-//
-//        if (listaBiografie != null) {
-//            numPersone = listaBiografie.size();
-//        }// fine del blocco if
-//    }// fine del metodo
-
     /**
      * Costruisce una mappa di biografie che hanno una valore valido per il link specifico
      */
-    private void elaboraMappaBiografie() {
+    protected void elaboraMappaBiografie() {
         List vettore;
         String queryTxt = getQueryCrono();
+//        queryTxt = "select bio.giornoNatoPunta.nome,bio.didascaliaAnnoNato,bio.giornoNatoPunta.bisestile from Bio bio where bio.annoNatoPunta.id=" + 2950 + " order by bio.giornoNatoPunta.bisestile,bio.cognome";
+        queryTxt = "select bio.didascaliaAnnoNato from Bio bio where bio.annoNatoPunta.id=" + 2950;
         EntityManager manager = EM.createEntityManager();
         Query query = manager.createQuery(queryTxt);
         Object[] riga;
@@ -306,7 +286,11 @@ public abstract class ListaBio {
         }// fine del blocco if
 
         if (usaBodyTemplate) {
-            text = elaboraTemplate(text);
+            if (Pref.getBool(CostBio.USA_DEBUG, true)) {
+                text = elaboraTemplate("") + text;
+            } else {
+                text = elaboraTemplate(text);
+            }// end of if/else cycle
         }// end of if cycle
 
         return text;

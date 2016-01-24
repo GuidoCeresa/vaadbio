@@ -3,6 +3,8 @@ package it.algos.vaadbio.upload;
 import it.algos.vaadbio.anno.Anno;
 import it.algos.vaadbio.liste.ListaAnnoMorto;
 import it.algos.vaadbio.liste.ListaAnnoNato;
+import it.algos.webbase.domain.log.Log;
+import it.algos.webbase.web.lib.LibTime;
 
 import java.util.ArrayList;
 
@@ -35,6 +37,7 @@ public class UploadAnni {
     private void doInit(boolean daPrimaDiCristo) {
         ArrayList<Anno> listaAnni = Anno.findAll();
         Anno annoContrario;
+        long inizio = System.currentTimeMillis();
 
         if (daPrimaDiCristo) {
             for (Anno annoNormale : listaAnni) {
@@ -48,6 +51,8 @@ public class UploadAnni {
                 new ListaAnnoMorto(annoContrario);
             }// end of for cycle
         }// end of if/else cycle
+
+        Log.setInfo("upload", "Aggiornate le pagine degli anni (nati e morti) in " + LibTime.difText(inizio));
 
     }// end of method
 

@@ -143,16 +143,6 @@ public class Nazionalita extends BaseEntity {
         return LibBio.queryFindDistinctStx("Nazionalita", "plurale");
     }// end of method
 
-//    /**
-//     * Recupera il valore del numero di records unici per plurale
-//     *
-//     * @return numero di records unici per plurale
-//     */
-//    public synchronized static ArrayList<Nazionalita> findDistinctPlurale() {
-//        ArrayList<Nazionalita> lista;
-//
-//        return (ArrayList<Nazionalita>) AQuery.getLista(Nazionalita.class);
-//    }// end of method
 
     /**
      * Recupera una lista (array) di tutti i records della Domain Class
@@ -195,45 +185,13 @@ public class Nazionalita extends BaseEntity {
         List<? extends BaseEntity> entities = null;
         Container.Filter filtro;
 
-//        EntityManager manager = EM.createEntityManager();
-
-
-//        String text = CostBio.VUOTO;
-//        long keyId = this.getId();
-////        String queryTxt = "select count(*) from Bio bio where bio.nazionalitapunta_id=" + keyId;
-////         queryTxt = "select * from Bio bio where bio.nazionalitapunta_id=" + keyId;
-////        String queryTxt = "select bio.title from Bio bio where bio.nazionalitaValida='" + getSingolare()+"'";
-////        String queryTxt = "select bio.title from Bio bio where bio.nazionalitaPunta_Id=" +keyId;
-////        String queryTxt = "select count(*) from Bio bio where bio.nazionalitaValida='" + getSingolare()+"'";
-//        String queryTxt = "select bio.id from Bio bio where bio.nazionalitaValida='" + getSingolare()+"'";
-
-
-//        Query query;
-//        query = manager.createQuery(queryTxt);
-
-//        entities = query.getResultList();
-//        if (entities != null && entities.size() > 0) {
-////            listaUnici = new ArrayList<String>(entities);
-//            return entities.size();
-//        }// end of if cycle
-
-
-
         filtro = new Compare.Equal("nazionalitaPunta", this);
         entities = AQuery.getList(Bio.class, filtro);
-
-//        filtro = new Compare.Equal("bio.nazionalitaPunta_id", this.getId());
-//        entities = AQuery.getList(Bio.class, filtro);
 
         if (entities != null) {
             numRecords = entities.size();
         }// end of if cycle
 
-
-//        manager.close();
-
-//        Object pippo = LibBio.queryFind()
-//        return LibBio.queryCount(queryTxt);
         return numRecords;
     }// fine del metodo
 

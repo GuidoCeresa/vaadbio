@@ -1,7 +1,12 @@
 package it.algos.vaadbio.liste;
 
+import it.algos.vaadbio.anno.Anno;
+import it.algos.vaadbio.bio.Bio;
 import it.algos.vaadbio.giorno.Giorno;
 import it.algos.vaadbio.lib.CostBio;
+
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 
 /**
  * Created by gac on 21 dic 2015.
@@ -29,20 +34,48 @@ public class ListaGiornoMorto extends ListaGiorno {
     }// fine del metodo
 
     /**
-     * Costruisce la query specifica per la ricerca della lista biografica
-     * Sovrascritto
+     * Costruisce una mappa di biografie che hanno una valore valido per il link specifico
      */
-    @Override
-    protected String getQueryCrono() {
-        String queryTxt = CostBio.VUOTO;
+    protected void elaboraMappaBiografie() {
+        ArrayList<Bio> listaMorti = null;
         Giorno giorno = super.getGiorno();
-        String giornoTxt = giorno.getTitolo();
+        Anno anno;
+        String annotxt;
+        String didascalia;
+        String didascaliaShort = CostBio.VUOTO;
+        ArrayList<String> lista;
 
-        queryTxt += "select bio.annoMorteValido,bio.didascaliaGiornoMorto from Bio bio where bio.giornoMeseMorteValido='";
-        queryTxt += giornoTxt;
-        queryTxt += "' order by bio.annoMorteValido,bio.cognome";
+        if (giorno != null) {
+            listaMorti = giorno.bioMorti();
+        }// end of if cycle
 
-        return queryTxt;
+        if (listaMorti != null && listaMorti.size() > 0) {
+            mappaBiografie = new LinkedHashMap<String, ArrayList<String>>();
+            for (Bio bio : listaMorti) {
+                annotxt = CostBio.VUOTO;
+                anno = bio.getAnnoMortoPunta();
+                if (anno != null) {
+                    annotxt = anno.getNome();
+                }// end of if cycle
+                didascalia = bio.getDidascaliaGiornoMorto();
+
+                if (didascalia.contains(CostBio.TAG_SEPARATORE)) {
+                    didascaliaShort = didascalia.substring(didascalia.indexOf(CostBio.TAG_SEPARATORE) + CostBio.TAG_SEPARATORE.length());
+                } else {
+                    didascaliaShort = didascalia;
+                }// end of if/else cycle
+
+                if (mappaBiografie.containsKey(annotxt)) {
+                    lista = mappaBiografie.get(annotxt);
+                    lista.add(didascaliaShort);
+                } else {
+                    lista = new ArrayList<>();
+                    lista.add(didascaliaShort);
+                    mappaBiografie.put(annotxt, lista);
+                }// end of if/else cycle
+            }// end of if cycle
+        }// end of for cycle
+        numPersone = listaMorti.size();
     }// fine del metodo
 
     /**

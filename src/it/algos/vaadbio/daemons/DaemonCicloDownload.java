@@ -77,7 +77,7 @@ public class DaemonCicloDownload extends Scheduler {
             if (Pref.getBool(CostBio.USA_CRONO_DOWNLOAD, true)) {
                 new CicloDownload();
                 new UploadGiorni();
-                new UploadAnni();
+//                new UploadAnni();
                 new StatSintesi();
             }// fine del blocco if
         }// end of method

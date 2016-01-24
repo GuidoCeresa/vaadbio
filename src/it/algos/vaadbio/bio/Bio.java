@@ -174,13 +174,9 @@ public class Bio extends BaseEntity {
     private String giornoMeseMorteValido = CostBio.VUOTO;
     private String annoMorteValido = CostBio.VUOTO;
 
-    @Index
     private String attivitaValida = CostBio.VUOTO;
-    @Index
     private String attivita2Valida = CostBio.VUOTO;
-    @Index
     private String attivita3Valida = CostBio.VUOTO;
-    @Index
     private String nazionalitaValida = CostBio.VUOTO;
 
 
