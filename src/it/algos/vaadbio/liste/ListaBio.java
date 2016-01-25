@@ -313,12 +313,16 @@ public abstract class ListaBio {
                 text += mappa.getValue().get(0);
                 text += CostBio.A_CAPO;
             } else {
-                text += CostBio.ASTERISCO;
-                text += LibWiki.setQuadre(mappa.getKey());
-                text += CostBio.A_CAPO;
+                if (!mappa.getKey().equals(CostBio.VUOTO)) {
+                    text += CostBio.ASTERISCO;
+                    text += LibWiki.setQuadre(mappa.getKey());
+                    text += CostBio.A_CAPO;
+                }// end of if cycle
                 lista = mappa.getValue();
                 for (String didascalia : lista) {
-                    text += CostBio.ASTERISCO;
+                    if (!mappa.getKey().equals(CostBio.VUOTO)) {
+                        text += CostBio.ASTERISCO;
+                    }// end of if cycle
                     text += CostBio.ASTERISCO;
                     text += didascalia;
                     text += CostBio.A_CAPO;

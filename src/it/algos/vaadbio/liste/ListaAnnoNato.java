@@ -33,24 +33,6 @@ public class ListaAnnoNato extends ListaAnno {
         return "Nati ";
     }// fine del metodo
 
-//    /**
-//     * Costruisce la query specifica per la ricerca della lista biografica
-//     * Sovrascritto
-//     */
-//    @Override
-//    protected String getQueryCrono() {
-//        String queryTxt = CostBio.VUOTO;
-//        Anno anno = super.getAnno();
-//        long idKey;
-//
-//        if (anno != null) {
-//            idKey = anno.getId();
-//            queryTxt = "select bio.giornoNatoPunta.nome,bio.didascaliaAnnoNato,bio.giornoNatoPunta.bisestile from Bio bio where bio.annoNatoPunta.id=" + idKey + " order by bio.giornoNatoPunta.bisestile,bio.cognome";
-//        }// end of if cycle
-//
-//        return queryTxt;
-//    }// fine del metodo
-
 
     /**
      * Costruisce una mappa di biografie che hanno una valore valido per il link specifico
@@ -74,7 +56,7 @@ public class ListaAnnoNato extends ListaAnno {
                 giornoTxt = CostBio.VUOTO;
                 giorno = bio.getGiornoNatoPunta();
                 if (giorno != null) {
-                    giornoTxt = giorno.getNome();
+                    giornoTxt = giorno.getTitolo();
                 }// end of if cycle
                 didascalia = bio.getDidascaliaAnnoNato();
 
