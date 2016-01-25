@@ -30,7 +30,6 @@ import it.algos.webbase.web.ui.AlgosUI;
  * Se le applicazioni specifiche vogliono una UI completamente differente,
  * possono sovrascrivere il metodo startUI() della superclasse
  */
-//@Theme("valo")
 @Theme("algos")
 public class VaadbioUI extends AlgosUI {
 
@@ -62,7 +61,8 @@ public class VaadbioUI extends AlgosUI {
 //        footerLayout.addComponent(new Label("Vaadbio versione 2.3 del 18 gen 2016"));
 //        footerLayout.addComponent(new Label("Vaadbio versione 2.4 del 20 gen 2016"));
 //        footerLayout.addComponent(new Label("Vaadbio versione 2.5 del 23 gen 2016"));
-        footerLayout.addComponent(new Label("Vaadbio versione 2.6 del 25 gen 2016"));
+//        footerLayout.addComponent(new Label("Vaadbio versione 2.6 del 25 gen 2016"));
+        footerLayout.addComponent(new Label("Vaadbio versione 2.7 del 25 gen 2016"));
 
 //        this.checkLogin();
         boolean loggato = false;

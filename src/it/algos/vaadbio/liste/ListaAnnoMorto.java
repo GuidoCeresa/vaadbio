@@ -59,7 +59,7 @@ public class ListaAnnoMorto extends ListaAnno {
                 if (giorno != null) {
                     giornoTxt = giorno.getTitolo();
                 }// end of if cycle
-                didascalia = bio.getDidascaliaAnnoNato();
+                didascalia = bio.getDidascaliaAnnoMorto();
 
                 if (didascalia.contains(CostBio.TAG_SEPARATORE)) {
                     didascaliaShort = didascalia.substring(didascalia.indexOf(CostBio.TAG_SEPARATORE) + CostBio.TAG_SEPARATORE.length());
