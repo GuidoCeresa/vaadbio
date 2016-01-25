@@ -10,6 +10,7 @@ import com.vaadin.ui.UI;
 import it.algos.vaadbio.ciclo.CicloDownload;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.liste.ListaBio;
+import it.algos.vaadbio.statistiche.StatGiorni;
 import it.algos.vaadbio.upload.UploadAnni;
 import it.algos.vaadbio.upload.UploadGiorni;
 import it.algos.webbase.domain.pref.Pref;
@@ -130,6 +131,7 @@ public abstract class AnnoGiornoMod extends ModulePop {
     public void addSottoMenu(MenuBar.MenuItem menuItem) {
         addCommandUpload(menuItem);
         addCommandUploadContrario(menuItem);
+        addCommandStatistiche(menuItem);
     }// end of method
 
     /**
@@ -232,6 +234,19 @@ public abstract class AnnoGiornoMod extends ModulePop {
     }// end of method
 
     /**
+     * Comando bottone/item Statistiche
+     *
+     * @param menuItem a cui agganciare il bottone/item
+     */
+    private void addCommandStatistiche(MenuBar.MenuItem menuItem) {
+        menuItem.addItem("Statistiche", FontAwesome.BEER, new MenuBar.Command() {
+            public void menuSelected(MenuBar.MenuItem selectedItem) {
+                esegueStatistiche();
+            }// end of method
+        });// end of anonymous class
+    }// end of method
+
+    /**
      * Messaggio del dialogo di avviso/conferma
      * Sovrascritto
      */
@@ -288,6 +303,11 @@ public abstract class AnnoGiornoMod extends ModulePop {
     protected void esegueUploadBothNatoMorto() {
     }// end of method
 
+    /**
+     * Esegue la creazione delle pagine statistiche
+     */
+    protected void esegueStatistiche() {
+    }// end of method
 
 }// end of class
 

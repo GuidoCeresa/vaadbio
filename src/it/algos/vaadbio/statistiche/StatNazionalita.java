@@ -129,8 +129,8 @@ public class StatNazionalita extends Statistiche {
         String ref1 = "Nelle liste le biografie sono suddivise per attività rilevanti della persona. Se il numero di voci di un paragrafo diventa rilevante, vengono create delle sottopagine specifiche di quella attività. Le sottopagine sono suddivise a loro volta in paragrafi alfabetici secondo l'iniziale del cognome.";
         String ref2 = "Le categorie possono avere sottocategorie e suddivisioni diversamente articolate e possono avere anche voci che hanno implementato la categoria stessa al di fuori del [[template:Bio|template Bio]].";
 
-        titoli.add("lista" + LibWiki.setRef(ref1));
-        titoli.add("categoria" + LibWiki.setRef(ref2));
+        titoli.add("lista " + LibWiki.setRef(ref1));
+        titoli.add("categoria " + LibWiki.setRef(ref2));
         titoli.add("voci");
 
         return titoli;
@@ -153,7 +153,7 @@ public class StatNazionalita extends Statistiche {
 
 
     /**
-     * Restituisce l'array delle riga del parametro per le nazionalita
+     * Restituisce l'array della riga del parametro per le nazionalita
      * La mappa contiene:
      * -plurale dell'attività
      * -numero di voci che nel campo nazionalita usano tutti records di nazionalita che hanno quel plurale

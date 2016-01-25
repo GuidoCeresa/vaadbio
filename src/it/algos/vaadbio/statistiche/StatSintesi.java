@@ -126,12 +126,12 @@ public class StatSintesi extends Statistiche {
      */
     private ArrayList getRigaGiorni() {
         String prefCode = CostBio.STAT_NUM_GIORNI;
-        String descrizione = "Giorni interessati";
+        String descrizione = PATH + "Giorni|Giorni interessati";
         int oldValue = Pref.getInt(prefCode, 366);
         int newValue = Giorno.count();
         String nota = "Previsto il [[29 febbraio]] per gli [[Anno bisestile|anni bisestili]]";
 
-        return getRigaBase(false, descrizione, nota, oldValue, newValue, prefCode);
+        return getRigaBase(true, descrizione, nota, oldValue, newValue, prefCode);
     }// fine del metodo
 
     /**
@@ -140,12 +140,12 @@ public class StatSintesi extends Statistiche {
     private ArrayList getRigaAnni() {
         String prefCode = CostBio.STAT_NUM_ANNI;
         int anniPreCristo = 1000;
-        String descrizione = "Anni interessati";
+        String descrizione = PATH + "Anni|Anni interessati";
         int oldValue = Pref.getInt(prefCode, 3000);
         int newValue = LibDate.getYear() + anniPreCristo;
         String nota = "Potenzialmente dal [[1000 a.C.]] al [[{{CURRENTYEAR}}]]";
 
-        return getRigaBase(false, descrizione, nota, oldValue, newValue, prefCode);
+        return getRigaBase(true, descrizione, nota, oldValue, newValue, prefCode);
     }// fine del metodo
 
     /**

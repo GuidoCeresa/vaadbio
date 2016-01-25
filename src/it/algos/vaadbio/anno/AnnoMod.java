@@ -4,6 +4,7 @@ package it.algos.vaadbio.anno;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.Notification;
 import it.algos.vaadbio.annogiorno.AnnoGiornoMod;
+import it.algos.vaadbio.esegue.Esegue;
 import it.algos.vaadbio.giorno.Giorno;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.liste.ListaAnnoMorto;
@@ -97,7 +98,7 @@ public class AnnoMod extends AnnoGiornoMod {
      */
     @Override
     protected void esegueUploadAll() {
-        new UploadAnni();
+        Esegue.uploadAnni();
     }// end of method
 
     /**
@@ -154,6 +155,12 @@ public class AnnoMod extends AnnoGiornoMod {
         }// end of if/else cycle
     }// end of method
 
+    /**
+     * Esegue la creazione delle pagine statistiche
+     */
+    protected void esegueStatistiche() {
+        Esegue.statisticaAnni();
+    }// end of method
 
     /**
      * Recupera la voce selezionata

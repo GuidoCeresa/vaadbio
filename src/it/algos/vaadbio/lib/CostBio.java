@@ -80,6 +80,7 @@ public abstract class CostBio {
     public final static String KEY_MAPPA_GIORNI_TITOLO = "titolo";
 
 
+    //--statistiche
     public static final String STAT_DATA_ULTIMA_SINTESI = "ultimaSintesi";
     public static final String STAT_NUM_VOCI = "numeroVociGestite";
     public static final String STAT_NUM_GIORNI = "numeroGiorniGestiti";
@@ -87,5 +88,6 @@ public abstract class CostBio {
     public static final String STAT_NUM_ATTIVITA = "numeroAttivitaGestite";
     public static final String STAT_NUM_NAZIONALITA = "numeroNazionalitaGestite";
     public static final String STAT_GIORNI_ATTESA = "giorniAttesa";
+    public static final String NUM_VOCI_ANNI = "numVociAnni";
 
 }// end of static abstract class

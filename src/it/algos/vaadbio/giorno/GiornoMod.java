@@ -2,11 +2,15 @@ package it.algos.vaadbio.giorno;
 
 
 import com.vaadin.server.FontAwesome;
+import com.vaadin.ui.MenuBar;
 import com.vaadin.ui.Notification;
 import it.algos.vaadbio.annogiorno.AnnoGiornoMod;
+import it.algos.vaadbio.esegue.Esegue;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.liste.ListaGiornoMorto;
 import it.algos.vaadbio.liste.ListaGiornoNato;
+import it.algos.vaadbio.statistiche.StatGiorni;
+import it.algos.vaadbio.statistiche.StatNazionalita;
 import it.algos.vaadbio.upload.UploadGiorni;
 import it.algos.webbase.web.table.ATable;
 
@@ -82,7 +86,7 @@ public class GiornoMod extends AnnoGiornoMod {
      */
     @Override
     protected void esegueUploadAll() {
-        new UploadGiorni();
+        Esegue.uploadGiorni();
     }// end of method
 
     /**
@@ -130,6 +134,12 @@ public class GiornoMod extends AnnoGiornoMod {
         }// end of if/else cycle
     }// end of method
 
+    /**
+     * Esegue la creazione delle pagine statistiche
+     */
+    protected void esegueStatistiche() {
+        Esegue.statisticaGiorni();
+    }// end of method
 
     /**
      * Recupera la voce selezionata

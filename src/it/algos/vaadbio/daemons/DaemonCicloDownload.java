@@ -1,5 +1,6 @@
 package it.algos.vaadbio.daemons;
 
+import it.algos.vaadbio.esegue.Esegue;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.ciclo.CicloDownload;
 import it.algos.vaadbio.statistiche.StatSintesi;
@@ -75,10 +76,7 @@ public class DaemonCicloDownload extends Scheduler {
         @Override
         public void execute(TaskExecutionContext context) throws RuntimeException {
             if (Pref.getBool(CostBio.USA_CRONO_DOWNLOAD, true)) {
-                new CicloDownload();
-                new UploadGiorni();
-                new UploadAnni();
-                new StatSintesi();
+                Esegue.cicloCompleto();
             }// fine del blocco if
         }// end of method
     }// end of inner class

@@ -236,9 +236,13 @@ public class VersBootStrap implements ServletContextListener {
 
         //--creata una nuova preferenza
         if (LibVers.installa(37)) {
-            LibPref.newVersInt(CostBio.STAT_GIORNI_ATTESA, 300, "Numero di giorni di attesa prima di aggiornare le statistiche . Di default circa 5.");
+            LibPref.newVersInt(CostBio.STAT_GIORNI_ATTESA, 300, "Numero di giorni di attesa prima di aggiornare le statistiche. Di default circa 5.");
         }// fine del blocco if
 
+        //--creata una nuova preferenza
+        if (LibVers.installa(38)) {
+            LibPref.newVersInt(CostBio.NUM_VOCI_ANNI, 300, "Soglia per le statistiche degli anni. Di default 300");
+        }// fine del blocco if
     }// end of method
 
 
