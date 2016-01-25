@@ -226,7 +226,7 @@ public class Giorno extends BaseEntity {
                 }// end of if cycle
 
                 if (primo == ultimo) {
-                    return (bioA.getCognome()).compareTo(bioB.getCognome());
+                    return (bioA.getCognome().toLowerCase()).compareTo(bioB.getCognome().toLowerCase());
                 } else {
                     return primo - ultimo;
                 }// end of if/else cycle
@@ -280,7 +280,7 @@ public class Giorno extends BaseEntity {
                 }// end of if cycle
 
                 if (primo == ultimo) {
-                    return (bioA.getCognome()).compareTo(bioB.getCognome());
+                    return (bioA.getCognome().toLowerCase()).compareTo(bioB.getCognome().toLowerCase());
                 } else {
                     return primo - ultimo;
                 }// end of if/else cycle
