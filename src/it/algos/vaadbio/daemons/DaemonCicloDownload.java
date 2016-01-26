@@ -1,11 +1,9 @@
 package it.algos.vaadbio.daemons;
 
+import it.algos.vaad.VaadApp;
+import it.algos.vaad.wiki.WikiLogin;
 import it.algos.vaadbio.esegue.Esegue;
 import it.algos.vaadbio.lib.CostBio;
-import it.algos.vaadbio.ciclo.CicloDownload;
-import it.algos.vaadbio.statistiche.StatSintesi;
-import it.algos.vaadbio.upload.UploadAnni;
-import it.algos.vaadbio.upload.UploadGiorni;
 import it.algos.webbase.domain.log.Log;
 import it.algos.webbase.domain.pref.Pref;
 import it.algos.webbase.web.bootstrap.ABootStrap;
@@ -48,7 +46,8 @@ public class DaemonCicloDownload extends Scheduler {
 
             // Schedule task
             // Ogni giorno
-            schedule("1 0 * * *", new TaskCicloBio()); //dal 11 dic 2015
+//            schedule("1 0 * * *", new TaskCicloBio()); //dal 11 dic 2015
+            schedule("45 * * * *", new TaskCicloBio()); //dal 11 dic 2015
             if (Pref.getBool(CostBio.USA_LOG_DAEMONS, true)) {
                 Log.setDebug("daemonCicloDownload", "Attivato ciclo daemonCicloDownload; flag in preferenze per confermare esecuzione alle 0:01");
             }// fine del blocco if
@@ -75,6 +74,13 @@ public class DaemonCicloDownload extends Scheduler {
 
         @Override
         public void execute(TaskExecutionContext context) throws RuntimeException {
+
+            WikiLogin wikiLogin = VaadApp.WIKI_LOGIN;
+            if (wikiLogin == null) {
+                wikiLogin = new WikiLogin("biobot", "fulvia");
+                VaadApp.WIKI_LOGIN = wikiLogin;
+            }// end of if cycle
+
             if (Pref.getBool(CostBio.USA_CRONO_DOWNLOAD, true)) {
                 Esegue.cicloCompleto();
             }// fine del blocco if
