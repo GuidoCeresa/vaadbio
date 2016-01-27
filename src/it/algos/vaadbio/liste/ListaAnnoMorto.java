@@ -87,7 +87,7 @@ public class ListaAnnoMorto extends ListaAnno {
      */
     @Override
     protected String getTestoCategoria() {
-        return "Liste di morti nell'anno";
+        return "Liste di morti per anno";
     }// fine del metodo
 
 }// fine della classe
