@@ -101,15 +101,6 @@ public class StatAnni extends Statistiche {
         int nati = 0;
         int morti = 0;
 
-//        for (int k = 0; k < 10; k++) {
-//            annoTmp = anni.get(k + delta);
-//            nati = annoTmp.countBioNati();
-//            morti = annoTmp.countBioMorti();
-//            if (nati > soglia || morti > soglia) {
-//                listaRighe.add(getRigaAnno(annoTmp, nati, morti));
-//            }// end of if cycle
-//        }// end of for cycle
-
         for (Anno anno : anni) {
             nati = anno.countBioNati();
             morti = anno.countBioMorti();

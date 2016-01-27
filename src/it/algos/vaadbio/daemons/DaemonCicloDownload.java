@@ -46,8 +46,7 @@ public class DaemonCicloDownload extends Scheduler {
 
             // Schedule task
             // Ogni giorno
-//            schedule("1 0 * * *", new TaskCicloBio()); //dal 11 dic 2015
-            schedule("45 * * * *", new TaskCicloBio()); //dal 11 dic 2015
+            schedule("1 0 * * *", new TaskCicloBio()); //dal 11 dic 2015
             if (Pref.getBool(CostBio.USA_LOG_DAEMONS, true)) {
                 Log.setDebug("daemonCicloDownload", "Attivato ciclo daemonCicloDownload; flag in preferenze per confermare esecuzione alle 0:01");
             }// fine del blocco if

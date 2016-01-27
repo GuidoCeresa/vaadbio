@@ -31,7 +31,7 @@ public class Giorno extends BaseEntity {
     private String mese = "";
 
     @NotEmpty
-    @Index
+    @Index(name = "PIPPO", columnNames = {"nome"})
     private String nome = "";
 
     @NotEmpty
@@ -40,6 +40,7 @@ public class Giorno extends BaseEntity {
 
     @Index
     private int normale = 0;
+
     @Index
     private int bisestile = 0;
 

@@ -38,7 +38,7 @@ public class Bio extends BaseEntity {
     private long pageid;
 
     @NotEmpty
-    @Column(columnDefinition = "text")
+    @Index
     private String title = "";
 
     @Lob
