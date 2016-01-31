@@ -90,4 +90,7 @@ public abstract class CostBio {
     public static final String STAT_GIORNI_ATTESA = "giorniAttesa";
     public static final String NUM_VOCI_ANNI = "numVociAnni";
 
+    //--nomi
+    public static final String SOGLIA_NOMI = "sogliaNomi";
+
 }// end of static abstract class

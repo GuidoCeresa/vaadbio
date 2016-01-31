@@ -12,6 +12,7 @@ import it.algos.vaadbio.biologo.BioLogoMod;
 import it.algos.vaadbio.giorno.GiornoMod;
 import it.algos.vaadbio.lib.LibBio;
 import it.algos.vaadbio.nazionalita.NazionalitaMod;
+import it.algos.vaadbio.nome.NomeMod;
 import it.algos.webbase.domain.pref.PrefMod;
 import it.algos.webbase.domain.utente.UtenteModulo;
 import it.algos.webbase.domain.vers.VersMod;
@@ -67,7 +68,8 @@ public class VaadbioUI extends AlgosUI {
 //        footerLayout.addComponent(new Label("Vaadbio versione 2.9 del 26 gen 2016"));
 //        footerLayout.addComponent(new Label("Vaadbio versione 3.0 del 27 gen 2016"));
 //        footerLayout.addComponent(new Label("Vaadbio versione 3.1 del 27 gen 2016"));
-        footerLayout.addComponent(new Label("Vaadbio versione 3.2 del 27 gen 2016"));
+//        footerLayout.addComponent(new Label("Vaadbio versione 3.2 del 27 gen 2016"));
+        footerLayout.addComponent(new Label("Vaadbio versione 3.3 del 31 gen 2016"));
 
 //        this.checkLogin();
         boolean loggato = false;
@@ -97,6 +99,7 @@ public class VaadbioUI extends AlgosUI {
         this.addModulo(new VersMod());
         this.addModulo(new BioLogoMod());
         this.addModulo(new PrefMod());
+        this.addModulo(new NomeMod());
         this.addModulo(new AttivitaMod());
         this.addModulo(new NazionalitaMod());
         this.addModulo(new GiornoMod());

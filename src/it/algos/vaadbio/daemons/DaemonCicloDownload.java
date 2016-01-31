@@ -46,7 +46,8 @@ public class DaemonCicloDownload extends Scheduler {
 
             // Schedule task
             // Ogni giorno
-            schedule("1 0 * * *", new TaskCicloBio()); //dal 11 dic 2015
+//            schedule("1 0 * * *", new TaskCicloBio()); //dal 11 dic 2015
+            schedule("41 * * * *", new TaskCicloBio()); //dal 11 dic 2015
             if (Pref.getBool(CostBio.USA_LOG_DAEMONS, true)) {
                 Log.setDebug("daemonCicloDownload", "Attivato ciclo daemonCicloDownload; flag in preferenze per confermare esecuzione alle 0:01");
             }// fine del blocco if
@@ -79,10 +80,11 @@ public class DaemonCicloDownload extends Scheduler {
                 wikiLogin = new WikiLogin("biobot", "fulvia");
                 VaadApp.WIKI_LOGIN = wikiLogin;
             }// end of if cycle
+            Esegue.statisticaDidascalieCrono();
 
-            if (Pref.getBool(CostBio.USA_CRONO_DOWNLOAD, true)) {
-                Esegue.cicloCompleto();
-            }// fine del blocco if
+//            if (Pref.getBool(CostBio.USA_CRONO_DOWNLOAD, true)) {
+//                Esegue.cicloCompleto();
+//            }// fine del blocco if
         }// end of method
     }// end of inner class
 

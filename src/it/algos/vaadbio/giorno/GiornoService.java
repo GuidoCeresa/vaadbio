@@ -50,4 +50,5 @@ public abstract class GiornoService {
         return true;
     }// end of method
 
+
 }// end of static class

@@ -30,6 +30,7 @@ public abstract class Statistiche {
     protected String tagHeadTemplateAvviso; // template 'StatBio'
     protected boolean usaHeadRitorno; // prima del template di avviso
     protected boolean usaFooterNote;
+    protected boolean usaFooterCorrelate;
 
     /**
      * Costruttore completo
@@ -68,6 +69,7 @@ public abstract class Statistiche {
 
         // footer
         usaFooterNote = true;
+        usaFooterCorrelate = false;
     }// fine del metodo
 
 
@@ -260,9 +262,10 @@ public abstract class Statistiche {
         String text = CostBio.VUOTO;
 
         // Inizio del footer
+        // Note
         text += elaboraFooterNote();
 
-        // Corpo del footer
+        // Voci correlate
         text += elaboraFooterCorrelate();
 
         // Categorie del footer
@@ -294,7 +297,14 @@ public abstract class Statistiche {
      * Sovrascritto
      */
     protected String elaboraFooterCorrelate() {
-        return CostBio.VUOTO;
+        String text = CostBio.VUOTO;
+
+        if (usaFooterCorrelate) {
+            text += "{{BioCorrelate}}";
+            text += A_CAPO;
+        }// end of if cycle
+
+        return text;
     }// fine del metodo
 
     /**

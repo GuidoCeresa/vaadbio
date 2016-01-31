@@ -31,7 +31,6 @@ public class Giorno extends BaseEntity {
     private String mese = "";
 
     @NotEmpty
-    @Index(name = "PIPPO", columnNames = {"nome"})
     private String nome = "";
 
     @NotEmpty
@@ -397,6 +396,7 @@ public class Giorno extends BaseEntity {
     public void setBisestile(int bisestile) {
         this.bisestile = bisestile;
     }//end of setter method
+
 
     /**
      * Clone di questa istanza

@@ -58,6 +58,7 @@ public class StatGiorni extends Statistiche {
         HashMap<String, Object> mappa = new HashMap<String, Object>();
 
         mappa.put(Cost.KEY_MAPPA_TITOLI, listaTitoli());
+        mappa.put(Cost.KEY_MAPPA_DESTRA_LISTA, listaColonneDestra());
         mappa.put(Cost.KEY_MAPPA_RIGHE_LISTA, listaRighe());
         mappa.put(Cost.KEY_MAPPA_SORTABLE_BOOLEAN, true);
 
@@ -78,6 +79,19 @@ public class StatGiorni extends Statistiche {
         titoli.add("morti " + LibWiki.setRef(ref2));
 
         return titoli;
+    }// fine del metodo
+
+    /**
+     * Formattazione a destra di ogni singola colonna
+     */
+    private ArrayList<Boolean> listaColonneDestra() {
+        ArrayList<Boolean> colonneDestra = new ArrayList<>();
+
+        colonneDestra.add(true);
+        colonneDestra.add(false);
+        colonneDestra.add(false);
+
+        return colonneDestra;
     }// fine del metodo
 
     /**

@@ -10,8 +10,7 @@
         <class>it.algos.webbase.web.entity.BaseEntity</class>
 		<class>it.algos.vaadbio.nazionalita.Nazionalita</class>
 		<class>it.algos.vaadbio.attivita.Attivita</class>
-		<class>it.algos.vaadbio.attivita.Attivita</class>
-		<class>it.algos.vaadbio.attivita.Attivita</class>
+		<class>it.algos.vaadbio.nome.Nome</class>
 		<class>it.algos.vaadbio.anno.Anno</class>
 		<class>it.algos.vaadbio.giorno.Giorno</class>
 		<class>it.algos.vaadbio.bio.Bio</class>

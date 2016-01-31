@@ -12,8 +12,8 @@ import it.algos.vaadbio.ciclo.CicloElabora;
 import it.algos.vaadbio.ciclo.CicloUpdate;
 import it.algos.vaadbio.download.Download;
 import it.algos.vaadbio.elabora.Elabora;
+import it.algos.vaadbio.esegue.Esegue;
 import it.algos.vaadbio.lib.CostBio;
-import it.algos.vaadbio.statistiche.StatSintesi;
 import it.algos.webbase.domain.log.Log;
 import it.algos.webbase.domain.pref.Pref;
 import it.algos.webbase.web.dialog.ConfirmDialog;
@@ -246,7 +246,8 @@ public class BioMod extends ModulePop {
         addCommandDownloadDialog(menuItem);
         addCommandElabora(menuItem);
         addCommandUpload(menuItem);
-        addCommandStatistiche(menuItem);
+        addCommandStatisticheSintesi(menuItem);
+        addCommandStatisticheDidascalie(menuItem);
     }// end of method
 
     /**
@@ -534,14 +535,27 @@ public class BioMod extends ModulePop {
     }// end of method
 
     /**
-     * Comando bottone/item Statistiche
+     * Comando bottone/item Statistiche sintesi
      *
      * @param menuItem a cui agganciare il bottone/item
      */
-    private void addCommandStatistiche(MenuBar.MenuItem menuItem) {
-        menuItem.addItem("Statistiche", FontAwesome.BEER, new MenuBar.Command() {
+    private void addCommandStatisticheSintesi(MenuBar.MenuItem menuItem) {
+        menuItem.addItem("Sintesi", FontAwesome.BEER, new MenuBar.Command() {
             public void menuSelected(MenuBar.MenuItem selectedItem) {
-                esegueStatistiche();
+                esegueStatisticheSintesi();
+            }// end of method
+        });// end of anonymous class
+    }// end of method
+
+    /**
+     * Comando bottone/item Statistiche sintesi
+     *
+     * @param menuItem a cui agganciare il bottone/item
+     */
+    private void addCommandStatisticheDidascalie(MenuBar.MenuItem menuItem) {
+        menuItem.addItem("Didascalie", FontAwesome.BEER, new MenuBar.Command() {
+            public void menuSelected(MenuBar.MenuItem selectedItem) {
+                esegueStatisticheDidascalie();
             }// end of method
         });// end of anonymous class
     }// end of method
@@ -597,8 +611,15 @@ public class BioMod extends ModulePop {
     /**
      * Esegue la creazione delle pagine statistiche
      */
-    public void esegueStatistiche() {
-        new StatSintesi();
+    public void esegueStatisticheSintesi() {
+        Esegue.statisticaSintesi();
+    }// end of method
+
+    /**
+     * Esegue la creazione delle pagine statistiche
+     */
+    public void esegueStatisticheDidascalie() {
+        Esegue.statisticaDidascalieCrono();
     }// end of method
 
     /**

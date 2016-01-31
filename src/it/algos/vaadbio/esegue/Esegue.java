@@ -1,7 +1,9 @@
 package it.algos.vaadbio.esegue;
 
 import it.algos.vaadbio.ciclo.CicloDownload;
+import it.algos.vaadbio.nome.NomeService;
 import it.algos.vaadbio.statistiche.StatAnni;
+import it.algos.vaadbio.statistiche.StatDidascalieCrono;
 import it.algos.vaadbio.statistiche.StatGiorni;
 import it.algos.vaadbio.statistiche.StatSintesi;
 import it.algos.vaadbio.upload.UploadAnni;
@@ -53,6 +55,13 @@ public abstract class Esegue {
     } // fine del metodo
 
     /**
+     * Upload nomi.
+     */
+    public static void uploadNomi() {
+        NomeService.costruisce();
+    } // fine del metodo
+
+    /**
      * Crea tutte le pagine statistiche previste
      */
     public static void statisticheAll() {
@@ -83,6 +92,14 @@ public abstract class Esegue {
      */
     public static void statisticaAnni() {
         new StatAnni();
+    } // fine del metodo
+
+
+    /**
+     * Crea una tabella esemplificativa di didascalie cronografiche (giorni ed anni).
+     */
+    public static void statisticaDidascalieCrono() {
+        new StatDidascalieCrono();
     } // fine del metodo
 
 
