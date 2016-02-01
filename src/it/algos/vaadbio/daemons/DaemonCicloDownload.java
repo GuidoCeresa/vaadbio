@@ -80,11 +80,10 @@ public class DaemonCicloDownload extends Scheduler {
                 wikiLogin = new WikiLogin("biobot", "fulvia");
                 VaadApp.WIKI_LOGIN = wikiLogin;
             }// end of if cycle
-            Esegue.statisticaDidascalieCrono();
 
-//            if (Pref.getBool(CostBio.USA_CRONO_DOWNLOAD, true)) {
-//                Esegue.cicloCompleto();
-//            }// fine del blocco if
+            if (Pref.getBool(CostBio.USA_CRONO_DOWNLOAD, true)) {
+                Esegue.cicloCompleto();
+            }// fine del blocco if
         }// end of method
     }// end of inner class
 
