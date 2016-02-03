@@ -4,9 +4,11 @@ import com.vaadin.data.Container;
 import com.vaadin.data.util.filter.Compare;
 import it.algos.vaadbio.anno.Anno;
 import it.algos.vaadbio.bio.Bio;
+import it.algos.vaadbio.bio.Bio_;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.webbase.web.entity.BaseEntity;
 import it.algos.webbase.web.query.AQuery;
+import it.algos.webbase.web.query.SortProperty;
 import org.apache.commons.beanutils.BeanUtils;
 import org.eclipse.persistence.annotations.Index;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -195,6 +197,7 @@ public class Giorno extends BaseEntity {
     public ArrayList<Bio> bioNati() {
         ArrayList<Bio> lista = null;
         List entities = null;
+        List entities2 = null;
         Container.Filter filtro;
 
         filtro = new Compare.Equal("giornoNatoPunta", this);
@@ -233,6 +236,12 @@ public class Giorno extends BaseEntity {
             }
         };
         entities.sort(comp);
+
+        SortProperty sort = new SortProperty(Bio_.annoNatoPunta, Bio_.cognome);
+//        sort.add(Bio_.annoNatoPunta);
+//        sort.add(Bio_.cognome);
+        entities2 = AQuery.getList(Bio.class, sort, filtro);
+
 
         if (entities != null) {
             lista = new ArrayList<>(entities);
