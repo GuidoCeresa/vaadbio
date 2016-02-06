@@ -33,21 +33,38 @@ public class Cognome extends BaseEntity {
      * Necessario per le specifiche JavaBean
      */
     public Cognome() {
+        this("");
     }// end of nullary constructor
 
 
+    /**
+     * Costruttore
+     *
+     * @param cognome della persona
+     */
     public Cognome(String cognome) {
-        super();
-        this.setCognome(cognome);
-        this.setPrincipale(true);
-        this.setRiferimento(null);
+        this(cognome, true, null);
     }// end of general constructor
 
     /**
-     * Recupera una istanza di Bolla usando la query standard della Primary Key
+     * Costruttore completo
+     *
+     * @param cognome     della persona
+     * @param principale  flag
+     * @param riferimento al cognome che raggruppa le varie dizioni
+     */
+    public Cognome(String cognome, boolean principale, Cognome riferimento) {
+        super();
+        this.setCognome(cognome);
+        this.setPrincipale(principale);
+        this.setRiferimento(riferimento);
+    }// end of full constructor
+
+    /**
+     * Recupera una istanza di Cognome usando la query standard della Primary Key
      *
      * @param id valore della Primary Key
-     * @return istanza di Bolla, null se non trovata
+     * @return istanza di Cognome, null se non trovata
      */
     public static Cognome find(long id) {
         Cognome instance = null;
@@ -63,10 +80,10 @@ public class Cognome extends BaseEntity {
     }// end of method
 
     /**
-     * Recupera una istanza di Bolla usando la query di una property specifica
+     * Recupera una istanza di Cognome usando la query di una property specifica
      *
      * @param cognome valore della property cognome
-     * @return istanza di Bolla, null se non trovata
+     * @return istanza di Cognome, null se non trovata
      */
     public static Cognome findByCognome(String cognome) {
         Cognome instance = null;
@@ -111,7 +128,6 @@ public class Cognome extends BaseEntity {
     public String toString() {
         return cognome;
     }// end of method
-
 
     public String getCognome() {
         return cognome;

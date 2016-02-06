@@ -2,7 +2,6 @@ package it.algos.vaadbio.nome;
 
 import it.algos.vaad.wiki.Api;
 import it.algos.vaadbio.lib.CostBio;
-import it.algos.webbase.domain.pref.Pref;
 
 import java.util.ArrayList;
 
@@ -79,24 +78,28 @@ public abstract class NomeService {
 
     /**
      * Controllo della pagina Progetto:Antroponimi/Nomi doppi
+     * Vengono creati i records mancanti nel database per tutti i nomi doppi
+     * Questo perché spazzolando il parametro nome delle biografie, di norma identifica SOLO il primo nome
+     * Occorre aggiungere quindi i nomi doppi esplicitamente previsti nella lista su wiki
      */
     public static void listaNomiDoppi() {
         String titolo = TITOLO_LISTA_NOMI_DOPPI;
         String tagInizio = "*";
         String tagRiga = "\\*";
+        String tagFine = "\n\n";
         String[] righe = null;
         String testoPagina = Api.leggeVoce(titolo);
-        int soglia = Pref.getInt(CostBio.SOGLIA_NOMI,100);
-
 
         if (!testoPagina.equals(CostBio.VUOTO)) {
-            testoPagina = testoPagina.substring(testoPagina.indexOf(tagInizio));
+            testoPagina = testoPagina.substring(testoPagina.indexOf(tagInizio), testoPagina.indexOf(tagFine));
             righe = testoPagina.split(tagRiga);
         }// fine del blocco if
 
         if (righe != null && righe.length > 0) {
             for (String stringa : righe) {
-                elaboraRigaNomiDoppi(stringa, soglia);
+                if (!stringa.equals(CostBio.VUOTO)) {
+                    elaboraRigaNomiDoppi(stringa.trim());
+                }// end of if cycle
             }// end of for cycle
         }// end of if cycle
     }// fine del metodo
@@ -105,47 +108,57 @@ public abstract class NomeService {
     /**
      * Controllo della pagina Progetto:Antroponimi/Nomi doppi
      */
-    private static void elaboraRigaNomiDoppi(String riga, int soglia) {
+    private static void elaboraRigaNomiDoppi(String riga) {
         String tagNome = ",";
-        String[] nomiDoppi = null;
+        String nomeTxt;
         Nome nome = null;
+        String[] nomiDoppi = riga.split(tagNome);
 
-        if (!riga.equals(CostBio.VUOTO)) {
-            nomiDoppi = riga.split(tagNome);
-        }// fine del blocco if
-
-        if (nomiDoppi != null && nomiDoppi.length > 0) {
-            nome = elaboraNomeDoppio(nomiDoppi[0].trim(), soglia, true, null);
-
-            if (nome!=null) {
-//                antroponimo.voceRiferimento = antroponimo
-//                antroponimo.save()
-            }// fine del blocco if
-
+        if (nomiDoppi.length > 0) {
+            nomeTxt = nomiDoppi[0];
+            nome = elaboraSingolo(nomeTxt);
             if (nomiDoppi.length > 1) {
                 for (int k = 1; k < nomiDoppi.length; k++) {
-                    elaboraNomeDoppio(nomiDoppi[k].trim(), soglia, false, nome);
-                } // fine del ciclo for
-            }// fine del blocco if-else
+                    elaboraSingolo(nomiDoppi[k], nome);
+                }// end of for cycle
+            }// end of if/else cycle
         }// fine del blocco if
     }// fine del metodo
 
+
     /**
-     * Controllo della pagina Progetto:Antroponimi/Nomi doppi
+     * Crea (controllando che non esista già) un record principale di Nome
+     *
+     * @param nomeTxt nome della persona
      */
-    public static Nome elaboraNomeDoppio(String nomeDoppio, int soglia, boolean vocePrincipale, Nome nome) {
-//        int numVoci = numeroVociCheUsanoNome(nome);
-//
-//        if (vocePrincipale) {
-//            if (numVoci > soglia) {
-//                antroponimo = registraSingoloNome(nome.trim(), numVoci, vocePrincipale)
-//            }// fine del blocco if
-//        } else {
-//            antroponimo = registraSingoloNome(nome.trim(), numVoci, vocePrincipale, antroponimo)
-//        }// fine del blocco if-else
-//
-//        return antroponimo
-        return null;
+    private static Nome elaboraSingolo(String nomeTxt) {
+        Nome nome = Nome.findByNome(nomeTxt);
+
+        if (nome == null) {
+            nome = new Nome(nomeTxt);
+            nome.setPrincipale(true);
+            nome.setRiferimento(nome);
+            nome.save();
+        }// end of if cycle
+
+        return nome;
+    }// fine del metodo
+
+    /**
+     * Crea (controllando che non esista già) un record secondario di Nome
+     *
+     * @param nomeTxt     nome della persona
+     * @param riferimento record principale di riferimento nel DB Nome
+     */
+    private static Nome elaboraSingolo(String nomeTxt, Nome riferimento) {
+        Nome nome = Nome.findByNome(nomeTxt);
+
+        if (nome == null) {
+            nome = new Nome(nomeTxt, false, riferimento);
+            nome.save();
+        }// end of if cycle
+
+        return nome;
     }// fine del metodo
 
 }//end of class

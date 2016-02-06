@@ -58,6 +58,36 @@ public class BioMod extends ModulePop {
 
 
     /**
+     * Returns the table used to shows the list. <br>
+     * The concrete subclass must override for a specific Table.
+     *
+     * @return the Table
+     */
+    public ATable createTable() {
+        ATable tavola = new BioTable(this);
+
+        addActionHandler(tavola);
+        return tavola;
+    }// end of method
+
+    /**
+     * Returns the form used to edit an item. <br>
+     * The concrete subclass must override for a specific Form.
+     *
+     * @param item singola istanza della classe
+     * @return the Form
+     */
+    public ModuleForm createForm(Item item) {
+        return (new BioForm(this, item));
+    }// end of method
+
+    @Override
+    public SearchManager createSearchManager() {
+        return new BioSearch(this);
+    }// end of method
+
+
+    /**
      * Crea i campi visibili nella lista (table)
      * <p/
      * Come default spazzola tutti i campi della Entity <br>
@@ -133,34 +163,6 @@ public class BioMod extends ModulePop {
     }// end of method
 
 
-    /**
-     * Returns the table used to shows the list. <br>
-     * The concrete subclass must override for a specific Table.
-     *
-     * @return the Table
-     */
-    public ATable createTable() {
-        ATable tavola = new BioTable(this);
-
-        addActionHandler(tavola);
-        return tavola;
-    }// end of method
-
-    /**
-     * Returns the form used to edit an item. <br>
-     * The concrete subclass must override for a specific Form.
-     *
-     * @param item singola istanza della classe
-     * @return the Form
-     */
-    public ModuleForm createForm(Item item) {
-        return (new BioForm(this, item));
-    }// end of method
-
-    @Override
-    public SearchManager createSearchManager() {
-        return new BioSearch(this);
-    }// end of method
 
     /**
      * Registers a new action handler for this container

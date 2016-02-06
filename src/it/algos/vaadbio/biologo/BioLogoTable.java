@@ -1,6 +1,5 @@
 package it.algos.vaadbio.biologo;
 
-import com.vaadin.data.Property;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.event.ItemClickEvent;
 import it.algos.vaad.lib.VaadWiki;
@@ -8,8 +7,8 @@ import it.algos.vaad.wiki.Api;
 import it.algos.vaad.wiki.Page;
 import it.algos.vaad.wiki.PagePar;
 import it.algos.webbase.domain.log.Log;
+import it.algos.webbase.web.entity.BaseEntity;
 import it.algos.webbase.web.module.ModulePop;
-import it.algos.webbase.web.table.ATable;
 import it.algos.webbase.web.table.ModuleTable;
 import org.vaadin.addons.lazyquerycontainer.CompositeItem;
 
@@ -43,27 +42,16 @@ public class BioLogoTable extends ModuleTable {
      *
      * @param itemClickEvent the event
      */
+    @Override
     public void itemClick(ItemClickEvent itemClickEvent) {
-        super.itemClick(itemClickEvent);
-        Log logo = null;
-        String titoloColonna = itemClickEvent.getPropertyId().toString();
-        Object oby = itemClickEvent.getItemId();
-        Object oggetto = getContainerDataSource().getItem(oby);
+        BaseEntity istanza = getIstanzaClickOnColumn(itemClickEvent, COLUMN_DESC);
 
-        if (oggetto instanceof CompositeItem) {
-            CompositeItem itemComp = (CompositeItem) oggetto;
-            BeanItem beanItem = (BeanItem) itemComp.getItem("bean");
-            logo = (Log) beanItem.getBean();
-        }// fine del blocco if
+        if (istanza != null && istanza instanceof Log) {
+            clickOnDescrizione((Log) istanza);
+        }// end of if cycle
 
-        if (logo == null) {
-            return;
-        }// fine del blocco if
-
-        if (titoloColonna.equals(COLUMN_DESC)) {
-            clickOnDescrizione(logo);
-        }// fine del blocco if
     }// end of method
+
 
 
     /**

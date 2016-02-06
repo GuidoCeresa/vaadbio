@@ -1,20 +1,19 @@
 package it.algos.vaadbio.nome;
 
 
+import com.vaadin.data.Item;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.MenuBar;
-import com.vaadin.ui.Notification;
-import it.algos.vaadbio.annogiorno.AnnoGiornoMod;
+import it.algos.vaadbio.bio.BioForm;
+import it.algos.vaadbio.bio.BioSearch;
+import it.algos.vaadbio.bio.BioTable;
 import it.algos.vaadbio.esegue.Esegue;
-import it.algos.vaadbio.lib.CostBio;
-import it.algos.vaadbio.liste.ListaGiornoMorto;
-import it.algos.vaadbio.liste.ListaGiornoNato;
-import it.algos.vaadbio.nome.Nome;
-import it.algos.vaadbio.statistiche.StatGiorni;
-import it.algos.vaadbio.statistiche.StatNazionalita;
-import it.algos.vaadbio.upload.UploadGiorni;
+import it.algos.webbase.web.form.ModuleForm;
 import it.algos.webbase.web.module.ModulePop;
+import it.algos.webbase.web.search.SearchManager;
 import it.algos.webbase.web.table.ATable;
+
+import javax.persistence.metamodel.Attribute;
 
 /**
  * Gestione (minimale) del modulo
@@ -24,7 +23,7 @@ public class NomeMod extends ModulePop {
 
 
     // indirizzo interno del modulo (serve nei menu)
-    public static String MENU_ADDRESS = "Nome";
+    public static String MENU_ADDRESS = "Nomi";
 
 
     /**
@@ -36,8 +35,19 @@ public class NomeMod extends ModulePop {
      * (facoltativo) icona del menu (se manca usa un'icona standard)
      */
     public NomeMod() {
-        super(Nome.class, FontAwesome.LIST_UL);
+        super(Nome.class, MENU_ADDRESS, FontAwesome.LIST_UL);
     }// end of constructor
+
+    /**
+     * Returns the table used to shows the list. <br>
+     * The concrete subclass must override for a specific Table.
+     *
+     * @return the Table
+     */
+    public ATable createTable() {
+        return new NomeTable(this);
+    }// end of method
+
 
     /**
      * Crea i sottomenu specifici del modulo
@@ -59,7 +69,7 @@ public class NomeMod extends ModulePop {
      * @param menuItem a cui agganciare il bottone/item
      */
     private void addCommandDownloadDoppi(MenuBar.MenuItem menuItem) {
-        menuItem.addItem("Upload", FontAwesome.BEER, new MenuBar.Command() {
+        menuItem.addItem("Download", FontAwesome.BEER, new MenuBar.Command() {
             public void menuSelected(MenuBar.MenuItem selectedItem) {
                 esegueDownloadDoppi();
             }// end of method
@@ -93,6 +103,7 @@ public class NomeMod extends ModulePop {
     protected void esegueUpload() {
         Esegue.uploadNomi();
     }// end of method
+
 
 }// end of class
 
