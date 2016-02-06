@@ -237,9 +237,9 @@ public class Giorno extends BaseEntity {
         };
         entities.sort(comp);
 
-        SortProperty sort = new SortProperty(Bio_.annoNatoPunta, Bio_.cognome);
-//        sort.add(Bio_.annoNatoPunta);
-//        sort.add(Bio_.cognome);
+        SortProperty sort = new SortProperty();
+//        sort.add(Bio_.annoNatoPunta.);
+        sort.add(Bio_.cognome);
         entities2 = AQuery.getList(Bio.class, sort, filtro);
 
 

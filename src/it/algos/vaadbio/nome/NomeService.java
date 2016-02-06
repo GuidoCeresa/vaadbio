@@ -40,7 +40,7 @@ import java.util.ArrayList;
  * 2382 antroponimi
  * Jean-Jacques deve rimanere, Jean Baptiste no
  */
-public class NomeService {
+public abstract class NomeService {
     private static String TITOLO_LISTA_NOMI_DOPPI = "Progetto:Antroponimi/Nomi doppi";
 
     /**
@@ -80,7 +80,7 @@ public class NomeService {
     /**
      * Controllo della pagina Progetto:Antroponimi/Nomi doppi
      */
-    private static void listaNomiDoppi() {
+    public static void listaNomiDoppi() {
         String titolo = TITOLO_LISTA_NOMI_DOPPI;
         String tagInizio = "*";
         String tagRiga = "\\*";

@@ -40,11 +40,15 @@ public class Nome extends BaseEntity {
         this.setNome(nome);
     }// end of general constructor
 
+
     public String getNome() {
         return nome;
     }// end of getter method
 
+
     public void setNome(String nome) {
         this.nome = nome;
     }//end of setter method
+
+
 }// end of entity class

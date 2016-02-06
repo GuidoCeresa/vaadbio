@@ -64,14 +64,10 @@ public class BioMod extends ModulePop {
      * Può essere sovrascritto (facoltativo) nelle sottoclassi specifiche <br>
      * Serve anche per l'ordine con cui vengono presentati i campi nella lista <br>
      */
-    @Override
     protected Attribute<?, ?>[] creaFieldsList() {
         return new Attribute[]{
                 Bio_.pageid,
                 Bio_.title,
-//                Bio_.templateEsiste,
-//                Bio_.templateValido,
-//                Bio_.templatesUguali,
                 Bio_.ultimaLettura,
                 Bio_.ultimaElaborazione,
 

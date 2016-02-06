@@ -18,6 +18,8 @@ import it.algos.webbase.domain.utente.UtenteModulo;
 import it.algos.webbase.domain.vers.VersMod;
 import it.algos.webbase.web.lib.LibSession;
 import it.algos.webbase.web.ui.AlgosUI;
+import it.algos.vaadbio.cognome.CognomeMod;
+import it.algos.vaadbio.cognome.CognomeMod;
 
 /**
  * Crea l'interfaccia utente (User Interface) iniziale dell'applicazione
@@ -102,6 +104,7 @@ public class VaadbioUI extends AlgosUI {
         this.addModulo(new BioLogoMod());
         this.addModulo(new PrefMod());
         this.addModulo(new NomeMod());
+        this.addModulo(new CognomeMod());
         this.addModulo(new AttivitaMod());
         this.addModulo(new NazionalitaMod());
         this.addModulo(new GiornoMod());

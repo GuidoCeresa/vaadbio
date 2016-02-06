@@ -49,8 +49,23 @@ public class NomeMod extends ModulePop {
      */
     @Override
     public void addSottoMenu(MenuBar.MenuItem menuItem) {
+        addCommandDownloadDoppi(menuItem);
         addCommandUpload(menuItem);
     }// end of method
+
+    /**
+     * Comando bottone/item download
+     *
+     * @param menuItem a cui agganciare il bottone/item
+     */
+    private void addCommandDownloadDoppi(MenuBar.MenuItem menuItem) {
+        menuItem.addItem("Upload", FontAwesome.BEER, new MenuBar.Command() {
+            public void menuSelected(MenuBar.MenuItem selectedItem) {
+                esegueDownloadDoppi();
+            }// end of method
+        });// end of anonymous class
+    }// end of method
+
 
     /**
      * Comando bottone/item upload
@@ -63,6 +78,13 @@ public class NomeMod extends ModulePop {
                 esegueUpload();
             }// end of method
         });// end of anonymous class
+    }// end of method
+
+    /**
+     * Esegue l'aggiornamento della lista dei nomi doppi
+     */
+    protected void esegueDownloadDoppi() {
+        Esegue.esegueDownloadDoppi();
     }// end of method
 
     /**

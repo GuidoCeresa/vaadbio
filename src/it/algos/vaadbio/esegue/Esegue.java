@@ -54,6 +54,14 @@ public abstract class Esegue {
         new UploadAnni();
     } // fine del metodo
 
+
+    /**
+     * Esegue l'aggiornamento della lista dei nomi doppi
+     */
+    public static void esegueDownloadDoppi() {
+        NomeService.listaNomiDoppi();
+    } // fine del metodo
+
     /**
      * Upload nomi.
      */
