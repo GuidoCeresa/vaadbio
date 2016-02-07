@@ -4,11 +4,12 @@ package it.algos.vaadbio.lib;
 import com.vaadin.addon.jpacontainer.JPAContainerItem;
 import com.vaadin.data.Item;
 import it.algos.vaad.wiki.Api;
+import it.algos.vaad.wiki.Page;
 import it.algos.vaad.wiki.WikiLogin;
 import it.algos.vaadbio.bio.Bio;
 import it.algos.vaadbio.giorno.Giorno;
+import it.algos.vaadbio.wrapperbio.WrapBio;
 import it.algos.webbase.domain.pref.Pref;
-import it.algos.webbase.web.entity.BaseEntity;
 import it.algos.webbase.web.entity.EM;
 import it.algos.webbase.web.lib.LibArray;
 import it.algos.webbase.web.lib.LibSession;
@@ -1437,15 +1438,16 @@ public abstract class LibBio {
      * @return lista di valori della property
      */
     public synchronized static ArrayList<String> queryFindDistinctStx(String entity, String property) {
-        ArrayList<String> listaUnici=null;
+        ArrayList<String> listaUnici = null;
         long lungo;
         List entities;
         EntityManager manager = EM.createEntityManager();
         Query query;
         String queryTxt = CostBio.VUOTO;
-        String iniTag = "select DISTINCT ";
+        String iniTag = "select DISTINCT";
         String punto = ".";
         String from = "from";
+        String order = "order by";
 
         if (entity != null && !entity.equals(CostBio.VUOTO) && property != null && !property.equals(CostBio.VUOTO)) {
             queryTxt += iniTag;
@@ -1459,6 +1461,12 @@ public abstract class LibBio {
             queryTxt += entity;
             queryTxt += CostBio.SPAZIO;
             queryTxt += entity.toLowerCase();
+            queryTxt += CostBio.SPAZIO;
+            queryTxt += order;
+            queryTxt += CostBio.SPAZIO;
+            queryTxt += entity.toLowerCase();
+            queryTxt += punto;
+            queryTxt += property;
         }// end of if cycle
 
         query = manager.createQuery(queryTxt);
@@ -1610,6 +1618,32 @@ public abstract class LibBio {
         }// end of if cycle
 
         return subLista;
+    } // fine del metodo
+
+    /**
+     * Recupera un oggetto Bio leggendolo dal server wiki.
+     *
+     * @param wikiTitle della pagina da cui estrarre il template Bio
+     * @return istanza di Bio
+     */
+    public static Bio leggeBio(String wikiTitle) {
+        Bio bio = null;
+        Page pagina = null;
+        WrapBio wrap = null;
+
+        if (!wikiTitle.equals(CostBio.VUOTO)) {
+            pagina = Api.leggePage(wikiTitle);
+        }// end of if cycle
+
+        if (pagina != null) {
+            wrap = new WrapBio(pagina);
+        }// end of if cycle
+
+        if (wrap != null) {
+            bio = wrap.getBio();
+        }// end of if cycle
+
+        return bio;
     } // fine del metodo
 
 

@@ -26,6 +26,7 @@ import javax.persistence.EntityManager;
 public class WrapBio {
 
     private boolean registrata = false;
+    private Bio bio = null;
 
     /**
      * Costruttore
@@ -59,7 +60,6 @@ public class WrapBio {
      * @param pagina dal server
      */
     private void doInit(Page pagina, EntityManager manager) {
-        Bio bio = null;
         long pageid;
         String wikiTitle;
         String tmplBio;
@@ -128,6 +128,10 @@ public class WrapBio {
 
     public boolean isRegistrata() {
         return registrata;
+    }// end of getter method
+
+    public Bio getBio() {
+        return bio;
     }// end of getter method
 
 }// end of class

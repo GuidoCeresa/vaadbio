@@ -6,6 +6,7 @@ import it.algos.vaadbio.giorno.Giorno;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.lib.LibBio;
 import it.algos.vaadbio.nazionalita.Nazionalita;
+import it.algos.vaadbio.nome.Nome;
 import it.algos.webbase.web.entity.BaseEntity;
 import it.algos.webbase.web.lib.LibTime;
 import it.algos.webbase.web.query.AQuery;
@@ -197,11 +198,12 @@ public class Bio extends BaseEntity {
     private Attivita attivita3Punta = null;
     @ManyToOne
     private Nazionalita nazionalitaPunta = null;
+    @ManyToOne
+    private Nome nomePunta = null;
 
 //    Nazionalita nazionalitaLista = null;
 //    Localita luogoNatoLista= null;
 //    Localita luogoMortoLista = null;
-//    Nome nomeLista = null;
 //    Cognome cognomeLista = null;
 
     //    private String didascaliaBase;
@@ -209,7 +211,7 @@ public class Bio extends BaseEntity {
     private String didascaliaGiornoMorto = CostBio.VUOTO;
     private String didascaliaAnnoNato = CostBio.VUOTO;
     private String didascaliaAnnoMorto = CostBio.VUOTO;
-//    private String didascaliaListe;
+    private String didascaliaListe = CostBio.VUOTO;
 
     /**
      * Costruttore senza argomenti
@@ -942,6 +944,14 @@ public class Bio extends BaseEntity {
         this.nazionalitaPunta = nazionalitaPunta;
     }//end of setter method
 
+    public Nome getNomePunta() {
+        return nomePunta;
+    }// end of getter method
+
+    public void setNomePunta(Nome nomePunta) {
+        this.nomePunta = nomePunta;
+    }//end of setter method
+
     public String getDidascaliaGiornoNato() {
         return didascaliaGiornoNato;
     }// end of getter method
@@ -974,4 +984,11 @@ public class Bio extends BaseEntity {
         this.didascaliaAnnoMorto = didascaliaAnnoMorto;
     }//end of setter method
 
+    public String getDidascaliaListe() {
+        return didascaliaListe;
+    }// end of getter method
+
+    public void setDidascaliaListe(String didascaliaListe) {
+        this.didascaliaListe = didascaliaListe;
+    }//end of setter method
 }// end of entity class

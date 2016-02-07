@@ -105,6 +105,7 @@ public class BioMod extends ModulePop {
                 Bio_.didascaliaGiornoMorto,
                 Bio_.didascaliaAnnoNato,
                 Bio_.didascaliaAnnoMorto,
+                Bio_.didascaliaListe,
 
                 Bio_.attivita,
                 Bio_.attivita2,
@@ -123,7 +124,10 @@ public class BioMod extends ModulePop {
                 Bio_.annoNatoPunta,
                 Bio_.annoMorte,
                 Bio_.annoMorteValido,
-                Bio_.annoMortoPunta
+                Bio_.annoMortoPunta,
+
+                Bio_.nomePunta
+
         };
     }// end of method
 
@@ -145,7 +149,8 @@ public class BioMod extends ModulePop {
                 Bio_.didascaliaGiornoNato,
                 Bio_.didascaliaGiornoMorto,
                 Bio_.didascaliaAnnoNato,
-                Bio_.didascaliaAnnoMorto
+                Bio_.didascaliaAnnoMorto,
+                Bio_.didascaliaListe
         };
     }// end of method
 

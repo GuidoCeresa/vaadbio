@@ -6,6 +6,7 @@ import it.algos.vaadbio.bio.Bio;
 import it.algos.vaadbio.giorno.Giorno;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.nazionalita.Nazionalita;
+import it.algos.vaadbio.nome.Nome;
 
 /**
  * Created by gac on 19 dic 2015.
@@ -38,6 +39,7 @@ public class ElaboraLink {
             fixAttivita2(bio);
             fixAttivita3(bio);
             fixNazionalita(bio);
+            fixNome(bio);
 
 //            bioGrails.attivitaLink = AttivitaService.getAttivita(bioGrails.attivita)
 //            bioGrails.attivita2Link = AttivitaService.getAttivita(bioGrails.attivita2)
@@ -176,6 +178,20 @@ public class ElaboraLink {
                 nazionalita = Nazionalita.findBySingolare(nazionalitaValida);
             }// fine del blocco if
             bio.setNazionalitaPunta(nazionalita);
+        }// fine del blocco if
+    } // fine del metodo
+
+
+    private void fixNome(Bio bio) {
+        Nome nome = null;
+        String nomeValido;
+
+        if (bio != null) {
+            nomeValido = bio.getNomeValido();
+            if (nomeValido != null && !nomeValido.equals(CostBio.VUOTO)) {
+                nome = Nome.findByNome(nomeValido);
+            }// fine del blocco if
+            bio.setNomePunta(nome);
         }// fine del blocco if
     } // fine del metodo
 

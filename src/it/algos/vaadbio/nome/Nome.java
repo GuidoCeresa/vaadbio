@@ -1,8 +1,11 @@
 package it.algos.vaadbio.nome;
 
 
+import com.vaadin.data.Container;
+import com.vaadin.data.util.filter.Compare;
 import it.algos.webbase.web.entity.BaseEntity;
 import it.algos.webbase.web.query.AQuery;
+import org.eclipse.persistence.annotations.Index;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.Entity;
@@ -21,6 +24,7 @@ import java.util.ArrayList;
 public class Nome extends BaseEntity {
 
     @NotEmpty
+    @Index()
     private String nome = "";
 
     /**
@@ -28,7 +32,16 @@ public class Nome extends BaseEntity {
      * Volendo (con un flag) possono essere considerati lo stesso nome.
      * In questo caso (stesso nome), il parametro principale diventa false ed il parametro riferimento punta a Maria (senza accento)
      */
+    @Index()
     private boolean principale;
+
+    /**
+     * Di norma (con un flag) i nomi doppi vengono troncati
+     * Forzando questo parametro questo nome viene mantenuto com'è anche se doppio
+     */
+    @Index()
+    private boolean nomeDoppio;
+
 
     @ManyToOne
     private Nome riferimento;
@@ -49,20 +62,22 @@ public class Nome extends BaseEntity {
      * @param nome della persona
      */
     public Nome(String nome) {
-        this(nome, true, null);
+        this(nome, true, false, null);
     }// end of general constructor
 
     /**
      * Costruttore completo
      *
-     * @param nome della persona
-     * @param principale flag
+     * @param nome        della persona
+     * @param principale  flag
+     * @param nomeDoppio  flag
      * @param riferimento al nome che raggruppa le varie dizioni
      */
-    public Nome(String nome, boolean principale, Nome riferimento) {
+    public Nome(String nome, boolean principale, boolean nomeDoppio, Nome riferimento) {
         super();
         this.setNome(nome);
         this.setPrincipale(principale);
+        this.setNomeDoppio(nomeDoppio);
         this.setRiferimento(riferimento);
     }// end of full constructor
 
@@ -128,7 +143,18 @@ public class Nome extends BaseEntity {
      */
     @SuppressWarnings("unchecked")
     public synchronized static ArrayList<Nome> findAll() {
-        return (ArrayList<Nome>) AQuery.getList(Nome.class);
+        return (ArrayList<Nome>) AQuery.getLista(Nome.class);
+    }// end of method
+
+    /**
+     * Recupera una lista (array) di tutti i records di Nome NON doppi
+     *
+     * @return lista di tutte le istanze di Nome
+     */
+    @SuppressWarnings("unchecked")
+    public synchronized static ArrayList<Nome> findAllNotDoppi() {
+        Container.Filter filtro = new Compare.Equal("nomeDoppio", false);
+        return (ArrayList<Nome>) AQuery.getLista(Nome.class, filtro);
     }// end of method
 
     @Override
@@ -150,6 +176,15 @@ public class Nome extends BaseEntity {
 
     public void setPrincipale(boolean principale) {
         this.principale = principale;
+    }//end of setter method
+
+
+    public boolean isNomeDoppio() {
+        return nomeDoppio;
+    }// end of getter method
+
+    public void setNomeDoppio(boolean nomeDoppio) {
+        this.nomeDoppio = nomeDoppio;
     }//end of setter method
 
     public Nome getRiferimento() {

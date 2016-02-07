@@ -148,6 +148,10 @@ public class BioForm extends ModuleForm {
         field.setWidth(LAR_CAMPO4);
         layout.addComponent(getField(Bio_.didascaliaAnnoMorto));
 
+        field = getField(Bio_.didascaliaListe.getName());
+        field.setWidth(LAR_CAMPO4);
+        layout.addComponent(getField(Bio_.didascaliaListe));
+
         return layout;
     }// end of method
 

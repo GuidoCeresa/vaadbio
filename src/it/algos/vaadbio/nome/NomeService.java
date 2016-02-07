@@ -2,8 +2,14 @@ package it.algos.vaadbio.nome;
 
 import it.algos.vaad.wiki.Api;
 import it.algos.vaadbio.lib.CostBio;
+import it.algos.vaadbio.lib.LibBio;
+import it.algos.webbase.web.lib.LibArray;
+import it.algos.webbase.web.lib.LibText;
+import it.algos.webbase.web.lib.LibTime;
 
+import java.text.Normalizer;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Gestione dei nomi (antroponimi)
@@ -40,36 +46,73 @@ import java.util.ArrayList;
  * Jean-Jacques deve rimanere, Jean Baptiste no
  */
 public abstract class NomeService {
+
     private static String TITOLO_LISTA_NOMI_DOPPI = "Progetto:Antroponimi/Nomi doppi";
+
+    private static String[] TAG_INI_NUMERI = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "0"};
+    private static String[] TAG_INI_CHAR = {"*", "&", "!", "&nbsp", ".", "(", ",", "?", "{", "[", "<", "-"};
+    private static String[] TAG_INI_APICI = {"‘", "‛", "\"", "''"};
+    private static String[] TAG_INI_NOMI = {"A.", "DJ", "J."};
+    private static String[] TAG_ALL_ARABI = {"Abd", "'Abd", "ʿAbd", "Abu", "'Abu", "Abū", "'Abū", "Ibn", "'Ibn", "ʿAbd"};
+    private static String[] TAG_ALL_TITOLI = {"Lady", "Sir", "Maestro", "De", "Van", "Della", "dos"};
+    private static String[] TAG_ALL_NOMI = {"Gian"};
+    private static String[] TAG_ALL_NOMI_CINESI = {"Zhang"};
+    private static String[] TAG_ALL_COGNOMI = {"d'Asburgo", "d'Asburgo-Lorena", "d'Este", "da Silva", "di Borbone", "O'Brien", "Knight"};
 
     /**
      * costruisce i records
      */
     public static void costruisce() {
 //        cancellaTutto()
-        aggiunge();
+//        aggiunge();
 //
 //        log.info 'Fine costruzione antroponimi'
+    }// fine del metodo
+
+
+    /**
+     * Elabora i records
+     */
+    public static void elabora() {
+        ArrayList<Nome> listaNomiCompleta;
+        String nomeValido;
+
+        //--recupera una lista di tutti i nomi NON doppi
+        listaNomiCompleta = Nome.findAllNotDoppi();
+
+        for (Nome nome : listaNomiCompleta) {
+            nomeValido = check(nome.getNome());
+            if (!nomeValido.equals(nome.getNome())) {
+                if (nomeValido.equals(CostBio.VUOTO)) {
+                    nome.delete();
+                } else {
+                    nome.setNome(nomeValido);
+                    nome.save();
+                }// end of if/else cycle
+            }// fine del blocco if
+        }// end of for cycle
+
     }// fine del metodo
 
     /**
      * Aggiunta nuovi records
      * Vengono creati nuovi records per i nomi presenti nelle voci (bioGrails) che superano la soglia minima
      */
-    private static void aggiunge() {
+    public static void aggiunge() {
         ArrayList<String> listaNomiCompleta;
+        List alfa;
         ArrayList<String> listaNomiUnici;
 
         listaNomiDoppi();
 
         //--recupera una lista 'grezza' di tutti i nomi
-//        listaNomiCompleta = creaListaNomiCompleta();
+        listaNomiCompleta = creaListaNomiCompleta();
 
         //--elimina tutto ciò che compare oltre al nome
-//        listaNomiUnici = elaboraNomiUnici(listaNomiCompleta);
+        listaNomiUnici = elaboraAllNomiUnici(listaNomiCompleta);
 
-        //--(ri)costruisce i records di antroponimi
-//        spazzolaPacchetto(listaNomiUnici);
+        //--(ri)costruisce i records
+        spazzolaAllNomiUnici(listaNomiUnici);
 
         //--aggiunge i riferimenti alla voce principale di ogni record
 //        elaboraVocePrincipale();
@@ -116,7 +159,7 @@ public abstract class NomeService {
 
         if (nomiDoppi.length > 0) {
             nomeTxt = nomiDoppi[0];
-            nome = elaboraSingolo(nomeTxt);
+            nome = elaboraSingolo(nomeTxt, true);
             if (nomiDoppi.length > 1) {
                 for (int k = 1; k < nomiDoppi.length; k++) {
                     elaboraSingolo(nomiDoppi[k], nome);
@@ -131,18 +174,20 @@ public abstract class NomeService {
      *
      * @param nomeTxt nome della persona
      */
-    private static Nome elaboraSingolo(String nomeTxt) {
+    private static Nome elaboraSingolo(String nomeTxt, boolean nomeDoppio) {
         Nome nome = Nome.findByNome(nomeTxt);
 
         if (nome == null) {
             nome = new Nome(nomeTxt);
             nome.setPrincipale(true);
+            nome.setNomeDoppio(nomeDoppio);
             nome.setRiferimento(nome);
             nome.save();
         }// end of if cycle
 
         return nome;
     }// fine del metodo
+
 
     /**
      * Crea (controllando che non esista già) un record secondario di Nome
@@ -154,11 +199,233 @@ public abstract class NomeService {
         Nome nome = Nome.findByNome(nomeTxt);
 
         if (nome == null) {
-            nome = new Nome(nomeTxt, false, riferimento);
+            nome = new Nome(nomeTxt, false, true, riferimento);
             nome.save();
         }// end of if cycle
 
         return nome;
+    }// fine del metodo
+
+    /**
+     * Recupera una lista 'grezza' di tutti i nomi
+     */
+    private static ArrayList<String> creaListaNomiCompleta() {
+        return LibBio.queryFindDistinctStx("Bio", "nome");
+    }// fine del metodo
+
+    /**
+     * Elabora tutti i nomi
+     * Costruisce una lista di nomi ''validi' e 'unici'
+     * Devo ricontrollare l'unicità, perché prendendo solo il primo nome
+     * ''Marco Filiberto'' e ''Marco Giovanni'' risultano sempre come ''Marco''
+     */
+    public static ArrayList<String> elaboraAllNomiUnici(ArrayList<String> listaNomiCompleta) {
+        ArrayList<String> listaNomiUnici = new ArrayList<String>();
+        String nomeValido;
+
+        //--costruisce una lista di nomi 'unici'
+        for (String nomeDaControllare : listaNomiCompleta) {
+            nomeValido = check(nomeDaControllare);
+            if (!nomeValido.equals(CostBio.VUOTO)) {
+                if (!listaNomiUnici.contains(nomeValido)) {
+                    listaNomiUnici.add(nomeValido);
+                }// fine del blocco if
+            }// fine del blocco if
+        }// end of for cycle
+
+        return listaNomiUnici;
+    }// fine del metodo
+
+
+    /**
+     * Elabora il singolo nome
+     * <p>
+     * Prima regola: considera solo i nomi più lunghi di 2 caratteri
+     * Seconda regola: usa (secondo preferenze) i nomi singoli; Maria e Maria Cristina sono uguali
+     * Terza regola: elimina parti iniziali con caratteri/prefissi non accettati -> LibBio.checkNome()
+     * Quarta regola: elimina <ref>< finali e testo successivo
+     * <p>
+     * Elimina caratteri 'anomali' dal nome
+     * Gian, Lady, Sir, Maestro, Abd, 'Abd, Abu, Abū, Ibn, DJ, e J.
+     */
+    private static String check(String nomeIn) {
+        String nomeOut = CostBio.VUOTO;
+        ArrayList listaTagContenuto = new ArrayList();
+        ArrayList listaTagIniziali = new ArrayList();
+        int pos;
+        String tag = CostBio.VUOTO;
+        boolean usaNomeSingolo = true;
+        listaTagContenuto.add("(");
+
+
+        //--prima regola
+        if (nomeIn.length() < 3) {
+            return nomeOut;
+        } else {
+            nomeOut = nomeIn.trim();
+        }// end of if/else cycle
+
+        //--seconda regola
+        if (usaNomeSingolo) {
+            if (nomeOut.contains(CostBio.SPAZIO)) {
+                pos = nomeOut.indexOf(CostBio.SPAZIO);
+                nomeOut = nomeOut.substring(0, pos);
+                nomeOut = nomeOut.trim();
+            }// fine del blocco if
+        }// fine del blocco if
+
+        //--terza regola
+        if (!checkNome(nomeOut)) {
+            nomeOut = CostBio.VUOTO;
+        }// fine del blocco if
+
+        //--quarta regola
+        nomeOut = LibBio.fixCampo(nomeOut);
+
+//            listaTagContenuto?.each {
+//                tag = (String) it
+//                if (nomeOut.contains(tag)) {
+//                    pos = nomeOut.indexOf((String) it)
+//                    nomeOut = nomeOut.substring(0, pos)
+//                    nomeOut = nomeOut.trim()
+//                    def stip
+//                }// fine del blocco if
+//                def stop
+//            } // fine del ciclo each
+//
+//            nomeOut = LibTesto.primaMaiuscola(nomeOut)
+//
+//            if (Pref.getBool(LibBio.USA_ACCENTI_NORMALIZZATI, false)) {
+//                nomeOut = Normalizer.normalize(nomeOut, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "")
+//            }// fine del blocco if
+//
+//        }// fine del blocco if
+
+        //--prima regola ricontrollata dopo l'uso del nome singolo
+        if (nomeOut.length() < 3) {
+            nomeOut = CostBio.VUOTO;
+        }// fine del blocco if
+
+        //--per sicurezza in caso di nomi strani
+        nomeOut = LibText.primaMaiuscola(nomeOut);
+
+        return nomeOut;
+    }// fine del metodo
+
+
+    /**
+     * Spazzola la lista di nomi
+     */
+    public static void spazzolaAllNomiUnici(ArrayList<String> listaAllNomiUnici) {
+
+        for (String nome : listaAllNomiUnici) {
+            spazzolaNome(nome);
+        }// end of for cycle
+
+    }// fine del metodo
+
+
+    /**
+     * Controlla il singolo nome
+     * Crea un record per ogni nome non ancora esistente
+     * Registra anche i nomi accentati ma col riferimento al record del nome normalizzato (senza accenti)
+     */
+    private static void spazzolaNome(String nomeConEventualeAccento) {
+
+        if (!nomeConEventualeAccento.equals(CostBio.VUOTO)) {
+            if (nomeSenzaAccento(nomeConEventualeAccento)) {
+                elaboraSingolo(nomeConEventualeAccento, false);
+            }// fine del blocco if-else
+        }// fine del blocco if
+    }// fine del metodo
+
+
+    /**
+     * Controlla eventuali accenti del nome
+     */
+    private static boolean nomeSenzaAccento(String nomeConEventualeAccento) {
+        boolean senzaAccento = false;
+        String nomeNormalizzato;
+
+        nomeNormalizzato = normalizza(nomeConEventualeAccento);
+        if (nomeNormalizzato.equals(nomeConEventualeAccento)) {
+            senzaAccento = true;
+        }// fine del blocco if
+
+        return senzaAccento;
+    }// fine del metodo
+
+    /**
+     * Elimina eventuali accenti dal nome
+     */
+    private static String normalizza(String nomeConEventualeAccento) {
+        String nomeNormalizzato = nomeConEventualeAccento;
+
+        if (!nomeConEventualeAccento.equals(CostBio.VUOTO)) {
+            if (false) {
+                nomeNormalizzato = Normalizer.normalize(nomeConEventualeAccento, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
+            }// fine del blocco if
+        }// fine del blocco if
+
+        return nomeNormalizzato;
+    }// fine del metodo
+
+
+    /**
+     * Controllo di validità di un nome <br>
+     * Elimina parti iniziali con caratteri/prefissi non accettati <br>
+     * Elimina sempre il nome esattamente uguale al tag-iniziale o al tag-all <br>
+     * Elimina sempre il nome che inizia col tag-iniziale <br>
+     * Elimina il nome che inizia col tag-all se il tag è seguito da spazio <br>
+     */
+    public static boolean checkNome(String nome) {
+        boolean accettato = true;
+        ArrayList<String> tagIniziale = sumTag(TAG_INI_NUMERI, TAG_INI_CHAR, TAG_INI_APICI, TAG_INI_NOMI);
+        ArrayList<String> tagAll = sumTag(TAG_ALL_ARABI, TAG_ALL_TITOLI, TAG_ALL_NOMI, TAG_ALL_NOMI_CINESI, TAG_ALL_COGNOMI);
+        ArrayList<String> tagSomma = LibArray.somma(tagIniziale, tagAll);
+        String spazio = CostBio.SPAZIO;
+
+        for (String tag : tagSomma) {
+            if (nome.equals(tag)) {
+                accettato = false;
+            }// fine del blocco if
+        }// end of for cycle
+
+        if (accettato) {
+            for (String tag : tagIniziale) {
+                if (nome.startsWith(tag)) {
+                    accettato = false;
+                }// fine del blocco if
+            }// end of for cycle
+        }// fine del blocco if
+
+        if (accettato) {
+            for (String tag : tagAll) {
+                if (nome.startsWith(tag + spazio)) {
+                    accettato = false;
+                }// fine del blocco if
+            }// end of for cycle
+        }// fine del blocco if
+
+        return accettato;
+    }// fine del metodo
+
+    /**
+     * Crea una lista dalle matrici
+     */
+    public static ArrayList<String> sumTag(String[]... matrici) {
+        ArrayList<String> lista = null;
+
+        if (matrici != null && matrici.length > 0) {
+            lista = new ArrayList<>();
+            for (String[] matrice : matrici) {
+                for (String singleTag : matrice) {
+                    lista.add(singleTag);
+                }// end of for cycle
+            }// end of for cycle
+        }// end of if cycle
+
+        return lista;
     }// fine del metodo
 
 }//end of class

@@ -45,7 +45,7 @@ public class NomeTable extends ModuleTable {
     @Override
     @SuppressWarnings("rawtypes")
     protected Object[] getDisplayColumns() {
-        return new Object[]{Nome_.nome, Nome_.principale, colLink};
+        return new Object[]{Nome_.nome, Nome_.principale, Nome_.nomeDoppio, colLink};
     }// end of method
 
     /**

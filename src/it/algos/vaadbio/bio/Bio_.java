@@ -4,6 +4,7 @@ import it.algos.vaadbio.anno.Anno;
 import it.algos.vaadbio.attivita.Attivita;
 import it.algos.vaadbio.giorno.Giorno;
 import it.algos.vaadbio.nazionalita.Nazionalita;
+import it.algos.vaadbio.nome.Nome;
 import it.algos.webbase.web.entity.BaseEntity_;
 import it.algos.webbase.web.field.TextArea;
 
@@ -102,10 +103,13 @@ public class Bio_ extends BaseEntity_ {
     public static volatile SingularAttribute<Bio, Attivita> attivita3Punta;
     public static volatile SingularAttribute<Bio, Nazionalita> nazionalitaPunta;
 
+    public static volatile SingularAttribute<Bio, Nome> nomePunta;
+
     public static volatile SingularAttribute<Bio, String> didascaliaGiornoNato;
     public static volatile SingularAttribute<Bio, String> didascaliaGiornoMorto;
     public static volatile SingularAttribute<Bio, String> didascaliaAnnoNato;
     public static volatile SingularAttribute<Bio, String> didascaliaAnnoMorto;
+    public static volatile SingularAttribute<Bio, String> didascaliaListe;
 
 
 }// end of entity class

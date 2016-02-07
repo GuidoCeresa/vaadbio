@@ -62,12 +62,24 @@ public abstract class Esegue {
         NomeService.listaNomiDoppi();
     } // fine del metodo
 
+
+
     /**
-     * Upload nomi.
+     * Aggiunta nomi.
      */
-    public static void uploadNomi() {
-        NomeService.costruisce();
+    public static void aggiungeNomi() {
+        NomeService.listaNomiDoppi();
+        NomeService.aggiunge();
     } // fine del metodo
+
+
+    /**
+     * Elaborazione nomi.
+     */
+    public static void elaboraNomi() {
+        NomeService.elabora();
+    } // fine del metodo
+
 
     /**
      * Crea tutte le pagine statistiche previste

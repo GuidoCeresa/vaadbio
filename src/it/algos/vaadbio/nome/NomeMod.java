@@ -60,7 +60,8 @@ public class NomeMod extends ModulePop {
     @Override
     public void addSottoMenu(MenuBar.MenuItem menuItem) {
         addCommandDownloadDoppi(menuItem);
-        addCommandUpload(menuItem);
+        addCommandAggiorna(menuItem);
+        addCommandElabora(menuItem);
     }// end of method
 
     /**
@@ -69,7 +70,7 @@ public class NomeMod extends ModulePop {
      * @param menuItem a cui agganciare il bottone/item
      */
     private void addCommandDownloadDoppi(MenuBar.MenuItem menuItem) {
-        menuItem.addItem("Download", FontAwesome.BEER, new MenuBar.Command() {
+        menuItem.addItem("Nomi doppi", FontAwesome.BEER, new MenuBar.Command() {
             public void menuSelected(MenuBar.MenuItem selectedItem) {
                 esegueDownloadDoppi();
             }// end of method
@@ -77,18 +78,33 @@ public class NomeMod extends ModulePop {
     }// end of method
 
 
+
     /**
-     * Comando bottone/item upload
+     * Comando bottone/item elabora i records esistenti
      *
      * @param menuItem a cui agganciare il bottone/item
      */
-    private void addCommandUpload(MenuBar.MenuItem menuItem) {
-        menuItem.addItem("Upload", FontAwesome.BEER, new MenuBar.Command() {
+    private void addCommandAggiorna(MenuBar.MenuItem menuItem) {
+        menuItem.addItem("Aggiorna", FontAwesome.BEER, new MenuBar.Command() {
             public void menuSelected(MenuBar.MenuItem selectedItem) {
-                esegueUpload();
+                esegueAggiorna();
             }// end of method
         });// end of anonymous class
     }// end of method
+
+    /**
+     * Comando bottone/item elabora i records esistenti
+     *
+     * @param menuItem a cui agganciare il bottone/item
+     */
+    private void addCommandElabora(MenuBar.MenuItem menuItem) {
+        menuItem.addItem("Elabora", FontAwesome.BEER, new MenuBar.Command() {
+            public void menuSelected(MenuBar.MenuItem selectedItem) {
+                esegueElabora();
+            }// end of method
+        });// end of anonymous class
+    }// end of method
+
 
     /**
      * Esegue l'aggiornamento della lista dei nomi doppi
@@ -97,11 +113,19 @@ public class NomeMod extends ModulePop {
         Esegue.esegueDownloadDoppi();
     }// end of method
 
+
     /**
-     * Esegue l'upload delle pagine
+     * Esegue l'aggiunta dei nuovi records
      */
-    protected void esegueUpload() {
-        Esegue.uploadNomi();
+    protected void esegueAggiorna() {
+        Esegue.aggiungeNomi();
+    }// end of method
+
+    /**
+     * Esegue l'elaborazione dei records esistenti
+     */
+    protected void esegueElabora() {
+        Esegue.elaboraNomi();
     }// end of method
 
 
