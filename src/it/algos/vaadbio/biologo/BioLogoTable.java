@@ -44,7 +44,7 @@ public class BioLogoTable extends ModuleTable {
      */
     @Override
     public void itemClick(ItemClickEvent itemClickEvent) {
-        BaseEntity istanza = getIstanzaClickOnColumn(itemClickEvent, COLUMN_DESC);
+        BaseEntity istanza = getBeanClickOnColumn(itemClickEvent, COLUMN_DESC);
 
         if (istanza != null && istanza instanceof Log) {
             clickOnDescrizione((Log) istanza);
