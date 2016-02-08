@@ -1,6 +1,10 @@
+import it.algos.vaadbio.anno.Anno;
+import it.algos.vaadbio.attivita.Attivita;
 import it.algos.vaadbio.bio.Bio;
-import it.algos.vaadbio.didascalia.DidascaliaNatiGiorno;
-import it.algos.vaadbio.lib.LibBio;
+import it.algos.vaadbio.didascalia.*;
+import it.algos.vaadbio.giorno.Giorno;
+import it.algos.vaadbio.nazionalita.Nazionalita;
+import it.algos.vaadbio.nome.Nome;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -11,32 +15,148 @@ import org.junit.Test;
 public class DidascaliaTest {
 
     private static String TITOLO_VOCE_BIOGRAFICA = "Silvio Spaventa";
+    private String luogoNascita = "Bomba";
+    private String luogoMorte = "Roma";
     private Bio bio;
+    private Giorno giornoNatoPunta;
+    private Giorno giornoMortoPunta;
+    private Anno annoNatoPunta;
+    private Anno annoMortoPunta;
+    private Attivita attivitaPunta;
+    private Attivita attivita2Punta;
+    private Attivita attivita3Punta;
+    private Nazionalita nazionalitaPunta;
+    private Nome nomePunta;
 
     @Before
     @SuppressWarnings("all")
     // Setup logic here
     public void setUp() {
+        giornoNatoPunta = new Giorno("maggio", "12 maggio", "12 maggio", 132, 133);
+        giornoMortoPunta = new Giorno("giugno", "20 giugno", "20 giugno", 171, 172);
+        annoNatoPunta = new Anno("1822", "XIX secolo", 3822);
+        annoMortoPunta = new Anno("1893", "XIX secolo", 3893);
+        attivitaPunta = new Attivita("politico", "politici");
+        attivita2Punta = new Attivita("patriota", "patrioti");
+        nazionalitaPunta = new Nazionalita("italiano", "italiani");
+        nomePunta = new Nome("Silvio", true, false, null);
         bio = new Bio();
         bio.setTitle("Silvio Spaventa");
         bio.setNome("Silvio");
         bio.setCognome("Spaventa");
-        bio.setLuogoNascita("Bomba");
+        bio.setLuogoNascita(luogoNascita);
         bio.setLuogoNascitaLink("Bomba (Italia)");
-        bio.setGiornoMeseNascita("12 maggio");
-        bio.setAnnoNascita("1822");
-        bio.setLuogoMorte("Roma");
-        bio.setGiornoMeseMorte("20 giugno");
-        bio.setAnnoMorte("1893");
-        bio.setAttivita("politico");
-        bio.setAttivita2("patriota");
-        bio.setAttivita("italiano");
+        bio.setGiornoNatoPunta(giornoNatoPunta);
+        bio.setAnnoNatoPunta(annoNatoPunta);
+        bio.setLuogoMorte(luogoMorte);
+        bio.setGiornoMortoPunta(giornoMortoPunta);
+        bio.setAnnoMortoPunta(annoMortoPunta);
+        bio.setAttivitaPunta(attivitaPunta);
+        bio.setAttivita2Punta(attivita2Punta);
+        bio.setNazionalitaPunta(nazionalitaPunta);
+
+        System.out.println();
     } // fine del metodo iniziale
 
     @Test
     public void didascaliaGiornoNato() {
         String didascaliaGiornoNato = new DidascaliaNatiGiorno(bio).getTesto();
-        System.out.println(didascaliaGiornoNato);
+        System.out.println("didascaliaGiornoNato: " + didascaliaGiornoNato);
+    }// end of single test
+
+    @Test
+    public void didascaliaGiornoMorto() {
+        String didascaliaGiornoMorto = new DidascaliaMortiGiorno(bio).getTesto();
+        System.out.println("didascaliaGiornoMorto: " + didascaliaGiornoMorto);
+    }// end of single test
+
+    @Test
+    public void didascaliaAnnoNato() {
+        String didascaliaAnnoNato = new DidascaliaNatiAnno(bio).getTesto();
+        System.out.println("didascaliaAnnoNato: " + didascaliaAnnoNato);
+    }// end of single test
+
+    @Test
+    public void didascaliaAnnoMorto() {
+        String didascaliaAnnoMorto = new DidascaliaMortiAnno(bio).getTesto();
+        System.out.println("didascaliaGiornoNato: " + didascaliaAnnoMorto);
+    }// end of single test
+
+    @Test
+    public void didascaliaListe() {
+        String didascaliaListe;
+
+        didascaliaListe = getDidascalia(false, false, false, false);
+        System.out.println(didascaliaListe);
+        didascaliaListe = getDidascalia(true, false, false, false);
+        System.out.println(didascaliaListe);
+
+        didascaliaListe = getDidascalia(false, true, false, false);
+        System.out.println(didascaliaListe);
+        didascaliaListe = getDidascalia(true, true, false, false);
+        System.out.println(didascaliaListe);
+
+        didascaliaListe = getDidascalia(false, false, true, false);
+        System.out.println(didascaliaListe);
+        didascaliaListe = getDidascalia(true, false, true, false);
+        System.out.println(didascaliaListe);
+
+        didascaliaListe = getDidascalia(false, true, true, false);
+        System.out.println(didascaliaListe);
+        didascaliaListe = getDidascalia(true, true, true, false);
+        System.out.println(didascaliaListe);
+
+        didascaliaListe = getDidascalia(false, false, false, true);
+        System.out.println(didascaliaListe);
+        didascaliaListe = getDidascalia(true, false, false, true);
+        System.out.println(didascaliaListe);
+
+        didascaliaListe = getDidascalia(false, true, false, true);
+        System.out.println(didascaliaListe);
+        didascaliaListe = getDidascalia(true, true, false, true);
+        System.out.println(didascaliaListe);
+
+        didascaliaListe = getDidascalia(false, false, true, true);
+        System.out.println(didascaliaListe);
+        didascaliaListe = getDidascalia(true, false, true, true);
+        System.out.println(didascaliaListe);
+
+        didascaliaListe = getDidascalia(false, true, true, true);
+        System.out.println(didascaliaListe);
+        didascaliaListe = getDidascalia(true, true, true, true);
+        System.out.println(didascaliaListe);
+
+
+    }// end of single test
+
+
+    private String getDidascalia(boolean isLuogoNascita, boolean isAnnoNascita, boolean isLuogoMorte, boolean isAnnoMorte) {
+
+        if (isLuogoNascita) {
+            bio.setLuogoNascita(luogoNascita);
+        } else {
+            bio.setLuogoNascita("");
+        }// end of if/else cycle
+
+        if (isAnnoNascita) {
+            bio.setAnnoNatoPunta(annoNatoPunta);
+        } else {
+            bio.setAnnoNatoPunta(null);
+        }// end of if/else cycle
+
+        if (isLuogoMorte) {
+            bio.setLuogoMorte(luogoMorte);
+        } else {
+            bio.setLuogoMorte("");
+        }// end of if/else cycle
+
+        if (isAnnoMorte) {
+            bio.setAnnoMortoPunta(annoMortoPunta);
+        } else {
+            bio.setAnnoMortoPunta(null);
+        }// end of if/else cycle
+
+        return new DidascaliaListe(bio).getTesto();
     }// end of single test
 
 }// end of test class

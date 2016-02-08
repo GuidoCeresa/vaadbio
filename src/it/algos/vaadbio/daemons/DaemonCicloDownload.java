@@ -2,6 +2,8 @@ package it.algos.vaadbio.daemons;
 
 import it.algos.vaad.VaadApp;
 import it.algos.vaad.wiki.WikiLogin;
+import it.algos.vaadbio.bio.Bio;
+import it.algos.vaadbio.ciclo.CicloUpdate;
 import it.algos.vaadbio.esegue.Esegue;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.webbase.domain.log.Log;
@@ -21,6 +23,7 @@ public class DaemonCicloDownload extends Scheduler {
 
     public static final String DAEMON_NAME = "daemonCicloDownload";
     private static DaemonCicloDownload instance;
+    private final static int NUMERO_VOCI_MINIMO_PER_OPERATIVITA_NORMALE = 296000;
 
 
     private DaemonCicloDownload() {
@@ -81,8 +84,15 @@ public class DaemonCicloDownload extends Scheduler {
             }// end of if cycle
 
             if (Pref.getBool(CostBio.USA_CRONO_DOWNLOAD, true)) {
-                Esegue.cicloCompleto();
+                Esegue.cicloDownload();
             }// fine del blocco if
+
+            if (Bio.count() > NUMERO_VOCI_MINIMO_PER_OPERATIVITA_NORMALE) {
+                Esegue.cicloUpdate();
+                Esegue.cicloElabora();
+                Esegue.cicloUpload();
+            }// end of if cycle
+
         }// end of method
     }// end of inner class
 

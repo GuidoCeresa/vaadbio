@@ -36,8 +36,6 @@ public class CicloDownload {
     public final static String TAG_BIO = "BioBot";
     public final static String TAG_CAT_DEBUG = "Nati nel 1980";
 
-    private final static int NUMERO_VOCI_MINIMO_PER_OPERATIVITA_NORMALE = 295000;
-
     //--container statico per il database
     protected static EntityManager MANAGER = null;
 
@@ -121,12 +119,6 @@ public class CicloDownload {
 
         // Cancella tutti i records non più presenti nella categoria
         new CicloDelete(listaEccedenti);
-
-        // Aggiorna tutti i records esistenti
-        if (listaEsistentiDataBase != null && listaEsistentiDataBase.size() > NUMERO_VOCI_MINIMO_PER_OPERATIVITA_NORMALE) {
-            new CicloUpdate();
-        }// end of if cycle
-
     }// end of method
 
 

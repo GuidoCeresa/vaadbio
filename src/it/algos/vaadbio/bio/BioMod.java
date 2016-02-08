@@ -209,30 +209,6 @@ public class BioMod extends ModulePop {
     }// end of method
 
 
-//    /**
-//     * Create the MenuBar Item for this module
-//     * <p>
-//     * Invocato dal metodo AlgosUI.creaMenu()
-//     * PUO essere sovrascritto dalla sottoclasse
-//     *
-//     * @param menuBar     a cui agganciare il menuitem
-//     * @param placeholder in cui visualizzare il modulo
-//     * @return menuItem appena creato
-//     */
-//    @Override
-//    public MenuBar.MenuItem createMenuItem(MenuBar menuBar, NavPlaceholder placeholder) {
-//        MenuBar.MenuItem menuItem = super.createMenuItem(menuBar, placeholder, FontAwesome.TASKS);
-//
-//        addCommandCicloDown(menuItem);
-//        addCommandCicloUpdate(menuItem);
-//        addCommandCicloElabora(menuItem);
-//        addCommandDownloadDialog(menuItem);
-//        addCommandElabora(menuItem);
-//        addCommandUpload(menuItem);
-//
-//        return menuItem;
-//    }// end of method
-
     /**
      * Crea i sottomenu specifici del modulo
      * <p>
@@ -326,7 +302,7 @@ public class BioMod extends ModulePop {
                                 @Override
                                 public void onClose(ConfirmDialog dialog, boolean confirmed) {
                                     if (confirmed) {
-                                        new CicloDownload();
+                                        Esegue.cicloDownload();
                                     }// end of if cycle
                                 }// end of inner method
                             });// end of anonymous inner class
@@ -337,7 +313,7 @@ public class BioMod extends ModulePop {
                         Notification.show("Avviso", "Devi prima entrare nel modulo Bio per eseguire questo comando", Notification.Type.WARNING_MESSAGE);
                     }// end of if/else cycle
                 } else {
-                    new CicloDownload();
+                    Esegue.cicloDownload();
                 }// fine del blocco if-else
             }// end of method
         });// end of anonymous class
@@ -394,7 +370,7 @@ public class BioMod extends ModulePop {
                                 @Override
                                 public void onClose(ConfirmDialog dialog, boolean confirmed) {
                                     if (confirmed) {
-                                        new CicloUpdate();
+                                        Esegue.cicloUpdate();
                                     }// end of if cycle
                                 }// end of inner method
                             });// end of anonymous inner class
@@ -405,7 +381,7 @@ public class BioMod extends ModulePop {
                         Notification.show("Avviso", "Devi prima entrare nel modulo Bio per eseguire questo comando", Notification.Type.WARNING_MESSAGE);
                     }// end of if/else cycle
                 } else {
-                    new CicloDownload();
+                    Esegue.cicloUpdate();
                 }// fine del blocco if-else
             }// end of method
         });// end of anonymous class
@@ -422,7 +398,7 @@ public class BioMod extends ModulePop {
             public void menuSelected(MenuBar.MenuItem selectedItem) {
                 boolean usaDialoghi = Pref.getBool(CostBio.USA_DIALOGHI_CONFERMA, true);
                 boolean usaLimite = Pref.getBool(CostBio.USA_LIMITE_ELABORA, false);
-                boolean usaLog = Pref.getBool(CostBio.USA_LOG_UPLOAD_ELABORATA, false);
+                boolean usaLog = Pref.getBool(CostBio.USA_LOG_ELABORA, false);
                 boolean usaUpdate = Pref.getBool(CostBio.USA_UPLOAD_ELABORATA, false);
                 if (usaDialoghi) {
                     int maxElabora = Pref.getInt(CostBio.MAX_ELABORA, 1000);
@@ -447,7 +423,7 @@ public class BioMod extends ModulePop {
                                 @Override
                                 public void onClose(ConfirmDialog dialog, boolean confirmed) {
                                     if (confirmed) {
-                                        new CicloElabora();
+                                        Esegue.cicloElabora();
                                     }// end of if cycle
                                 }// end of inner method
                             });// end of anonymous inner class
@@ -458,7 +434,7 @@ public class BioMod extends ModulePop {
                         Notification.show("Avviso", "Devi prima entrare nel modulo Bio per eseguire questo comando", Notification.Type.WARNING_MESSAGE);
                     }// end of if/else cycle
                 } else {
-                    new CicloElabora();
+                    Esegue.cicloElabora();
                 }// fine del blocco if-else
             }// end of method
         });// end of anonymous class

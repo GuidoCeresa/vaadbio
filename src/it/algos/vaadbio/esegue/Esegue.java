@@ -1,6 +1,9 @@
 package it.algos.vaadbio.esegue;
 
+import it.algos.vaadbio.bio.Bio;
 import it.algos.vaadbio.ciclo.CicloDownload;
+import it.algos.vaadbio.ciclo.CicloElabora;
+import it.algos.vaadbio.ciclo.CicloUpdate;
 import it.algos.vaadbio.nome.NomeService;
 import it.algos.vaadbio.statistiche.StatAnni;
 import it.algos.vaadbio.statistiche.StatDidascalieCrono;
@@ -15,13 +18,12 @@ import it.algos.vaadbio.upload.UploadGiorni;
  */
 public abstract class Esegue {
 
-
     /**
      * Ciclo completo
      */
     public static void cicloCompleto() {
         cicloDownload();
-        cicloUpload();
+        cicloUpdate();
     } // fine del metodo
 
     /**
@@ -29,6 +31,21 @@ public abstract class Esegue {
      */
     public static void cicloDownload() {
         new CicloDownload();
+    } // fine del metodo
+
+    /**
+     * Aggiorna tutti i records esistenti
+     */
+    public static void cicloUpdate() {
+        new CicloUpdate();
+    } // fine del metodo
+
+
+    /**
+     * Ciclo di elaborazione per tutte (dipende dal flag) pagine
+     */
+    public static void cicloElabora() {
+        new CicloElabora();
     } // fine del metodo
 
     /**
@@ -61,7 +78,6 @@ public abstract class Esegue {
     public static void esegueDownloadDoppi() {
         NomeService.listaNomiDoppi();
     } // fine del metodo
-
 
 
     /**

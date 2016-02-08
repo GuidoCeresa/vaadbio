@@ -15,6 +15,9 @@ import it.algos.vaadbio.lib.CostBio;
  */
 public abstract class Didascalia {
 
+    private static String TAG_VIRGOLA = "," + CostBio.SPAZIO;
+    private static String TAG_NATO = "n.";
+    private static String TAG_MORTO = "†";
 
     protected String nome = CostBio.VUOTO;
     protected String cognome = CostBio.VUOTO;
@@ -55,9 +58,6 @@ public abstract class Didascalia {
         this.recuperaDatiCrono(bio);
         this.recuperaDatiLocalita(bio);
         this.recuperaDatiAttNaz(bio);
-
-//        this.regolaOrdineAlfabetico();
-//        this.regolaOrdineCronologico();
         this.regolaDidascalia();
     }// end of method
 
@@ -112,37 +112,31 @@ public abstract class Didascalia {
      * Recupera dal record di biografia i valori delle località
      */
     private void recuperaDatiLocalita(Bio bio) {
-//            String prefix = '<!'
-//            String localitaNato
-//            String localitaMorto
-//
-//            try { // prova ad eseguire il codice
-//                localitaNato = bio.localitaNato
-//                if (localitaNato) {
-//                    if (localitaNato.contains(prefix)) {
-//                        localitaNato = localitaNato.substring(0, localitaNato.indexOf(prefix))
-//                    }// fine del blocco if
-//                    this.localitaNato = localitaNato
-//                }// fine del blocco if
-//            } catch (Exception unErrore) { // intercetta l'errore
-//                if (USA_WARN) {
-//                    log.warn 'manca luogoNascita'
-//                }// fine del blocco if
-//            }// fine del blocco try-catch
-//
-//            try { // prova ad eseguire il codice
-//                localitaMorto = bio.localitaMorto
-//                if (localitaMorto) {
-//                    if (localitaMorto.contains(prefix)) {
-//                        localitaMorto = localitaMorto.substring(0, localitaMorto.indexOf(prefix))
-//                    }// fine del blocco if
-//                }// fine del blocco if
-//                this.localitaMorto = localitaMorto
-//            } catch (Exception unErrore) { // intercetta l'errore
-//                if (USA_WARN) {
-//                    log.warn 'manca luogoMorte'
-//                }// fine del blocco if
-//            }// fine del blocco try-catch
+        String prefix = "<!";
+        String localitaNato;
+        String localitaMorto;
+
+        try { // prova ad eseguire il codice
+            localitaNato = bio.getLuogoNascita();
+            if (!localitaNato.equals(CostBio.VUOTO)) {
+                if (localitaNato.contains(prefix)) {
+                    localitaNato = localitaNato.substring(0, localitaNato.indexOf(prefix));
+                }// fine del blocco if
+                this.localitaNato = localitaNato;
+            }// fine del blocco if
+        } catch (Exception unErrore) { // intercetta l'errore
+        }// fine del blocco try-catch
+
+        try { // prova ad eseguire il codice
+            localitaMorto = bio.getLuogoMorte();
+            if (!localitaMorto.equals(CostBio.VUOTO)) {
+                if (localitaMorto.contains(prefix)) {
+                    localitaMorto = localitaMorto.substring(0, localitaMorto.indexOf(prefix));
+                }// fine del blocco if
+            }// fine del blocco if
+            this.localitaMorto = localitaMorto;
+        } catch (Exception unErrore) { // intercetta l'errore
+        }// fine del blocco try-catch
     }// end of method
 
 
@@ -153,9 +147,6 @@ public abstract class Didascalia {
 
         if (bio.getAttivitaPunta() != null) {
             this.attivita = bio.getAttivitaPunta().getSingolare();
-//            this.attivitaLink = bio.attivitaLink
-//            this.attivita = this.attivitaLink.singolare
-//            this.attivitaPlurale = this.attivitaLink.plurale
         }// fine del blocco if
 
         if (bio.getAttivita2Punta() != null) {
@@ -169,54 +160,6 @@ public abstract class Didascalia {
         if (bio.getNazionalitaPunta() != null) {
             this.nazionalita = bio.getNazionalitaPunta().getSingolare();
         }// fine del blocco if
-
-//        try { // prova ad eseguire il codice
-//            if (bio.attivitaLink) {
-//                this.attivitaLink = bio.attivitaLink
-//                this.attivita = this.attivitaLink.singolare
-//                this.attivitaPlurale = this.attivitaLink.plurale
-//            }// fine del blocco if
-//        } catch (Exception unErrore) { // intercetta l'errore
-//            if (USA_WARN) {
-//                log.warn 'manca attivitaLink'
-//            }// fine del blocco if
-//        }// fine del blocco try-catch
-//
-//        try { // prova ad eseguire il codice
-//            if (bio.attivita2Link) {
-//                this.attivita2Link = bio.attivita2Link
-//                this.attivita2 = this.attivita2Link.singolare
-//                this.attivita2Plurale = this.attivita2Link.plurale
-//            }// fine del blocco if
-//        } catch (Exception unErrore) { // intercetta l'errore
-//            if (USA_WARN) {
-//                log.warn 'manca attivita2Link'
-//            }// fine del blocco if
-//        }// fine del blocco try-catch
-//
-//        try { // prova ad eseguire il codice
-//            if (bio.attivita3Link) {
-//                this.attivita3Link = bio.attivita3Link
-//                this.attivita3 = this.attivita3Link.singolare
-//                this.attivita3Plurale = this.attivita3Link.plurale
-//            }// fine del blocco if
-//        } catch (Exception unErrore) { // intercetta l'errore
-//            if (USA_WARN) {
-//                log.warn 'manca attivita3Link'
-//            }// fine del blocco if
-//        }// fine del blocco try-catch
-//
-//        try { // prova ad eseguire il codice
-//            if (bio.nazionalitaLink) {
-//                this.nazionalitaLink = bio.nazionalitaLink
-//                this.nazionalita = this.nazionalitaLink.singolare
-//                this.nazionalitaPlurale = this.nazionalitaLink.plurale
-//            }// fine del blocco if
-//        } catch (Exception unErrore) { // intercetta l'errore
-//            if (USA_WARN) {
-//                log.warn 'manca nazionalitaLink'
-//            }// fine del blocco if
-//        }// fine del blocco try-catch
 
     }// end of method
 
@@ -237,8 +180,8 @@ public abstract class Didascalia {
 
         // blocco finale (potrebbe non esserci)
         testo += this.getBloccoFinale();
-
     }// end of method
+
 
     /**
      * Costruisce il blocco iniziale (potrebbe non esserci)
@@ -363,7 +306,7 @@ public abstract class Didascalia {
 
         // valore di ritorno
         return attNazDidascalia.trim();
-    }// end of getter method
+    }// end of method
 
     /**
      * Costruisce il blocco finale (potrebbe non esserci)
@@ -373,91 +316,121 @@ public abstract class Didascalia {
      */
     protected String getBloccoFinale() {
         String text = CostBio.VUOTO;
-        String annoNascita = this.annoNascita;
-        String annoMorte = this.annoMorte;
-        String luogoNascita = this.localitaNato;
-        String luogoNascitaLink = CostBio.VUOTO;
-        String luogoMorte = this.localitaMorto;
-        String luogoMorteLink = CostBio.VUOTO;
         String tagParIni = CostBio.SPAZIO + "(";
         String tagParEnd = ")";
-        String tagParVir = "," + CostBio.SPAZIO;
-        String tagParMezzo = CostBio.SPAZIO + "-" + CostBio.SPAZIO;
-        boolean parentesi = false;
-        boolean trattino = false;
-        boolean simboli = false;
-        boolean virgolaNato = false;
-        boolean virgolaMorto = false;
-        String tagAnnoNato = CostBio.PUNTI;
-        String tagAnnoMorto = CostBio.PUNTI;
+        String textNascita = getBloccoFinaleNascita();
+        String textMorte = getBloccoFinaleMorte();
+        boolean isEsisteNascita = !textNascita.equals(CostBio.VUOTO);
+        boolean isEsisteMorte = !textMorte.equals(CostBio.VUOTO);
 
-        //patch @todo da controllare
-        //se il luogo di nascita (mancante) è indicato con 3 puntini (car 8230), li elimino
-        if (luogoNascita.length() == 1) {
-            luogoNascita = CostBio.VUOTO;
-        }// fine del blocco if
-
-        //    //se non c'è ne anno ne luogo di nascita, metto i puntini
-        //    //se non c'è ne anno ne luogo di morte, metto i puntini
-        //    //se manca tutto non visualizzo nemmeno i puntini
-        //    if (tipoDidascalia == DidascaliaTipo.estesa || tipoDidascalia == DidascaliaTipo.estesaSimboli) {
-        //        if (!luogoNascita && !annoNascita) {
-        //            annoNascita = tagAnnoNato
-        //        }// fine del blocco if
-        //        //if (!luogoMorte && !annoMorte) {
-        //        //    annoMorte = tagAnnoMorto
-        //        //}// fine del blocco if
-        //        if (annoNascita.equals(tagAnnoNato) && annoMorte.equals(tagAnnoNato)) {
-        //            annoNascita = ''
-        //            annoMorte = ''
-        //        }// fine del blocco if
-        //    }// fine del blocco if
-
-        // se manca l'anno di nascita
-        // metto i puntini SOLO se esiste l'anno di morte @todo controllare
-        if (annoNascita.equals(CostBio.VUOTO) && !annoMorte.equals(CostBio.VUOTO)) {
-            annoNascita = tagAnnoNato;
-        }// fine del blocco if
-
-        // la parentesi c'è se anche solo uno dei dati è presente
-        if (!luogoNascita.equals(CostBio.VUOTO) || !annoNascita.equals(CostBio.VUOTO) || !luogoMorte.equals(CostBio.VUOTO) || !annoMorte.equals(CostBio.VUOTO)) {
-            parentesi = true;
-        }// fine del blocco if
-
-        // il trattino c'è se è presente un dato della nascita (anno o luogo) ed uno della morte (anno o luogo)
-        if (!luogoNascita.equals(CostBio.VUOTO) && !annoNascita.equals(CostBio.VUOTO) && !luogoMorte.equals(CostBio.VUOTO) || !annoMorte.equals(CostBio.VUOTO)) {
-            trattino = true;
-        }// fine del blocco if
-
-        // i simboli ci sono se c'è solo una data
-        if (!annoNascita.equals(CostBio.VUOTO) || !annoMorte.equals(CostBio.VUOTO)) {
-            simboli = true;
-        }// fine del blocco if
-
-        // la virgolaNato c'è se solo se entrambi i dati di nascita sono presenti
-        if (!luogoNascita.equals(CostBio.VUOTO) && !annoNascita.equals(CostBio.VUOTO)) {
-            virgolaNato = true;
-        }// fine del blocco if
-
-        // la virgolaMorto c'è se solo se entrambi i dati di morte sono presenti
-        if (!luogoMorte.equals(CostBio.VUOTO) && !annoMorte.equals(CostBio.VUOTO)) {
-            virgolaMorto = true;
-        }// fine del blocco if
+        if (isEsisteNascita || isEsisteMorte) {
+        } else {
+            return CostBio.VUOTO;
+        }// end of if/else cycle
 
         // costruisce il blocco finale (potrebbe non esserci)
-        if (!annoMorte.equals(CostBio.VUOTO)) {
-            text = tagParIni + CostBio.TAG_MORTO_CRONO;
-            text += LibWiki.setQuadre(annoMorte);
-            text += tagParEnd;
+        text += tagParIni;
+        if (isEsisteNascita) {
+            text += textNascita;
         }// fine del blocco if
 
-        if (text.equals(tagParIni + tagParEnd)) {
-            text = CostBio.VUOTO;
+        if (isEsisteNascita && isEsisteMorte) {
+            text += CostBio.TAG_SEPARATORE;
+        }// end of if cycle
+
+        if (isEsisteMorte) {
+            text += textMorte;
+        }// fine del blocco if
+        text += tagParEnd;
+
+//        //patch @todo da controllare
+//        //se il luogo di nascita (mancante) è indicato con 3 puntini (car 8230), li elimino
+//        if (luogoNascita.length() == 1) {
+//            luogoNascita = CostBio.VUOTO;
+//        }// fine del blocco if
+//
+////            //se non c'è ne anno ne luogo di nascita, metto i puntini
+////            //se non c'è ne anno ne luogo di morte, metto i puntini
+////            //se manca tutto non visualizzo nemmeno i puntini
+////            if (tipoDidascalia == DidascaliaTipo.estesa || tipoDidascalia == DidascaliaTipo.estesaSimboli) {
+////                if (!luogoNascita && !annoNascita) {
+////                    annoNascita = tagAnnoNato
+////                }// fine del blocco if
+////                //if (!luogoMorte && !annoMorte) {
+////                //    annoMorte = tagAnnoMorto
+////                //}// fine del blocco if
+////                if (annoNascita.equals(tagAnnoNato) && annoMorte.equals(tagAnnoNato)) {
+////                    annoNascita = ''
+////                    annoMorte = ''
+////                }// fine del blocco if
+////            }// fine del blocco if
+//
+//        // se manca l'anno di nascita
+//        // metto i puntini SOLO se esiste l'anno di morte @todo controllare
+////        if (annoNascita.equals(CostBio.VUOTO) && !annoMorte.equals(CostBio.VUOTO)) {
+////            annoNascita = tagAnnoNato;
+////        }// fine del blocco if
+//
+        return text;
+    }// end of method
+
+    /**
+     * Parte nascita del blocco finale (potrebbe non esserci)
+     *
+     * @return testo
+     */
+    private String getBloccoFinaleNascita() {
+        String text = CostBio.VUOTO;
+        boolean isEsisteLocalita = !localitaNato.equals(CostBio.VUOTO);
+        boolean isEsisteNascita = !annoNascita.equals(CostBio.VUOTO);
+
+        if (isEsisteLocalita) {
+            if (!isEsisteNascita) {
+                text += TAG_NATO;
+            }// end of if cycle
+            text += LibWiki.setQuadre(localitaNato);
+        }// fine del blocco if
+
+        if (isEsisteLocalita && isEsisteNascita) {
+            text += TAG_VIRGOLA;
+        }// end of if cycle
+
+        if (isEsisteNascita) {
+            text += TAG_NATO;
+            text += LibWiki.setQuadre(annoNascita);
         }// fine del blocco if
 
         return text;
-    }// end of getter method
+    }// end of method
 
+    /**
+     * Parte morte del blocco finale (potrebbe non esserci)
+     *
+     * @return testo
+     */
+    private String getBloccoFinaleMorte() {
+        String text = CostBio.VUOTO;
+        boolean isEsisteLocalita = !localitaMorto.equals(CostBio.VUOTO);
+        boolean isEsisteMorte = !annoMorte.equals(CostBio.VUOTO);
+
+        if (isEsisteLocalita) {
+            if (!isEsisteMorte) {
+                text += TAG_MORTO;
+            }// end of if cycle
+            text += LibWiki.setQuadre(localitaMorto);
+        }// fine del blocco if
+
+        if (isEsisteLocalita && isEsisteMorte) {
+            text += TAG_VIRGOLA;
+        }// fine del blocco if
+
+        if (isEsisteMorte) {
+            text += TAG_MORTO;
+            text += LibWiki.setQuadre(annoMorte);
+        }// fine del blocco if
+
+        return text;
+    }// end of method
 
     public String getTesto() {
         return testo;
