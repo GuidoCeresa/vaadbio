@@ -18,7 +18,7 @@ public class BioForm extends ModuleForm {
     private static String LAR_CAMPO = "100px";
     private static String LAR_CAMPO2 = "187px";
     private static String LAR_CAMPO3 = "400px";
-    private static String LAR_CAMPO4 = "800px";
+    private static String LAR_CAMPO4 = "900px";
     private static String LAR_WIN = "1200px";
     private static String LAR_TAB = "1000px";
     private static int NUM_COL = 25;

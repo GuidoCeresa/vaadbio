@@ -165,8 +165,9 @@ public abstract class Didascalia {
 
     /**
      * Costruisce il testo della didascalia
+     * Sovrascritto
      */
-    public void regolaDidascalia() {
+    protected void regolaDidascalia() {
         testo = CostBio.VUOTO;
 
         // blocco iniziale (potrebbe non esserci)
@@ -196,7 +197,7 @@ public abstract class Didascalia {
      * Costruisce il nome e cognome (obbligatori)
      * Si usa il titolo della voce direttamente, se non contiene parentesi
      */
-    protected String getNomeCognome() {
+    private String getNomeCognome() {
         String nomeCognome = CostBio.VUOTO;
         String titoloVoce;
         String tagPar = "(";
@@ -236,7 +237,7 @@ public abstract class Didascalia {
      *
      * @return testo
      */
-    protected String getAttNaz() {
+    private String getAttNaz() {
         String attNazDidascalia = CostBio.VUOTO;
         String attivita = this.attivita;
         String attivita2 = this.attivita2;

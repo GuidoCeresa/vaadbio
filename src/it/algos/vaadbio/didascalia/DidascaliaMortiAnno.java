@@ -36,4 +36,16 @@ public class DidascaliaMortiAnno extends DidascaliaMorti {
         return text;
     }// end of method
 
+    /**
+     * Costruisce il testo della didascalia
+     * Sovrascritto
+     *
+     * @Override
+     */
+    protected void regolaDidascalia() {
+        if (!annoMorte.equals(CostBio.VUOTO)) {
+            super.regolaDidascalia();
+        }// fine del blocco if
+    }// end of method
+
 }// end of class

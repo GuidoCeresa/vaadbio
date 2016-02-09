@@ -36,4 +36,17 @@ public class DidascaliaNatiAnno extends DidascaliaNati {
         return text;
     }// end of method
 
+
+    /**
+     * Costruisce il testo della didascalia
+     * Sovrascritto
+     *
+     * @Override
+     */
+    protected void regolaDidascalia() {
+        if (!annoNascita.equals(CostBio.VUOTO)) {
+            super.regolaDidascalia();
+        }// fine del blocco if
+    }// end of method
+
 }// end of class

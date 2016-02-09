@@ -62,29 +62,46 @@ public class DidascaliaTest {
     public void didascaliaGiornoNato() {
         String didascaliaGiornoNato = new DidascaliaNatiGiorno(bio).getTesto();
         System.out.println("didascaliaGiornoNato: " + didascaliaGiornoNato);
+
+        bio.setGiornoNatoPunta(null);
+        didascaliaGiornoNato = new DidascaliaNatiGiorno(bio).getTesto();
+        System.out.println("didascaliaGiornoNato mancante: " + didascaliaGiornoNato);
     }// end of single test
 
     @Test
     public void didascaliaGiornoMorto() {
         String didascaliaGiornoMorto = new DidascaliaMortiGiorno(bio).getTesto();
         System.out.println("didascaliaGiornoMorto: " + didascaliaGiornoMorto);
+
+        bio.setGiornoMortoPunta(null);
+        didascaliaGiornoMorto = new DidascaliaMortiGiorno(bio).getTesto();
+        System.out.println("didascaliaGiornoMorto mancante: " + didascaliaGiornoMorto);
     }// end of single test
 
     @Test
     public void didascaliaAnnoNato() {
         String didascaliaAnnoNato = new DidascaliaNatiAnno(bio).getTesto();
         System.out.println("didascaliaAnnoNato: " + didascaliaAnnoNato);
+
+        bio.setAnnoNatoPunta(null);
+        didascaliaAnnoNato = new DidascaliaNatiAnno(bio).getTesto();
+        System.out.println("didascaliaAnnoNato mancante: " + didascaliaAnnoNato);
     }// end of single test
 
     @Test
     public void didascaliaAnnoMorto() {
         String didascaliaAnnoMorto = new DidascaliaMortiAnno(bio).getTesto();
-        System.out.println("didascaliaGiornoNato: " + didascaliaAnnoMorto);
+        System.out.println("didascaliaAnnoMorto: " + didascaliaAnnoMorto);
+
+        bio.setAnnoMortoPunta(null);
+        didascaliaAnnoMorto = new DidascaliaMortiAnno(bio).getTesto();
+        System.out.println("didascaliaAnnoMorto mancante: " + didascaliaAnnoMorto);
     }// end of single test
 
     @Test
     public void didascaliaListe() {
         String didascaliaListe;
+        System.out.println("16 esempi con tutte le combinazioni di luogoNascita, annoNascita, òuogoMorte, annoMorte");
 
         didascaliaListe = getDidascalia(false, false, false, false);
         System.out.println(didascaliaListe);
