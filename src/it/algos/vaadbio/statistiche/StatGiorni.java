@@ -77,6 +77,8 @@ public class StatGiorni extends Statistiche {
         titoli.add("giorno");
         titoli.add("nati " + LibWiki.setRef(ref1));
         titoli.add("morti " + LibWiki.setRef(ref2));
+        titoli.add("% nati/anno ");
+        titoli.add("% morti/anno ");
 
         return titoli;
     }// fine del metodo
@@ -90,6 +92,8 @@ public class StatGiorni extends Statistiche {
         colonneDestra.add(true);
         colonneDestra.add(false);
         colonneDestra.add(false);
+        colonneDestra.add(true);
+        colonneDestra.add(true);
 
         return colonneDestra;
     }// fine del metodo
@@ -121,6 +125,8 @@ public class StatGiorni extends Statistiche {
         riga.add(nome);
         riga.add(nati);
         riga.add(morti);
+        riga.add("alfa");
+        riga.add("beta");
 
         return riga;
     }// fine del metodo

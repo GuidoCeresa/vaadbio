@@ -62,7 +62,7 @@ public class LibTimeBio {
         int giorniDelMese;
         String nomeMese;
         nomeMese = Mese.getLong(numMese);
-        giorniDelMese = Mese.getGiorni(numMese);
+        giorniDelMese = Mese.getGiorni(numMese,2016);
         final int taglioBisestile = 60;
         String tag;
         String tagUno;

@@ -2,6 +2,7 @@ package it.algos.vaadbio.bio;
 
 import it.algos.vaadbio.anno.Anno;
 import it.algos.vaadbio.attivita.Attivita;
+import it.algos.vaadbio.cognome.Cognome;
 import it.algos.vaadbio.giorno.Giorno;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.lib.LibBio;
@@ -13,10 +14,7 @@ import it.algos.webbase.web.query.AQuery;
 import org.eclipse.persistence.annotations.Index;
 import org.hibernate.validator.constraints.NotEmpty;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -991,4 +989,5 @@ public class Bio extends BaseEntity {
     public void setDidascaliaListe(String didascaliaListe) {
         this.didascaliaListe = didascaliaListe;
     }//end of setter method
+
 }// end of entity class
