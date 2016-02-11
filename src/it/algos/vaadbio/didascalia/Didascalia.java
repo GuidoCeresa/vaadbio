@@ -117,7 +117,7 @@ public abstract class Didascalia {
         String localitaMorto;
 
         try { // prova ad eseguire il codice
-            localitaNato = bio.getLuogoNascita();
+            localitaNato = bio.getLuogoNascitaValido();
             if (!localitaNato.equals(CostBio.VUOTO)) {
                 if (localitaNato.contains(prefix)) {
                     localitaNato = localitaNato.substring(0, localitaNato.indexOf(prefix));
@@ -128,7 +128,7 @@ public abstract class Didascalia {
         }// fine del blocco try-catch
 
         try { // prova ad eseguire il codice
-            localitaMorto = bio.getLuogoMorte();
+            localitaMorto = bio.getLuogoMorteValido();
             if (!localitaMorto.equals(CostBio.VUOTO)) {
                 if (localitaMorto.contains(prefix)) {
                     localitaMorto = localitaMorto.substring(0, localitaMorto.indexOf(prefix));
