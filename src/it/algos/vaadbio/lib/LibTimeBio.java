@@ -1,7 +1,7 @@
 package it.algos.vaadbio.lib;
 
 import it.algos.webbase.web.lib.LibArray;
-import it.algos.webbase.web.lib.Mese;
+import it.algos.webbase.web.lib.MeseEnum;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -61,8 +61,9 @@ public class LibTimeBio {
         HashMap mappa;
         int giorniDelMese;
         String nomeMese;
-        nomeMese = Mese.getLong(numMese);
-        giorniDelMese = Mese.getGiorni(numMese,2016);
+        MeseEnum mese = MeseEnum.getMese(numMese);
+        nomeMese = MeseEnum.getLong(numMese);
+        giorniDelMese = MeseEnum.getGiorni(numMese,2016);
         final int taglioBisestile = 60;
         String tag;
         String tagUno;
@@ -81,6 +82,7 @@ public class LibTimeBio {
             mappa.put(CostBio.KEY_MAPPA_GIORNI_NOME, tag);
             mappa.put(CostBio.KEY_MAPPA_GIORNI_BISESTILE, progAnno);
             mappa.put(CostBio.KEY_MAPPA_GIORNI_NORMALE, progAnno);
+            mappa.put(CostBio.KEY_MAPPA_GIORNI_MESE_MESE, mese);
             if (k == 1) {
                 mappa.put(CostBio.KEY_MAPPA_GIORNI_TITOLO, CostBio.PRIMO_GIORNO_MESE + CostBio.SPAZIO + nomeMese);
             } else {

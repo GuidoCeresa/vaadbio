@@ -5,15 +5,17 @@ import com.vaadin.data.util.filter.Compare;
 import it.algos.vaadbio.anno.Anno;
 import it.algos.vaadbio.bio.Bio;
 import it.algos.vaadbio.lib.CostBio;
+import it.algos.vaadbio.mese.Mese;
 import it.algos.webbase.web.entity.BaseEntity;
 import it.algos.webbase.web.query.AQuery;
-import it.algos.webbase.web.query.SortProperty;
 import org.apache.commons.beanutils.BeanUtils;
 import org.eclipse.persistence.annotations.Index;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -30,21 +32,17 @@ import java.util.List;
 public class Giorno extends BaseEntity {
 
     @NotEmpty
-    private String mese = "";
-
-    @NotEmpty
-    private String nome = "";
-
+    @Column(length = 20)
     @Index
-    private int normale = 0;
-
-    @Index
-    private int bisestile = 0;
-
-    @NotEmpty
-    @Index
-    @Column(length = 150)
     private String titolo = "";
+
+    @NotNull
+    @Index
+    private int ordinamento = 0;
+
+    @NotNull
+    @ManyToOne
+    private Mese mese = null;
 
 
     /**
@@ -52,34 +50,31 @@ public class Giorno extends BaseEntity {
      * Necessario per le specifiche JavaBean
      */
     public Giorno() {
+        this("", 0, null);
     }// end of nullary constructor
 
 
     /**
      * Costruttore completo
      *
-     * @param mese      nome lungo
-     * @param nome      del giorno
-     * @param titolo    visibile
-     * @param normale   progressivo dell'anno non bisestile
-     * @param bisestile progressivo dell'anno bisestile
+     * @param titolo      del giorno
+     * @param ordinamento nelle categorie
+     * @param mese        del giorno
      */
-    public Giorno(String mese, String nome, String titolo, int normale, int bisestile) {
+    public Giorno(String titolo, int ordinamento, Mese mese) {
         super();
-        this.setMese(mese);
-        this.setNome(nome);
         this.setTitolo(titolo);
-        this.setNormale(normale);
-        this.setBisestile(bisestile);
+        this.setOrdinamento(ordinamento);
+        this.setMese(mese);
     }// end of general constructor
 
     /**
      * Recupera una istanza di Giorno usando la query standard della Primary Key
      *
      * @param id valore della Primary Key
-     * @return istanza di Bolla, null se non trovata
+     * @return istanza di Giorno, null se non trovata
      */
-    public static Giorno find(long id) {
+    public  static Giorno find(long id) {
         Giorno instance = null;
         BaseEntity entity = AQuery.queryById(Giorno.class, id);
 
@@ -93,33 +88,23 @@ public class Giorno extends BaseEntity {
     }// end of method
 
     /**
-     * Recupera una istanza di Giorno usando la query di una property specifica
+     * Recupera una istanza di Giorno usando la query della property più probabile
      *
-     * @param nome valore della property Nome
-     * @return istanza di Bolla, null se non trovata
+     * @return istanza di Anno, null se non trovata
      */
-    public static Giorno findByNome(String nome) {
-        Giorno instance = null;
-        BaseEntity entity = AQuery.queryOne(Giorno.class, Giorno_.nome, nome);
-
-        if (entity != null) {
-            if (entity instanceof Giorno) {
-                instance = (Giorno) entity;
-            }// end of if cycle
-        }// end of if cycle
-
-        return instance;
+    public  static Giorno find(String titolo) {
+        return findByTitolo(titolo);
     }// end of method
 
     /**
      * Recupera una istanza di Giorno usando la query di una property specifica
      *
      * @param titolo valore della property Titolo
-     * @return istanza di Bolla, null se non trovata
+     * @return istanza di Giorno, null se non trovata
      */
-    public static Giorno findByTitolo(String titolo) {
+    public  static Giorno findByTitolo(String titolo) {
         Giorno instance = null;
-        BaseEntity entity = AQuery.queryOne(Giorno.class, Giorno_.titolo, titolo);
+        BaseEntity entity = AQuery.queryOne(Anno.class, Giorno_.titolo, titolo);
 
         if (entity != null) {
             if (entity instanceof Giorno) {
@@ -130,12 +115,13 @@ public class Giorno extends BaseEntity {
         return instance;
     }// end of method
 
+
     /**
-     * Recupera il valore del numero totale di records della Domain Class
+     * Recupera il valore del numero totale di records della Entity
      *
      * @return numero totale di records della tavola
      */
-    public synchronized static int count() {
+    public  static int count() {
         int totRec = 0;
         long totTmp = AQuery.getCount(Giorno.class);
 
@@ -146,15 +132,17 @@ public class Giorno extends BaseEntity {
         return totRec;
     }// end of method
 
+
     /**
-     * Recupera una lista (array) di tutti i records della Domain Class
+     * Recupera una lista (array) di tutti i records della Entity
      *
      * @return lista di tutte le istanze di Giorno
      */
     @SuppressWarnings("unchecked")
-    public synchronized static ArrayList<Giorno> findAll() {
+    public  static ArrayList<Giorno> findAll() {
         return (ArrayList<Giorno>) AQuery.getLista(Giorno.class);
     }// end of method
+
 
     public static String fix(String testoIn) {
         String testoOut = testoIn;
@@ -191,18 +179,16 @@ public class Giorno extends BaseEntity {
         return testoOut;
     } // fine del metodo
 
+
     /**
-     * Recupera una lista (array) di records Bio che usano questa istanza di Giorno
+     * Recupera una lista (array) di records Bio che usano questa istanza di Giorno nella property giornoNatoPunta
      *
-     * @return lista delle istanze di Bio
+     * @return lista delle istanze di Bio che usano questo giorno
      */
+    @SuppressWarnings("all")
     public ArrayList<Bio> bioNati() {
         ArrayList<Bio> lista = null;
-        List entities = null;
-        Container.Filter filtro;
-
-        filtro = new Compare.Equal("giornoNatoPunta", this);
-        entities = AQuery.getList(Bio.class, filtro);
+        List entities = AQuery.getList(Bio.class, this.getFiltroNati());
 
         Comparator comp = new Comparator() {
             @Override
@@ -240,16 +226,6 @@ public class Giorno extends BaseEntity {
         };
         entities.sort(comp);
 
-        List entities2 = null;
-//        SortProperty sort = new SortProperty("bio.annoNatoPunta.ordinamento","bio.cognome");
-//        sort.add(Bio_.annoNatoPunta);
-//        sort.add(Bio_.cognome);
-        SortProperty sort = new SortProperty("cognome.cognome");
-
-
-        entities2 = AQuery.getList(Bio.class, sort, filtro);
-
-
         if (entities != null) {
             lista = new ArrayList<>(entities);
         }// end of if cycle
@@ -258,17 +234,14 @@ public class Giorno extends BaseEntity {
     }// fine del metodo
 
     /**
-     * Recupera una lista (array) di records Bio che usano questa istanza di Giorno
+     * Recupera una lista (array) di records Bio che usano questa istanza di Giorno nella property giornoMortoPunta
      *
      * @return lista delle istanze di Bio
      */
+    @SuppressWarnings("all")
     public ArrayList<Bio> bioMorti() {
         ArrayList<Bio> lista = null;
-        List entities = null;
-        Container.Filter filtro;
-
-        filtro = new Compare.Equal("giornoMortoPunta", this);
-        entities = AQuery.getList(Bio.class, filtro);
+        List entities = AQuery.getList(Bio.class, this.getFiltroMorti());
 
         Comparator comp = new Comparator() {
             @Override
@@ -311,37 +284,62 @@ public class Giorno extends BaseEntity {
         return lista;
     }// fine del metodo
 
+
     /**
-     * Recupera il valore del numero di records di Bio che usano questo giorno
+     * Recupera il valore del numero di records di Bio che usano questa istanza di Anno nella property giornoNatoPunta
      *
-     * @return numero di records che usano questo giorno
+     * @return numero di istanze di Bio che usano questo giorno
      */
     public int countBioNati() {
-        int numRecords = 0;
-        ArrayList<Bio> lista = bioNati();
-
-        if (lista != null) {
-            numRecords = lista.size();
-        }// end of if cycle
-
-        return numRecords;
+        return (int) AQuery.getCount(Bio.class, "giornoNatoPunta", this);
+//        int numRecords = 0;
+//        ArrayList<Bio> lista = bioNati();
+//
+//        if (lista != null) {
+//            numRecords = lista.size();
+//        }// end of if cycle
+//
+//        return numRecords;
     }// fine del metodo
+
 
     /**
-     * Recupera il valore del numero di records di Bio che usano questo giorno
+     * Recupera il valore del numero di records di Bio che usano questa istanza di Giorno nella property giornoMortoPunta
      *
-     * @return numero di records che usano questo giorno
+     * @return numero di istanze di Bio che usano questo giorno
      */
     public int countBioMorti() {
-        int numRecords = 0;
-        ArrayList<Bio> lista = bioMorti();
-
-        if (lista != null) {
-            numRecords = lista.size();
-        }// end of if cycle
-
-        return numRecords;
+        return (int) AQuery.getCount(Anno.class, "giornoMortoPunta", this);
+//        int numRecords = 0;
+//        ArrayList<Bio> lista = bioMorti();
+//
+//        if (lista != null) {
+//            numRecords = lista.size();
+//        }// end of if cycle
+//
+//        return numRecords;
     }// fine del metodo
+
+
+    /**
+     * Costruisce il filtro per trovare i records di Bio che questa istanza di Giorno usa nella property giornoNatoPunta
+     *
+     * @return filtro per i nati in questo giorno
+     */
+    private Container.Filter getFiltroNati() {
+        return new Compare.Equal("giornoNatoPunta", this);
+    }// fine del metodo
+
+
+    /**
+     * Costruisce il filtro per trovare i records di Bio che questa istanza di Giorno usa nella property giornoMortoPunta
+     *
+     * @return filtro per i morti in questo giorno
+     */
+    private Container.Filter getFiltroMorti() {
+        return new Compare.Equal("giornoMortoPunta", this);
+    }// fine del metodo
+
 
     /**
      * Titolo della pagina Nati/Morti da creare/caricare su wikipedia
@@ -364,22 +362,8 @@ public class Giorno extends BaseEntity {
 
     @Override
     public String toString() {
-        return nome;
+        return titolo;
     }// end of method
-
-    /**
-     * @return the nome
-     */
-    public String getNome() {
-        return nome;
-    }// end of getter method
-
-    /**
-     * @param nome the nome to set
-     */
-    public void setNome(String nome) {
-        this.nome = nome;
-    }// end of setter method
 
     public String getTitolo() {
         return titolo;
@@ -389,30 +373,21 @@ public class Giorno extends BaseEntity {
         this.titolo = titolo;
     }//end of setter method
 
-    public String getMese() {
+    public int getOrdinamento() {
+        return ordinamento;
+    }// end of getter method
+
+    public void setOrdinamento(int ordinamento) {
+        this.ordinamento = ordinamento;
+    }//end of setter method
+
+    public Mese getMese() {
         return mese;
     }// end of getter method
 
-    public void setMese(String mese) {
+    public void setMese(Mese mese) {
         this.mese = mese;
     }//end of setter method
-
-    public int getNormale() {
-        return normale;
-    }// end of getter method
-
-    public void setNormale(int normale) {
-        this.normale = normale;
-    }//end of setter method
-
-    public int getBisestile() {
-        return bisestile;
-    }// end of getter method
-
-    public void setBisestile(int bisestile) {
-        this.bisestile = bisestile;
-    }//end of setter method
-
 
     /**
      * Clone di questa istanza

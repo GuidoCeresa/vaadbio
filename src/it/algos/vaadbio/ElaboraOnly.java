@@ -319,7 +319,7 @@ public class ElaboraOnly {
             if (giornoWiki != null && !giornoWiki.equals("")) {
                 giornoWiki = LibBio.fixCampoGiorno(giornoWiki);
                 giornoWiki = Giorno.fix(giornoWiki);
-                giorno = Giorno.findByNome(giornoWiki);
+                giorno = Giorno.findByTitolo(giornoWiki);
                 if (giorno == null) {
                     giorno = Giorno.findByTitolo(giornoWiki);
                 }// end of if cycle
@@ -339,7 +339,7 @@ public class ElaboraOnly {
             if (giornoWiki != null && !giornoWiki.equals("")) {
                 giornoWiki = LibBio.fixCampoGiorno(giornoWiki);
                 giornoWiki = Giorno.fix(giornoWiki);
-                giorno = Giorno.findByNome(giornoWiki);
+                giorno = Giorno.findByTitolo(giornoWiki);
                 if (giorno == null) {
                     giorno = Giorno.findByTitolo(giornoWiki);
                 }// end of if cycle

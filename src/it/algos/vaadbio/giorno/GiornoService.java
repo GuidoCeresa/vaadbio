@@ -2,6 +2,7 @@ package it.algos.vaadbio.giorno;
 
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.lib.LibTimeBio;
+import it.algos.vaadbio.mese.Mese;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,40 +16,47 @@ public abstract class GiornoService {
 
 
     /**
-     * Crea 366 records per tutti i giorni dell'anno
+     * Crea 366 records per tutti i giorni dell'anno (compreso bisestile)
      * <p>
-     * La colonna n, è il progressivo del giorno negli anni normali
-     * La colonna b, è il progressivo del giorno negli anni bisestili
      */
     public static boolean creaGiorni() {
-        boolean creati = false;
-        ArrayList<HashMap> listaAnno;
-        String mese;
-        String nome;
+        ArrayList<HashMap> lista;
         String titolo;
-        int normale;
         int bisestile;
-        Giorno giorno;
+        Mese mese;
 
         if (Giorno.count() > 0) {
             return false;
         }// end of if cycle
 
-        //--cancella tutti i records
-
         //costruisce i 366 records
-        listaAnno = LibTimeBio.getAllGiorni();
-        for (HashMap mappaGiorno : listaAnno) {
-            mese = (String) mappaGiorno.get(CostBio.KEY_MAPPA_GIORNI_MESE_TESTO);
-            nome = (String) mappaGiorno.get(CostBio.KEY_MAPPA_GIORNI_NOME);
+        lista = LibTimeBio.getAllGiorni();
+        for (HashMap mappaGiorno : lista) {
             titolo = (String) mappaGiorno.get(CostBio.KEY_MAPPA_GIORNI_TITOLO);
-            normale = (int) mappaGiorno.get(CostBio.KEY_MAPPA_GIORNI_NORMALE);
             bisestile = (int) mappaGiorno.get(CostBio.KEY_MAPPA_GIORNI_BISESTILE);
-            new Giorno(mese, nome, titolo, normale, bisestile).save();
+            mese = Mese.findByTitoloLungo((String) mappaGiorno.get(CostBio.KEY_MAPPA_GIORNI_MESE_TESTO));
+          new Giorno(titolo, bisestile, mese).save();
         }// end of for cycle
 
         return true;
-    }// end of method
+    }// end of static method
 
+    /**
+     * Calcola la lunghezza del titolo più lungo
+     */
+    public static int maxLength() {
+        ArrayList<Giorno> lista = Giorno.findAll();
+        int max = 0;
+        int len;
 
-}// end of static class
+        if (lista != null && lista.size() > 0) {
+            for (Giorno giorno : lista) {
+                len = giorno.getTitolo().length();
+                max = Math.max(max, len);
+            }// end of for cycle
+        }// end of if cycle
+
+        return max;
+    } // fine del metodo
+
+}// end of abstract static class

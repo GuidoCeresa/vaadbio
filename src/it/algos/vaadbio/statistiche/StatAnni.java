@@ -117,7 +117,7 @@ public class StatAnni extends Statistiche {
      */
     private ArrayList getRigaAnno(Anno anno, int nati, int morti) {
         ArrayList riga = new ArrayList();
-        String nome = anno.getNome();
+        String nome = anno.getTitolo();
 
         riga.add(nome);
         riga.add(nati);

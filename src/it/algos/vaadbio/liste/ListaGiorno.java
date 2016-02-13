@@ -77,7 +77,7 @@ public abstract class ListaGiorno extends ListaCrono {
         String tag = "0";
 
         if (giorno != null) {
-            giornoNumero = giorno.getBisestile();
+            giornoNumero = giorno.getOrdinamento();
         }// fine del blocco if
 
         if (giornoNumero > 0) {

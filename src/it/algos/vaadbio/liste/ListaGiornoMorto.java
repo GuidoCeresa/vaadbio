@@ -55,7 +55,7 @@ public class ListaGiornoMorto extends ListaGiorno {
                 annotxt = CostBio.VUOTO;
                 anno = bio.getAnnoMortoPunta();
                 if (anno != null) {
-                    annotxt = anno.getNome();
+                    annotxt = anno.getTitolo();
                 }// end of if cycle
                 didascalia = bio.getDidascaliaGiornoMorto();
 

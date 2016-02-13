@@ -3,19 +3,15 @@ package it.algos.vaadbio.nazionalita;
 import com.vaadin.data.Container;
 import com.vaadin.data.util.filter.Compare;
 import it.algos.vaadbio.bio.Bio;
-import it.algos.vaadbio.bio.Bio_;
-import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.lib.LibBio;
 import it.algos.webbase.web.entity.BaseEntity;
-import it.algos.webbase.web.entity.EM;
 import it.algos.webbase.web.query.AQuery;
 import org.apache.commons.beanutils.BeanUtils;
 import org.eclipse.persistence.annotations.Index;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,10 +27,13 @@ import java.util.List;
 public class Nazionalita extends BaseEntity {
 
     @NotEmpty
+    @Column(length = 100)
     @Index
     private String singolare = "";
 
     @NotEmpty
+    @Column(length = 100)
+    @Index
     private String plurale = "";
 
     /**
@@ -113,7 +112,7 @@ public class Nazionalita extends BaseEntity {
      *
      * @return numero totale di records della tavola
      */
-    public synchronized static int count() {
+    public static int count() {
         int totRec = 0;
         long totTmp = AQuery.getCount(Nazionalita.class);
 
@@ -129,7 +128,7 @@ public class Nazionalita extends BaseEntity {
      *
      * @return numero di records unici per plurale
      */
-    public synchronized static int countDistinctPlurale() {
+    public static int countDistinctPlurale() {
         return LibBio.queryCountDistinct("Nazionalita", "plurale");
     }// end of method
 

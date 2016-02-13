@@ -46,7 +46,7 @@ public class AnnoMod extends AnnoGiornoMod {
      * sovrascrivere creaFieldsList, creaFieldsForm e creaFieldsSearch <br>
      */
     protected Attribute<?, ?>[] creaFieldsAll() {
-        return new Attribute[]{Anno_.ordinamento, Anno_.nome, Anno_.secolo};
+        return new Attribute[]{Anno_.ordinamento, Anno_.titolo, Anno_.secolo};
     }// end of method
 
 

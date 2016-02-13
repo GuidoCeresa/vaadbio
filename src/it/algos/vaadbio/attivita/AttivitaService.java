@@ -6,6 +6,7 @@ import it.algos.webbase.domain.log.Log;
 import it.algos.webbase.web.lib.LibNum;
 import it.algos.webbase.web.lib.LibTime;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -24,7 +25,7 @@ public abstract class AttivitaService {
      * Ordina alfabeticamente la mappa
      * Aggiunge al database i records mancanti
      */
-    public static void download() {
+    public static boolean download() {
         long inizio = System.currentTimeMillis();
         LinkedHashMap<String, String> mappa;
         String titolo = "";
@@ -35,7 +36,9 @@ public abstract class AttivitaService {
         mappa = LibWiki.leggeMappaModulo(TITOLO_MODULO);
 
         // Aggiunge i records mancanti
-        if (mappa != null) {
+        if (mappa == null) {
+            return false;
+        } else {
             for (Map.Entry<String, String> elementoDellaMappa : mappa.entrySet()) {
                 aggiungeRecord(elementoDellaMappa);
             }// end of for cycle
@@ -45,7 +48,8 @@ public abstract class AttivitaService {
                 records = LibNum.format(mappa.size());
                 Log.setInfo("attivita", "Aggiornati in ${secondi} i ${records} records di attività (plurale)");
             }// fine del blocco if
-        }// fine del blocco if
+            return true;
+        }// end of if/else cycle
     } // fine del metodo
 
     /**
@@ -71,5 +75,25 @@ public abstract class AttivitaService {
         }// fine del blocco if
     } // fine del metodo
 
-}// end of static class
+    /**
+     * Calcola la lunghezza dell'attività più lunga
+     */
+    public static int maxLength() {
+        ArrayList<Attivita> lista = Attivita.findAll();
+        int max = 0;
+        int len;
+
+        if (lista != null && lista.size() > 0) {
+            for (Attivita attivita : lista) {
+                len = attivita.getPlurale().length();
+                max = Math.max(max, len);
+                len = attivita.getSingolare().length();
+                max = Math.max(max, len);
+            }// end of for cycle
+        }// end of if cycle
+
+        return max;
+    } // fine del metodo
+
+}// end of abstract static class
 

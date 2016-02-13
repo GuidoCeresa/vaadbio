@@ -49,7 +49,7 @@ public abstract class ListaAnno extends ListaCrono {
         Anno anno = this.getAnno();
 
         if (anno != null) {
-            titolo += anno.getNome();
+            titolo += anno.getTitolo();
         }// fine del blocco if
 
         return titolo;

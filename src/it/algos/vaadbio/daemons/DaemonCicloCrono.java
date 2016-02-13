@@ -3,7 +3,6 @@ package it.algos.vaadbio.daemons;
 import it.algos.vaad.VaadApp;
 import it.algos.vaad.wiki.WikiLogin;
 import it.algos.vaadbio.bio.Bio;
-import it.algos.vaadbio.ciclo.CicloUpdate;
 import it.algos.vaadbio.esegue.Esegue;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.webbase.domain.log.Log;
@@ -17,22 +16,27 @@ import javax.servlet.ServletContext;
 
 /**
  * Created by gac on 21 ago 2015.
- * .
+ * <p>
+ * Ciclo standard giornaliero:
+ * -CicloDownload per scaricare dal server le nuove voci ed eliminare quelle cancellate
+ * -CicloUpdate per aggiornare tutte le voci modificate dall'ultimo (probabilmente il giorno precedente) controllo
+ * -CicloElabora per ricalcolare tutti i link interni e preparare le didascalie
+ * -CicloUpload per creare e caricare sul server wiki le liste di Giorni ed Anni
  */
-public class DaemonCicloDownload extends Scheduler {
+public class DaemonCicloCrono extends Scheduler {
 
-    public static final String DAEMON_NAME = "daemonCicloDownload";
-    private static DaemonCicloDownload instance;
-    private final static int NUMERO_VOCI_MINIMO_PER_OPERATIVITA_NORMALE = 296000;
+    public static final String DAEMON_NAME = "daemonCicloCrono";
+    private final static int NUMERO_VOCI_MINIMO_PER_OPERATIVITA_NORMALE = 295000;
+    private static DaemonCicloCrono instance;
 
 
-    private DaemonCicloDownload() {
+    private DaemonCicloCrono() {
         super();
     }// end of constructor
 
-    public static DaemonCicloDownload getInstance() {
+    public static DaemonCicloCrono getInstance() {
         if (instance == null) {
-            instance = new DaemonCicloDownload();
+            instance = new DaemonCicloCrono();
         }// fine del blocco if
         return instance;
     }// end of static method
@@ -51,7 +55,7 @@ public class DaemonCicloDownload extends Scheduler {
             // Ogni giorno
             schedule("1 0 * * *", new TaskCicloBio()); //dal 11 dic 2015
             if (Pref.getBool(CostBio.USA_LOG_DAEMONS, true)) {
-                Log.setDebug("daemonCicloDownload", "Attivato ciclo daemonCicloDownload; flag in preferenze per confermare esecuzione alle 0:01");
+                Log.setDebug("daemonCicloCrono", "Attivato ciclo daemonCicloCrono; flag in preferenze per confermare esecuzione alle 0:01");
             }// fine del blocco if
         }// fine del blocco if
     }// end of method
@@ -66,7 +70,7 @@ public class DaemonCicloDownload extends Scheduler {
             svc.setAttribute(DAEMON_NAME, false);
 
             if (Pref.getBool(CostBio.USA_LOG_DAEMONS, true)) {
-                Log.setDebug("daemonCicloDownload", "Spento");
+                Log.setDebug("daemonCicloCrono", "Spento");
             }// fine del blocco if
 
         }// fine del blocco if
@@ -83,7 +87,7 @@ public class DaemonCicloDownload extends Scheduler {
                 VaadApp.WIKI_LOGIN = wikiLogin;
             }// end of if cycle
 
-            if (Pref.getBool(CostBio.USA_CRONO_DOWNLOAD, true)) {
+            if (Pref.getBool(CostBio.USA_DAEMONS_CRONO, true)) {
                 Esegue.cicloDownload();
             }// fine del blocco if
 

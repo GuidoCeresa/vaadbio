@@ -56,7 +56,7 @@ public class ListaGiornoNato extends ListaGiorno {
                 annotxt = CostBio.VUOTO;
                 anno = bio.getAnnoNatoPunta();
                 if (anno != null) {
-                    annotxt = anno.getNome();
+                    annotxt = anno.getTitolo();
                 }// end of if cycle
                 didascalia = bio.getDidascaliaGiornoNato();
 

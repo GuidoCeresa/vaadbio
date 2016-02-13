@@ -2,7 +2,6 @@ package it.algos.vaadbio.bio;
 
 import it.algos.vaadbio.anno.Anno;
 import it.algos.vaadbio.attivita.Attivita;
-import it.algos.vaadbio.cognome.Cognome;
 import it.algos.vaadbio.giorno.Giorno;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.lib.LibBio;
@@ -14,7 +13,10 @@ import it.algos.webbase.web.query.AQuery;
 import org.eclipse.persistence.annotations.Index;
 import org.hibernate.validator.constraints.NotEmpty;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -372,6 +374,15 @@ public class Bio extends BaseEntity {
         return LibBio.queryFind("select bio.pageid from Bio bio order by bio.ultimaElaborazione,bio.pageid asc", limit);
     }// end of method
 
+    /**
+     * Recupera una lista (array) di tutti i records della Domain Class
+     *
+     * @return lista di tutte le istanze di Bio
+     */
+    @SuppressWarnings("unchecked")
+    public synchronized static ArrayList<Bio> findAll() {
+        return (ArrayList<Bio>) AQuery.getLista(Bio.class);
+    }// end of method
 
     public long getPageid() {
         return pageid;

@@ -99,11 +99,11 @@ public abstract class Didascalia {
         }// fine del blocco if
 
         if (bio.getAnnoNatoPunta() != null) {
-            this.annoNascita = bio.getAnnoNatoPunta().getNome();
+            this.annoNascita = bio.getAnnoNatoPunta().getTitolo();
         }// fine del blocco if
 
         if (bio.getAnnoMortoPunta() != null) {
-            this.annoMorte = bio.getAnnoMortoPunta().getNome();
+            this.annoMorte = bio.getAnnoMortoPunta().getTitolo();
         }// fine del blocco if
     }// end of method
 

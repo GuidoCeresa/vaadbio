@@ -219,14 +219,30 @@ public class BioMod extends ModulePop {
      */
     @Override
     public void addSottoMenu(MenuBar.MenuItem menuItem) {
+        addCommandCicloDownIniziale(menuItem);
         addCommandCicloDown(menuItem);
         addCommandCicloUpdate(menuItem);
         addCommandCicloElabora(menuItem);
         addCommandDownloadDialog(menuItem);
         addCommandElabora(menuItem);
-        addCommandUpload(menuItem);
+        addCommandCicloUpload(menuItem);
         addCommandStatisticheSintesi(menuItem);
         addCommandStatisticheDidascalie(menuItem);
+    }// end of method
+
+    /**
+     * Comando bottone/item Elabora singola voce
+     *
+     * @param menuItem a cui agganciare il bottone/item
+     */
+    private void addCommandCicloDownIniziale(MenuBar.MenuItem menuItem) {
+        menuItem.addItem("Download iniziale", FontAwesome.COG, new MenuBar.Command() {
+            public void menuSelected(MenuBar.MenuItem selectedItem) {
+                for (int k = 0; k < 30; k++) {
+                    Esegue.cicloDownload();
+                }// end of for cycle
+            }// end of method
+        });// end of anonymous class
     }// end of method
 
     /**
@@ -235,17 +251,17 @@ public class BioMod extends ModulePop {
      * @param menuItem a cui agganciare il bottone/item
      */
     private void addCommandCicloDown(MenuBar.MenuItem menuItem) {
-        menuItem.addItem("Ciclo down", FontAwesome.COG, new MenuBar.Command() {
+        menuItem.addItem("Ciclo download", FontAwesome.COG, new MenuBar.Command() {
             public void menuSelected(MenuBar.MenuItem selectedItem) {
                 boolean usaDialoghi = Pref.getBool(CostBio.USA_DIALOGHI_CONFERMA, true);
                 boolean usaDebug = Pref.getBool(CostBio.USA_DEBUG, false);
-                boolean usaLimite = Pref.getBool(CostBio.USA_LIMITE_DOWNLOAD, false);
-                boolean usaLog = Pref.getBool(CostBio.USA_LOG_DOWNLOAD, false);
+                boolean usaLimite = Pref.getBool(CostBio.USA_LIMITE_CICLO, false);
+                boolean usaLog = Pref.getBool(CostBio.USA_LOG_CICLO, false);
                 boolean usaUpdate = Pref.getBool(CostBio.USA_UPLOAD_DOWNLOADATA, false);
                 boolean usaCancella = Pref.getBool(CostBio.USA_CANCELLA_VOCE_MANCANTE, false);
                 boolean usaCommitUnico = Pref.getBool(CostBio.USA_COMMIT_MULTI_RECORDS, false);
                 boolean usaLogDebug = Pref.getBool(CostBio.USA_LOG_DEBUG, false);
-                int maxDowloadNew = Pref.getInt(CostBio.MAX_DOWNLOAD, 1000);
+                int maxDowloadNew = Pref.getInt(CostBio.MAX_CICLO, 1000);
                 int numRecordsCommit = Pref.getInt(CostBio.NUM_RECORDS_COMMIT, 500);
                 String nomeCat = "";
                 if (usaDialoghi) {
@@ -331,8 +347,8 @@ public class BioMod extends ModulePop {
             public void menuSelected(MenuBar.MenuItem selectedItem) {
                 boolean usaDialoghi = Pref.getBool(CostBio.USA_DIALOGHI_CONFERMA, true);
                 boolean usaDebug = Pref.getBool(CostBio.USA_DEBUG, false);
-                boolean usaLimite = Pref.getBool(CostBio.USA_LIMITE_DOWNLOAD, false);
-                boolean usaLog = Pref.getBool(CostBio.USA_LOG_DOWNLOAD, false);
+                boolean usaLimite = Pref.getBool(CostBio.USA_LIMITE_CICLO, false);
+                boolean usaLog = Pref.getBool(CostBio.USA_LOG_CICLO, false);
                 boolean usaUpdate = Pref.getBool(CostBio.USA_UPLOAD_DOWNLOADATA, false);
                 boolean usaCancella = Pref.getBool(CostBio.USA_CANCELLA_VOCE_MANCANTE, false);
                 String nomeCat = "";
@@ -342,7 +358,7 @@ public class BioMod extends ModulePop {
                     } else {
                         nomeCat = "<b><span style=\"color:red\">" + CicloDownload.TAG_BIO + "</span></b>";
                     }// end of if/else cycle
-                    int maxDowloadNew = Pref.getInt(CostBio.MAX_DOWNLOAD, 1000);
+                    int maxDowloadNew = Pref.getInt(CostBio.MAX_CICLO, 1000);
                     String newMsg = "Esegue un ciclo di sincronizzazione tra le pagine della categoria " + nomeCat + " ed i records della tavola Bio<br/>";
                     newMsg += "<br/>Esegue un ciclo (<b><span style=\"color:green\">update</span></b>) di controllo e aggiornamento di tutti i records esistenti nel database<br/>";
                     if (usaDebug) {
@@ -397,11 +413,11 @@ public class BioMod extends ModulePop {
         menuItem.addItem("Ciclo elabora", FontAwesome.COG, new MenuBar.Command() {
             public void menuSelected(MenuBar.MenuItem selectedItem) {
                 boolean usaDialoghi = Pref.getBool(CostBio.USA_DIALOGHI_CONFERMA, true);
-                boolean usaLimite = Pref.getBool(CostBio.USA_LIMITE_ELABORA, false);
-                boolean usaLog = Pref.getBool(CostBio.USA_LOG_ELABORA, false);
+                boolean usaLimite = Pref.getBool(CostBio.USA_LIMITE_CICLO, false);
+                boolean usaLog = Pref.getBool(CostBio.USA_LOG_CICLO, false);
                 boolean usaUpdate = Pref.getBool(CostBio.USA_UPLOAD_ELABORATA, false);
                 if (usaDialoghi) {
-                    int maxElabora = Pref.getInt(CostBio.MAX_ELABORA, 1000);
+                    int maxElabora = Pref.getInt(CostBio.MAX_CICLO, 1000);
                     String newMsg = "Elabora le informazioni dei records Bio nel database";
                     if (usaLimite) {
                         newMsg += "<br>Le preferenze prevedono di elaborare <b><span style=\"color:red\">" + LibNum.format(maxElabora) + "</span></b> records Bio nel database";
@@ -505,8 +521,8 @@ public class BioMod extends ModulePop {
      *
      * @param menuItem a cui agganciare il bottone/item
      */
-    private void addCommandUpload(MenuBar.MenuItem menuItem) {
-        menuItem.addItem("Upload", FontAwesome.ARROW_UP, new MenuBar.Command() {
+    private void addCommandCicloUpload(MenuBar.MenuItem menuItem) {
+        menuItem.addItem("Upload crono", FontAwesome.ARROW_UP, new MenuBar.Command() {
             public void menuSelected(MenuBar.MenuItem selectedItem) {
                 esegueUpload();
             }// end of method

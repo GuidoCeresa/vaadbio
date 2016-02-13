@@ -144,7 +144,7 @@ public abstract class AnnoGiornoMod extends ModulePop {
             public void menuSelected(MenuBar.MenuItem selectedItem) {
                 boolean usaDialoghi = Pref.getBool(CostBio.USA_DIALOGHI_CONFERMA, true);
                 boolean usaDebug = Pref.getBool(CostBio.USA_DEBUG, false);
-                boolean usaLog = Pref.getBool(CostBio.USA_LOG_DOWNLOAD, false);
+                boolean usaLog = Pref.getBool(CostBio.USA_LOG_CICLO, false);
                 if (usaDialoghi) {
                     String nomePagina = "<b><span style=\"color:red\">" + ListaBio.PAGINA_PROVA + "</span></b>";
                     String newMsg;
@@ -194,7 +194,7 @@ public abstract class AnnoGiornoMod extends ModulePop {
             public void menuSelected(MenuBar.MenuItem selectedItem) {
                 boolean usaDialoghi = Pref.getBool(CostBio.USA_DIALOGHI_CONFERMA, true);
                 boolean usaDebug = Pref.getBool(CostBio.USA_DEBUG, false);
-                boolean usaLog = Pref.getBool(CostBio.USA_LOG_DOWNLOAD, false);
+                boolean usaLog = Pref.getBool(CostBio.USA_LOG_CICLO, false);
                 if (usaDialoghi) {
                     String nomePagina = "<b><span style=\"color:red\">" + ListaBio.PAGINA_PROVA + "</span></b>";
                     String newMsg;

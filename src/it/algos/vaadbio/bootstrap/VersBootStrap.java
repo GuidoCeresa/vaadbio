@@ -1,10 +1,13 @@
 package it.algos.vaadbio.bootstrap;
 
 import it.algos.vaadbio.anno.AnnoService;
+import it.algos.vaadbio.attivita.AttivitaService;
 import it.algos.vaadbio.giorno.GiornoService;
 import it.algos.vaadbio.lib.CostBio;
+import it.algos.vaadbio.mese.MeseService;
+import it.algos.vaadbio.nazionalita.NazionalitaService;
+import it.algos.vaadbio.secolo.SecoloService;
 import it.algos.webbase.web.lib.LibPref;
-import it.algos.webbase.web.lib.LibTime;
 import it.algos.webbase.web.lib.LibVers;
 
 import javax.servlet.ServletContextEvent;
@@ -34,117 +37,46 @@ public class VersBootStrap implements ServletContextListener {
      */
     @Override
     public void contextInitialized(ServletContextEvent contextEvent) {
+        int k = 0;
 
         //--prima installazione del programma
         //--non fa nulla, solo informativo
-        if (LibVers.installa(1)) {
+        if (LibVers.installa(++k)) {
             LibVers.nuova("Setup", "Installazione iniziale");
         }// fine del blocco if
 
-        // usi generali
-        //--creata una nuova preferenza
-        if (LibVers.installa(2)) {
-            LibPref.newVersBool(CostBio.USA_DEBUG, false, "Flag generale di debug (ce ne possono essere di specifici, validi solo se questo è vero)");
-        }// fine del blocco if
-
-        //--creata una nuova preferenza
-        if (LibVers.installa(3)) {
-            LibPref.newVersBool(CostBio.USA_DIALOGHI_CONFERMA, true, "Uso dei dialoghi di conferma prima dei cicli");
-        }// fine del blocco if
-
-        //--creata una nuova preferenza
-        if (LibVers.installa(4)) {
-            LibPref.newVersBool(CostBio.USA_CICLI_ANCHE_SENZA_BOT, true, "Se non loggato, usa i cicli col limite mediawiki di 50 pagine");
-        }// fine del blocco if
-
-
-        // daemons
-        //--creata una nuova preferenza
-        if (LibVers.installa(5)) {
-            LibPref.newVersBool(CostBio.USA_CRONO_DOWNLOAD, false, "Uso (tramite daemons in background) del cicloDownload per scaricare/aggiornare dal server i records Bio.");
-        }// fine del blocco if
-
-        //--creata una nuova preferenza
-        if (LibVers.installa(6)) {
-            LibPref.newVersBool(CostBio.USA_CRONO_ELABORA, false, "Uso (tramite daemons in background) del cicloElabora per sincronizzare i parametri esistenti dei records Bio");
-        }// fine del blocco if
-
-        //--creata una nuova preferenza
-        if (LibVers.installa(7)) {
-            LibPref.newVersBool(CostBio.USA_LOG_DAEMONS, false, "Uso del log di registrazione per avvio e stop dei daemons", "Livello debug");
-        }// fine del blocco if
-
-
-        // ciclo download
-        //--creata una nuova preferenza
-        if (LibVers.installa(8)) {
-            LibPref.newVersBool(CostBio.USA_LIMITE_DOWNLOAD, true, "Uso di un limite di pagine nel cicloDownload per scaricare/aggiornare dal server i records Bio");
-        }// fine del blocco if
-
-        //--creata una nuova preferenza
-        if (LibVers.installa(9)) {
-            LibPref.newVersInt(CostBio.MAX_DOWNLOAD, 10000, "Numero massimo di pagine da scaricare/aggiornare nel cicloDownload");
-        }// fine del blocco if
-
-        //--creata una nuova preferenza
-        if (LibVers.installa(10)) {
-            LibPref.newVersBool(CostBio.USA_LOG_DOWNLOAD, true, "Uso del log di registrazione nel cicloDownload", "Livello debug");
-        }// fine del blocco if
-
-        //--creata una nuova preferenza
-        if (LibVers.installa(11)) {
-            LibPref.newVersBool(CostBio.USA_UPLOAD_DOWNLOADATA, false, "Upload di ogni singola voce nel cicloDownload. Down, Ela, se tmpl diverso: Up, Down, Ela");
-        }// fine del blocco if
-
-        //--creata una nuova preferenza
-        if (LibVers.installa(12)) {
-            LibPref.newVersBool(CostBio.USA_CANCELLA_VOCE_MANCANTE, true, "CicloDownload, cancella una voce rimasta nel DB e non più presente sul server wiki");
-        }// fine del blocco if
-
-        //--creata una nuova preferenza
-        if (LibVers.installa(13)) {
-            LibPref.newVersInt(CostBio.NUM_PAGEIDS_REQUEST, 500, "Numero di pageids nella request di controllo voci modificate nel cicloDownload. Tipicamente sempre 500");
-        }// fine del blocco if
-
-
-        // ciclo elabora
-        //--creata una nuova preferenza
-        if (LibVers.installa(14)) {
-            LibPref.newVersBool(CostBio.USA_LIMITE_ELABORA, true, "Uso di un limite di records nel cicloElabora per sincronizzare i parametri esistenti dei records Bio");
-        }// fine del blocco if
-
-        //--creata una nuova preferenza
-        if (LibVers.installa(15)) {
-            LibPref.newVersInt(CostBio.MAX_ELABORA, 50000, "Numero massimo di records da elaborare nel cicloElabora");
-        }// fine del blocco if
-
-        //--creata una nuova preferenza
-        if (LibVers.installa(16)) {
-            LibPref.newVersBool(CostBio.USA_LOG_ELABORA, true, "Uso del log di registrazione nel cicloElabora", "Livello debug");
-        }// fine del blocco if
-
-        //--creata una nuova preferenza
-        if (LibVers.installa(17)) {
-            LibPref.newVersBool(CostBio.USA_UPLOAD_ELABORATA, true, "Upload di ogni singola voce nel cicloElabora. Ela, se tmpl diverso: Up, Down, Ela");
-        }// fine del blocco if
-
-        //--creata una nuova preferenza
-        if (LibVers.installa(18)) {
-            LibPref.newVersBool(CostBio.USA_LOG_UPLOAD_ELABORATA, false, "Uso del log di registrazione per la singola voce uploadata", "Livello debug");
+        //--crea i records della tavola Mese (propedeutica per Giorno)
+        if (LibVers.installa(++k)) {
+            if (MeseService.creaMesi()) {
+                LibVers.nuova("Mese", "Creati 12 records per i mesi dell'anno");
+            } else {
+                LibVers.nuova("Mese", "I mesi esistevano già e non sono stati modificati");
+            }// end of if/else cycle
         }// fine del blocco if
 
 
         //--crea i records della tavola Giorno
-        if (LibVers.installa(19)) {
+        if (LibVers.installa(++k)) {
             if (GiornoService.creaGiorni()) {
-                LibVers.nuova("Giorno", "Creati 366 records per tutti i giorni dell'anno (anche bisestile)");
+                LibVers.nuova("Giorno", "Creati 367 records per tutti i giorni dell'anno (anche bisestile)");
             } else {
                 LibVers.nuova("Giorno", "I giorni esistevano già e non sono stati modificati");
             }// end of if/else cycle
         }// fine del blocco if
 
+
+        //--crea i records della tavola Secolo (propedeutica per Anno)
+        if (LibVers.installa(++k)) {
+            if (SecoloService.creaSecoli()) {
+                LibVers.nuova("Secolo", "Creati 41 records dei secoli prima e dopo Cristo");
+            } else {
+                LibVers.nuova("Secolo", "I secoli esistevano già e non sono stati modificati");
+            }// end of if/else cycle
+        }// fine del blocco if
+
+
         //--crea i records della tavola Anno
-        if (LibVers.installa(20)) {
+        if (LibVers.installa(++k)) {
             if (AnnoService.creaAnni()) {
                 LibVers.nuova("Anno", "Creati 3030 records per gli anni dal 1000 a.c. al 2030 d.c.");
             } else {
@@ -153,96 +85,213 @@ public class VersBootStrap implements ServletContextListener {
         }// fine del blocco if
 
 
+        //--creazione iniziale dei records della tavola Attività
+        if (LibVers.installa(++k)) {
+            if (AttivitaService.download()) {
+                LibVers.nuova("Attività", "Creazione iniziale dei records letti dalla pagina wiki");
+            } else {
+                LibVers.nuova("Attività", "Non sono riuscito a leggere la pagina wiki");
+            }// end of if/else cycle
+        }// fine del blocco if
+
+        //--creazione iniziale dei records della tavola Nazionalità
+        if (LibVers.installa(++k)) {
+            if (NazionalitaService.download()) {
+                LibVers.nuova("Nazionalità", "Creazione iniziale dei records letti dalla pagina wiki");
+            } else {
+                LibVers.nuova("Nazionalità", "Non sono riuscito a leggere la pagina wiki");
+            }// end of if/else cycle
+        }// fine del blocco if
+
+        // usi generali
         //--creata una nuova preferenza
-        if (LibVers.installa(21)) {
-            LibPref.newVersBool(CostBio.USA_TOC_INDICE_CRONO, false, "Uso dell'indice dei paragrafi in testa alle liste cronologiche. Tipicamente sempre falso.");
+        if (LibVers.installa(++k)) {
+            LibPref.newVersBool(CostBio.USA_DEBUG, false, "Flag generale di debug (ce ne possono essere di specifici, validi solo se questo è vero)");
         }// fine del blocco if
 
         //--creata una nuova preferenza
-        if (LibVers.installa(22)) {
-            LibPref.newVersBool(CostBio.USA_FOOTER_PORTALE_CRONO, true, "Uso del portale biografie nel footer delle liste cronologiche. Tipicamente sempre vero.");
+        if (LibVers.installa(++k)) {
+            LibPref.newVersBool(CostBio.USA_LOG_DAEMONS, false, "Uso del log di registrazione per avvio e stop dei daemons", "Livello debug");
         }// fine del blocco if
 
         //--creata una nuova preferenza
-        if (LibVers.installa(23)) {
-            LibPref.newVersBool(CostBio.USA_FOOTER_CATEGORIE_CRONO, true, "Uso delle cateegorie nel footer delle liste cronologiche. Tipicamente sempre vero.");
+        if (LibVers.installa(++k)) {
+            LibPref.newVersBool(CostBio.USA_DIALOGHI_CONFERMA, true, "Uso dei dialoghi di conferma prima di lanciare le operazioni");
         }// fine del blocco if
 
         //--creata una nuova preferenza
-        if (LibVers.installa(24)) {
-            LibPref.newVersBool(CostBio.USA_RITORNO_CRONO, true, "Uso del ritorno alla pagina madre in testa alle liste cronologiche. Tipicamente sempre vero.");
+        if (LibVers.installa(++k)) {
+            LibPref.newVersBool(CostBio.USA_CICLI_ANCHE_SENZA_BOT, true, "Uso dei cicli col limite mediawiki di 50 pagine, se non loggato");
         }// fine del blocco if
 
         //--creata una nuova preferenza
-        if (LibVers.installa(25)) {
-            LibPref.newVersStr(CostBio.TEMPLATE_AVVISO_CRONO, "ListaBio", "Nome del template di avviso in testa alle liste cronologiche. Tipicamente ListaBio.");
+        if (LibVers.installa(++k)) {
+            LibPref.newVersInt(CostBio.NUM_PAGEIDS_REQUEST, 500, "Numero di pageids nella request di controllo in cicloUpdate. Tipicamente sempre 500");
         }// fine del blocco if
 
         //--creata una nuova preferenza
-        if (LibVers.installa(26)) {
-            LibPref.newVersBool(CostBio.USA_BODY_RIGHE_MULTIPLE_CRONO, true, "Uso delle righe multiple nelle liste cronologiche. Di default vero.");
-        }// fine del blocco if
-
-        //--creata una nuova preferenza
-        if (LibVers.installa(27)) {
-            LibPref.newVersBool(CostBio.REGISTRA_SOLO_MODIFICHE_SOSTANZIALI_CRONO, true, "Uso la registrazione solo se la voce è significativamente diversa nelle liste cronologiche. Di default vero.");
-        }// fine del blocco if
-
-        //--creata una nuova preferenza
-        if (LibVers.installa(28)) {
-            LibPref.newVersBool(CostBio.USA_LOG_DEBUG, false, "Uso del log di registrazione per il livello debug. Di default falso.");
-        }// fine del blocco if
-
-        //--creata una nuova preferenza
-        if (LibVers.installa(29)) {
-            LibPref.newVersBool(CostBio.USA_COMMIT_MULTI_RECORDS, true, "Uso di un commit multiplo per registrare un blocco di records corrispondenti alle voci da scaricare/aggiornare. Di default vero.");
-        }// fine del blocco if
-
-        //--creata una nuova preferenza
-        if (LibVers.installa(30)) {
-            LibPref.newVersInt(CostBio.NUM_RECORDS_COMMIT, 500, "Numero di records per ogni commit. Di default 500.");
+        if (LibVers.installa(++k)) {
+            LibPref.newVersBool(CostBio.USA_LOG_CICLO, true, "Uso del log di registrazione nel cicloDownload e nel cicloElabora", "Livello debug");
         }// fine del blocco if
 
 
         //--creata una nuova preferenza
-        if (LibVers.installa(31)) {
-            LibPref.newVersData(CostBio.STAT_DATA_ULTIMA_SINTESI, LibTime.adesso(), "Data di riferimento per l'aggiornamento delle statistiche.");
+        if (LibVers.installa(++k)) {
+            LibPref.newVersBool(CostBio.USA_LIMITE_CICLO, false, "Uso di un limite di pagine nel cicloDownload e nel cicloElabora");
         }// fine del blocco if
 
         //--creata una nuova preferenza
-        if (LibVers.installa(32)) {
-            LibPref.newVersInt(CostBio.STAT_NUM_VOCI, 295000, "Numero di voci gestite. Di default poco meno della categoria.");
+        if (LibVers.installa(++k)) {
+            LibPref.newVersInt(CostBio.MAX_CICLO, 100000, "Numero massimo di pagine da scaricare/aggiornare nel cicloDownload e nel cicloElabora");
+        }// fine del blocco if
+
+
+        //--creata una nuova preferenza
+        if (LibVers.installa(++k)) {
+            LibPref.newVersBool(CostBio.USA_DAEMONS_CRONO, true, "Uso (in background) di cicloDownload, cicloUpdate, cicloElabora, uploadGiorni ed uploadAnni");
         }// fine del blocco if
 
         //--creata una nuova preferenza
-        if (LibVers.installa(33)) {
-            LibPref.newVersInt(CostBio.STAT_NUM_GIORNI, 366, "Numero di giorni gestiti nell'anno (bisestile compreso). Di default 366.");
+        if (LibVers.installa(++k)) {
+            LibPref.newVersBool(CostBio.USA_DAEMONS_ATTIVITA, false, "Uso (in background) di uploadAttivita");
         }// fine del blocco if
 
         //--creata una nuova preferenza
-        if (LibVers.installa(34)) {
-            LibPref.newVersInt(CostBio.STAT_NUM_ANNI, 3016, "Numero di anni gestiti (1.000 a.C. + 2016 d.C.). Di default 3016.");
+        if (LibVers.installa(++k)) {
+            LibPref.newVersBool(CostBio.USA_DAEMONS_NAZIONALITA, false, "Uso (in background) di uploadNazionalita");
         }// fine del blocco if
 
         //--creata una nuova preferenza
-        if (LibVers.installa(35)) {
-            LibPref.newVersInt(CostBio.STAT_NUM_ATTIVITA, 600, "Numero di attività gestite . Di default circa 600.");
+        if (LibVers.installa(++k)) {
+            LibPref.newVersBool(CostBio.USA_DAEMONS_NOMI, false, "Uso (in background) di uploadNomi");
         }// fine del blocco if
 
         //--creata una nuova preferenza
-        if (LibVers.installa(36)) {
-            LibPref.newVersInt(CostBio.STAT_NUM_NAZIONALITA, 300, "Numero di nazionalità gestite . Di default circa 300.");
+        if (LibVers.installa(++k)) {
+            LibPref.newVersBool(CostBio.USA_DAEMONS_COGNOMI, false, "Uso (in background) di uploadCognomi");
         }// fine del blocco if
 
         //--creata una nuova preferenza
-        if (LibVers.installa(37)) {
-            LibPref.newVersInt(CostBio.STAT_GIORNI_ATTESA, 300, "Numero di giorni di attesa prima di aggiornare le statistiche. Di default circa 5.");
+        if (LibVers.installa(++k)) {
+            LibPref.newVersBool(CostBio.USA_DAEMONS_LOCALITA, false, "Uso (in background) di uploadLocalita");
         }// fine del blocco if
 
-        //--creata una nuova preferenza
-        if (LibVers.installa(38)) {
-            LibPref.newVersInt(CostBio.NUM_VOCI_ANNI, 300, "Soglia per le statistiche degli anni. Di default 300");
-        }// fine del blocco if
+
+//        //--creata una nuova preferenza
+//        if (LibVers.installa(11)) {
+//            LibPref.newVersBool(CostBio.USA_UPLOAD_DOWNLOADATA, false, "Upload di ogni singola voce nel cicloDownload. Down, Ela, se tmpl diverso: Up, Down, Ela");
+//        }// fine del blocco if
+//
+//        //--creata una nuova preferenza
+//        if (LibVers.installa(12)) {
+//            LibPref.newVersBool(CostBio.USA_CANCELLA_VOCE_MANCANTE, true, "CicloDownload, cancella una voce rimasta nel DB e non più presente sul server wiki");
+//        }// fine del blocco if
+//
+//
+//
+//        //--creata una nuova preferenza
+//        if (LibVers.installa(17)) {
+//            LibPref.newVersBool(CostBio.USA_UPLOAD_ELABORATA, true, "Upload di ogni singola voce nel cicloElabora. Ela, se tmpl diverso: Up, Down, Ela");
+//        }// fine del blocco if
+//
+//        //--creata una nuova preferenza
+//        if (LibVers.installa(18)) {
+//            LibPref.newVersBool(CostBio.USA_LOG_UPLOAD_ELABORATA, false, "Uso del log di registrazione per la singola voce uploadata", "Livello debug");
+//        }// fine del blocco if
+//
+//
+
+
+//        //--creata una nuova preferenza
+//        if (LibVers.installa(21)) {
+//            LibPref.newVersBool(CostBio.USA_TOC_INDICE_CRONO, false, "Uso dell'indice dei paragrafi in testa alle liste cronologiche. Tipicamente sempre falso.");
+//        }// fine del blocco if
+//
+//        //--creata una nuova preferenza
+//        if (LibVers.installa(22)) {
+//            LibPref.newVersBool(CostBio.USA_FOOTER_PORTALE_CRONO, true, "Uso del portale biografie nel footer delle liste cronologiche. Tipicamente sempre vero.");
+//        }// fine del blocco if
+//
+//        //--creata una nuova preferenza
+//        if (LibVers.installa(23)) {
+//            LibPref.newVersBool(CostBio.USA_FOOTER_CATEGORIE_CRONO, true, "Uso delle cateegorie nel footer delle liste cronologiche. Tipicamente sempre vero.");
+//        }// fine del blocco if
+//
+//        //--creata una nuova preferenza
+//        if (LibVers.installa(24)) {
+//            LibPref.newVersBool(CostBio.USA_RITORNO_CRONO, true, "Uso del ritorno alla pagina madre in testa alle liste cronologiche. Tipicamente sempre vero.");
+//        }// fine del blocco if
+//
+//        //--creata una nuova preferenza
+//        if (LibVers.installa(25)) {
+//            LibPref.newVersStr(CostBio.TEMPLATE_AVVISO_CRONO, "ListaBio", "Nome del template di avviso in testa alle liste cronologiche. Tipicamente ListaBio.");
+//        }// fine del blocco if
+//
+//        //--creata una nuova preferenza
+//        if (LibVers.installa(26)) {
+//            LibPref.newVersBool(CostBio.USA_BODY_RIGHE_MULTIPLE_CRONO, true, "Uso delle righe multiple nelle liste cronologiche. Di default vero.");
+//        }// fine del blocco if
+//
+//        //--creata una nuova preferenza
+//        if (LibVers.installa(27)) {
+//            LibPref.newVersBool(CostBio.REGISTRA_SOLO_MODIFICHE_SOSTANZIALI_CRONO, true, "Uso la registrazione solo se la voce è significativamente diversa nelle liste cronologiche. Di default vero.");
+//        }// fine del blocco if
+//
+//        //--creata una nuova preferenza
+//        if (LibVers.installa(28)) {
+//            LibPref.newVersBool(CostBio.USA_LOG_DEBUG, false, "Uso del log di registrazione per il livello debug. Di default falso.");
+//        }// fine del blocco if
+//
+//        //--creata una nuova preferenza
+//        if (LibVers.installa(29)) {
+//            LibPref.newVersBool(CostBio.USA_COMMIT_MULTI_RECORDS, true, "Uso di un commit multiplo per registrare un blocco di records corrispondenti alle voci da scaricare/aggiornare. Di default vero.");
+//        }// fine del blocco if
+//
+//        //--creata una nuova preferenza
+//        if (LibVers.installa(30)) {
+//            LibPref.newVersInt(CostBio.NUM_RECORDS_COMMIT, 500, "Numero di records per ogni commit. Di default 500.");
+//        }// fine del blocco if
+//
+//
+//        //--creata una nuova preferenza
+//        if (LibVers.installa(31)) {
+//            LibPref.newVersData(CostBio.STAT_DATA_ULTIMA_SINTESI, LibTime.adesso(), "Data di riferimento per l'aggiornamento delle statistiche.");
+//        }// fine del blocco if
+//
+//        //--creata una nuova preferenza
+//        if (LibVers.installa(32)) {
+//            LibPref.newVersInt(CostBio.STAT_NUM_VOCI, 295000, "Numero di voci gestite. Di default poco meno della categoria.");
+//        }// fine del blocco if
+//
+//        //--creata una nuova preferenza
+//        if (LibVers.installa(33)) {
+//            LibPref.newVersInt(CostBio.STAT_NUM_GIORNI, 366, "Numero di giorni gestiti nell'anno (bisestile compreso). Di default 366.");
+//        }// fine del blocco if
+//
+//        //--creata una nuova preferenza
+//        if (LibVers.installa(34)) {
+//            LibPref.newVersInt(CostBio.STAT_NUM_ANNI, 3016, "Numero di anni gestiti (1.000 a.C. + 2016 d.C.). Di default 3016.");
+//        }// fine del blocco if
+//
+//        //--creata una nuova preferenza
+//        if (LibVers.installa(35)) {
+//            LibPref.newVersInt(CostBio.STAT_NUM_ATTIVITA, 600, "Numero di attività gestite . Di default circa 600.");
+//        }// fine del blocco if
+//
+//        //--creata una nuova preferenza
+//        if (LibVers.installa(36)) {
+//            LibPref.newVersInt(CostBio.STAT_NUM_NAZIONALITA, 300, "Numero di nazionalità gestite . Di default circa 300.");
+//        }// fine del blocco if
+//
+//        //--creata una nuova preferenza
+//        if (LibVers.installa(37)) {
+//            LibPref.newVersInt(CostBio.STAT_GIORNI_ATTESA, 300, "Numero di giorni di attesa prima di aggiornare le statistiche. Di default circa 5.");
+//        }// fine del blocco if
+//
+//        //--creata una nuova preferenza
+//        if (LibVers.installa(38)) {
+//            LibPref.newVersInt(CostBio.NUM_VOCI_ANNI, 300, "Soglia per le statistiche degli anni. Di default 300");
+//        }// fine del blocco if
     }// end of method
 
 

@@ -70,7 +70,7 @@ public class DownloadBio {
         }// fine del blocco if
 
         if (pagina.getTitle() == null) {
-            if (Pref.getBool(CostBio.USA_LOG_DOWNLOAD, true)) {
+            if (Pref.getBool(CostBio.USA_LOG_CICLO, true)) {
                 Log.setDebug("cicloNew", "Una pagina (non so quale) non è valida");
             }// fine del blocco if
             return;
@@ -82,7 +82,7 @@ public class DownloadBio {
         tmplBio = Api.estraeTmplBio(testoVoce);
 
         if (tmplBio.equals("")) {
-            if (Pref.getBool(CostBio.USA_LOG_DOWNLOAD, true)) {
+            if (Pref.getBool(CostBio.USA_LOG_CICLO, true)) {
                 Log.setDebug("cicloNew", "La pagina " + LibWiki.setQuadre(wikiTitle) + ", è stata registrata ma manca il tmplBio");
             }// fine del blocco if
         } else {
@@ -123,7 +123,7 @@ public class DownloadBio {
             bio.save();
             registrata = true;
         } catch (Exception unErrore) { // intercetta l'errore
-            if (Pref.getBool(CostBio.USA_LOG_DOWNLOAD, true)) {
+            if (Pref.getBool(CostBio.USA_LOG_CICLO, true)) {
                 Log.setWarn("new", "La pagina " + LibWiki.setQuadre(wikiTitle) + ", non è stata registrata perché " + unErrore.getMessage());
             }// fine del blocco if
         }// fine del blocco try-catch

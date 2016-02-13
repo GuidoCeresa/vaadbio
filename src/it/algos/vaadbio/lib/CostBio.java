@@ -33,24 +33,30 @@ public abstract class CostBio {
     public final static String NUM_RECORDS_COMMIT = "numRecordsCommit";
 
     // daemons
-    public final static String USA_CRONO_DOWNLOAD = "usaCronoDownload";
-    public final static String USA_CRONO_ELABORA = "usaCronoElabora";
+    public final static String USA_DAEMONS_CRONO = "usaDaemonsCrono";
+    public final static String USA_DAEMONS_ATTIVITA = "usaDaemonsAttivita";
+    public final static String USA_DAEMONS_NAZIONALITA = "usaDaemonsNazionalita";
+    public final static String USA_DAEMONS_NOMI = "usaDaemonsNomi";
+    public final static String USA_DAEMONS_COGNOMI = "usaDaemonsCognomi";
+    public final static String USA_DAEMONS_LOCALITA = "usaDaemonsLocalita";
+//    public final static String USA_CRONO_DOWNLOAD = "usaCronoDownload";
+//    public final static String USA_CRONO_ELABORA = "usaCronoElabora";
     public final static String USA_LOG_DAEMONS = "usaLogDaemons";
 
 
     // ciclo download
-    public final static String USA_LIMITE_DOWNLOAD = "usaLimiteDownload";
-    public final static String MAX_DOWNLOAD = "maxDownload";
-    public final static String USA_LOG_DOWNLOAD = "usaLogDownload";
+    public final static String USA_LIMITE_CICLO = "usaLimiteCiclo";
+    public final static String MAX_CICLO = "maxCiclo";
+    public final static String USA_LOG_CICLO = "usaLogCiclo";
     public final static String USA_UPLOAD_DOWNLOADATA = "usaUploadDownloadata";
     public final static String USA_CANCELLA_VOCE_MANCANTE = "usaCancellaVoceMancante";
     public final static String NUM_PAGEIDS_REQUEST = "numPageidesRequest";
 
 
     // ciclo elabora
-    public final static String USA_LIMITE_ELABORA = "usaLimiteElabora";
-    public final static String MAX_ELABORA = "maxElabora";
-    public final static String USA_LOG_ELABORA = "usaLogElabora";
+//    public final static String USA_LIMITE_ELABORA = "usaLimiteElabora";
+//    public final static String MAX_ELABORA = "maxElabora";
+//    public final static String USA_LOG_ELABORA = "usaLogElabora";
     public final static String USA_UPLOAD_ELABORATA = "usaUploadElaborata";
     public final static String USA_LOG_UPLOAD_ELABORATA = "usaLogUploadElaborata";
 
@@ -78,6 +84,7 @@ public abstract class CostBio {
     public final static String KEY_MAPPA_GIORNI_BISESTILE = "bisestile";
     public final static String KEY_MAPPA_GIORNI_NOME = "nome";
     public final static String KEY_MAPPA_GIORNI_TITOLO = "titolo";
+    public final static String KEY_MAPPA_GIORNI_MESE_MESE = "meseMese";
 
 
     //--statistiche

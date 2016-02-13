@@ -156,7 +156,7 @@ public class CicloDownload {
                 MANAGER.getTransaction().commit();
                 fineCommit = System.currentTimeMillis();
 
-                if (Pref.getBool(CostBio.USA_LOG_DEBUG, true)) {
+                if (Pref.getBool(CostBio.USA_LOG_DEBUG, false)) {
                     mess = "Commit unico blocco di " + LibNum.format(dimBloccoLettura);
                     mess += " Save " + LibNum.format(numVociRegistrate) + "/" + LibNum.format(numVociDaScaricare) + " voci";
                     mess += " in " + LibNum.format(fineCommit - inizioCommit) + " milliSec./" + LibTime.difText(inizio);

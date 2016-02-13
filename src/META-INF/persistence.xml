@@ -8,6 +8,9 @@
         <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
 
         <class>it.algos.webbase.web.entity.BaseEntity</class>
+		<class>it.algos.vaadbio.secolo.Secolo</class>
+		<class>it.algos.vaadbio.mese.Mese</class>
+		<class>it.algos.vaadbio.delta.Delta</class>
 		<class>it.algos.vaadbio.cognome.Cognome</class>
 		<class>it.algos.vaadbio.nazionalita.Nazionalita</class>
 		<class>it.algos.vaadbio.attivita.Attivita</class>
@@ -29,7 +32,7 @@
                       value="org.eclipse.persistence.platform.database.MySQLPlatform"/>
             <property name="javax.persistence.target-database" value="MySQL"/>
             <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
-            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/wiki2?useUnicode=yes&amp;characterEncoding=UTF-8"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/wiki?useUnicode=yes&amp;characterEncoding=UTF-8"/>
 
             <property name="javax.persistence.jdbc.user" value="root"/>
             <property name="javax.persistence.jdbc.password" value=""/>

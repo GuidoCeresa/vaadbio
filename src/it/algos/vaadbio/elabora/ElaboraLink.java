@@ -82,7 +82,7 @@ public class ElaboraLink {
         Giorno giorno = null;
 
         if (giornoTestoValido != null && !giornoTestoValido.equals(CostBio.VUOTO)) {
-            giorno = Giorno.findByNome(giornoTestoValido);
+            giorno = Giorno.findByTitolo(giornoTestoValido);
             if (giorno == null) {
                 giorno = Giorno.findByTitolo(giornoTestoValido);
             }// end of if cycle
@@ -118,7 +118,7 @@ public class ElaboraLink {
         Anno anno = null;
 
         if (annoTestoValido != null && !annoTestoValido.equals(CostBio.VUOTO)) {
-            anno = Anno.findByNome(annoTestoValido);
+            anno = Anno.findByTitolo(annoTestoValido);
         }// fine del blocco if
 
         return anno;

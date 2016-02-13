@@ -7,6 +7,7 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.eclipse.persistence.annotations.Index;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import java.util.ArrayList;
 
@@ -22,10 +23,13 @@ import java.util.ArrayList;
 public class Attivita extends BaseEntity {
 
     @NotEmpty
+    @Column(length = 100)
     @Index
     private String singolare = "";
 
     @NotEmpty
+    @Column(length = 100)
+    @Index
     private String plurale = "";
 
     /**
@@ -104,7 +108,7 @@ public class Attivita extends BaseEntity {
      *
      * @return numero totale di records della tavola
      */
-    public synchronized static int count() {
+    public static int count() {
         int totRec = 0;
         long totTmp = AQuery.getCount(Attivita.class);
 
@@ -120,8 +124,8 @@ public class Attivita extends BaseEntity {
      *
      * @return numero di records unici per plurale
      */
-    public synchronized static int countDistinct() {
-        String query="select distinct attivita.plurale from Attivita attivita";
+    public static int countDistinct() {
+        String query = "select distinct attivita.plurale from Attivita attivita";
         return LibBio.queryCount(query);
     }// end of method
 
@@ -132,8 +136,8 @@ public class Attivita extends BaseEntity {
      * @return lista di tutte le istanze di Attivita
      */
     @SuppressWarnings("unchecked")
-    public synchronized static ArrayList<Attivita> findAll() {
-        return (ArrayList<Attivita>) AQuery.getList(Attivita.class);
+    public  static ArrayList<Attivita> findAll() {
+        return (ArrayList<Attivita>) AQuery.getLista(Attivita.class);
     }// end of method
 
     @Override

@@ -3,8 +3,11 @@ import it.algos.vaadbio.attivita.Attivita;
 import it.algos.vaadbio.bio.Bio;
 import it.algos.vaadbio.didascalia.*;
 import it.algos.vaadbio.giorno.Giorno;
+import it.algos.vaadbio.mese.Mese;
 import it.algos.vaadbio.nazionalita.Nazionalita;
 import it.algos.vaadbio.nome.Nome;
+import it.algos.vaadbio.secolo.Secolo;
+import it.algos.webbase.web.lib.MeseEnum;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -32,10 +35,10 @@ public class DidascaliaTest {
     @SuppressWarnings("all")
     // Setup logic here
     public void setUp() {
-        giornoNatoPunta = new Giorno("maggio", "12 maggio", "12 maggio", 132, 133);
-        giornoMortoPunta = new Giorno("giugno", "20 giugno", "20 giugno", 171, 172);
-        annoNatoPunta = new Anno("1822", "XIX secolo", 3822);
-        annoMortoPunta = new Anno("1893", "XIX secolo", 3893);
+        giornoNatoPunta = new Giorno("12 maggio", 133, Mese.findByTitoloBreve("mag"));
+        giornoMortoPunta = new Giorno("20 giugno", 172, Mese.findByTitoloBreve("giu"));
+//        annoNatoPunta = new Anno("1822", 3822, Secolo.findByTitolo());
+//        annoMortoPunta = new Anno("1893", 3893, Secolo.XIX);
         attivitaPunta = new Attivita("politico", "politici");
         attivita2Punta = new Attivita("patriota", "patrioti");
         nazionalitaPunta = new Nazionalita("italiano", "italiani");

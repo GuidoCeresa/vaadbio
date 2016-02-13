@@ -57,8 +57,8 @@ public class CicloElabora extends CicloDownload {
         Elabora elabora;
 
         // Recupera il numero globale di voci da elaborare; tutto il database oppure un tot stabilito nelle preferenze
-        if (Pref.getBool(CostBio.USA_LIMITE_ELABORA, true)) {
-            limite = Pref.getInt(CostBio.MAX_ELABORA, 1000);
+        if (Pref.getBool(CostBio.USA_LIMITE_CICLO, true)) {
+            limite = Pref.getInt(CostBio.MAX_CICLO, 10000);
             vociDaElaborare = Bio.findLast(limite);
         } else {
             vociDaElaborare = Bio.findLast();

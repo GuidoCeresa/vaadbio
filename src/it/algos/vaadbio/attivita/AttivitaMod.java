@@ -81,7 +81,7 @@ public class AttivitaMod extends ModulePop {
         menuItem.addItem("Download", FontAwesome.COG, new MenuBar.Command() {
             public void menuSelected(MenuBar.MenuItem selectedItem) {
                 boolean usaDialoghi = Pref.getBool(CostBio.USA_DIALOGHI_CONFERMA, true);
-                boolean usaLog = Pref.getBool(CostBio.USA_LOG_DOWNLOAD, false);
+                boolean usaLog = Pref.getBool(CostBio.USA_LOG_CICLO, false);
                 if (usaDialoghi) {
                     String newMsg;
                     newMsg = "Esegue un ciclo (<b><span style=\"color:green\">update</span></b>) di aggiunta attività</br>";
