@@ -36,7 +36,7 @@ public abstract class ListaCrono extends ListaBio {
         // head
         usaHeadTocIndice = Pref.getBool(CostBio.USA_TOC_INDICE_CRONO, false);
         usaHeadRitorno = Pref.getBool(CostBio.USA_RITORNO_CRONO, true);
-        tagHeadTemplateAvviso = Pref.getStr(CostBio.TEMPLATE_AVVISO_CRONO, "ListBio");
+        tagHeadTemplateAvviso = Pref.getStr(CostBio.TEMPLATE_AVVISO_CRONO, "ListaBio");
 
         // body
         usaBodySottopagine = false; //--escluso per le voci crono

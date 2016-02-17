@@ -255,15 +255,15 @@ public class Anno extends BaseEntity {
      * @return numero di istanze di Bio che usano questo anno
      */
     public int countBioNati() {
-        return (int) AQuery.getCount(Anno.class, "annoNatoPunta", this);
-//        int numRecords = 0;
-//        ArrayList<Bio> lista = bioNati();
-//
-//        if (lista != null) {
-//            numRecords = lista.size();
-//        }// end of if cycle
-//
-//        return numRecords;
+//        return (int) AQuery.getCount(Anno.class, "annoNatoPunta", this);
+        int numRecords = 0;
+        ArrayList<Bio> lista = bioNati();
+
+        if (lista != null) {
+            numRecords = lista.size();
+        }// end of if cycle
+
+        return numRecords;
     }// fine del metodo
 
 
@@ -273,15 +273,15 @@ public class Anno extends BaseEntity {
      * @return numero di istanze di Bio che usano questo anno
      */
     public int countBioMorti() {
-        return (int) AQuery.getCount(Anno.class, "annoMortoPunta", this);
-//        int numRecords = 0;
-//        ArrayList<Bio> lista = bioMorti();
-//
-//        if (lista != null) {
-//            numRecords = lista.size();
-//        }// end of if cycle
-//
-//        return numRecords;
+//        return (int) AQuery.getCount(Anno.class, "annoMortoPunta", this);
+        int numRecords = 0;
+        ArrayList<Bio> lista = bioMorti();
+
+        if (lista != null) {
+            numRecords = lista.size();
+        }// end of if cycle
+
+        return numRecords;
     }// fine del metodo
 
 
@@ -291,7 +291,8 @@ public class Anno extends BaseEntity {
      * @return filtro per i nati in questo anno
      */
     private Container.Filter getFiltroNati() {
-        return new Compare.Equal("annoNatoPunta", this);
+//        return new Compare.Equal("annoNatoPunta", this);
+        return new Compare.Equal("annoNascitaValido", titolo);
     }// fine del metodo
 
 
@@ -301,7 +302,8 @@ public class Anno extends BaseEntity {
      * @return filtro per i morti in questo anno
      */
     private Container.Filter getFiltroMorti() {
-        return new Compare.Equal("annoMortoPunta", this);
+//        return new Compare.Equal("annoMortoPunta", this);
+        return new Compare.Equal("annoMorteValido", titolo);
     }// fine del metodo
 
 

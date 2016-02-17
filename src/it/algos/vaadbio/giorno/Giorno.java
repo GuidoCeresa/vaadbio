@@ -104,7 +104,7 @@ public class Giorno extends BaseEntity {
      */
     public  static Giorno findByTitolo(String titolo) {
         Giorno instance = null;
-        BaseEntity entity = AQuery.queryOne(Anno.class, Giorno_.titolo, titolo);
+        BaseEntity entity = AQuery.queryOne(Giorno.class, Giorno_.titolo, titolo);
 
         if (entity != null) {
             if (entity instanceof Giorno) {
@@ -188,7 +188,7 @@ public class Giorno extends BaseEntity {
     @SuppressWarnings("all")
     public ArrayList<Bio> bioNati() {
         ArrayList<Bio> lista = null;
-        List entities = AQuery.getList(Bio.class, this.getFiltroNati());
+        List entities = AQuery.getLista(Bio.class, this.getFiltroNati());
 
         Comparator comp = new Comparator() {
             @Override
@@ -291,15 +291,15 @@ public class Giorno extends BaseEntity {
      * @return numero di istanze di Bio che usano questo giorno
      */
     public int countBioNati() {
-        return (int) AQuery.getCount(Bio.class, "giornoNatoPunta", this);
-//        int numRecords = 0;
-//        ArrayList<Bio> lista = bioNati();
-//
-//        if (lista != null) {
-//            numRecords = lista.size();
-//        }// end of if cycle
-//
-//        return numRecords;
+//        return (int) AQuery.getCount(Bio.class, "giornoNatoPunta", this);
+        int numRecords = 0;
+        ArrayList<Bio> lista = bioNati();
+
+        if (lista != null) {
+            numRecords = lista.size();
+        }// end of if cycle
+
+        return numRecords;
     }// fine del metodo
 
 
@@ -309,15 +309,15 @@ public class Giorno extends BaseEntity {
      * @return numero di istanze di Bio che usano questo giorno
      */
     public int countBioMorti() {
-        return (int) AQuery.getCount(Anno.class, "giornoMortoPunta", this);
-//        int numRecords = 0;
-//        ArrayList<Bio> lista = bioMorti();
-//
-//        if (lista != null) {
-//            numRecords = lista.size();
-//        }// end of if cycle
-//
-//        return numRecords;
+//        return (int) AQuery.getCount(Anno.class, "giornoMortoPunta", this);
+        int numRecords = 0;
+        ArrayList<Bio> lista = bioMorti();
+
+        if (lista != null) {
+            numRecords = lista.size();
+        }// end of if cycle
+
+        return numRecords;
     }// fine del metodo
 
 
@@ -327,7 +327,8 @@ public class Giorno extends BaseEntity {
      * @return filtro per i nati in questo giorno
      */
     private Container.Filter getFiltroNati() {
-        return new Compare.Equal("giornoNatoPunta", this);
+//        return new Compare.Equal("giornoNatoPunta", this);
+        return new Compare.Equal("giornoMeseNascitaValido", titolo);
     }// fine del metodo
 
 
@@ -337,7 +338,8 @@ public class Giorno extends BaseEntity {
      * @return filtro per i morti in questo giorno
      */
     private Container.Filter getFiltroMorti() {
-        return new Compare.Equal("giornoMortoPunta", this);
+//        return new Compare.Equal("giornoMortoPunta", this);
+        return new Compare.Equal("giornoMeseMorteValido", this);
     }// fine del metodo
 
 
