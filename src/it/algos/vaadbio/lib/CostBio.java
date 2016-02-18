@@ -33,6 +33,7 @@ public abstract class CostBio {
     public final static String NUM_RECORDS_COMMIT = "numRecordsCommit";
 
     // daemons
+    public final static String USA_DAEMONS_DOWNLOAD = "usaDaemonsDownload";
     public final static String USA_DAEMONS_CRONO = "usaDaemonsCrono";
     public final static String USA_DAEMONS_ATTIVITA = "usaDaemonsAttivita";
     public final static String USA_DAEMONS_NAZIONALITA = "usaDaemonsNazionalita";

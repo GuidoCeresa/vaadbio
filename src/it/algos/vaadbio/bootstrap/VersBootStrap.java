@@ -176,6 +176,11 @@ public class VersBootStrap implements ServletContextListener {
             LibPref.newVersBool(CostBio.USA_DAEMONS_LOCALITA, false, "Uso (in background) di uploadLocalita");
         }// fine del blocco if
 
+        //--creata una nuova preferenza
+        if (LibVers.installa(++k)) {
+            LibPref.newVersBool(CostBio.USA_DAEMONS_LOCALITA, false, "Uso (in background) di uploadGiorni e uploadAnni");
+        }// fine del blocco if
+
 
 //        //--creata una nuova preferenza
 //        if (LibVers.installa(11)) {
