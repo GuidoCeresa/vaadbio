@@ -94,7 +94,7 @@ public class DaemonCicloCrono extends Scheduler {
             if (Bio.count() > NUMERO_VOCI_MINIMO_PER_OPERATIVITA_NORMALE) {
                 Esegue.cicloUpdate();
                 Esegue.cicloElabora();
-//                Esegue.cicloUpload();
+                Esegue.cicloUpload();
             }// end of if cycle
 
         }// end of method
