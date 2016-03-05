@@ -143,13 +143,18 @@ public class VersBootStrap implements ServletContextListener {
 
         //--creata una nuova preferenza
         if (LibVers.installa(++k)) {
-            LibPref.newVersInt(CostBio.MAX_CICLO, 100000, "Numero massimo di pagine da scaricare/aggiornare nel cicloDownload e nel cicloElabora");
+            LibPref.newVersInt(CostBio.MAX_CICLO, 100000, "Numero max di pagine da scaricare/aggiornare nel cicloDownload e nel cicloElabora");
         }// fine del blocco if
 
 
         //--creata una nuova preferenza
         if (LibVers.installa(++k)) {
-            LibPref.newVersBool(CostBio.USA_DAEMONS_CRONO, true, "Uso (in background) di cicloDownload, cicloUpdate, cicloElabora, uploadGiorni ed uploadAnni");
+            LibPref.newVersBool(CostBio.USA_DAEMONS_DOWNLOAD, true, "Uso (in background) di cicloDownload, cicloUpdate, cicloElabora");
+        }// fine del blocco if
+
+        //--creata una nuova preferenza
+        if (LibVers.installa(++k)) {
+            LibPref.newVersBool(CostBio.USA_DAEMONS_CRONO, true, "Uso (in background) di uploadGiorni ed uploadAnni");
         }// fine del blocco if
 
         //--creata una nuova preferenza
@@ -189,7 +194,7 @@ public class VersBootStrap implements ServletContextListener {
 
         //--creata una nuova preferenza
         if (LibVers.installa(++k)) {
-            LibPref.newVersInt(CostBio.STAT_NUM_VOCI, 296000, "Numero di voci gestite. Di default poco meno della categoria.");
+            LibPref.newVersInt(CostBio.STAT_NUM_VOCI, 297000, "Numero di voci gestite. Di default poco meno della categoria.");
         }// fine del blocco if
 
         //--creata una nuova preferenza

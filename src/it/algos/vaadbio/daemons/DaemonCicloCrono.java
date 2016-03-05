@@ -87,14 +87,17 @@ public class DaemonCicloCrono extends Scheduler {
                 VaadApp.WIKI_LOGIN = wikiLogin;
             }// end of if cycle
 
-            if (Pref.getBool(CostBio.USA_DAEMONS_CRONO, true)) {
+            if (Pref.getBool(CostBio.USA_DAEMONS_DOWNLOAD, true)) {
                 Esegue.cicloDownload();
             }// fine del blocco if
 
             if (Bio.count() > NUMERO_VOCI_MINIMO_PER_OPERATIVITA_NORMALE) {
                 Esegue.cicloUpdate();
                 Esegue.cicloElabora();
-                Esegue.cicloUpload();
+
+                if (Pref.getBool(CostBio.USA_DAEMONS_CRONO, true)) {
+                    Esegue.cicloUpload();
+                }// end of if cycle
             }// end of if cycle
 
         }// end of method

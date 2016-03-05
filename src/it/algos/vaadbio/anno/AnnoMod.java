@@ -10,6 +10,7 @@ import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.liste.ListaAnnoMorto;
 import it.algos.vaadbio.liste.ListaAnnoNato;
 import it.algos.vaadbio.upload.UploadAnni;
+import it.algos.webbase.web.menu.ModuleCommand;
 import it.algos.webbase.web.table.ATable;
 
 import javax.persistence.metamodel.Attribute;
@@ -20,7 +21,6 @@ import javax.persistence.metamodel.Attribute;
  */
 @SuppressWarnings("serial")
 public class AnnoMod extends AnnoGiornoMod {
-
 
     /**
      * Costruttore senza parametri
