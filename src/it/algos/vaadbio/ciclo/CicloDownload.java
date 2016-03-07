@@ -114,11 +114,11 @@ public class CicloDownload {
         listaMancanti = LibWiki.delta(listaTotaleCategoria, listaEsistentiDataBase);
         listaEccedenti = LibWiki.delta(listaEsistentiDataBase, listaTotaleCategoria);
 
-        // Scarica la lista di voci mancanti dal server e crea i nuovi records di Bio
-        new CicloNew(listaMancanti);
-
         // Cancella tutti i records non più presenti nella categoria
         new CicloDelete(listaEccedenti);
+
+        // Scarica la lista di voci mancanti dal server e crea i nuovi records di Bio
+        new CicloNew(listaMancanti);
     }// end of method
 
 
@@ -143,7 +143,7 @@ public class CicloDownload {
 
         if (listaVociDaScaricare != null && listaVociDaScaricare.size() > 0)
             numVociDaScaricare = listaVociDaScaricare.size();
-        if (Pref.getBool(CostBio.USA_COMMIT_MULTI_RECORDS, true)) {
+        if (Pref.getBool(CostBio.USA_COMMIT_MULTI_RECORDS, false)) {
             numCicliLetturaPagine = LibArray.numCicli(listaVociDaScaricare.size(), dimBloccoLettura);
             for (int k = 0; k < numCicliLetturaPagine; k++) {
                 bloccoPageids = LibArray.estraeSublistaLong(listaVociDaScaricare, dimBloccoLettura, k);

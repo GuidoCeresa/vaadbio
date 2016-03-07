@@ -26,7 +26,7 @@ import javax.servlet.ServletContext;
 public class DaemonCicloCrono extends Scheduler {
 
     public static final String DAEMON_NAME = "daemonCicloCrono";
-    private final static int NUMERO_VOCI_MINIMO_PER_OPERATIVITA_NORMALE = 295000;
+    private final static int NUMERO_VOCI_MINIMO_PER_OPERATIVITA_NORMALE = 297000;
     private static DaemonCicloCrono instance;
 
 

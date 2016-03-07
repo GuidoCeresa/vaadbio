@@ -227,6 +227,15 @@ public class VersBootStrap implements ServletContextListener {
             LibPref.newVersInt(CostBio.NUM_VOCI_ANNI, 300, "Soglia per le statistiche degli anni. Di default 300");
         }// fine del blocco if
 
+        //--creata una nuova preferenza
+        if (LibVers.installa(++k)) {
+            LibPref.newVersBool(CostBio.USA_COMMIT_MULTI_RECORDS, false, "Uso di un commit multiplo per registrare un blocco di records. Di default falso.");
+        }// fine del blocco if
+
+        //--creata una nuova preferenza
+        if (LibVers.installa(++k)) {
+            LibPref.newVersInt(CostBio.NUM_RECORDS_COMMIT, 500, "Numero di records per ogni commit. Di default 500.");
+        }// fine del blocco if
 
 //        //--creata una nuova preferenza
 //        if (LibVers.installa(11)) {
@@ -293,15 +302,6 @@ public class VersBootStrap implements ServletContextListener {
 //            LibPref.newVersBool(CostBio.USA_LOG_DEBUG, false, "Uso del log di registrazione per il livello debug. Di default falso.");
 //        }// fine del blocco if
 //
-//        //--creata una nuova preferenza
-//        if (LibVers.installa(29)) {
-//            LibPref.newVersBool(CostBio.USA_COMMIT_MULTI_RECORDS, true, "Uso di un commit multiplo per registrare un blocco di records corrispondenti alle voci da scaricare/aggiornare. Di default vero.");
-//        }// fine del blocco if
-//
-//        //--creata una nuova preferenza
-//        if (LibVers.installa(30)) {
-//            LibPref.newVersInt(CostBio.NUM_RECORDS_COMMIT, 500, "Numero di records per ogni commit. Di default 500.");
-//        }// fine del blocco if
 //
 //
     }// end of method
