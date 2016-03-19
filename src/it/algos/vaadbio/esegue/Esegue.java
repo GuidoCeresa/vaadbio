@@ -11,6 +11,7 @@ import it.algos.vaadbio.statistiche.StatGiorni;
 import it.algos.vaadbio.statistiche.StatSintesi;
 import it.algos.vaadbio.upload.UploadAnni;
 import it.algos.vaadbio.upload.UploadGiorni;
+import it.algos.vaadbio.upload.UploadNomi;
 
 /**
  * Created by gac on 25 gen 2016.
@@ -53,8 +54,8 @@ public abstract class Esegue {
      */
     public static void cicloUpload() {
         uploadGiorni();
-        uploadAnni();
         statisticheAll();
+        uploadAnni();
     } // fine del metodo
 
     /**
@@ -68,9 +69,16 @@ public abstract class Esegue {
      * Upload anni
      */
     public static void uploadAnni() {
-        new UploadAnni();
+        new UploadAnni(false);
     } // fine del metodo
 
+
+    /**
+     * Upload nomi
+     */
+    public static void uploadNomi() {
+        new UploadNomi();
+    } // fine del metodo
 
     /**
      * Esegue l'aggiornamento della lista dei nomi doppi

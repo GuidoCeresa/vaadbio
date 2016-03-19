@@ -2,16 +2,12 @@ package it.algos.vaadbio.giorno;
 
 
 import com.vaadin.server.FontAwesome;
-import com.vaadin.ui.MenuBar;
 import com.vaadin.ui.Notification;
 import it.algos.vaadbio.annogiorno.AnnoGiornoMod;
 import it.algos.vaadbio.esegue.Esegue;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.liste.ListaGiornoMorto;
 import it.algos.vaadbio.liste.ListaGiornoNato;
-import it.algos.vaadbio.statistiche.StatGiorni;
-import it.algos.vaadbio.statistiche.StatNazionalita;
-import it.algos.vaadbio.upload.UploadGiorni;
 import it.algos.webbase.web.table.ATable;
 
 /**
@@ -22,7 +18,7 @@ public class GiornoMod extends AnnoGiornoMod {
 
 
     // indirizzo interno del modulo (serve nei menu)
-    public static String MENU_ADDRESS = "Giorno";
+    public static String MENU_ADDRESS = "Giorni";
 
 
     /**
@@ -34,7 +30,7 @@ public class GiornoMod extends AnnoGiornoMod {
      * (facoltativo) icona del menu (se manca usa un'icona standard)
      */
     public GiornoMod() {
-        super(Giorno.class, FontAwesome.LIST_UL);
+        super(Giorno.class, MENU_ADDRESS, FontAwesome.LIST_UL);
     }// end of constructor
 
 

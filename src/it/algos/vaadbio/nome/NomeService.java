@@ -5,7 +5,6 @@ import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.lib.LibBio;
 import it.algos.webbase.web.lib.LibArray;
 import it.algos.webbase.web.lib.LibText;
-import it.algos.webbase.web.lib.LibTime;
 
 import java.text.Normalizer;
 import java.util.ArrayList;
@@ -196,11 +195,16 @@ public abstract class NomeService {
      * @param riferimento record principale di riferimento nel DB Nome
      */
     private static Nome elaboraSingolo(String nomeTxt, Nome riferimento) {
-        Nome nome = Nome.findByNome(nomeTxt);
+        Nome nome = null;
 
-        if (nome == null) {
-            nome = new Nome(nomeTxt, false, true, riferimento);
-            nome.save();
+        if (!nomeTxt.equals(CostBio.VUOTO)) {
+            nomeTxt = nomeTxt.trim();
+            nome = Nome.findByNome(nomeTxt);
+
+            if (nome == null) {
+                nome = new Nome(nomeTxt, false, true, riferimento);
+                nome.save();
+            }// end of if cycle
         }// end of if cycle
 
         return nome;

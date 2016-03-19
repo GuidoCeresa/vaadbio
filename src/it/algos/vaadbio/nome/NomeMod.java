@@ -62,6 +62,7 @@ public class NomeMod extends ModulePop {
         addCommandDownloadDoppi(menuItem);
         addCommandAggiorna(menuItem);
         addCommandElabora(menuItem);
+        addCommandUpload(menuItem);
     }// end of method
 
     /**
@@ -105,6 +106,19 @@ public class NomeMod extends ModulePop {
         });// end of anonymous class
     }// end of method
 
+    /**
+     * Comando bottone/item Upload
+     *
+     * @param menuItem a cui agganciare il bottone/item
+     */
+    private void addCommandUpload(MenuBar.MenuItem menuItem) {
+        menuItem.addItem("Upload", FontAwesome.COG, new MenuBar.Command() {
+            public void menuSelected(MenuBar.MenuItem selectedItem) {
+                esegueUpload();
+            }// end of method
+        });// end of anonymous class
+    }// end of method
+
 
     /**
      * Esegue l'aggiornamento della lista dei nomi doppi
@@ -128,6 +142,12 @@ public class NomeMod extends ModulePop {
         Esegue.elaboraNomi();
     }// end of method
 
+    /**
+     * Esegue l'upload di tutti i record
+     */
+    protected void esegueUpload() {
+        Esegue.uploadNomi();
+    }// end of method
 
 }// end of class
 

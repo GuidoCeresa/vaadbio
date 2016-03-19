@@ -5,12 +5,10 @@ import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.Notification;
 import it.algos.vaadbio.annogiorno.AnnoGiornoMod;
 import it.algos.vaadbio.esegue.Esegue;
-import it.algos.vaadbio.giorno.Giorno;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.liste.ListaAnnoMorto;
 import it.algos.vaadbio.liste.ListaAnnoNato;
 import it.algos.vaadbio.upload.UploadAnni;
-import it.algos.webbase.web.menu.ModuleCommand;
 import it.algos.webbase.web.table.ATable;
 
 import javax.persistence.metamodel.Attribute;
@@ -22,6 +20,10 @@ import javax.persistence.metamodel.Attribute;
 @SuppressWarnings("serial")
 public class AnnoMod extends AnnoGiornoMod {
 
+    // indirizzo interno del modulo (serve nei menu)
+    public static String MENU_ADDRESS = "Anni";
+
+
     /**
      * Costruttore senza parametri
      * <p>
@@ -31,7 +33,7 @@ public class AnnoMod extends AnnoGiornoMod {
      * (facoltativo) icona del menu (se manca usa un'icona standard)
      */
     public AnnoMod() {
-        super(Anno.class, FontAwesome.LIST_UL);
+        super(Anno.class, MENU_ADDRESS, FontAwesome.LIST_UL);
     }// end of constructor
 
 

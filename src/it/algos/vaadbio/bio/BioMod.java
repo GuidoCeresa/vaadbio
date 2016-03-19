@@ -81,10 +81,10 @@ public class BioMod extends ModulePop {
         return (new BioForm(this, item));
     }// end of method
 
-    @Override
-    public SearchManager createSearchManager() {
-        return new BioSearch(this);
-    }// end of method
+//    @Override
+//    public SearchManager createSearchManager() {
+//        return new BioSearch(this);
+//    }// end of method
 
 
     /**
@@ -714,4 +714,8 @@ public class BioMod extends ModulePop {
         return bio;
     }// end of method
 
+    @Override
+    public void search() {
+        super.search();
+    }
 }// end of class

@@ -9,10 +9,12 @@ import it.algos.vaadbio.anno.AnnoMod;
 import it.algos.vaadbio.attivita.AttivitaMod;
 import it.algos.vaadbio.bio.BioMod;
 import it.algos.vaadbio.biologo.BioLogoMod;
+import it.algos.vaadbio.cognome.CognomeMod;
 import it.algos.vaadbio.giorno.GiornoMod;
 import it.algos.vaadbio.lib.LibBio;
 import it.algos.vaadbio.mese.MeseMod;
 import it.algos.vaadbio.nazionalita.NazionalitaMod;
+import it.algos.vaadbio.nome.NomeMod;
 import it.algos.vaadbio.secolo.SecoloMod;
 import it.algos.webbase.domain.pref.PrefMod;
 import it.algos.webbase.domain.utente.UtenteModulo;
@@ -75,7 +77,8 @@ public class VaadbioUI extends AlgosUI {
 //        footerLayout.addComponent(new Label("Vaadbio versione 3.5 del 2 feb 2016"));
 //        footerLayout.addComponent(new Label("Vaadbio versione 3.6 del 9 feb 2016"));
 //        footerLayout.addComponent(new Label("Vaadbio versione 3.7 del 19 feb 2016"));
-        footerLayout.addComponent(new Label("Vaadbio versione 3.8 del 5 mar 2016"));
+//        footerLayout.addComponent(new Label("Vaadbio versione 3.8 del 5 mar 2016"));
+        footerLayout.addComponent(new Label("Vaadbio versione 3.9 del 19 mar 2016"));
 
 //        this.checkLogin();
         boolean loggato = false;
@@ -109,14 +112,14 @@ public class VaadbioUI extends AlgosUI {
         if (true) {
 //        this.addModulo(new DeltaMod());
             this.addModulo(new MeseMod());
-            this.addModulo(new GiornoMod());
             this.addModulo(new SecoloMod());
+            this.addModulo(new GiornoMod());
             this.addModulo(new AnnoMod());
         }// end of if cycle
 
 
-//        this.addModulo(new NomeMod());
-//        this.addModulo(new CognomeMod());
+        this.addModulo(new NomeMod());
+        this.addModulo(new CognomeMod());
         this.addModulo(new AttivitaMod());
         this.addModulo(new NazionalitaMod());
         this.addModulo(new BioMod());
