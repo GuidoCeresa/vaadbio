@@ -24,7 +24,7 @@ import javax.servlet.annotation.WebServlet;
  * which provides you with the option to select UI by referring the UI class
  * directly toggle productionMode using a boolean and more
  */
-@WebServlet(value = "/*", asyncSupported = true, displayName = "Vaadbio")
+@WebServlet(urlPatterns = { "/*" , "/VAADIN/*" }, asyncSupported = true, displayName = "Vaadbio")
 @VaadinServletConfiguration(productionMode = false, ui = VaadbioUI.class)
 public class VaadbioServlet extends AlgosServlet {
 
