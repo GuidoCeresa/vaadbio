@@ -54,7 +54,7 @@ public abstract class Esegue {
      */
     public static void cicloUpload() {
         uploadGiorni();
-        statisticheAll();
+        statisticaSintesi();
         uploadAnni();
     } // fine del metodo
 

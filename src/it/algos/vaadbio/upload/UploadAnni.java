@@ -46,7 +46,7 @@ public class UploadAnni {
             }// end of for cycle
         } else {
             for (int k = 3029; k > 0; k--) {
-                annoContrario =listaAnni.get(k);
+                annoContrario = listaAnni.get(k);
                 new ListaAnnoNato(annoContrario);
                 new ListaAnnoMorto(annoContrario);
             }// end of for cycle
