@@ -3,6 +3,7 @@ package it.algos.vaadbio.nome;
 import it.algos.vaad.wiki.Api;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.lib.LibBio;
+import it.algos.webbase.domain.pref.Pref;
 import it.algos.webbase.web.lib.LibArray;
 import it.algos.webbase.web.lib.LibText;
 
@@ -252,13 +253,13 @@ public abstract class NomeService {
      * Elimina caratteri 'anomali' dal nome
      * Gian, Lady, Sir, Maestro, Abd, 'Abd, Abu, Abū, Ibn, DJ, e J.
      */
-    private static String check(String nomeIn) {
+    public static String check(String nomeIn) {
         String nomeOut = CostBio.VUOTO;
         ArrayList listaTagContenuto = new ArrayList();
         ArrayList listaTagIniziali = new ArrayList();
         int pos;
         String tag = CostBio.VUOTO;
-        boolean usaNomeSingolo = true;
+        boolean usaNomeSingolo = Pref.getBool(CostBio.USA_NOME_SINGOLO, true);
         listaTagContenuto.add("(");
 
 

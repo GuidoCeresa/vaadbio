@@ -102,6 +102,7 @@ public class BioForm extends ModuleForm {
         layout.addComponent(getField(Bio_.templatesUguali));
         layout.addComponent(getField(Bio_.ultimaLettura));
         layout.addComponent(getField(Bio_.ultimaElaborazione));
+        layout.addComponent(getField(Bio_.nomePunta));
 
         return layout;
     }// end of method

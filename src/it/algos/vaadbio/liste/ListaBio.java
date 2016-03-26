@@ -36,6 +36,7 @@ public abstract class ListaBio {
     protected String tagHeadTemplateAvviso; // template 'StatBio'
     protected boolean usaHeadIncipit; // dopo il template di avviso
 
+    protected boolean usaSuddivisioneParagrafi;
     protected boolean usaBodySottopagine;
     protected boolean usaBodyRigheMultiple;
     protected boolean usaBodyDoppiaColonna;
@@ -93,7 +94,7 @@ public abstract class ListaBio {
         usaFooterCategorie = false;
 
 //        usaSuddivisioneUomoDonna = false
-//        usaSuddivisioneParagrafi = true
+        usaSuddivisioneParagrafi = false;
 //        usaAttivitaMultiple = false
 //        usaParagrafiAlfabetici = false
 //        usaTitoloParagrafoConLink = true
@@ -214,6 +215,7 @@ public abstract class ListaBio {
 
             if (debug) {
                 titolo = PAGINA_PROVA;
+                testo = titoloPagina + CostBio.A_CAPO + testo;
             } else {
                 titolo = titoloPagina;
             }// fine del blocco if-else
@@ -271,13 +273,16 @@ public abstract class ListaBio {
         String text = CostBio.VUOTO;
         boolean usaColonne = this.usaBodyDoppiaColonna;
         int maxRigheColonne = 10;//@todo mettere la preferenza
-        boolean usaRaggruppamentoRigheMultiple = this.usaBodyRigheMultiple;
 
         if (mappaBiografie != null && mappaBiografie.size() > 0) {
-            if (usaRaggruppamentoRigheMultiple) {
-                text = righeRaggruppate();
+            if (usaSuddivisioneParagrafi) {
+                text = righeParagrafo();
             } else {
-                text = righeSemplici();
+                if (usaBodyRigheMultiple) {
+                    text = righeRaggruppate();
+                } else {
+                    text = righeSemplici();
+                }// end of if/else cycle
             }// end of if/else cycle
         }// end of if cycle
 
@@ -297,7 +302,60 @@ public abstract class ListaBio {
     }// fine del metodo
 
     /**
-     * Raggruppa le didascalie per anno uguale
+     * Raggruppa le didascalie
+     */
+    protected String righeParagrafo() {
+        String text = CostBio.VUOTO;
+        ArrayList<String> lista;
+        String key;
+        String value;
+
+        for (Map.Entry<String, ArrayList<String>> mappa : mappaBiografie.entrySet()) {
+            key = mappa.getKey();
+            lista = mappa.getValue();
+            text += LibWiki.setParagrafo(key);
+            text += CostBio.A_CAPO;
+
+            for (String didascalia : lista) {
+                text += CostBio.ASTERISCO;
+                text += didascalia;
+                text += CostBio.A_CAPO;
+            }// end of for cycle
+
+
+//            if (mappa.getValue().size() == 1) {
+//                text += CostBio.ASTERISCO;
+//                if (!mappa.getKey().equals(CostBio.VUOTO)) {
+//                    text += LibWiki.setQuadre(mappa.getKey());
+//                    text += CostBio.TAG_SEPARATORE;
+//                }// end of if cycle
+//                text += mappa.getValue().get(0);
+//                text += CostBio.A_CAPO;
+//            } else {
+//                if (!mappa.getKey().equals(CostBio.VUOTO)) {
+//                    text += CostBio.ASTERISCO;
+//                    text += LibWiki.setQuadre(mappa.getKey());
+//                    text += CostBio.A_CAPO;
+//                }// end of if cycle
+//                lista = mappa.getValue();
+//                for (String didascalia : lista) {
+//                    if (!mappa.getKey().equals(CostBio.VUOTO)) {
+//                        text += CostBio.ASTERISCO;
+//                    }// end of if cycle
+//                    text += CostBio.ASTERISCO;
+//                    text += didascalia;
+//                    text += CostBio.A_CAPO;
+//                }// end of for cycle
+//            }// end of if/else cycle
+
+        }// end of for cycle
+
+        return text;
+    }// fine del metodo
+
+
+    /**
+     * Raggruppa le didascalie
      */
     protected String righeRaggruppate() {
         String text = CostBio.VUOTO;

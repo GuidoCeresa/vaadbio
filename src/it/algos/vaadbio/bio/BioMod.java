@@ -81,10 +81,10 @@ public class BioMod extends ModulePop {
         return (new BioForm(this, item));
     }// end of method
 
-//    @Override
-//    public SearchManager createSearchManager() {
-//        return new BioSearch(this);
-//    }// end of method
+    @Override
+    public SearchManager createSearchManager() {
+        return new BioSearch(this);
+    }// end of method
 
 
     /**
@@ -150,7 +150,8 @@ public class BioMod extends ModulePop {
                 Bio_.didascaliaGiornoMorto,
                 Bio_.didascaliaAnnoNato,
                 Bio_.didascaliaAnnoMorto,
-                Bio_.didascaliaListe
+                Bio_.didascaliaListe,
+                Bio_.nomePunta
         };
     }// end of method
 
@@ -164,7 +165,10 @@ public class BioMod extends ModulePop {
      */
     @Override
     protected Attribute<?, ?>[] creaFieldsSearch() {
-        return new Attribute[]{Bio_.pageid, Bio_.title};
+        return new Attribute[]{Bio_.pageid,
+                Bio_.nome,
+                Bio_.cognome
+        };
     }// end of method
 
 

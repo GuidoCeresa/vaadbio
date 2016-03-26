@@ -55,9 +55,6 @@ public abstract class CostBio {
 
 
     // ciclo elabora
-//    public final static String USA_LIMITE_ELABORA = "usaLimiteElabora";
-//    public final static String MAX_ELABORA = "maxElabora";
-//    public final static String USA_LOG_ELABORA = "usaLogElabora";
     public final static String USA_UPLOAD_ELABORATA = "usaUploadElaborata";
     public final static String USA_LOG_UPLOAD_ELABORATA = "usaLogUploadElaborata";
 
@@ -70,6 +67,8 @@ public abstract class CostBio {
     public final static String USA_BODY_RIGHE_MULTIPLE_CRONO = "usaBodyRigheMultipleCrono";
     public final static String REGISTRA_SOLO_MODIFICHE_SOSTANZIALI_CRONO = "usaEditSoloVoceDiversaCrono";
 
+    // persone - nomi
+    public final static String USA_NOME_SINGOLO = "usaNomeSingolo";
 
     //--chiavi mappa volori numerici passati come valore di ritorno multiplo
     public final static String KEY_MAPPA_REGISTRATE = "registrate";

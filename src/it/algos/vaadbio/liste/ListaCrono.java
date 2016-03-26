@@ -39,6 +39,7 @@ public abstract class ListaCrono extends ListaBio {
         tagHeadTemplateAvviso = Pref.getStr(CostBio.TEMPLATE_AVVISO_CRONO, "ListaBio");
 
         // body
+        usaSuddivisioneParagrafi = false; //--escluso per le voci crono
         usaBodySottopagine = false; //--escluso per le voci crono
         usaBodyRigheMultiple = Pref.getBool(CostBio.USA_BODY_RIGHE_MULTIPLE_CRONO, true);
         usaBodyTemplate = true; //--obbligatorio per le voci crono

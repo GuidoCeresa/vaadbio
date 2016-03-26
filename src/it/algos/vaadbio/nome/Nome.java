@@ -3,6 +3,7 @@ package it.algos.vaadbio.nome;
 
 import com.vaadin.data.Container;
 import com.vaadin.data.util.filter.Compare;
+import it.algos.vaadbio.bio.Bio;
 import it.algos.webbase.web.entity.BaseEntity;
 import it.algos.webbase.web.query.AQuery;
 import org.eclipse.persistence.annotations.Index;
@@ -11,6 +12,8 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 /**
  * Classe di tipo JavaBean
@@ -194,5 +197,43 @@ public class Nome extends BaseEntity {
     public void setRiferimento(Nome riferimento) {
         this.riferimento = riferimento;
     }//end of setter method
+
+    /**
+     * Costruisce il filtro per trovare i records di Bio che questa istanza di Nome usa nella property nomePunta
+     *
+     * @return filtro per i nomi
+     */
+    private Container.Filter getFiltroNome() {
+        return new Compare.Equal("nomePunta.id", getId());
+    }// fine del metodo
+
+    /**
+     * Recupera una lista (array) di records Bio che usano questa istanza di Nome nella property nomePunta
+     *
+     * @return lista delle istanze di Bio che usano questo nome
+     */
+    @SuppressWarnings("all")
+    public ArrayList<Bio> bioNome() {
+        ArrayList<Bio> lista = null;
+        List entities = AQuery.getList(Bio.class, this.getFiltroNome());
+
+        Comparator comp = new Comparator() {
+            @Override
+            public int compare(Object objA, Object objB) {
+                Bio bioA = (Bio) objA;
+                Bio bioB = (Bio) objB;
+                String attivitaA = bioA.getAttivitaValida();
+                String attivitaB = bioB.getAttivitaValida();
+                return attivitaA.compareTo(attivitaB);
+            }// end of inner method
+        };// end of anonymous inner class
+        entities.sort(comp);
+
+        if (entities != null) {
+            lista = new ArrayList<>(entities);
+        }// end of if cycle
+
+        return lista;
+    }// fine del metodo
 
 }// end of entity class

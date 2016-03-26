@@ -237,6 +237,11 @@ public class VersBootStrap implements ServletContextListener {
             LibPref.newVersInt(CostBio.NUM_RECORDS_COMMIT, 500, "Numero di records per ogni commit. Di default 500.");
         }// fine del blocco if
 
+        //--creata una nuova preferenza
+        if (LibVers.installa(++k)) {
+            LibPref.newVersBool(CostBio.USA_NOME_SINGOLO, true, "Uso del nome singolo: solo il primo. Di default true.");
+        }// fine del blocco if
+
 //        //--creata una nuova preferenza
 //        if (LibVers.installa(11)) {
 //            LibPref.newVersBool(CostBio.USA_UPLOAD_DOWNLOADATA, false, "Upload di ogni singola voce nel cicloDownload. Down, Ela, se tmpl diverso: Up, Down, Ela");

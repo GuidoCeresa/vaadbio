@@ -20,7 +20,8 @@ public class BioSearch extends SearchManager {
         ArrayList<Container.Filter> filters = new ArrayList<Container.Filter>();
 
         filters.add(createStringFilter(Bio_.pageid, SearchManager.SearchType.MATCHES));
-        filters.add(createStringFilter(Bio_.title, SearchType.STARTS_WITH));
+        filters.add(createStringFilter(Bio_.nome, SearchType.MATCHES));
+        filters.add(createStringFilter(Bio_.cognome, SearchType.MATCHES));
         return filters;
     }// end of method
 

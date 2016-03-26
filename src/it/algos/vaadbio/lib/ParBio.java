@@ -2,6 +2,7 @@ package it.algos.vaadbio.lib;
 
 import it.algos.vaadbio.bio.Bio;
 import it.algos.vaadbio.bio.Bio_;
+import it.algos.vaadbio.nome.NomeService;
 
 import javax.persistence.metamodel.Attribute;
 import javax.persistence.metamodel.SingularAttribute;
@@ -47,7 +48,7 @@ public enum ParBio {
 
         @Override
         public void setBioValida(Bio istanza) {
-            istanza.setNomeValido(LibBio.fixCampo(istanza.getNome()));
+            istanza.setNomeValido(NomeService.check(LibBio.fixCampo(istanza.getNome())));
         }// end of method
     },// end of single enumeration
     cognome("Cognome", true, true, true, false, false, Bio_.cognome) {
