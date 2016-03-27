@@ -1,7 +1,6 @@
-package it.algos.vaadbio.attivita;
+package it.algos.vaadbio.professione;
 
 
-import com.vaadin.event.Action;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.MenuBar;
 import com.vaadin.ui.Notification;
@@ -11,53 +10,43 @@ import it.algos.vaadbio.lib.CostBio;
 import it.algos.webbase.domain.pref.Pref;
 import it.algos.webbase.web.dialog.ConfirmDialog;
 import it.algos.webbase.web.module.ModulePop;
-import it.algos.webbase.web.table.ATable;
+
+import javax.persistence.metamodel.Attribute;
 
 /**
- * Gestione (minimale) del modulo
+ * Gestione (minimale) del modulo specifico
  */
 @SuppressWarnings("serial")
-public class AttivitaMod extends ModulePop {
+public class ProfessioneMod extends ModulePop {
 
-    private Action actionUpload = new Action("Upload lista", FontAwesome.ARROW_UP);
+    // indirizzo interno del modulo (serve nei menu)
+    public static String MENU_ADDRESS = "Professioni";
 
     /**
      * Costruttore senza parametri
-     * <p/>
+     * <p>
      * Invoca la superclasse passando i parametri:
      * (obbligatorio) la Entity specifica
      * (facoltativo) etichetta del menu (se manca usa il nome della Entity)
      * (facoltativo) icona del menu (se manca usa un'icona standard)
      */
-    public AttivitaMod() {
-        super(Attivita.class, "Attività", FontAwesome.LIST_UL);
-        ATable tavola = getTable();
-        addActionHandler(tavola);
+    public ProfessioneMod() {
+        super(Professione.class, MENU_ADDRESS, FontAwesome.GEAR);
     }// end of constructor
 
-
     /**
-     * Registers a new action handler for this container
-     *
-     * @see com.vaadin.event.Action.Container#addActionHandler(Action.Handler)
+     * Crea i campi visibili nella lista (table)
+     * <p/
+     * Come default spazzola tutti i campi della Entity <br>
+     * Può essere sovrascritto (facoltativo) nelle sottoclassi specifiche <br>
+     * Serve anche per l'ordine con cui vengono presentati i campi nella lista <br>
      */
-    private void addActionHandler(ATable tavola) {
-        tavola.addActionHandler(new Action.Handler() {
-            public Action[] getActions(Object target, Object sender) {
-                Action[] actions = null;
-                actions = new Action[1];
-                actions[0] = actionUpload;
-                return actions;
-            }// end of inner method
-
-            public void handleAction(Action action, Object sender, Object target) {
-                if (action.equals(actionUpload)) {
-                    esegueUpload();
-                }// end of if cycle
-            }// end of inner method
-        });// end of anonymous inner class
+    protected Attribute<?, ?>[] creaFieldsList() {
+        return new Attribute[]{
+                Professione_.singolare,
+                Professione_.pagina
+        };
     }// end of method
-
 
     /**
      * Crea i sottomenu specifici del modulo
@@ -73,7 +62,7 @@ public class AttivitaMod extends ModulePop {
     }// end of method
 
     /**
-     * Comando bottone/item New Ciclo
+     * Comando bottone/item Download
      *
      * @param menuItem a cui agganciare il bottone/item
      */
@@ -83,7 +72,7 @@ public class AttivitaMod extends ModulePop {
                 boolean usaDialoghi = Pref.getBool(CostBio.USA_DIALOGHI_CONFERMA, true);
                 if (usaDialoghi) {
                     String newMsg;
-                    newMsg = "Esegue un ciclo (<b><span style=\"color:green\">update</span></b>) di aggiunta attività</br>";
+                    newMsg = "Esegue un ciclo (<b><span style=\"color:green\">update</span></b>) di controllo dei link tra attività e pagina wiki</br>";
                     ConfirmDialog dialog = new ConfirmDialog(CostBio.MSG, newMsg,
                             new ConfirmDialog.Listener() {
                                 @Override
@@ -111,38 +100,7 @@ public class AttivitaMod extends ModulePop {
      * Esegue il download
      */
     public void esegueDownload() {
-        AttivitaService.download();
-    }// end of method
-
-    /**
-     * Esegue l'upload per la lista dei nati
-     */
-    public void esegueUpload() {
-        Attivita attivita = getAttivita();
-
-        if (attivita != null) {
-        } else {
-            Notification.show("Devi selezionare una riga per creare la lista su wikipedia");
-        }// end of if/else cycle
-    }// end of method
-
-    /**
-     * Recupera la voce selezionata
-     */
-    public Attivita getAttivita() {
-        Attivita attivita = null;
-        long idSelected = 0;
-        ATable tavola = getTable();
-
-        if (tavola != null) {
-            idSelected = tavola.getSelectedKey();
-        }// end of if cycle
-
-        if (idSelected > 0) {
-            attivita = Attivita.find(idSelected);
-        }// end of if cycle
-
-        return attivita;
+        ProfessioneService.download();
     }// end of method
 
 }// end of class

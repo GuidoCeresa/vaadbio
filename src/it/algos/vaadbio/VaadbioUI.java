@@ -21,6 +21,7 @@ import it.algos.webbase.domain.utente.UtenteModulo;
 import it.algos.webbase.domain.vers.VersMod;
 import it.algos.webbase.web.lib.LibSession;
 import it.algos.webbase.web.ui.AlgosUI;
+import it.algos.vaadbio.professione.ProfessioneMod;
 
 /**
  * Crea l'interfaccia utente (User Interface) iniziale dell'applicazione
@@ -120,7 +121,7 @@ public class VaadbioUI extends AlgosUI {
 
 
         this.addModulo(new NomeMod());
-        this.addModulo(new CognomeMod());
+        this.addModulo(new ProfessioneMod());
         this.addModulo(new AttivitaMod());
         this.addModulo(new NazionalitaMod());
         this.addModulo(new BioMod());

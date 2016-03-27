@@ -1,22 +1,23 @@
-package it.algos.vaadbio.attivita;
+package it.algos.vaadbio.professione;
 
 import it.algos.vaad.wiki.LibWiki;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.webbase.domain.log.Log;
+import it.algos.webbase.domain.pref.Pref;
 import it.algos.webbase.web.lib.LibNum;
 import it.algos.webbase.web.lib.LibTime;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Created by gac on 25 dic 2015.
- * .
+ * Created by gac on 27 mar 2016.
+ * Legame tra i nomi delle attività (chiamate professioni perché la tavola esiste già) e la pagina wiki di riferimento
+ * La tavola rispecchia esattamente il modulo su wikipedia (mirror), senza nessuna elaborazione
  */
-public abstract class AttivitaService {
+public abstract class ProfessioneService {
 
-    private final static String TITOLO_MODULO = "Modulo:Bio/Plurale_attività";
+    private final static String TITOLO_MODULO = "Modulo:Bio/Link attività";
 
     /**
      * Aggiorna i records leggendoli dalla pagina wiki
@@ -28,7 +29,6 @@ public abstract class AttivitaService {
     public static boolean download() {
         long inizio = System.currentTimeMillis();
         LinkedHashMap<String, String> mappa;
-        String titolo = "";
         String secondi;
         String records;
 
@@ -43,57 +43,36 @@ public abstract class AttivitaService {
                 aggiungeRecord(elementoDellaMappa);
             }// end of for cycle
 
-            if (false) {//@todo leggere da Pref
+            if (Pref.getBool(CostBio.USA_LOG_DEBUG, false)) {
                 secondi = LibTime.difText(inizio);
                 records = LibNum.format(mappa.size());
-                Log.setInfo("attivita", "Aggiornati in ${secondi} i ${records} records di attività (plurale)");
+                Log.setDebug("professione", "Aggiornati in " + secondi + " i " + records + " records di professione");
             }// fine del blocco if
             return true;
         }// end of if/else cycle
-    } // fine del metodo
+    } // fine del metodo statico
 
     /**
      * Aggiunge il record mancante
      */
     public static void aggiungeRecord(Map.Entry<String, String> elementoDellaMappa) {
         String singolare;
-        String plurale;
-        Attivita attivita;
+        String pagina;
+        Professione professione;
 
         if (elementoDellaMappa != null) {
             singolare = elementoDellaMappa.getKey();
-            plurale = elementoDellaMappa.getValue();
-            if (!plurale.equals(CostBio.VUOTO)) {
-                attivita = Attivita.findBySingolare(singolare);
-                if (attivita == null) {
-                    attivita = new Attivita();
+            pagina = elementoDellaMappa.getValue();
+            if (!singolare.equals(CostBio.VUOTO)) {
+                professione = Professione.findBySingolare(singolare);
+                if (professione == null) {
+                    professione = new Professione(CostBio.VUOTO, CostBio.VUOTO);
                 }// fine del blocco if
-                attivita.setSingolare(singolare);
-                attivita.setPlurale(plurale);
-                attivita.save();
+                professione.setSingolare(singolare);
+                professione.setPagina(pagina);
+                professione.save();
             }// fine del blocco if
         }// fine del blocco if
-    } // fine del metodo
-
-    /**
-     * Calcola la lunghezza dell'attività più lunga
-     */
-    public static int maxLength() {
-        ArrayList<Attivita> lista = Attivita.findAll();
-        int max = 0;
-        int len;
-
-        if (lista != null && lista.size() > 0) {
-            for (Attivita attivita : lista) {
-                len = attivita.getPlurale().length();
-                max = Math.max(max, len);
-                len = attivita.getSingolare().length();
-                max = Math.max(max, len);
-            }// end of for cycle
-        }// end of if cycle
-
-        return max;
-    } // fine del metodo
+    } // fine del metodo statico
 
 }// end of abstract static class
-

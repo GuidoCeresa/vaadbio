@@ -3,6 +3,7 @@ package it.algos.vaadbio.nome;
 
 import com.vaadin.data.Container;
 import com.vaadin.data.util.filter.Compare;
+import it.algos.vaadbio.attivita.Attivita;
 import it.algos.vaadbio.bio.Bio;
 import it.algos.webbase.web.entity.BaseEntity;
 import it.algos.webbase.web.query.AQuery;
@@ -220,10 +221,19 @@ public class Nome extends BaseEntity {
         Comparator comp = new Comparator() {
             @Override
             public int compare(Object objA, Object objB) {
+                String attivitaA = "";
+                String attivitaB = "";
                 Bio bioA = (Bio) objA;
                 Bio bioB = (Bio) objB;
-                String attivitaA = bioA.getAttivitaValida();
-                String attivitaB = bioB.getAttivitaValida();
+                Attivita objAttivitaA = bioA.getAttivitaPunta();
+                Attivita objAttivitaB = bioB.getAttivitaPunta();
+                if (objAttivitaA != null) {
+                    attivitaA = objAttivitaA.getPlurale();
+                }// end of if cycle
+                if (objAttivitaB != null) {
+                    attivitaB = objAttivitaB.getPlurale();
+                }// end of if cycle
+
                 return attivitaA.compareTo(attivitaB);
             }// end of inner method
         };// end of anonymous inner class

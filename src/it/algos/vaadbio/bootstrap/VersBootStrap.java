@@ -242,6 +242,11 @@ public class VersBootStrap implements ServletContextListener {
             LibPref.newVersBool(CostBio.USA_NOME_SINGOLO, true, "Uso del nome singolo: solo il primo. Di default true.");
         }// fine del blocco if
 
+        //--creata una nuova preferenza
+        if (LibVers.installa(++k)) {
+            LibPref.newVersBool(CostBio.USA_LOG_DEBUG, false, "Uso del log di registrazione per il livello debug. Di default falso.");
+        }// fine del blocco if
+
 //        //--creata una nuova preferenza
 //        if (LibVers.installa(11)) {
 //            LibPref.newVersBool(CostBio.USA_UPLOAD_DOWNLOADATA, false, "Upload di ogni singola voce nel cicloDownload. Down, Ela, se tmpl diverso: Up, Down, Ela");
@@ -302,10 +307,6 @@ public class VersBootStrap implements ServletContextListener {
 //            LibPref.newVersBool(CostBio.REGISTRA_SOLO_MODIFICHE_SOSTANZIALI_CRONO, true, "Uso la registrazione solo se la voce è significativamente diversa nelle liste cronologiche. Di default vero.");
 //        }// fine del blocco if
 //
-//        //--creata una nuova preferenza
-//        if (LibVers.installa(28)) {
-//            LibPref.newVersBool(CostBio.USA_LOG_DEBUG, false, "Uso del log di registrazione per il livello debug. Di default falso.");
-//        }// fine del blocco if
 //
 //
 //

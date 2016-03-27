@@ -302,7 +302,7 @@ public abstract class ListaBio {
     }// fine del metodo
 
     /**
-     * Raggruppa le didascalie
+     * Costruisce il paragrafo
      */
     protected String righeParagrafo() {
         String text = CostBio.VUOTO;
@@ -321,33 +321,6 @@ public abstract class ListaBio {
                 text += didascalia;
                 text += CostBio.A_CAPO;
             }// end of for cycle
-
-
-//            if (mappa.getValue().size() == 1) {
-//                text += CostBio.ASTERISCO;
-//                if (!mappa.getKey().equals(CostBio.VUOTO)) {
-//                    text += LibWiki.setQuadre(mappa.getKey());
-//                    text += CostBio.TAG_SEPARATORE;
-//                }// end of if cycle
-//                text += mappa.getValue().get(0);
-//                text += CostBio.A_CAPO;
-//            } else {
-//                if (!mappa.getKey().equals(CostBio.VUOTO)) {
-//                    text += CostBio.ASTERISCO;
-//                    text += LibWiki.setQuadre(mappa.getKey());
-//                    text += CostBio.A_CAPO;
-//                }// end of if cycle
-//                lista = mappa.getValue();
-//                for (String didascalia : lista) {
-//                    if (!mappa.getKey().equals(CostBio.VUOTO)) {
-//                        text += CostBio.ASTERISCO;
-//                    }// end of if cycle
-//                    text += CostBio.ASTERISCO;
-//                    text += didascalia;
-//                    text += CostBio.A_CAPO;
-//                }// end of for cycle
-//            }// end of if/else cycle
-
         }// end of for cycle
 
         return text;
