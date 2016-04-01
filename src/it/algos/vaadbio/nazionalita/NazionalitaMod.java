@@ -20,6 +20,9 @@ import it.algos.webbase.web.table.ATable;
 @SuppressWarnings("serial")
 public class NazionalitaMod extends ModulePop {
 
+    // indirizzo interno del modulo (serve nei menu)
+    public final static String MENU_ADDRESS = "Naz";
+
     private Action actionUpload = new Action("Upload lista", FontAwesome.ARROW_UP);
 
     /**
@@ -31,7 +34,7 @@ public class NazionalitaMod extends ModulePop {
      * (facoltativo) icona del menu (se manca usa un'icona standard)
      */
     public NazionalitaMod() {
-        super(Nazionalita.class, "Nazionalità",FontAwesome.LIST_UL);
+        super(Nazionalita.class, MENU_ADDRESS,FontAwesome.LIST_UL);
         ATable tavola = getTable();
         addActionHandler(tavola);
     }// end of constructor

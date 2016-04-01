@@ -1,4 +1,4 @@
-package it.algos.vaadbio.professione;
+package it.algos.vaadbio.genere;
 
 
 import com.vaadin.server.FontAwesome;
@@ -7,31 +7,32 @@ import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
 import it.algos.vaadbio.ciclo.CicloDownload;
 import it.algos.vaadbio.lib.CostBio;
+import it.algos.vaadbio.professione.ProfessioneService;
+import it.algos.vaadbio.professione.Professione_;
 import it.algos.webbase.domain.pref.Pref;
 import it.algos.webbase.web.dialog.ConfirmDialog;
 import it.algos.webbase.web.module.ModulePop;
-
 import javax.persistence.metamodel.Attribute;
 
 /**
  * Gestione (minimale) del modulo specifico
  */
 @SuppressWarnings("serial")
-public class ProfessioneMod extends ModulePop {
+public class GenereMod extends ModulePop {
 
     // indirizzo interno del modulo (serve nei menu)
-    public final static String MENU_ADDRESS = "Prof";
+    public static String MENU_ADDRESS = "Plurali";
 
     /**
      * Costruttore senza parametri
-     * <p>
+     * <p/>
      * Invoca la superclasse passando i parametri:
      * (obbligatorio) la Entity specifica
      * (facoltativo) etichetta del menu (se manca usa il nome della Entity)
      * (facoltativo) icona del menu (se manca usa un'icona standard)
      */
-    public ProfessioneMod() {
-        super(Professione.class, MENU_ADDRESS, FontAwesome.GEAR);
+    public GenereMod() {
+        super(Genere.class, MENU_ADDRESS, FontAwesome.GEAR);
     }// end of constructor
 
     /**
@@ -43,8 +44,9 @@ public class ProfessioneMod extends ModulePop {
      */
     protected Attribute<?, ?>[] creaFieldsList() {
         return new Attribute[]{
-                Professione_.singolare,
-                Professione_.pagina
+                Genere_.singolare,
+                Genere_.plurale,
+                Genere_.sesso
         };
     }// end of method
 
@@ -72,7 +74,7 @@ public class ProfessioneMod extends ModulePop {
                 boolean usaDialoghi = Pref.getBool(CostBio.USA_DIALOGHI_CONFERMA, true);
                 if (usaDialoghi) {
                     String newMsg;
-                    newMsg = "Esegue un ciclo (<b><span style=\"color:green\">update</span></b>) di controllo dei link tra attività e pagina wiki</br>";
+                    newMsg = "Esegue un ciclo (<b><span style=\"color:green\">update</span></b>) di controllo del plurale attività per genere</br>";
                     ConfirmDialog dialog = new ConfirmDialog(CostBio.MSG, newMsg,
                             new ConfirmDialog.Listener() {
                                 @Override
@@ -100,7 +102,7 @@ public class ProfessioneMod extends ModulePop {
      * Esegue il download
      */
     public void esegueDownload() {
-        ProfessioneService.download();
+        GenereService.download();
     }// end of method
 
 }// end of class

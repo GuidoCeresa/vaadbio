@@ -90,6 +90,7 @@ public abstract class ListaCrono extends ListaBio {
      * <p>
      * Sovrascritto
      */
+    @Override
     protected String elaboraFooter() {
         String text = CostBio.VUOTO;
         String progressivoCategoria = getProgressivoCategoria();

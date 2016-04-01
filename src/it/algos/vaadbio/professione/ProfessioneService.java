@@ -28,7 +28,7 @@ public abstract class ProfessioneService {
      */
     public static boolean download() {
         long inizio = System.currentTimeMillis();
-        LinkedHashMap<String, String> mappa;
+        LinkedHashMap<String, Object> mappa;
         String secondi;
         String records;
 
@@ -39,14 +39,14 @@ public abstract class ProfessioneService {
         if (mappa == null) {
             return false;
         } else {
-            for (Map.Entry<String, String> elementoDellaMappa : mappa.entrySet()) {
+            for (Map.Entry<String, Object> elementoDellaMappa : mappa.entrySet()) {
                 aggiungeRecord(elementoDellaMappa);
             }// end of for cycle
 
             if (Pref.getBool(CostBio.USA_LOG_DEBUG, false)) {
                 secondi = LibTime.difText(inizio);
                 records = LibNum.format(mappa.size());
-                Log.setDebug("professione", "Aggiornati in " + secondi + " i " + records + " records di professione");
+                Log.setDebug("prof", "Aggiornati in " + secondi + " i " + records + " records di professione");
             }// fine del blocco if
             return true;
         }// end of if/else cycle
@@ -55,14 +55,18 @@ public abstract class ProfessioneService {
     /**
      * Aggiunge il record mancante
      */
-    public static void aggiungeRecord(Map.Entry<String, String> elementoDellaMappa) {
+    public static void aggiungeRecord(Map.Entry<String, Object> elementoDellaMappa) {
         String singolare;
-        String pagina;
+        String pagina = CostBio.VUOTO;
         Professione professione;
 
         if (elementoDellaMappa != null) {
             singolare = elementoDellaMappa.getKey();
-            pagina = elementoDellaMappa.getValue();
+
+            if (elementoDellaMappa.getValue() instanceof String) {
+                pagina = (String) elementoDellaMappa.getValue();
+            }// end of if cycle
+
             if (!singolare.equals(CostBio.VUOTO)) {
                 professione = Professione.findBySingolare(singolare);
                 if (professione == null) {

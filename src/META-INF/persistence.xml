@@ -8,6 +8,7 @@
         <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
 
         <class>it.algos.webbase.web.entity.BaseEntity</class>
+		<class>it.algos.vaadbio.genere.Genere</class>
 		<class>it.algos.vaadbio.professione.Professione</class>
 		<class>it.algos.vaadbio.secolo.Secolo</class>
 		<class>it.algos.vaadbio.mese.Mese</class>

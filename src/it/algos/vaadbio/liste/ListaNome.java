@@ -1,9 +1,12 @@
 package it.algos.vaadbio.liste;
 
+import it.algos.vaad.wiki.LibWiki;
 import it.algos.vaadbio.attivita.Attivita;
 import it.algos.vaadbio.bio.Bio;
 import it.algos.vaadbio.lib.CostBio;
+import it.algos.vaadbio.lib.LibBio;
 import it.algos.vaadbio.nome.Nome;
+import it.algos.vaadbio.professione.Professione;
 import it.algos.webbase.web.lib.LibText;
 
 import java.util.ArrayList;
@@ -37,6 +40,7 @@ public class ListaNome extends ListaBio {
         super.elaboraParametri();
 
         // head
+        usaHeadIncipit = true;
 
         // body
         usaSuddivisioneParagrafi = true;
@@ -65,11 +69,10 @@ public class ListaNome extends ListaBio {
     protected void elaboraMappaBiografie() {
         ArrayList<Bio> listaNomi = null;
         Nome nome = getNome();
-        Attivita attivita;
-        String attivitaText;
         String didascalia;
-        int soglia = 1;
+        int soglia = 50;
         ArrayList<String> lista;
+        String chiaveParagrafo;
 
         if (nome != null) {
             listaNomi = nome.bioNome();
@@ -78,30 +81,94 @@ public class ListaNome extends ListaBio {
         if (listaNomi != null && listaNomi.size() >= soglia) {
             mappaBiografie = new LinkedHashMap<String, ArrayList<String>>();
             for (Bio bio : listaNomi) {
-                attivitaText = CostBio.VUOTO;
-                attivita = bio.getAttivitaPunta();
-                if (attivita != null) {
-                    attivitaText = attivita.getPlurale();
-                }// end of if cycle
-                if (attivitaText.equals(CostBio.VUOTO)) {
-                    attivitaText = bio.getAttivita();
-                }// end of if cycle
-                attivitaText= LibText.primaMaiuscola(attivitaText);
+                chiaveParagrafo = getTitoloParagrafo(bio);
                 didascalia = bio.getDidascaliaListe();
 
-                if (mappaBiografie.containsKey(attivitaText)) {
-                    lista = mappaBiografie.get(attivitaText);
+                if (mappaBiografie.containsKey(chiaveParagrafo)) {
+                    lista = mappaBiografie.get(chiaveParagrafo);
                     lista.add(didascalia);
                 } else {
                     lista = new ArrayList<>();
                     lista.add(didascalia);
-                    mappaBiografie.put(attivitaText, lista);
+                    mappaBiografie.put(chiaveParagrafo, lista);
                 }// end of if/else cycle
             }// end of if cycle
+            numPersone = listaNomi.size();
         }// end of for cycle
-        numPersone = listaNomi.size();
+
     }// fine del metodo
 
+    /**
+     * Costruisce il titolo del paragrafo
+     */
+    protected String getTitoloParagrafo(Bio bio) {
+        String titoloParagrafo = CostBio.VUOTO;
+        String pagina = CostBio.VUOTO;
+        Professione professione;
+        Attivita attivita = null;
+        String attivitaSingolare = CostBio.VUOTO;
+        String attivitaPlurale = CostBio.VUOTO;
+
+        if (bio == null) {
+            return CostBio.VUOTO;
+        }// end of if cycle
+
+        attivita = bio.getAttivitaPunta();
+        if (attivita != null) {
+            attivitaSingolare = attivita.getSingolare();
+            attivitaPlurale = attivita.getPlurale();
+        }// end of if cycle
+        if (attivitaPlurale.equals(CostBio.VUOTO)) {
+            attivitaPlurale = ALTRE;
+            return attivitaPlurale;
+        }// end of if cycle
+
+        if (!attivitaPlurale.equals(CostBio.VUOTO)) {
+            attivitaPlurale = LibText.primaMaiuscola(attivitaPlurale);
+
+            professione = Professione.findByAttivita(attivita);
+            if (professione != null) {
+                pagina = professione.getPagina();
+            } else {
+                if (bio.getSesso().equals("M")) {
+                    pagina = attivitaSingolare;
+                }// end of if cycle
+            }// end of if/else cycle
+            pagina = LibText.primaMaiuscola(pagina);
+            titoloParagrafo = LibWiki.setLink(pagina, attivitaPlurale);
+
+        }// end of if cycle
+
+        return titoloParagrafo;
+    }// fine del metodo
+
+    /**
+     * Costruisce la frase di incipit iniziale
+     * <p>
+     * Sovrascrivibile <br>
+     * Parametrizzato (nelle sottoclassi) l'utilizzo e la formulazione <br>
+     */
+    @Override
+    protected String elaboraIncipitSpecifico() {
+        String text = "incipit lista nomi|nome=" + getNomeTxt();
+        return LibWiki.setGraffe(text);
+    }// fine del metodo
+
+
+    /**
+     * Piede della pagina
+     * <p>
+     * Sovrascritto
+     */
+    @Override
+    protected String elaboraFooter() {
+        String text = "Categoria:Liste di persone per nome|nome=" + getNomeTxt();
+
+        text = LibWiki.setQuadre(text);
+        text = LibBio.setNoInclude(text);
+
+        return CostBio.A_CAPO + text;
+    }// fine del metodo
 
     public Nome getNome() {
         return (Nome) getOggetto();

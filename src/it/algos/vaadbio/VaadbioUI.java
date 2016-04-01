@@ -21,6 +21,7 @@ import it.algos.webbase.domain.utente.UtenteModulo;
 import it.algos.webbase.domain.vers.VersMod;
 import it.algos.webbase.web.lib.LibSession;
 import it.algos.webbase.web.ui.AlgosUI;
+import it.algos.vaadbio.genere.GenereMod;
 import it.algos.vaadbio.professione.ProfessioneMod;
 
 /**
@@ -122,6 +123,7 @@ public class VaadbioUI extends AlgosUI {
 
         this.addModulo(new NomeMod());
         this.addModulo(new ProfessioneMod());
+        this.addModulo(new GenereMod());
         this.addModulo(new AttivitaMod());
         this.addModulo(new NazionalitaMod());
         this.addModulo(new BioMod());

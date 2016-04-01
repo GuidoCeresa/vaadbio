@@ -3,6 +3,7 @@ package it.algos.vaadbio.attivita;
 import it.algos.vaad.wiki.LibWiki;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.webbase.domain.log.Log;
+import it.algos.webbase.domain.pref.Pref;
 import it.algos.webbase.web.lib.LibNum;
 import it.algos.webbase.web.lib.LibTime;
 
@@ -27,8 +28,7 @@ public abstract class AttivitaService {
      */
     public static boolean download() {
         long inizio = System.currentTimeMillis();
-        LinkedHashMap<String, String> mappa;
-        String titolo = "";
+        LinkedHashMap<String, Object> mappa;
         String secondi;
         String records;
 
@@ -39,14 +39,14 @@ public abstract class AttivitaService {
         if (mappa == null) {
             return false;
         } else {
-            for (Map.Entry<String, String> elementoDellaMappa : mappa.entrySet()) {
+            for (Map.Entry<String, Object> elementoDellaMappa : mappa.entrySet()) {
                 aggiungeRecord(elementoDellaMappa);
             }// end of for cycle
 
-            if (false) {//@todo leggere da Pref
+            if (Pref.getBool(CostBio.USA_LOG_DEBUG, false)) {
                 secondi = LibTime.difText(inizio);
                 records = LibNum.format(mappa.size());
-                Log.setInfo("attivita", "Aggiornati in ${secondi} i ${records} records di attività (plurale)");
+                Log.setDebug("attivita", "Aggiornati in " + secondi + " i " + records + " records di attività (plurale)");
             }// fine del blocco if
             return true;
         }// end of if/else cycle
@@ -55,14 +55,18 @@ public abstract class AttivitaService {
     /**
      * Aggiunge il record mancante
      */
-    public static void aggiungeRecord(Map.Entry<String, String> elementoDellaMappa) {
+    public static void aggiungeRecord(Map.Entry<String, Object> elementoDellaMappa) {
         String singolare;
-        String plurale;
+        String plurale = CostBio.VUOTO;
         Attivita attivita;
 
         if (elementoDellaMappa != null) {
             singolare = elementoDellaMappa.getKey();
-            plurale = elementoDellaMappa.getValue();
+
+            if (elementoDellaMappa.getValue() instanceof String) {
+                plurale = (String) elementoDellaMappa.getValue();
+            }// end of if cycle
+
             if (!plurale.equals(CostBio.VUOTO)) {
                 attivita = Attivita.findBySingolare(singolare);
                 if (attivita == null) {

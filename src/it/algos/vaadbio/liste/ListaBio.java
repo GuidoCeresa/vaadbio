@@ -19,10 +19,10 @@ import java.util.*;
  */
 public abstract class ListaBio {
 
+    protected final static String TAG_INDICE = "__FORCETOC__";
+    protected final static String TAG_NO_INDICE = "__NOTOC__";
+    protected final static String ALTRE = "Altre...";
     public static String PAGINA_PROVA = "Utente:Biobot/2";
-    protected static String TAG_INDICE = "__FORCETOC__";
-    protected static String TAG_NO_INDICE = "__NOTOC__";
-
     protected String titoloPagina;
     protected ArrayList<String> listaBiografie;
     protected LinkedHashMap<String, ArrayList<String>> mappaBiografie;
@@ -163,12 +163,19 @@ public abstract class ListaBio {
 
 
     /**
-     * Patch
-     * La mappa delle biografie arriva NON ordinata @todo Da sistemare
-     *
-     * @todo Ordine cognome (e se manca?)
+     * La mappa delle biografie arriva ordinata, ma occorre spostare in basso i paragrafi vuoti
      */
     protected void ordinaMappaBiografie() {
+        LinkedHashMap<String, ArrayList<String>> mappa = mappaBiografie;
+        ArrayList<String> lista;
+
+        if (mappa != null && mappa.containsKey(ALTRE)) {
+            lista = mappa.get(ALTRE);
+            mappa.remove(ALTRE);
+            mappa.put(ALTRE, lista);
+            mappaBiografie = mappa;
+        }// end of if cycle
+
     }// fine del metodo
 
     /**
@@ -308,11 +315,13 @@ public abstract class ListaBio {
         String text = CostBio.VUOTO;
         ArrayList<String> lista;
         String key;
-        String value;
+//        String titolo = CostBio.VUOTO;
 
         for (Map.Entry<String, ArrayList<String>> mappa : mappaBiografie.entrySet()) {
+            text += CostBio.A_CAPO;
             key = mappa.getKey();
             lista = mappa.getValue();
+//            titolo = getTitoloParagrafo(key);
             text += LibWiki.setParagrafo(key);
             text += CostBio.A_CAPO;
 
@@ -325,6 +334,14 @@ public abstract class ListaBio {
 
         return text;
     }// fine del metodo
+
+//    /**
+//     * Costruisce il titolo del paragrafo
+//     * Sovrascritto
+//     */
+//    protected String getTitoloParagrafo(String attivita) {
+//        return attivita;
+//    }// fine del metodo
 
 
     /**
@@ -424,8 +441,6 @@ public abstract class ListaBio {
 
     /**
      * Piede della pagina
-     * <p>
-     * Aggiungere (di solito) inizialmente la chiamata al metodo elaboraFooterSpazioIniziale <br>
      * Sovrascritto
      */
     protected String elaboraFooter() {

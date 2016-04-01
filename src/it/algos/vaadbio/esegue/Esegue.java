@@ -1,10 +1,12 @@
 package it.algos.vaadbio.esegue;
 
-import it.algos.vaadbio.bio.Bio;
+import it.algos.vaadbio.attivita.AttivitaService;
 import it.algos.vaadbio.ciclo.CicloDownload;
 import it.algos.vaadbio.ciclo.CicloElabora;
 import it.algos.vaadbio.ciclo.CicloUpdate;
+import it.algos.vaadbio.nazionalita.NazionalitaService;
 import it.algos.vaadbio.nome.NomeService;
+import it.algos.vaadbio.professione.ProfessioneService;
 import it.algos.vaadbio.statistiche.StatAnni;
 import it.algos.vaadbio.statistiche.StatDidascalieCrono;
 import it.algos.vaadbio.statistiche.StatGiorni;
@@ -31,6 +33,9 @@ public abstract class Esegue {
      * Ciclo normale giornaliero notturno di download
      */
     public static void cicloDownload() {
+        AttivitaService.download();
+        NazionalitaService.download();
+        ProfessioneService.download();
         new CicloDownload();
     } // fine del metodo
 

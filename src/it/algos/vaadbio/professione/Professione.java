@@ -1,5 +1,7 @@
 package it.algos.vaadbio.professione;
 
+import it.algos.vaadbio.attivita.Attivita;
+import it.algos.vaadbio.lib.CostBio;
 import it.algos.webbase.web.entity.BaseEntity;
 import it.algos.webbase.web.query.AQuery;
 import org.apache.commons.beanutils.BeanUtils;
@@ -73,7 +75,7 @@ public class Professione extends BaseEntity {
     /**
      * Recupera una istanza di Professione usando la query di una property specifica
      *
-     * @param singolare maschiele o femminile della professione
+     * @param singolare maschile o femminile della professione
      * @return istanza di Professione, null se non trovata
      */
     public static Professione findBySingolare(String singolare) {
@@ -84,6 +86,24 @@ public class Professione extends BaseEntity {
             if (entity instanceof Professione) {
                 instance = (Professione) entity;
             }// end of if cycle
+        }// end of if cycle
+
+        return instance;
+    }// end of method
+
+    /**
+     * Recupera una istanza di Professione usando la query di una property specifica
+     *
+     * @param attivita della professione
+     * @return istanza di Professione, null se non trovata
+     */
+    public static Professione findByAttivita(Attivita attivita) {
+        Professione instance = null;
+        String singolare;
+
+        if (attivita != null) {
+            singolare = attivita.getSingolare();
+            instance = findBySingolare(singolare);
         }// end of if cycle
 
         return instance;
