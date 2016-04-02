@@ -194,7 +194,7 @@ public class VersBootStrap implements ServletContextListener {
 
         //--creata una nuova preferenza
         if (LibVers.installa(++k)) {
-            LibPref.newVersInt(CostBio.STAT_NUM_VOCI, 297000, "Numero di voci gestite. Di default poco meno della categoria.");
+            LibPref.newVersInt(CostBio.STAT_NUM_VOCI, 298000, "Numero di voci gestite. Di default poco meno della categoria.");
         }// fine del blocco if
 
         //--creata una nuova preferenza
@@ -246,6 +246,17 @@ public class VersBootStrap implements ServletContextListener {
         if (LibVers.installa(++k)) {
             LibPref.newVersBool(CostBio.USA_LOG_DEBUG, false, "Uso del log di registrazione per il livello debug. Di default falso.");
         }// fine del blocco if
+
+        //--creata una nuova preferenza
+        if (LibVers.installa(++k)) {
+            LibPref.newVersInt(CostBio.TAGLIO_NOMI_PAGINA, 50, "'Numero di voci necessario per creare la pagina del nome");
+        }// fine del blocco if
+
+        //--creata una nuova preferenza
+        if (LibVers.installa(++k)) {
+            LibPref.newVersInt(CostBio.TAGLIO_NOMI_ELENCO, 20, "'Numero di voci necessario per elencare il nome nella lista");
+        }// fine del blocco if
+
 
 //        //--creata una nuova preferenza
 //        if (LibVers.installa(11)) {

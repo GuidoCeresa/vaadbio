@@ -163,7 +163,11 @@ public abstract class ListaBio {
 
 
     /**
-     * La mappa delle biografie arriva ordinata, ma occorre spostare in basso i paragrafi vuoti
+     * La mappa delle biografie arriva ordinata secondo l'attività principale della voce
+     * Occorre spostare in basso il paragrafo vuot0
+     * Occorre raggruppare i paragrafi con lo stesso link visibile
+     * Occorre riordinare in base al link visibile
+     * Sovrascritto
      */
     protected void ordinaMappaBiografie() {
         LinkedHashMap<String, ArrayList<String>> mappa = mappaBiografie;

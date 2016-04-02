@@ -9,6 +9,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Classe di tipo JavaBean.
@@ -106,13 +107,22 @@ public class Genere extends BaseEntity {
      * @return istanza di Genere, null se non trovata
      */
     public static Genere findBySingolareAndSesso(String singolare, String sesso) {
-        Genere instance = findBySingolare(singolare);
+        Genere instance;
+        List<? extends BaseEntity> entities = AQuery.queryList(Genere.class, Genere_.singolare, singolare);
 
-        if (instance.getSesso().equals(sesso)) {
-            return instance;
+        if (entities != null) {
+            for (BaseEntity entity : entities) {
+                if (entity instanceof Genere) {
+                    instance = (Genere) entity;
+                    if (instance.getSesso().equals(sesso)) {
+                        return instance;
+                    }// end of if cycle
+                }// end of if cycle
+            }// end of for cycle
         } else {
             return null;
         }// end of if/else cycle
+        return null;
     }// end of method
 
 

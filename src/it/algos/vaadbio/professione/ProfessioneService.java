@@ -60,22 +60,38 @@ public abstract class ProfessioneService {
         String pagina = CostBio.VUOTO;
         Professione professione;
 
-        if (elementoDellaMappa != null) {
-            singolare = elementoDellaMappa.getKey();
+        if (elementoDellaMappa == null) {
+            return;
+        }// fine del blocco if
 
-            if (elementoDellaMappa.getValue() instanceof String) {
-                pagina = (String) elementoDellaMappa.getValue();
-            }// end of if cycle
+        singolare = elementoDellaMappa.getKey();
+        if (elementoDellaMappa.getValue() instanceof String) {
+            pagina = (String) elementoDellaMappa.getValue();
+        }// end of if cycle
 
-            if (!singolare.equals(CostBio.VUOTO)) {
-                professione = Professione.findBySingolare(singolare);
-                if (professione == null) {
-                    professione = new Professione(CostBio.VUOTO, CostBio.VUOTO);
-                }// fine del blocco if
+        //--crea un record
+        aggiungeRecord(singolare, pagina);
+
+        //--crea un record maschile, se mancava
+//        aggiungeRecord(pagina, pagina);
+
+    } // fine del metodo statico
+
+    /**
+     * Aggiunge/modifica il record
+     */
+    public static void aggiungeRecord(String singolare, String pagina) {
+        Professione professione;
+
+        if (!singolare.equals(CostBio.VUOTO) && !pagina.equals(CostBio.VUOTO)) {
+            professione = Professione.findBySingolare(singolare);
+            if (professione == null) {
+                professione = new Professione(singolare, pagina);
+            } else {
                 professione.setSingolare(singolare);
                 professione.setPagina(pagina);
-                professione.save();
-            }// fine del blocco if
+            }// end of if/else cycle
+            professione.save();
         }// fine del blocco if
     } // fine del metodo statico
 

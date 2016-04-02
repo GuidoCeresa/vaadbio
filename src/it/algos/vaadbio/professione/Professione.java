@@ -31,6 +31,8 @@ public class Professione extends BaseEntity {
     private String singolare = "";
 
     @NotEmpty
+    @Column(length = 100)
+    @Index
     private String pagina = "";
 
     /**
@@ -81,6 +83,25 @@ public class Professione extends BaseEntity {
     public static Professione findBySingolare(String singolare) {
         Professione instance = null;
         BaseEntity entity = AQuery.queryOne(Professione.class, Professione_.singolare, singolare);
+
+        if (entity != null) {
+            if (entity instanceof Professione) {
+                instance = (Professione) entity;
+            }// end of if cycle
+        }// end of if cycle
+
+        return instance;
+    }// end of method
+
+    /**
+     * Recupera una istanza di Professione usando la query di una property specifica
+     *
+     * @param pagina di riferimento su wiki
+     * @return istanza di Professione, null se non trovata
+     */
+    public static Professione findByPagina(String pagina) {
+        Professione instance = null;
+        BaseEntity entity = AQuery.queryOne(Professione.class, Professione_.pagina, pagina);
 
         if (entity != null) {
             if (entity instanceof Professione) {

@@ -69,6 +69,8 @@ public abstract class CostBio {
 
     // persone - nomi
     public final static String USA_NOME_SINGOLO = "usaNomeSingolo";
+    public final static String TAGLIO_NOMI_PAGINA = "taglioNomiPagina";
+    public final static String TAGLIO_NOMI_ELENCO = "taglioNomiElenco";
 
     //--chiavi mappa volori numerici passati come valore di ritorno multiplo
     public final static String KEY_MAPPA_REGISTRATE = "registrate";

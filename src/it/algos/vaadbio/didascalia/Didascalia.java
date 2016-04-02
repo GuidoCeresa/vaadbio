@@ -122,8 +122,11 @@ public abstract class Didascalia {
                 if (localitaNato.contains(prefix)) {
                     localitaNato = localitaNato.substring(0, localitaNato.indexOf(prefix));
                 }// fine del blocco if
-                this.localitaNato = localitaNato;
             }// fine del blocco if
+            this.localitaNato = localitaNato;
+            if (!bio.getLuogoNascitaLinkValido().equals(CostBio.VUOTO)) {
+                this.localitaNato = localitaNato + "|" + bio.getLuogoNascitaLinkValido();
+            }// end of if cycle
         } catch (Exception unErrore) { // intercetta l'errore
         }// fine del blocco try-catch
 
@@ -135,6 +138,9 @@ public abstract class Didascalia {
                 }// fine del blocco if
             }// fine del blocco if
             this.localitaMorto = localitaMorto;
+            if (!bio.getLuogoMorteLinkValido().equals(CostBio.VUOTO)) {
+                this.localitaMorto = localitaMorto + "|" + bio.getLuogoMorteLinkValido();
+            }// end of if cycle
         } catch (Exception unErrore) { // intercetta l'errore
         }// fine del blocco try-catch
     }// end of method
