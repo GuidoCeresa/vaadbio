@@ -6,7 +6,7 @@ import it.algos.vaadbio.bio.Bio;
  * Created by gac on 07 feb 2016.
  * .
  */
-public class DidascaliaListe extends Didascalia{
+public class DidascaliaListe extends Didascalia {
 
     /**
      * Costruttore

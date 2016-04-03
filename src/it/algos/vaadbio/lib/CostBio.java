@@ -40,7 +40,7 @@ public abstract class CostBio {
     public final static String USA_DAEMONS_NOMI = "usaDaemonsNomi";
     public final static String USA_DAEMONS_COGNOMI = "usaDaemonsCognomi";
     public final static String USA_DAEMONS_LOCALITA = "usaDaemonsLocalita";
-//    public final static String USA_CRONO_DOWNLOAD = "usaCronoDownload";
+    //    public final static String USA_CRONO_DOWNLOAD = "usaCronoDownload";
 //    public final static String USA_CRONO_ELABORA = "usaCronoElabora";
     public final static String USA_LOG_DAEMONS = "usaLogDaemons";
 
@@ -66,6 +66,7 @@ public abstract class CostBio {
     public final static String TEMPLATE_AVVISO_CRONO = "templateAvvisoCrono";
     public final static String USA_BODY_RIGHE_MULTIPLE_CRONO = "usaBodyRigheMultipleCrono";
     public final static String REGISTRA_SOLO_MODIFICHE_SOSTANZIALI_CRONO = "usaEditSoloVoceDiversaCrono";
+    public final static String MAX_VOCI_PARAGRAFO = "maxVociParagrafo";
 
     // persone - nomi
     public final static String USA_NOME_SINGOLO = "usaNomeSingolo";

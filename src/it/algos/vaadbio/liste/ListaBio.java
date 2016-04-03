@@ -41,6 +41,8 @@ public abstract class ListaBio {
     protected boolean usaBodyRigheMultiple;
     protected boolean usaBodyDoppiaColonna;
     protected boolean usaBodyTemplate;
+    protected boolean usaSottopagine;
+    protected int maxVociParagrafo;
 
     //        tagTemplateBio == Pref.getStr(LibBio.NOME_TEMPLATE_AVVISO_LISTE_GIORNI_ANNI, 'ListaBio')
     protected String titoloPaginaMadre = "";
@@ -88,6 +90,8 @@ public abstract class ListaBio {
         usaBodyRigheMultiple = false; //--normalmente false. Sovrascrivibile da preferenze
         usaBodyDoppiaColonna = true; //--normalmente true. Sovrascrivibile nelle sottoclassi
         usaBodyTemplate = false; //--normalmente false. Sovrascrivibile nelle sottoclassi
+        usaSottopagine = false; //--normalmente false. Sovrascrivibile nelle sottoclassi
+        maxVociParagrafo = Pref.getInt(CostBio.MAX_VOCI_PARAGRAFO, 100);//--tipicamente 100. Sovrascrivibile nelle sottoclassi
 
         // footer
         usaFooterPortale = false;
@@ -100,7 +104,6 @@ public abstract class ListaBio {
 //        usaTitoloParagrafoConLink = true
 //        usaTitoloSingoloParagrafo = false
 //        usaSottopagine = true
-//        maxVociParagrafo = 100
 //        tagLivelloParagrafo = '=='
 //        tagParagrafoNullo = 'Altre...'
 //        usaSottopaginaAltri == Pref.getBool(LibBio.USA_SOTTOPAGINA_ALTRI, false)
@@ -319,34 +322,42 @@ public abstract class ListaBio {
         String text = CostBio.VUOTO;
         ArrayList<String> lista;
         String key;
-//        String titolo = CostBio.VUOTO;
+        int numVociParagrafo;
+        String titoloVisibileParagrafo;
+        String titoloSottopagina;
 
         for (Map.Entry<String, ArrayList<String>> mappa : mappaBiografie.entrySet()) {
             text += CostBio.A_CAPO;
             key = mappa.getKey();
             lista = mappa.getValue();
-//            titolo = getTitoloParagrafo(key);
+            numVociParagrafo = lista.size();
             text += LibWiki.setParagrafo(key);
             text += CostBio.A_CAPO;
 
-            for (String didascalia : lista) {
-                text += CostBio.ASTERISCO;
-                text += didascalia;
-                text += CostBio.A_CAPO;
-            }// end of for cycle
+            if (usaSottopagine && numVociParagrafo > maxVociParagrafo) {
+                titoloVisibileParagrafo = LibBio.estraeLink(key);
+                titoloSottopagina = titoloPagina + "/" + titoloVisibileParagrafo;
+                text += "{{Vedi anche|" + titoloSottopagina + "}}";
+            } else {
+                for (String didascalia : lista) {
+                    text += CostBio.ASTERISCO;
+                    text += didascalia;
+                    text += CostBio.A_CAPO;
+                }// end of for cycle
+            }// end of if/else cycle
+
         }// end of for cycle
 
         return text;
     }// fine del metodo
 
-//    /**
-//     * Costruisce il titolo del paragrafo
-//     * Sovrascritto
-//     */
-//    protected String getTitoloParagrafo(String attivita) {
-//        return attivita;
-//    }// fine del metodo
-
+    /**
+     * Costruisce la sottopagina
+     * Metodo sovrascritto
+     */
+//    protected void creaSottopagina(String titoloSottopagina) {
+        protected void creaSottopagina(String chiaveParagrafo, String titoloParagrafo, ArrayList<String> lista) {
+        }// fine del metodo
 
     /**
      * Raggruppa le didascalie

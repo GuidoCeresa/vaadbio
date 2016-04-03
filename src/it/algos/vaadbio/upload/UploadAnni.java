@@ -53,7 +53,6 @@ public class UploadAnni {
         }// end of if/else cycle
 
         Log.setInfo("upload", "Aggiornate le pagine degli anni (nati e morti) in " + LibTime.difText(inizio));
-
     }// end of method
 
 }// fine della classe

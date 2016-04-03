@@ -2,6 +2,8 @@ package it.algos.vaadbio.upload;
 
 import it.algos.vaadbio.liste.ListaNome;
 import it.algos.vaadbio.nome.Nome;
+import it.algos.webbase.domain.log.Log;
+import it.algos.webbase.web.lib.LibTime;
 
 import java.util.ArrayList;
 
@@ -26,10 +28,13 @@ public class UploadNomi {
     //--Esegue un ciclo di creazione (UPLOAD) delle liste di nomi
     private void doInit() {
         ArrayList<Nome> listaNomi = Nome.findAll();
+        long inizio = System.currentTimeMillis();
 
         for (Nome nome : listaNomi) {
             new ListaNome(nome);
         }// end of for cycle
+
+        Log.setInfo("upload", "Aggiornate le pagine delle persone in " + LibTime.difText(inizio));
     }// end of method
 
 }// fine della classe

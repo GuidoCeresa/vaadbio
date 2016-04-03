@@ -255,13 +255,10 @@ public abstract class NomeService {
      */
     public static String check(String nomeIn) {
         String nomeOut = CostBio.VUOTO;
-        ArrayList listaTagContenuto = new ArrayList();
         ArrayList listaTagIniziali = new ArrayList();
         int pos;
         String tag = CostBio.VUOTO;
         boolean usaNomeSingolo = Pref.getBool(CostBio.USA_NOME_SINGOLO, true);
-        listaTagContenuto.add("(");
-
 
         //--prima regola
         if (nomeIn.length() < 3) {
@@ -286,25 +283,6 @@ public abstract class NomeService {
 
         //--quarta regola
         nomeOut = LibBio.fixCampo(nomeOut);
-
-//            listaTagContenuto?.each {
-//                tag = (String) it
-//                if (nomeOut.contains(tag)) {
-//                    pos = nomeOut.indexOf((String) it)
-//                    nomeOut = nomeOut.substring(0, pos)
-//                    nomeOut = nomeOut.trim()
-//                    def stip
-//                }// fine del blocco if
-//                def stop
-//            } // fine del ciclo each
-//
-//            nomeOut = LibTesto.primaMaiuscola(nomeOut)
-//
-//            if (Pref.getBool(LibBio.USA_ACCENTI_NORMALIZZATI, false)) {
-//                nomeOut = Normalizer.normalize(nomeOut, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "")
-//            }// fine del blocco if
-//
-//        }// fine del blocco if
 
         //--prima regola ricontrollata dopo l'uso del nome singolo
         if (nomeOut.length() < 3) {

@@ -48,7 +48,7 @@ public class ListaNome extends ListaBio {
         usaSuddivisioneParagrafi = true;
         usaBodyRigheMultiple = false;
         usaBodyDoppiaColonna = false;
-
+        usaSottopagine = true;
         // footer
 
     }// fine del metodo
@@ -175,23 +175,31 @@ public class ListaNome extends ListaBio {
     }// fine del metodo
 
     /**
-     * Controlla se il titolo visibile (link) non esiste già
+     * Costruisce la sottopagina
+     * Metodo sovrascritto
      */
-    private boolean linkVisibileGiaEsistente(String linkVisibile) {
-        boolean esiste = false;
-        String link;
-
-        for (String keyCompleta : mappaBiografie.keySet()) {
-            link = keyCompleta.substring(keyCompleta.indexOf("|") + 1);
-            link = LibWiki.setNoQuadre(link);
-            if (link.equals(linkVisibile)) {
-                esiste = true;
-                break;
-            }// end of if cycle
-        }// end of for cycle
-
-        return esiste;
+    @Override
+    protected void creaSottopagina(String chiaveParagrafo, String titoloParagrafo, ArrayList<String> lista) {
     }// fine del metodo
+
+//    /**
+//     * Controlla se il titolo visibile (link) non esiste già
+//     */
+//    private boolean linkVisibileGiaEsistente(String linkVisibile) {
+//        boolean esiste = false;
+//        String link;
+//
+//        for (String keyCompleta : mappaBiografie.keySet()) {
+//            link = keyCompleta.substring(keyCompleta.indexOf("|") + 1);
+//            link = LibWiki.setNoQuadre(link);
+//            if (link.equals(linkVisibile)) {
+//                esiste = true;
+//                break;
+//            }// end of if cycle
+//        }// end of for cycle
+//
+//        return esiste;
+//    }// fine del metodo
 
     /**
      * Costruisce la frase di incipit iniziale
@@ -213,7 +221,7 @@ public class ListaNome extends ListaBio {
      */
     @Override
     protected String elaboraFooter() {
-        String text = "Categoria:Liste di persone per nome|nome=" + getNomeTxt();
+        String text = "Categoria:Liste di persone per nome|" + getNomeTxt();
 
         text = LibWiki.setQuadre(text);
         text = LibBio.setNoInclude(text);

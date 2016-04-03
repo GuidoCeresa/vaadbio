@@ -4,6 +4,7 @@ package it.algos.vaadbio.lib;
 import com.vaadin.addon.jpacontainer.JPAContainerItem;
 import com.vaadin.data.Item;
 import it.algos.vaad.wiki.Api;
+import it.algos.vaad.wiki.LibWiki;
 import it.algos.vaad.wiki.Page;
 import it.algos.vaad.wiki.WikiLogin;
 import it.algos.vaadbio.bio.Bio;
@@ -1646,5 +1647,17 @@ public abstract class LibBio {
         return bio;
     } // fine del metodo
 
+
+    /**
+     * Estrae la parte visibile di un link
+     */
+    public static String estraeLink(String paginaCompleta) {
+        String link;
+
+        link = paginaCompleta.substring(paginaCompleta.indexOf("|") + 1);
+        link = LibWiki.setNoQuadre(link);
+
+        return link;
+    }// fine del metodo
 
 }// end of abstract static class
