@@ -24,7 +24,7 @@ public class ListaNome extends ListaBio {
     /**
      * Costruttore
      *
-     * @param nome
+     * @param nome indicato
      */
     public ListaNome(Nome nome) {
         super(nome);
@@ -48,7 +48,7 @@ public class ListaNome extends ListaBio {
         usaSuddivisioneParagrafi = true;
         usaBodyRigheMultiple = false;
         usaBodyDoppiaColonna = false;
-        usaSottopagine = true;
+        usaSottopagine = false;
         // footer
 
     }// fine del metodo
@@ -171,6 +171,7 @@ public class ListaNome extends ListaBio {
             }// end of if cycle
         }// end of for cycle
 
+        titoloParagrafo = LibBio.fixLink(titoloParagrafo);
         return titoloParagrafo;
     }// fine del metodo
 
@@ -182,24 +183,6 @@ public class ListaNome extends ListaBio {
     protected void creaSottopagina(String chiaveParagrafo, String titoloParagrafo, ArrayList<String> lista) {
     }// fine del metodo
 
-//    /**
-//     * Controlla se il titolo visibile (link) non esiste già
-//     */
-//    private boolean linkVisibileGiaEsistente(String linkVisibile) {
-//        boolean esiste = false;
-//        String link;
-//
-//        for (String keyCompleta : mappaBiografie.keySet()) {
-//            link = keyCompleta.substring(keyCompleta.indexOf("|") + 1);
-//            link = LibWiki.setNoQuadre(link);
-//            if (link.equals(linkVisibile)) {
-//                esiste = true;
-//                break;
-//            }// end of if cycle
-//        }// end of for cycle
-//
-//        return esiste;
-//    }// fine del metodo
 
     /**
      * Costruisce la frase di incipit iniziale

@@ -1660,4 +1660,24 @@ public abstract class LibBio {
         return link;
     }// fine del metodo
 
+    /**
+     * Semplifica un link, se la parte visibile è uguale al link effettivo
+     */
+    public static String fixLink(String paginaCompleta) {
+        String link = LibWiki.setNoQuadre(paginaCompleta);
+        String[] parti = null;
+
+        if (!link.equals(CostBio.VUOTO)) {
+            parti = link.split("\\|");
+        }// end of if cycle
+
+        if (parti != null && parti.length == 2) {
+            if (parti[0].equals(parti[1])) {
+                link = parti[0];
+            }// end of if cycle
+        }// end of if cycle
+
+        return LibWiki.setQuadre(link);
+    }// fine del metodo
+
 }// end of abstract static class
