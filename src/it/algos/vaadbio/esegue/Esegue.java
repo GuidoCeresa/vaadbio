@@ -4,7 +4,9 @@ import it.algos.vaadbio.attivita.AttivitaService;
 import it.algos.vaadbio.ciclo.CicloDownload;
 import it.algos.vaadbio.ciclo.CicloElabora;
 import it.algos.vaadbio.ciclo.CicloUpdate;
+import it.algos.vaadbio.liste.ListaNome;
 import it.algos.vaadbio.nazionalita.NazionalitaService;
+import it.algos.vaadbio.nome.Nome;
 import it.algos.vaadbio.nome.NomeService;
 import it.algos.vaadbio.professione.ProfessioneService;
 import it.algos.vaadbio.statistiche.StatAnni;
@@ -14,6 +16,9 @@ import it.algos.vaadbio.statistiche.StatSintesi;
 import it.algos.vaadbio.upload.UploadAnni;
 import it.algos.vaadbio.upload.UploadGiorni;
 import it.algos.vaadbio.upload.UploadNomi;
+import it.algos.webbase.domain.log.Log;
+import it.algos.webbase.web.lib.LibNum;
+import it.algos.webbase.web.lib.LibTime;
 
 /**
  * Created by gac on 25 gen 2016.
@@ -60,6 +65,7 @@ public abstract class Esegue {
     public static void cicloUpload() {
         uploadGiorni();
         statisticaSintesi();
+        uploadNomi();
         uploadAnni();
     } // fine del metodo
 
@@ -78,11 +84,18 @@ public abstract class Esegue {
     } // fine del metodo
 
 
+
     /**
-     * Upload nomi
+     * Esegue il download completo dei nomi
      */
-    public static void uploadNomi() {
-        new UploadNomi();
+    public static void esegueDownloadNomi() {
+        long inizio = System.currentTimeMillis();
+
+        NomeService.listaNomiDoppi();
+        NomeService.aggiunge();
+        NomeService.elabora();
+
+        Log.setDebug("nomi", "Letti i nomi doppi, aggiunti ed elaborati tutti i nomi in " + LibTime.difText(inizio));
     } // fine del metodo
 
     /**
@@ -107,6 +120,13 @@ public abstract class Esegue {
      */
     public static void elaboraNomi() {
         NomeService.elabora();
+    } // fine del metodo
+
+    /**
+     * Upload nomi
+     */
+    public static void uploadNomi() {
+        new UploadNomi();
     } // fine del metodo
 
 
