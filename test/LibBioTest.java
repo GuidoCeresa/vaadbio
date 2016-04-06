@@ -35,7 +35,7 @@ public class LibBioTest {
         previsto = "visibile";
         ottenuto = LibBio.estraeLink(paginaCompleta);
         assertEquals(ottenuto, previsto);
-    }// fine del metodo
+    }// end of single test
 
     @Test
     /**
@@ -53,6 +53,6 @@ public class LibBioTest {
         previsto = "[[visibile]]";
         ottenuto = LibBio.fixLink(paginaCompleta);
         assertEquals(ottenuto, previsto);
-    }// fine del metodo
+    }// end of single test
 
 }// end of test class

@@ -81,10 +81,10 @@ public class BioMod extends ModulePop {
         return (new BioForm(this, item));
     }// end of method
 
-    @Override
-    public SearchManager createSearchManager() {
-        return new BioSearch(this);
-    }// end of method
+//    @Override
+//    public SearchManager createSearchManager() {
+//        return new BioSearch(this);
+//    }// end of method
 
 
     /**
@@ -165,9 +165,11 @@ public class BioMod extends ModulePop {
      */
     @Override
     protected Attribute<?, ?>[] creaFieldsSearch() {
-        return new Attribute[]{Bio_.pageid,
+        return new Attribute[]{
+                Bio_.pageid,
                 Bio_.nome,
-                Bio_.cognome
+                Bio_.cognome,
+                Bio_.title
         };
     }// end of method
 

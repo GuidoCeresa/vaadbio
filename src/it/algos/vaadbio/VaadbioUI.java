@@ -114,6 +114,7 @@ public class VaadbioUI extends AlgosUI {
         this.addModulo(new PrefMod());
 
         if (true) {
+            this.addModulo(new BioMod());
 //        this.addModulo(new DeltaMod());
             this.addModulo(new MeseMod());
             this.addModulo(new SecoloMod());
@@ -127,7 +128,6 @@ public class VaadbioUI extends AlgosUI {
         this.addModulo(new GenereMod());
         this.addModulo(new AttivitaMod());
         this.addModulo(new NazionalitaMod());
-        this.addModulo(new BioMod());
     }// end of method
 
 }//end of UI class
