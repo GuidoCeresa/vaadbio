@@ -1033,6 +1033,40 @@ public abstract class LibBio {
      * Elimina il testo successivo alle note
      * Elimina il testo successivo alle graffe
      * Elimina il testo successivo alla virgola
+     * Elimina il testo successivo al punto interrogativo
+     * Elimina eventuali quadre
+     * Tronca comunque il testo a 255 caratteri
+     *
+     * @param testoIn entrata da elaborare
+     * @return testoOut regolato in uscita
+     */
+    public static String fixCampoLuogoLink(String testoIn) {
+        String testoOut = testoIn;
+
+        if (testoOut != null) {
+            testoOut = testoOut.trim();
+            testoOut = LibText.levaDopoRef(testoOut);
+            testoOut = LibText.levaDopoNote(testoOut);
+            testoOut = LibText.levaDopoGraffe(testoOut);
+            testoOut = LibText.levaDopoInterrogativo(testoOut);
+            testoOut = LibBio.setNoQuadre(testoOut);
+            testoOut = testoOut.trim();
+        }// fine del blocco if
+
+        if (testoOut != null && testoOut.length() > 253) {
+            testoOut = testoOut.substring(0, 252);
+        }// fine del blocco if
+
+        return testoOut;
+    }// end of static method
+
+    /**
+     * Regola la lunghezza del campo
+     * <p>
+     * Elimina il teasto successivo al ref
+     * Elimina il testo successivo alle note
+     * Elimina il testo successivo alle graffe
+     * Elimina il testo successivo alla virgola
      * Elimina il testo successivo alla parentesi
      * Elimina eventuali quadre
      * Tronca comunque il testo a 255 caratteri

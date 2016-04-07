@@ -214,7 +214,7 @@ public enum ParBio {
 
         @Override
         public void setBioValida(Bio istanza) {
-            istanza.setLuogoNascitaLinkValido(LibBio.fixCampoLuogo(istanza.getLuogoNascitaLink()));
+            istanza.setLuogoNascitaLinkValido(LibBio.fixCampoLuogoLink(istanza.getLuogoNascitaLink()));
         }// end of method
     },// end of single enumeration
     luogoNascitaAlt("LuogoNascitaAlt", false, false, false, false, false, Bio_.luogoNascitaAlt) {
@@ -330,7 +330,7 @@ public enum ParBio {
 
         @Override
         public void setBioValida(Bio istanza) {
-            istanza.setLuogoMorteLinkValido(LibBio.fixCampoLuogo(istanza.getLuogoMorteLink()));
+            istanza.setLuogoMorteLinkValido(LibBio.fixCampoLuogoLink(istanza.getLuogoMorteLink()));
         }// end of method
     },// end of single enumeration
     luogoMorteAlt("LuogoMorteAlt", false, false, false, false, false, Bio_.luogoMorteAlt) {
