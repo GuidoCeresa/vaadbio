@@ -22,6 +22,12 @@ public class ListaNome extends ListaBio {
 
 
     /**
+     * Costruttore senza parametri
+     */
+    protected ListaNome() {
+    }// fine del costruttore
+
+    /**
      * Costruttore
      *
      * @param nome indicato
@@ -42,13 +48,15 @@ public class ListaNome extends ListaBio {
         super.elaboraParametri();
 
         // head
+        usaHeadTocIndice=true;
         usaHeadIncipit = true;
 
         // body
         usaSuddivisioneParagrafi = true;
         usaBodyRigheMultiple = false;
         usaBodyDoppiaColonna = false;
-        usaSottopagine = false;
+        usaSottopagine = true;
+
         // footer
 
     }// fine del metodo
@@ -72,7 +80,7 @@ public class ListaNome extends ListaBio {
         ArrayList<Bio> listaNomi = null;
         Nome nome = getNome();
         String didascalia;
-        int taglio = Pref.getInt(CostBio.TAGLIO_NOMI_PAGINA, 50);
+        int taglio = Pref.getInt(CostBio.TAGLIO_NOMI_PAGINA, 100);
         ArrayList<String> lista;
         String chiaveParagrafo;
 
@@ -180,7 +188,16 @@ public class ListaNome extends ListaBio {
      * Metodo sovrascritto
      */
     @Override
-    protected void creaSottopagina(String chiaveParagrafo, String titoloParagrafo, ArrayList<String> lista) {
+    protected void creaSottopagina(ListaBio listaBio, String chiaveParagrafo, String titoloParagrafo) {
+        ArrayList<String> lista = null;
+        LinkedHashMap<String, ArrayList<String>> mappa = listaBio.mappaBiografie;
+        String paragrafo = LibBio.estraeLink(chiaveParagrafo);
+
+        if (mappa.get(chiaveParagrafo) != null) {
+            lista = mappa.get(chiaveParagrafo);
+        }// end of if cycle
+
+        new ListaNomeABC(lista, chiaveParagrafo,titoloPagina, getNomeTxt(), paragrafo);
     }// fine del metodo
 
 

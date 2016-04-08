@@ -249,17 +249,17 @@ public class VersBootStrap implements ServletContextListener {
 
         //--creata una nuova preferenza
         if (LibVers.installa(++k)) {
-            LibPref.newVersInt(CostBio.TAGLIO_NOMI_PAGINA, 50, "'Numero di voci necessario per creare la pagina del nome");
+            LibPref.newVersInt(CostBio.TAGLIO_NOMI_PAGINA, 50, "Numero di voci necessario per creare la pagina del nome");
         }// fine del blocco if
 
         //--creata una nuova preferenza
         if (LibVers.installa(++k)) {
-            LibPref.newVersInt(CostBio.TAGLIO_NOMI_ELENCO, 20, "'Numero di voci necessario per elencare il nome nella lista");
+            LibPref.newVersInt(CostBio.TAGLIO_NOMI_ELENCO, 20, "Numero di voci necessario per elencare il nome nella lista");
         }// fine del blocco if
 
         //--creata una nuova preferenza
         if (LibVers.installa(++k)) {
-            LibPref.newVersInt(CostBio.MAX_VOCI_PARAGRAFO, 100, "'Numero di voci del paragrafo per creare una sotto-pagina");
+            LibPref.newVersInt(CostBio.MAX_VOCI_PARAGRAFO, 100, "Numero di voci del paragrafo per creare una sotto-pagina");
         }// fine del blocco if
 
 

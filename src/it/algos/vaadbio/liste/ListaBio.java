@@ -6,6 +6,7 @@ import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.lib.LibBio;
 import it.algos.webbase.domain.pref.Pref;
 import it.algos.webbase.web.entity.EM;
+import it.algos.webbase.web.lib.LibArray;
 import it.algos.webbase.web.lib.LibNum;
 import it.algos.webbase.web.lib.LibTime;
 
@@ -37,6 +38,7 @@ public abstract class ListaBio {
     protected boolean usaHeadIncipit; // dopo il template di avviso
 
     protected boolean usaSuddivisioneParagrafi;
+    protected boolean usaOrdineAlfabeticoParagrafi;
     protected boolean usaBodySottopagine;
     protected boolean usaBodyRigheMultiple;
     protected boolean usaBodyDoppiaColonna;
@@ -49,6 +51,12 @@ public abstract class ListaBio {
     protected boolean usaFooterPortale;
     protected boolean usaFooterCategorie;
     private Object oggetto;  //Giorno, Anno, Attivita, Nazionalita, Antroponimo, ecc
+
+    /**
+     * Costruttore senza parametri
+     */
+    protected ListaBio() {
+    }// fine del costruttore
 
     /**
      * Costruttore
@@ -99,11 +107,10 @@ public abstract class ListaBio {
 
 //        usaSuddivisioneUomoDonna = false
         usaSuddivisioneParagrafi = false;
+        usaOrdineAlfabeticoParagrafi = false;
 //        usaAttivitaMultiple = false
-//        usaParagrafiAlfabetici = false
 //        usaTitoloParagrafoConLink = true
 //        usaTitoloSingoloParagrafo = false
-//        usaSottopagine = true
 //        tagLivelloParagrafo = '=='
 //        tagParagrafoNullo = 'Altre...'
 //        usaSottopaginaAltri == Pref.getBool(LibBio.USA_SOTTOPAGINA_ALTRI, false)
@@ -173,16 +180,27 @@ public abstract class ListaBio {
      * Sovrascritto
      */
     protected void ordinaMappaBiografie() {
-        LinkedHashMap<String, ArrayList<String>> mappa = mappaBiografie;
+        LinkedHashMap<String, ArrayList<String>> mappa;
+        ArrayList<String> keyList;
         ArrayList<String> lista;
 
+        if (usaOrdineAlfabeticoParagrafi) {
+            mappa = new LinkedHashMap<String, ArrayList<String>>();
+            keyList = new ArrayList<String>(mappaBiografie.keySet());
+            keyList = LibArray.sort(keyList);
+            for (String key : keyList) {
+                mappa.put(key, mappaBiografie.get(key));
+            }// end of for cycle
+            mappaBiografie = mappa;
+        }// end of if cycle
+
+        mappa = mappaBiografie;
         if (mappa != null && mappa.containsKey(ALTRE)) {
             lista = mappa.get(ALTRE);
             mappa.remove(ALTRE);
             mappa.put(ALTRE, lista);
             mappaBiografie = mappa;
         }// end of if cycle
-
     }// fine del metodo
 
     /**
@@ -338,6 +356,7 @@ public abstract class ListaBio {
                 titoloVisibileParagrafo = LibBio.estraeLink(key);
                 titoloSottopagina = titoloPagina + "/" + titoloVisibileParagrafo;
                 text += "{{Vedi anche|" + titoloSottopagina + "}}";
+                creaSottopagina(this, key, titoloSottopagina);
             } else {
                 for (String didascalia : lista) {
                     text += CostBio.ASTERISCO;
@@ -355,9 +374,8 @@ public abstract class ListaBio {
      * Costruisce la sottopagina
      * Metodo sovrascritto
      */
-//    protected void creaSottopagina(String titoloSottopagina) {
-        protected void creaSottopagina(String chiaveParagrafo, String titoloParagrafo, ArrayList<String> lista) {
-        }// fine del metodo
+    protected void creaSottopagina(ListaBio listaBio, String chiaveParagrafo, String titoloParagrafo) {
+    }// fine del metodo
 
     /**
      * Raggruppa le didascalie
