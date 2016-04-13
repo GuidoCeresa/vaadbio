@@ -37,6 +37,7 @@ public class ListaAnnoNato extends ListaAnno {
     /**
      * Costruisce una mappa di biografie che hanno una valore valido per il link specifico
      */
+    @Override
     protected void elaboraMappaBiografie() {
         ArrayList<Bio> listaNati = null;
         Anno anno = super.getAnno();

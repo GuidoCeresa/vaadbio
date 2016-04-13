@@ -302,7 +302,6 @@ public class Anno extends BaseEntity {
      * @return filtro per i morti in questo anno
      */
     private Container.Filter getFiltroMorti() {
-//        return new Compare.Equal("annoMortoPunta", this);
         return new Compare.Equal("annoMorteValido", titolo);
     }// fine del metodo
 

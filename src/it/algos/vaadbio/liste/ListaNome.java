@@ -289,8 +289,8 @@ public class ListaNome extends ListaBio {
     @Override
     protected String righeParagrafo() {
         String text = CostBio.VUOTO;
-        String key;
         int numVociParagrafo;
+        String key;
         HashMap<String, Object> mappa;
         String titoloParagrafo;
         String titoloSottopagina;
@@ -303,7 +303,7 @@ public class ListaNome extends ListaBio {
             text += CostBio.A_CAPO;
 
             key = mappaTmp.getKey();
-            mappa = mappaTmp.getValue();
+            mappa = (HashMap)mappaTmp.getValue();
 
             paginaLinkata = (String) mappa.get(KEY_MAP_LINK);
             titoloVisibile = (String) mappa.get(KEY_MAP_TITOLO);

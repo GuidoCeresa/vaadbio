@@ -447,25 +447,62 @@ public abstract class ListaBio {
     protected String righeRaggruppate() {
         String text = CostBio.VUOTO;
         ArrayList<String> lista;
+        String key;
+        HashMap<String, Object> mappa;
 
-        for (Map.Entry<String, ArrayList<String>> mappa : mappaBiografie.entrySet()) {
-            if (mappa.getValue().size() == 1) {
+//        for (Map.Entry<String, ArrayList<String>> mappa : mappaBiografie.entrySet()) {
+//            if (mappa.getValue().size() == 1) {
+//                text += CostBio.ASTERISCO;
+//                if (!mappa.getKey().equals(CostBio.VUOTO)) {
+//                    text += LibWiki.setQuadre(mappa.getKey());
+//                    text += CostBio.TAG_SEPARATORE;
+//                }// end of if cycle
+//                text += mappa.getValue().get(0);
+//                text += CostBio.A_CAPO;
+//            } else {
+//                if (!mappa.getKey().equals(CostBio.VUOTO)) {
+//                    text += CostBio.ASTERISCO;
+//                    text += LibWiki.setQuadre(mappa.getKey());
+//                    text += CostBio.A_CAPO;
+//                }// end of if cycle
+//                lista = mappa.getValue();
+//                for (String didascalia : lista) {
+//                    if (!mappa.getKey().equals(CostBio.VUOTO)) {
+//                        text += CostBio.ASTERISCO;
+//                    }// end of if cycle
+//                    text += CostBio.ASTERISCO;
+//                    text += didascalia;
+//                    text += CostBio.A_CAPO;
+//                }// end of for cycle
+//            }// end of if/else cycle
+//        }// end of for cycle
+
+
+        for (Map.Entry<String, HashMap> mappaTmp : mappaBio.entrySet()) {
+            lista = null;
+            key = mappaTmp.getKey();
+            mappa = (HashMap) mappaTmp.getValue();
+            if (mappa != null) {
+                lista = (ArrayList<String>) mappa.get(KEY_MAP_LISTA);
+            }// end of if cycle
+
+            if (lista != null && lista.size() == 1) {
                 text += CostBio.ASTERISCO;
-                if (!mappa.getKey().equals(CostBio.VUOTO)) {
-                    text += LibWiki.setQuadre(mappa.getKey());
+                if (!key.equals(CostBio.VUOTO)) {
+                    text += LibWiki.setQuadre(key);
                     text += CostBio.TAG_SEPARATORE;
                 }// end of if cycle
-                text += mappa.getValue().get(0);
+                text += lista.get(0);
                 text += CostBio.A_CAPO;
             } else {
-                if (!mappa.getKey().equals(CostBio.VUOTO)) {
+                if (!key.equals(CostBio.VUOTO)) {
                     text += CostBio.ASTERISCO;
-                    text += LibWiki.setQuadre(mappa.getKey());
+                    text += LibWiki.setQuadre(key);
                     text += CostBio.A_CAPO;
                 }// end of if cycle
-                lista = mappa.getValue();
+                lista = (ArrayList)mappa.get(KEY_MAP_LISTA);
                 for (String didascalia : lista) {
-                    if (!mappa.getKey().equals(CostBio.VUOTO)) {
+                    if (!key.equals(CostBio.VUOTO)) {
                         text += CostBio.ASTERISCO;
                     }// end of if cycle
                     text += CostBio.ASTERISCO;

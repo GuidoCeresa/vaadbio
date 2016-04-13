@@ -6,7 +6,7 @@ import it.algos.vaadbio.giorno.Giorno;
 import it.algos.vaadbio.lib.CostBio;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
+import java.util.HashMap;
 
 /**
  * Created by gac on 21 dic 2015.
@@ -45,6 +45,8 @@ public class ListaGiornoNato extends ListaGiorno {
         String didascalia;
         String didascaliaShort = CostBio.VUOTO;
         ArrayList<String> lista;
+        String chiaveParagrafo = CostBio.VUOTO;
+        HashMap<String, Object> mappa;
 
         if (giorno != null) {
             listaNati = giorno.bioNati();
@@ -73,6 +75,21 @@ public class ListaGiornoNato extends ListaGiorno {
                     lista.add(didascaliaShort);
                     mappaBiografie.put(annotxt, lista);
                 }// end of if/else cycle
+
+                //--doppione (per il momento)
+                chiaveParagrafo=annotxt;
+                if (mappaBio.containsKey(chiaveParagrafo)) {
+                    lista = (ArrayList<String>) mappaBio.get(chiaveParagrafo).get(KEY_MAP_LISTA);
+                    lista.add(didascaliaShort);
+                } else {
+                    mappa = new HashMap<String, Object>();
+                    lista = new ArrayList<>();
+                    lista.add(didascaliaShort);
+//                    mappa.put(KEY_MAP_TITOLO, getTitoloPar(bio));
+                    mappa.put(KEY_MAP_LISTA, lista);
+                    mappaBio.put(chiaveParagrafo, mappa);
+                }// end of if/else cycle
+
             }// end of if cycle
         }// end of for cycle
         numPersone = listaNati.size();
