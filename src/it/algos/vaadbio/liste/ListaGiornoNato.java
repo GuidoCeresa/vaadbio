@@ -6,7 +6,6 @@ import it.algos.vaadbio.giorno.Giorno;
 import it.algos.vaadbio.lib.CostBio;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Created by gac on 21 dic 2015.
@@ -35,64 +34,44 @@ public class ListaGiornoNato extends ListaGiorno {
 
 
     /**
-     * Costruisce una mappa di biografie che hanno una valore valido per il link specifico
+     * Lista delle biografie che hanno una valore valido per il link specifico
+     * Sovrascritto
      */
-    protected void elaboraMappaBiografie() {
-        ArrayList<Bio> listaNati = null;
+    @Override
+    protected ArrayList<Bio> getListaBio() {
+        ArrayList<Bio> listaBio = null;
         Giorno giorno = super.getGiorno();
-        Anno anno;
-        String annotxt;
-        String didascalia;
-        String didascaliaShort = CostBio.VUOTO;
-        ArrayList<String> lista;
-        String chiaveParagrafo = CostBio.VUOTO;
-        HashMap<String, Object> mappa;
 
         if (giorno != null) {
-            listaNati = giorno.bioNati();
+            listaBio = giorno.bioNati();
         }// end of if cycle
 
-        if (listaNati != null && listaNati.size() > 0) {
-            for (Bio bio : listaNati) {
-                annotxt = CostBio.VUOTO;
-                anno = bio.getAnnoNatoPunta();
-                if (anno != null) {
-                    annotxt = anno.getTitolo();
-                }// end of if cycle
-                didascalia = bio.getDidascaliaGiornoNato();
+        return listaBio;
+    }// fine del metodo
 
-                if (didascalia.contains(CostBio.TAG_SEPARATORE)) {
-                    didascaliaShort = didascalia.substring(didascalia.indexOf(CostBio.TAG_SEPARATORE) + CostBio.TAG_SEPARATORE.length());
-                } else {
-                    didascaliaShort = didascalia;
-                }// end of if/else cycle
+    /**
+     * Chiave specifica della biografia (anno o giorno)
+     * Sovrascritto
+     */
+    @Override
+    protected String getChiave(Bio bio) {
+        String key = CostBio.VUOTO;
+        Anno anno = bio.getAnnoNatoPunta();
 
-//                if (mappaBiografie.containsKey(annotxt)) {
-//                    lista = mappaBiografie.get(annotxt);
-//                    lista.add(didascaliaShort);
-//                } else {
-//                    lista = new ArrayList<>();
-//                    lista.add(didascaliaShort);
-//                    mappaBiografie.put(annotxt, lista);
-//                }// end of if/else cycle
+        if (anno != null) {
+            key = anno.getTitolo();
+        }// end of if cycle
 
-                //--doppione (per il momento)
-                chiaveParagrafo=annotxt;
-                if (mappaBio.containsKey(chiaveParagrafo)) {
-                    lista = (ArrayList<String>) mappaBio.get(chiaveParagrafo).get(KEY_MAP_LISTA);
-                    lista.add(didascaliaShort);
-                } else {
-                    mappa = new HashMap<String, Object>();
-                    lista = new ArrayList<>();
-                    lista.add(didascaliaShort);
-//                    mappa.put(KEY_MAP_TITOLO, getTitoloPar(bio));
-                    mappa.put(KEY_MAP_LISTA, lista);
-                    mappaBio.put(chiaveParagrafo, mappa);
-                }// end of if/else cycle
+        return key;
+    }// fine del metodo
 
-            }// end of if cycle
-        }// end of for cycle
-        numPersone = listaNati.size();
+    /**
+     * Didascalia specifica della biografia
+     * Sovrascritto
+     */
+    @Override
+    protected String getDidascalia(Bio bio) {
+        return bio.getDidascaliaGiornoNato();
     }// fine del metodo
 
     /**

@@ -2,6 +2,7 @@ package it.algos.vaadbio.liste;
 
 import it.algos.vaad.wiki.LibWiki;
 import it.algos.vaadbio.attivita.Attivita;
+import it.algos.vaadbio.bio.Bio;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.lib.LibBio;
 import it.algos.vaadbio.nome.Nome;
@@ -67,6 +68,7 @@ public class ListaNomeABC extends ListaNome {
         usaOrdineAlfabeticoParagrafi = true;
         tagParagrafoNullo = "...";
         usaTitoloParagrafoConLink = false;
+        usaTaglioVociPagina = false;
 
     }// fine del metodo
 
@@ -85,25 +87,97 @@ public class ListaNomeABC extends ListaNome {
         return super.getNomeTxt() + "/" + titoloVisibile;
     }// fine del metodo
 
-
     /**
      * Costruisce una mappa di biografie che hanno una valore valido per il link specifico
      */
-    @Override
     protected void elaboraMappaBiografie() {
-        int taglio = Pref.getInt(CostBio.TAGLIO_NOMI_PAGINA, 50);
-        ArrayList<String> lista;
-        ArrayList nuovaLista;
+        ArrayList lista = getListaBioSottoPagina();
+
+        if (usaTaglioVociPagina && lista.size() < maxVociPagina) {
+            return;
+        }// end of if cycle
+
+        if (lista != null && lista.size() > 0) {
+            for (Object mappa : lista) {
+                elaboraMappa(mappa);
+            }// end of if cycle
+        }// end of for cycle
+
+        if (lista != null) {
+            numPersone = lista.size();
+        }// end of if cycle
+
+    }// fine del metodo
+
+//    /**
+//     * Costruisce una mappa di biografie che hanno una valore valido per il link specifico
+//     */
+//    protected void elaboraMappaBiografieOld() {
+//        int taglio = Pref.getInt(CostBio.TAGLIO_NOMI_PAGINA, 50);
+//        ArrayList<String> lista;
+//        ArrayList nuovaLista;
+//        String tagOR = " or ";
+//        String query = "select bio.cognome,bio.didascaliaListe from Bio bio";
+//        String where = " where bio.nomePunta.id=" + getNome().getId();
+//        String whereOR = CostBio.VUOTO;
+//        String order = " order by bio.cognome asc";
+//        ArrayList<Long> listaAttivitaID = Attivita.findAllSingolari(titoloVisibile, sesso);
+//        String cognome;
+//        String key;
+//        String didascalia;
+//        HashMap<String, Object> mappa;
+//
+//        if (listaAttivitaID != null && listaAttivitaID.size() > 0) {
+//            where += " and (";
+//            for (long attivitaID : listaAttivitaID) {
+//                whereOR += "bio.attivitaPunta.id=" + attivitaID + tagOR;
+//            }// end of for cycle
+//            whereOR = LibText.levaCoda(whereOR, tagOR);
+//            whereOR += ")";
+//        }// end of if cycle
+//
+//        nuovaLista = LibBio.queryFind(query + where + whereOR + order);
+//        if (nuovaLista != null && nuovaLista.size() >= taglio) {
+//            for (Object obj : nuovaLista) {
+//
+//                cognome = (String) ((Object[]) obj)[0];
+//                didascalia = (String) ((Object[]) obj)[1];
+//                if (!cognome.equals(CostBio.VUOTO)) {
+//                    key = cognome.substring(0, 1);
+//                } else {
+//                    key = tagParagrafoNullo;
+//                }// end of if/else cycle
+//
+//
+//                if (mappaBio.containsKey(key)) {
+//                    lista = (ArrayList<String>) mappaBio.get(key).get(KEY_MAP_LISTA);
+//                    lista.add(didascalia);
+//                } else {
+//                    mappa = new HashMap<String, Object>();
+//                    lista = new ArrayList<>();
+//                    lista.add(didascalia);
+//                    mappa.put(KEY_MAP_TITOLO, key);
+//                    mappa.put(KEY_MAP_LISTA, lista);
+//                    mappaBio.put(key, mappa);
+//                }// end of if/else cycle
+//
+//            }// end of for cycle
+//            numPersone = nuovaLista.size();
+//        }// end of if cycle
+//
+//    }// fine del metodo
+
+    /**
+     * Lista delle biografie che hanno una valore valido per il link specifico
+     */
+    protected ArrayList getListaBioSottoPagina() {
+        ArrayList lista;
         String tagOR = " or ";
         String query = "select bio.cognome,bio.didascaliaListe from Bio bio";
         String where = " where bio.nomePunta.id=" + getNome().getId();
         String whereOR = CostBio.VUOTO;
         String order = " order by bio.cognome asc";
         ArrayList<Long> listaAttivitaID = Attivita.findAllSingolari(titoloVisibile, sesso);
-        String cognome;
-        String key;
-        String didascalia;
-        HashMap<String, Object> mappa;
 
         if (listaAttivitaID != null && listaAttivitaID.size() > 0) {
             where += " and (";
@@ -114,44 +188,39 @@ public class ListaNomeABC extends ListaNome {
             whereOR += ")";
         }// end of if cycle
 
-        nuovaLista = LibBio.queryFind(query + where + whereOR + order);
-        if (nuovaLista != null && nuovaLista.size() >= taglio) {
-            for (Object obj : nuovaLista) {
+        lista = LibBio.queryFind(query + where + whereOR + order);
+        return lista;
+    }// fine del metodo
 
-                cognome = (String) ((Object[]) obj)[0];
-                didascalia = (String) ((Object[]) obj)[1];
-                if (!cognome.equals(CostBio.VUOTO)) {
-                    key = cognome.substring(0, 1);
-                } else {
-                    key = tagParagrafoNullo;
-                }// end of if/else cycle
+    /**
+     * Costruisce una singola mappa
+     */
+    protected void elaboraMappa(Object obj) {
+        ArrayList<String> lista;
+        String cognome;
+        String key;
+        String didascalia;
+        HashMap<String, Object> mappa;
 
-//                if (mappaBiografie.containsKey(key)) {
-//                    lista = mappaBiografie.get(key);
-//                    lista.add(didascalia);
-//                } else {
-//                    lista = new ArrayList<>();
-//                    lista.add(didascalia);
-//                    mappaBiografie.put(key, lista);
-//                }// end of if/else cycle
+        cognome = (String) ((Object[]) obj)[0];
+        didascalia = (String) ((Object[]) obj)[1];
+        if (!cognome.equals(CostBio.VUOTO)) {
+            key = cognome.substring(0, 1);
+        } else {
+            key = tagParagrafoNullo;
+        }// end of if/else cycle
 
-
-                if (mappaBio.containsKey(key)) {
-                    lista = (ArrayList<String>) mappaBio.get(key).get(KEY_MAP_LISTA);
-                    lista.add(didascalia);
-                } else {
-                    mappa = new HashMap<String, Object>();
-                    lista = new ArrayList<>();
-                    lista.add(didascalia);
-                    mappa.put(KEY_MAP_TITOLO, key);
-                    mappa.put(KEY_MAP_LISTA, lista);
-                    mappaBio.put(key, mappa);
-                }// end of if/else cycle
-
-            }// end of for cycle
-            numPersone = nuovaLista.size();
-        }// end of if cycle
-
+        if (mappaBio.containsKey(key)) {
+            lista = (ArrayList<String>) mappaBio.get(key).get(KEY_MAP_LISTA);
+            lista.add(didascalia);
+        } else {
+            mappa = new HashMap<String, Object>();
+            lista = new ArrayList<>();
+            lista.add(didascalia);
+            mappa.put(KEY_MAP_TITOLO, key);
+            mappa.put(KEY_MAP_LISTA, lista);
+            mappaBio.put(key, mappa);
+        }// end of if/else cycle
     }// fine del metodo
 
 

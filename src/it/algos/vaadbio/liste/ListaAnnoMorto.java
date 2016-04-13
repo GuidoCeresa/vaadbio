@@ -6,8 +6,6 @@ import it.algos.vaadbio.giorno.Giorno;
 import it.algos.vaadbio.lib.CostBio;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 
 /**
  * Created by gac on 26 dic 2015.
@@ -35,56 +33,46 @@ public class ListaAnnoMorto extends ListaAnno {
     }// fine del metodo
 
 
-
     /**
-     * Costruisce una mappa di biografie che hanno una valore valido per il link specifico
+     * Lista delle biografie che hanno una valore valido per il link specifico
+     * Sovrascritto
      */
     @Override
-    protected void elaboraMappaBiografie() {
-        ArrayList<Bio> listaMorti = null;
+    protected ArrayList<Bio> getListaBio() {
+        ArrayList<Bio> listaBio = null;
         Anno anno = super.getAnno();
-        Giorno giorno;
-        String giornoTxt;
-        String didascalia;
-        String didascaliaShort = CostBio.VUOTO;
-        ArrayList<String> lista;
-        String chiaveParagrafo = CostBio.VUOTO;
-        HashMap<String, Object> mappa;
 
         if (anno != null) {
-            listaMorti = anno.bioMorti();
+            listaBio = anno.bioMorti();
         }// end of if cycle
 
-        if (listaMorti != null && listaMorti.size() > 0) {
-            for (Bio bio : listaMorti) {
-                giornoTxt = CostBio.VUOTO;
-                giorno = bio.getGiornoMortoPunta();
-                if (giorno != null) {
-                    giornoTxt = giorno.getTitolo();
-                }// end of if cycle
-                didascalia = bio.getDidascaliaAnnoMorto();
+        return listaBio;
+    }// fine del metodo
 
-                if (didascalia.contains(CostBio.TAG_SEPARATORE)) {
-                    didascaliaShort = didascalia.substring(didascalia.indexOf(CostBio.TAG_SEPARATORE) + CostBio.TAG_SEPARATORE.length());
-                } else {
-                    didascaliaShort = didascalia;
-                }// end of if/else cycle
+    /**
+     * Chiave specifica della biografia (anno o giorno)
+     * Sovrascritto
+     */
+    @Override
+    protected String getChiave(Bio bio) {
+        String key = CostBio.VUOTO;
+        Giorno giorno = bio.getGiornoMortoPunta();
 
-                chiaveParagrafo=giornoTxt;
-                if (mappaBio.containsKey(chiaveParagrafo)) {
-                    lista = (ArrayList<String>) mappaBio.get(chiaveParagrafo).get(KEY_MAP_LISTA);
-                    lista.add(didascaliaShort);
-                } else {
-                    mappa = new HashMap<String, Object>();
-                    lista = new ArrayList<>();
-                    lista.add(didascaliaShort);
-//                    mappa.put(KEY_MAP_TITOLO, getTitoloPar(bio));
-                    mappa.put(KEY_MAP_LISTA, lista);
-                    mappaBio.put(chiaveParagrafo, mappa);
-                }// end of if/else cycle
-            }// end of if cycle
-        }// end of for cycle
-        numPersone = listaMorti.size();
+        if (giorno != null) {
+            key = giorno.getTitolo();
+        }// end of if cycle
+
+        return key;
+    }// fine del metodo
+
+
+    /**
+     * Didascalia specifica della biografia
+     * Sovrascritto
+     */
+    @Override
+    protected String getDidascalia(Bio bio) {
+        return bio.getDidascaliaAnnoMorto();
     }// fine del metodo
 
     /**

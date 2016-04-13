@@ -2,6 +2,7 @@ package it.algos.vaadbio.liste;
 
 import it.algos.vaad.wiki.Api;
 import it.algos.vaad.wiki.LibWiki;
+import it.algos.vaadbio.bio.Bio;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.lib.LibBio;
 import it.algos.webbase.domain.pref.Pref;
@@ -27,7 +28,6 @@ public abstract class ListaBio {
     public static String PAGINA_PROVA = "Utente:Biobot/2";
     protected String titoloPagina;
     protected ArrayList<String> listaBiografie;
-    //    protected LinkedHashMap<String, ArrayList<String>> mappaBiografie = new LinkedHashMap<String, ArrayList<String>>();
     protected LinkedHashMap<String, HashMap> mappaBio = new LinkedHashMap<String, HashMap>();
     protected int numPersone = 0;
 
@@ -49,6 +49,8 @@ public abstract class ListaBio {
     protected int maxVociParagrafo;
     protected String tagParagrafoNullo;
     protected boolean usaTitoloParagrafoConLink;
+    protected boolean usaTaglioVociPagina;
+    protected int maxVociPagina;
 
     //        tagTemplateBio == Pref.getStr(LibBio.NOME_TEMPLATE_AVVISO_LISTE_GIORNI_ANNI, 'ListaBio')
     protected String titoloPaginaMadre = "";
@@ -108,6 +110,8 @@ public abstract class ListaBio {
         maxVociParagrafo = Pref.getInt(CostBio.MAX_VOCI_PARAGRAFO, 100);//--tipicamente 100. Sovrascrivibile nelle sottoclassi
         tagParagrafoNullo = ALTRE;
         usaTitoloParagrafoConLink = false;
+        usaTaglioVociPagina = false;
+        maxVociPagina = 0;
 
         // footer
         usaFooterPortale = false;
@@ -134,8 +138,39 @@ public abstract class ListaBio {
      * Costruisce una mappa di biografie che hanno una valore valido per il link specifico
      */
     protected void elaboraMappaBiografie() {
+        ArrayList<Bio> listaBio = getListaBio();
+
+        if (usaTaglioVociPagina && listaBio.size() < maxVociPagina) {
+            return;
+        }// end of if cycle
+
+        if (listaBio != null && listaBio.size() > 0) {
+            for (Bio bio : listaBio) {
+                elaboraMappa(bio);
+            }// end of if cycle
+        }// end of for cycle
+
+        if (listaBio != null) {
+            numPersone = listaBio.size();
+        }// end of if cycle
+
     }// fine del metodo
 
+
+    /**
+     * Lista delle biografie che hanno una valore valido per il link specifico
+     * Sovrascritto
+     */
+    protected ArrayList<Bio> getListaBio() {
+        return null;
+    }// fine del metodo
+
+    /**
+     * Costruisce una singola mappa
+     * Sovrascritto
+     */
+    protected void elaboraMappa(Bio bio) {
+    }// fine del metodo
 
     /**
      * La mappa delle biografie arriva ordinata secondo l'attività principale della voce
@@ -145,7 +180,6 @@ public abstract class ListaBio {
      * Sovrascritto
      */
     protected void ordinaMappaBiografie() {
-//        LinkedHashMap<String, ArrayList<String>> mappa;
         LinkedHashMap<String, HashMap> mappa;
         HashMap mappaTmp;
         ArrayList<String> keyList;
@@ -273,18 +307,6 @@ public abstract class ListaBio {
         boolean usaColonne = this.usaBodyDoppiaColonna;
         int maxRigheColonne = 10;//@todo mettere la preferenza
 
-//        if (mappaBiografie != null && mappaBiografie.size() > 0) {
-//            if (usaSuddivisioneParagrafi) {
-//                text = righeParagrafo2();
-//            } else {
-//                if (usaBodyRigheMultiple) {
-//                    text = righeRaggruppate();
-//                } else {
-//                    text = righeSemplici();
-//                }// end of if/else cycle
-//            }// end of if/else cycle
-//        }// end of if cycle
-
         if (mappaBio != null && mappaBio.size() > 0) {
             if (usaSuddivisioneParagrafi) {
                 text = righeParagrafo();
@@ -312,44 +334,6 @@ public abstract class ListaBio {
         return text;
     }// fine del metodo
 
-//    /**
-//     * Costruisce il paragrafo
-//     * Sovrascrivibile
-//     */
-//    protected String righeParagrafoOld() {
-//        String text = CostBio.VUOTO;
-//        ArrayList<String> lista;
-//        String key;
-//        int numVociParagrafo;
-//        String titoloVisibileParagrafo;
-//        String titoloSottopagina;
-//
-//        for (Map.Entry<String, ArrayList<String>> mappa : mappaBiografie.entrySet()) {
-//            text += CostBio.A_CAPO;
-//            key = mappa.getKey();
-//            lista = mappa.getValue();
-//            numVociParagrafo = lista.size();
-//            text += LibWiki.setParagrafo(key);
-//            text += CostBio.A_CAPO;
-//
-//            if (usaSottopagine && numVociParagrafo > maxVociParagrafo) {
-//                titoloVisibileParagrafo = LibBio.estraeLink(key);
-//                titoloSottopagina = titoloPagina + "/" + titoloVisibileParagrafo;
-//                text += "{{Vedi anche|" + titoloSottopagina + "}}";
-////                creaSottopagina(mappa);
-//            } else {
-//                for (String didascalia : lista) {
-//                    text += CostBio.ASTERISCO;
-//                    text += didascalia;
-//                    text += CostBio.A_CAPO;
-//                }// end of for cycle
-//            }// end of if/else cycle
-//
-//        }// end of for cycle
-//
-//        return text;
-//    }// fine del metodo
-
     /**
      * Costruisce il paragrafo
      * Sovrascrivibile
@@ -362,7 +346,6 @@ public abstract class ListaBio {
         String titoloSottopagina;
         String paginaLinkata;
         String titoloVisibile;
-        String sesso;
         ArrayList<String> lista;
 
         for (Map.Entry<String, HashMap> mappaTmp : mappaBio.entrySet()) {
@@ -409,15 +392,6 @@ public abstract class ListaBio {
             return linkVisibile;
         }// end of if cycle
 
-//        for (String keyCompleta : mappaBiografie.keySet()) {
-//            link = keyCompleta.substring(keyCompleta.indexOf("|") + 1);
-//            link = LibWiki.setNoQuadre(link);
-//            if (link.equals(linkVisibile)) {
-//                titoloParagrafo = keyCompleta;
-//                break;
-//            }// end of if cycle
-//        }// end of for cycle
-
         for (String keyCompleta : mappaBio.keySet()) {
             link = keyCompleta.substring(keyCompleta.indexOf("|") + 1);
             link = LibWiki.setNoQuadre(link);
@@ -449,34 +423,6 @@ public abstract class ListaBio {
         ArrayList<String> lista;
         String key;
         HashMap<String, Object> mappa;
-
-//        for (Map.Entry<String, ArrayList<String>> mappa : mappaBiografie.entrySet()) {
-//            if (mappa.getValue().size() == 1) {
-//                text += CostBio.ASTERISCO;
-//                if (!mappa.getKey().equals(CostBio.VUOTO)) {
-//                    text += LibWiki.setQuadre(mappa.getKey());
-//                    text += CostBio.TAG_SEPARATORE;
-//                }// end of if cycle
-//                text += mappa.getValue().get(0);
-//                text += CostBio.A_CAPO;
-//            } else {
-//                if (!mappa.getKey().equals(CostBio.VUOTO)) {
-//                    text += CostBio.ASTERISCO;
-//                    text += LibWiki.setQuadre(mappa.getKey());
-//                    text += CostBio.A_CAPO;
-//                }// end of if cycle
-//                lista = mappa.getValue();
-//                for (String didascalia : lista) {
-//                    if (!mappa.getKey().equals(CostBio.VUOTO)) {
-//                        text += CostBio.ASTERISCO;
-//                    }// end of if cycle
-//                    text += CostBio.ASTERISCO;
-//                    text += didascalia;
-//                    text += CostBio.A_CAPO;
-//                }// end of for cycle
-//            }// end of if/else cycle
-//        }// end of for cycle
-
 
         for (Map.Entry<String, HashMap> mappaTmp : mappaBio.entrySet()) {
             lista = null;
@@ -515,37 +461,6 @@ public abstract class ListaBio {
 
         return text;
     }// fine del metodo
-
-
-//    /**
-//     * Nessun raggruppamento
-//     */
-//    protected String righeSempliciOld() {
-//        String text = CostBio.VUOTO;
-//        ArrayList<String> lista;
-//
-//        for (Map.Entry<String, ArrayList<String>> mappa : mappaBiografie.entrySet()) {
-//            if (mappa.getValue().size() == 1) {
-//                text += CostBio.ASTERISCO;
-//                text += LibWiki.setQuadre(mappa.getKey());
-//                text += CostBio.TAG_SEPARATORE;
-//                text += mappa.getValue().get(0);
-//                text += CostBio.A_CAPO;
-//            } else {
-//                lista = mappa.getValue();
-//                for (String didascalia : lista) {
-//                    text += CostBio.ASTERISCO;
-//                    text += LibWiki.setQuadre(mappa.getKey());
-//                    text += CostBio.TAG_SEPARATORE;
-//                    text += didascalia;
-//                    text += CostBio.A_CAPO;
-//                }// end of for cycle
-//            }// end of if/else cycle
-//
-//        }// end of for cycle
-//
-//        return text;
-//    }// fine del metodo
 
 
     /**

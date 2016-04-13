@@ -1,7 +1,11 @@
 package it.algos.vaadbio.liste;
 
+import it.algos.vaadbio.bio.Bio;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.webbase.domain.pref.Pref;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by gac on 27 dic 2015.
@@ -48,6 +52,50 @@ public abstract class ListaCrono extends ListaBio {
         usaFooterPortale = Pref.getBool(CostBio.USA_FOOTER_PORTALE_CRONO, true);
         usaFooterCategorie = Pref.getBool(CostBio.USA_FOOTER_CATEGORIE_CRONO, true);
 
+    }// fine del metodo
+
+
+    /**
+     * Costruisce una singola mappa
+     */
+    protected void elaboraMappa(Bio bio) {
+        String key = getChiave(bio);
+        String didascalia = getDidascalia(bio);
+        ArrayList<String> lista;
+        HashMap<String, Object> mappa;
+
+        if (didascalia.contains(CostBio.TAG_SEPARATORE)) {
+            didascalia = didascalia.substring(didascalia.indexOf(CostBio.TAG_SEPARATORE) + CostBio.TAG_SEPARATORE.length());
+        }// end of if cycle
+
+        if (mappaBio.containsKey(key)) {
+            lista = (ArrayList<String>) mappaBio.get(key).get(KEY_MAP_LISTA);
+            lista.add(didascalia);
+        } else {
+            mappa = new HashMap<String, Object>();
+            lista = new ArrayList<>();
+            lista.add(didascalia);
+            mappa.put(KEY_MAP_LISTA, lista);
+            mappaBio.put(key, mappa);
+        }// end of if/else cycle
+
+    }// fine del metodo
+
+
+    /**
+     * Chiave specifica della biografia (anno o giorno)
+     * Sovrascritto
+     */
+    protected String getChiave(Bio bio) {
+        return null;
+    }// fine del metodo
+
+    /**
+     * Didascalia specifica della biografia
+     * Sovrascritto
+     */
+    protected String getDidascalia(Bio bio) {
+        return null;
     }// fine del metodo
 
     /**
