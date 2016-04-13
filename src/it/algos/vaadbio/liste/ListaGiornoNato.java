@@ -67,14 +67,14 @@ public class ListaGiornoNato extends ListaGiorno {
                     didascaliaShort = didascalia;
                 }// end of if/else cycle
 
-                if (mappaBiografie.containsKey(annotxt)) {
-                    lista = mappaBiografie.get(annotxt);
-                    lista.add(didascaliaShort);
-                } else {
-                    lista = new ArrayList<>();
-                    lista.add(didascaliaShort);
-                    mappaBiografie.put(annotxt, lista);
-                }// end of if/else cycle
+//                if (mappaBiografie.containsKey(annotxt)) {
+//                    lista = mappaBiografie.get(annotxt);
+//                    lista.add(didascaliaShort);
+//                } else {
+//                    lista = new ArrayList<>();
+//                    lista.add(didascaliaShort);
+//                    mappaBiografie.put(annotxt, lista);
+//                }// end of if/else cycle
 
                 //--doppione (per il momento)
                 chiaveParagrafo=annotxt;

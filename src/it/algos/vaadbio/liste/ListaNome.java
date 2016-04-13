@@ -98,14 +98,14 @@ public class ListaNome extends ListaBio {
                 didascalia = bio.getDidascaliaListe();
 
                 //--deprecato (se l'altro funziona)
-                if (mappaBiografie.containsKey(chiaveParagrafo)) {
-                    lista = mappaBiografie.get(chiaveParagrafo);
-                    lista.add(didascalia);
-                } else {
-                    lista = new ArrayList<>();
-                    lista.add(didascalia);
-                    mappaBiografie.put(chiaveParagrafo, lista);
-                }// end of if/else cycle
+//                if (mappaBiografie.containsKey(chiaveParagrafo)) {
+//                    lista = mappaBiografie.get(chiaveParagrafo);
+//                    lista.add(didascalia);
+//                } else {
+//                    lista = new ArrayList<>();
+//                    lista.add(didascalia);
+//                    mappaBiografie.put(chiaveParagrafo, lista);
+//                }// end of if/else cycle
 
                 //--doppione (per il momento)
                 if (mappaBio.containsKey(chiaveParagrafo)) {
@@ -256,14 +256,14 @@ public class ListaNome extends ListaBio {
             return linkVisibile;
         }// end of if cycle
 
-        for (String keyCompleta : mappaBiografie.keySet()) {
-            link = keyCompleta.substring(keyCompleta.indexOf("|") + 1);
-            link = LibWiki.setNoQuadre(link);
-            if (link.equals(linkVisibile)) {
-                titoloParagrafo = keyCompleta;
-                break;
-            }// end of if cycle
-        }// end of for cycle
+//        for (String keyCompleta : mappaBiografie.keySet()) {
+//            link = keyCompleta.substring(keyCompleta.indexOf("|") + 1);
+//            link = LibWiki.setNoQuadre(link);
+//            if (link.equals(linkVisibile)) {
+//                titoloParagrafo = keyCompleta;
+//                break;
+//            }// end of if cycle
+//        }// end of for cycle
 
         for (String keyCompleta : mappaBio.keySet()) {
             link = keyCompleta.substring(keyCompleta.indexOf("|") + 1);

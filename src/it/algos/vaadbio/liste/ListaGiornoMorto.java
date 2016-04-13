@@ -6,6 +6,7 @@ import it.algos.vaadbio.giorno.Giorno;
 import it.algos.vaadbio.lib.CostBio;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 /**
@@ -44,6 +45,8 @@ public class ListaGiornoMorto extends ListaGiorno {
         String didascalia;
         String didascaliaShort = CostBio.VUOTO;
         ArrayList<String> lista;
+        String chiaveParagrafo = CostBio.VUOTO;
+        HashMap<String, Object> mappa;
 
         if (giorno != null) {
             listaMorti = giorno.bioMorti();
@@ -64,13 +67,18 @@ public class ListaGiornoMorto extends ListaGiorno {
                     didascaliaShort = didascalia;
                 }// end of if/else cycle
 
-                if (mappaBiografie.containsKey(annotxt)) {
-                    lista = mappaBiografie.get(annotxt);
+                //--doppione (per il momento)
+                chiaveParagrafo=annotxt;
+                if (mappaBio.containsKey(chiaveParagrafo)) {
+                    lista = (ArrayList<String>) mappaBio.get(chiaveParagrafo).get(KEY_MAP_LISTA);
                     lista.add(didascaliaShort);
                 } else {
+                    mappa = new HashMap<String, Object>();
                     lista = new ArrayList<>();
                     lista.add(didascaliaShort);
-                    mappaBiografie.put(annotxt, lista);
+//                    mappa.put(KEY_MAP_TITOLO, getTitoloPar(bio));
+                    mappa.put(KEY_MAP_LISTA, lista);
+                    mappaBio.put(chiaveParagrafo, mappa);
                 }// end of if/else cycle
             }// end of if cycle
         }// end of for cycle
