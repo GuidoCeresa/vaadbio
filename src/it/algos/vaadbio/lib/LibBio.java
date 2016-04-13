@@ -1355,6 +1355,16 @@ public abstract class LibBio {
     }// end of static method
 
     /**
+     * Recupera la property (text) di tutti i records, selezionati secondo la query ricevuta
+     *
+     * @param queryTxt per la selezione
+     * @return lista di una property (String)
+     */
+    public synchronized static ArrayList<String> queryFindTxt(String queryTxt) {
+        return queryFindTxt(queryTxt, 0);
+    }// end of static method
+
+    /**
      * Recupera i pageids dei primi (limit) records, selezionati secondo la query ricevuta
      *
      * @param queryTxt per la selezione
@@ -1363,6 +1373,17 @@ public abstract class LibBio {
      */
     public synchronized static ArrayList<Long> queryFind(String queryTxt, int limit) {
         return queryFind(queryTxt, limit, 0);
+    }// end of static method
+
+    /**
+     * Recupera la property (text) di tutti i records, selezionati secondo la query ricevuta
+     *
+     * @param queryTxt per la selezione
+     * @param limit    di ricerca per la query
+     * @return lista di una property (String)
+     */
+    public synchronized static ArrayList<String> queryFindTxt(String queryTxt, int limit) {
+        return queryFindTxt(queryTxt, limit, 0);
     }// end of static method
 
     /**
@@ -1390,6 +1411,37 @@ public abstract class LibBio {
         vettore = query.getResultList();
         if (vettore != null) {
             lista = new ArrayList<Long>(vettore);
+        }// end of if cycle
+        manager.close();
+
+        return lista;
+    }// end of static method
+
+    /**
+     * Recupera la property (text) di tutti i records, selezionati secondo la query ricevuta
+     *
+     * @param queryTxt per la selezione
+     * @param limit    di ricerca per la query
+     * @param offSet   di inizio per la query
+     * @return lista di una property (String)
+     */
+    public synchronized static ArrayList<String> queryFindTxt(String queryTxt, int limit, int offSet) {
+        ArrayList<String> lista = null;
+        List vettore;
+        EntityManager manager = EM.createEntityManager();
+        Query query = manager.createQuery(queryTxt);
+
+        if (limit > 0) {
+            query.setMaxResults(limit);
+        }// fine del blocco if
+
+        if (offSet > 0) {
+            query.setFirstResult(offSet);
+        }// fine del blocco if
+
+        vettore = query.getResultList();
+        if (vettore != null) {
+            lista = new ArrayList<String>(vettore);
         }// end of if cycle
         manager.close();
 

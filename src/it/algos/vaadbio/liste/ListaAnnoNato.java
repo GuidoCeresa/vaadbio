@@ -51,7 +51,6 @@ public class ListaAnnoNato extends ListaAnno {
         }// end of if cycle
 
         if (listaNati != null && listaNati.size() > 0) {
-            mappaBiografie = new LinkedHashMap<String, ArrayList<String>>();
             for (Bio bio : listaNati) {
                 giornoTxt = CostBio.VUOTO;
                 giorno = bio.getGiornoNatoPunta();

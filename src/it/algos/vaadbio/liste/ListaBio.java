@@ -5,13 +5,10 @@ import it.algos.vaad.wiki.LibWiki;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.lib.LibBio;
 import it.algos.webbase.domain.pref.Pref;
-import it.algos.webbase.web.entity.EM;
 import it.algos.webbase.web.lib.LibArray;
 import it.algos.webbase.web.lib.LibNum;
 import it.algos.webbase.web.lib.LibTime;
 
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
 import java.util.*;
 
 /**
@@ -23,10 +20,15 @@ public abstract class ListaBio {
     protected final static String TAG_INDICE = "__FORCETOC__";
     protected final static String TAG_NO_INDICE = "__NOTOC__";
     protected final static String ALTRE = "Altre...";
+    protected final static String KEY_MAP_TITOLO = "keyMapTitolo";
+    protected final static String KEY_MAP_LINK = "keyMapLink";
+    protected final static String KEY_MAP_SESSO = "keyMapSesso";
+    protected final static String KEY_MAP_LISTA = "keyMapLista";
     public static String PAGINA_PROVA = "Utente:Biobot/2";
     protected String titoloPagina;
     protected ArrayList<String> listaBiografie;
-    protected LinkedHashMap<String, ArrayList<String>> mappaBiografie;
+    protected LinkedHashMap<String, ArrayList<String>> mappaBiografie = new LinkedHashMap<String, ArrayList<String>>();
+    protected LinkedHashMap<String, HashMap> mappaBio = new LinkedHashMap<String, HashMap>();
     protected int numPersone = 0;
 
     protected boolean usaHeadInclude; // vero per Giorni ed Anni
@@ -45,12 +47,14 @@ public abstract class ListaBio {
     protected boolean usaBodyTemplate;
     protected boolean usaSottopagine;
     protected int maxVociParagrafo;
+    protected String tagParagrafoNullo;
+    protected boolean usaTitoloParagrafoConLink;
 
     //        tagTemplateBio == Pref.getStr(LibBio.NOME_TEMPLATE_AVVISO_LISTE_GIORNI_ANNI, 'ListaBio')
     protected String titoloPaginaMadre = "";
     protected boolean usaFooterPortale;
     protected boolean usaFooterCategorie;
-    private Object oggetto;  //Giorno, Anno, Attivita, Nazionalita, Antroponimo, ecc
+    protected Object oggetto;  //Giorno, Anno, Attivita, Nazionalita, Antroponimo, ecc
 
     /**
      * Costruttore senza parametri
@@ -94,20 +98,22 @@ public abstract class ListaBio {
         usaHeadIncipit = false; //--normalmente false. Sovrascrivibile da preferenze
 
         // body
+        usaSuddivisioneParagrafi = false;
+        usaOrdineAlfabeticoParagrafi = false;
         usaBodySottopagine = true; //--normalmente true. Sovrascrivibile nelle sottoclassi
         usaBodyRigheMultiple = false; //--normalmente false. Sovrascrivibile da preferenze
         usaBodyDoppiaColonna = true; //--normalmente true. Sovrascrivibile nelle sottoclassi
         usaBodyTemplate = false; //--normalmente false. Sovrascrivibile nelle sottoclassi
         usaSottopagine = false; //--normalmente false. Sovrascrivibile nelle sottoclassi
         maxVociParagrafo = Pref.getInt(CostBio.MAX_VOCI_PARAGRAFO, 100);//--tipicamente 100. Sovrascrivibile nelle sottoclassi
+        tagParagrafoNullo = ALTRE;
+        usaTitoloParagrafoConLink = false;
 
         // footer
         usaFooterPortale = false;
         usaFooterCategorie = false;
 
 //        usaSuddivisioneUomoDonna = false
-        usaSuddivisioneParagrafi = false;
-        usaOrdineAlfabeticoParagrafi = false;
 //        usaAttivitaMultiple = false
 //        usaTitoloParagrafoConLink = true
 //        usaTitoloSingoloParagrafo = false
@@ -128,47 +134,6 @@ public abstract class ListaBio {
      * Costruisce una mappa di biografie che hanno una valore valido per il link specifico
      */
     protected void elaboraMappaBiografie() {
-        List vettore;
-        String queryTxt = getQueryCrono();
-//        queryTxt = "select bio.giornoNatoPunta.nome,bio.didascaliaAnnoNato,bio.giornoNatoPunta.bisestile from Bio bio where bio.annoNatoPunta.id=" + 2950 + " order by bio.giornoNatoPunta.bisestile,bio.cognome";
-        queryTxt = "select bio.didascaliaAnnoNato from Bio bio where bio.annoNatoPunta.id=" + 2950;
-        EntityManager manager = EM.createEntityManager();
-        Query query = manager.createQuery(queryTxt);
-        Object[] riga;
-        String giornoanno;
-        String didascalia;
-        String didascaliaShort = CostBio.VUOTO;
-        ArrayList<String> lista;
-
-        vettore = query.getResultList();
-        if (vettore != null) {
-            mappaBiografie = new LinkedHashMap<String, ArrayList<String>>();
-            for (Object rigaTmp : vettore) {
-                if (rigaTmp instanceof Object[]) {
-                    riga = (Object[]) rigaTmp;
-                    giornoanno = (String) riga[0];
-                    didascalia = (String) riga[1];
-
-                    if (didascalia.contains(CostBio.TAG_SEPARATORE)) {
-                        didascaliaShort = didascalia.substring(didascalia.indexOf(CostBio.TAG_SEPARATORE) + CostBio.TAG_SEPARATORE.length());
-                    } else {
-                        didascaliaShort = didascalia;
-                    }// end of if/else cycle
-
-                    if (mappaBiografie.containsKey(giornoanno)) {
-                        lista = mappaBiografie.get(giornoanno);
-                        lista.add(didascaliaShort);
-                    } else {
-                        lista = new ArrayList<>();
-                        lista.add(didascaliaShort);
-                        mappaBiografie.put(giornoanno, lista);
-                    }// end of if/else cycle
-                }// end of if cycle
-            }// end of for cycle
-            numPersone = vettore.size();
-        }// end of if cycle
-        manager.close();
-
     }// fine del metodo
 
 
@@ -181,6 +146,8 @@ public abstract class ListaBio {
      */
     protected void ordinaMappaBiografie() {
         LinkedHashMap<String, ArrayList<String>> mappa;
+        LinkedHashMap<String, HashMap> mappa2;
+        HashMap mappa3;
         ArrayList<String> keyList;
         ArrayList<String> lista;
 
@@ -194,12 +161,12 @@ public abstract class ListaBio {
             mappaBiografie = mappa;
         }// end of if cycle
 
-        mappa = mappaBiografie;
-        if (mappa != null && mappa.containsKey(ALTRE)) {
-            lista = mappa.get(ALTRE);
-            mappa.remove(ALTRE);
-            mappa.put(ALTRE, lista);
-            mappaBiografie = mappa;
+        mappa2 = mappaBio;
+        if (mappa2 != null && mappa2.containsKey(tagParagrafoNullo)) {
+            mappa3 = mappa2.get(tagParagrafoNullo);
+            mappa2.remove(tagParagrafoNullo);
+            mappa2.put(tagParagrafoNullo, mappa3);
+            mappaBio = mappa2;
         }// end of if cycle
     }// fine del metodo
 
@@ -308,6 +275,18 @@ public abstract class ListaBio {
 
         if (mappaBiografie != null && mappaBiografie.size() > 0) {
             if (usaSuddivisioneParagrafi) {
+                text = righeParagrafo2();
+            } else {
+                if (usaBodyRigheMultiple) {
+                    text = righeRaggruppate();
+                } else {
+                    text = righeSemplici();
+                }// end of if/else cycle
+            }// end of if/else cycle
+        }// end of if cycle
+
+        if (mappaBio != null && mappaBio.size() > 0) {
+            if (usaSuddivisioneParagrafi) {
                 text = righeParagrafo();
             } else {
                 if (usaBodyRigheMultiple) {
@@ -335,6 +314,7 @@ public abstract class ListaBio {
 
     /**
      * Costruisce il paragrafo
+     * Sovrascrivibile
      */
     protected String righeParagrafo() {
         String text = CostBio.VUOTO;
@@ -356,7 +336,7 @@ public abstract class ListaBio {
                 titoloVisibileParagrafo = LibBio.estraeLink(key);
                 titoloSottopagina = titoloPagina + "/" + titoloVisibileParagrafo;
                 text += "{{Vedi anche|" + titoloSottopagina + "}}";
-                creaSottopagina(this, key, titoloSottopagina);
+//                creaSottopagina(mappa);
             } else {
                 for (String didascalia : lista) {
                     text += CostBio.ASTERISCO;
@@ -371,10 +351,94 @@ public abstract class ListaBio {
     }// fine del metodo
 
     /**
+     * Costruisce il paragrafo
+     * Sovrascrivibile
+     */
+    protected String righeParagrafo2() {
+        String text = CostBio.VUOTO;
+        int numVociParagrafo;
+        HashMap<String, Object> mappa;
+        String titoloParagrafo;
+        String titoloSottopagina;
+        String paginaLinkata;
+        String titoloVisibile;
+        String sesso;
+        ArrayList<String> lista;
+
+        for (Map.Entry<String, HashMap> mappaTmp : mappaBio.entrySet()) {
+            text += CostBio.A_CAPO;
+
+            mappa = mappaTmp.getValue();
+
+            paginaLinkata = (String) mappa.get(KEY_MAP_LINK);
+            titoloVisibile = (String) mappa.get(KEY_MAP_TITOLO);
+            lista = (ArrayList<String>) mappa.get(KEY_MAP_LISTA);
+            numVociParagrafo = lista.size();
+
+            titoloParagrafo = costruisceTitolo(paginaLinkata, titoloVisibile);
+            text += LibWiki.setParagrafo(titoloParagrafo);
+            text += CostBio.A_CAPO;
+
+            if (usaSottopagine && numVociParagrafo > maxVociParagrafo) {
+                titoloSottopagina = titoloPagina + "/" + titoloVisibile;
+                text += "{{Vedi anche|" + titoloSottopagina + "}}";
+                creaSottopagina(mappa);
+            } else {
+                for (String didascalia : lista) {
+                    text += CostBio.ASTERISCO;
+                    text += didascalia;
+                    text += CostBio.A_CAPO;
+                }// end of for cycle
+            }// end of if/else cycle
+
+        }// end of for cycle
+
+        return text;
+    }// fine del metodo
+
+    /**
+     * Costruisce il titolo
+     * Controlla se il titolo visibile (link) non esiste già
+     * Se esiste, sostituisce la pagina (prima parte del titolo) con quella già esistente
+     */
+    private String costruisceTitolo(String paginaWiki, String linkVisibile) {
+        String titoloParagrafo = LibWiki.setLink(paginaWiki, linkVisibile);
+        String link;
+
+        if (linkVisibile.equals(tagParagrafoNullo)) {
+            return linkVisibile;
+        }// end of if cycle
+
+        for (String keyCompleta : mappaBiografie.keySet()) {
+            link = keyCompleta.substring(keyCompleta.indexOf("|") + 1);
+            link = LibWiki.setNoQuadre(link);
+            if (link.equals(linkVisibile)) {
+                titoloParagrafo = keyCompleta;
+                break;
+            }// end of if cycle
+        }// end of for cycle
+
+        for (String keyCompleta : mappaBio.keySet()) {
+            link = keyCompleta.substring(keyCompleta.indexOf("|") + 1);
+            link = LibWiki.setNoQuadre(link);
+            if (link.equals(linkVisibile)) {
+                titoloParagrafo = keyCompleta;
+                break;
+            }// end of if cycle
+        }// end of for cycle
+
+        if (usaTitoloParagrafoConLink) {
+            titoloParagrafo = LibBio.fixLink(titoloParagrafo);
+        }// end of if/else cycle
+
+        return titoloParagrafo;
+    }// fine del metodo
+
+    /**
      * Costruisce la sottopagina
      * Metodo sovrascritto
      */
-    protected void creaSottopagina(ListaBio listaBio, String chiaveParagrafo, String titoloParagrafo) {
+    protected void creaSottopagina(HashMap<String, Object> mappa) {
     }// fine del metodo
 
     /**

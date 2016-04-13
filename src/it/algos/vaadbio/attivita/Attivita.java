@@ -1,5 +1,6 @@
 package it.algos.vaadbio.attivita;
 
+import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.lib.LibBio;
 import it.algos.webbase.web.entity.BaseEntity;
 import it.algos.webbase.web.query.AQuery;
@@ -73,7 +74,7 @@ public class Attivita extends BaseEntity {
      */
     public static Attivita findBySingolare(String singolare) {
         Attivita instance = null;
-        BaseEntity entity = AQuery.queryOne(Attivita.class, Attivita_.singolare, singolare);
+        BaseEntity entity = AQuery.queryOne(Attivita.class, Attivita_.singolare, singolare.toLowerCase());
 
         if (entity != null) {
             if (entity instanceof Attivita) {
@@ -92,7 +93,7 @@ public class Attivita extends BaseEntity {
      */
     public static Attivita findByPlurale(String plurale) {
         Attivita instance = null;
-        BaseEntity entity = AQuery.queryOne(Attivita.class, Attivita_.plurale, plurale);
+        BaseEntity entity = AQuery.queryOne(Attivita.class, Attivita_.plurale, plurale.toLowerCase());
 
         if (entity != null) {
             if (entity instanceof Attivita) {
@@ -101,6 +102,63 @@ public class Attivita extends BaseEntity {
         }// end of if cycle
 
         return instance;
+    }// end of method
+
+    /**
+     * Recupera una lista di Attivita (id) usando la query di una property specifica
+     *
+     * @param plurale valore della property plurale
+     * @return lista di ID delle attività che hanno la property plurale indicata
+     */
+    public static ArrayList<Long> findAllSingolari(String plurale) {
+        if (plurale != null) {
+            return LibBio.queryFind("select att.id from Attivita att where att.plurale = '" + plurale.toLowerCase() + "' order by att.id");
+        } else {
+            return null;
+        }// end of if/else cycle
+    }// end of method
+
+    /**
+     * Recupera una lista di Attivita (id) usando la query di una property specifica
+     *
+     * @param plurale valore della property plurale
+     * @param sesso   delle persone (solo M o F)
+     * @return lista di ID delle attività che hanno la property plurale indicata
+     */
+    public static ArrayList<Long> findAllSingolari(String plurale, String sesso) {
+        ArrayList<Long> lista = null;
+        ArrayList<String> listaGenere;
+        Attivita attivita;
+        String queryGen = CostBio.VUOTO;
+
+        if (plurale == null || plurale.equals(CostBio.VUOTO)) {
+            return null;
+        }// end of if cycle
+        if (sesso == null || sesso.equals(CostBio.VUOTO)) {
+            return null;
+        }// end of if cycle
+        if (!sesso.equals("M") && !sesso.equals("F")) {
+            return null;
+        }// end of if cycle
+
+        queryGen += "select gen.singolare from Genere gen where gen.plurale = '";
+        queryGen += plurale.toLowerCase();
+        queryGen += "' and gen.sesso = '";
+        queryGen += sesso;
+        queryGen += "' order by gen.singolare asc";
+        listaGenere = LibBio.queryFindTxt(queryGen);
+
+        if (listaGenere != null && listaGenere.size() > 0) {
+            lista = new ArrayList<Long>();
+            for (String singolare : listaGenere) {
+                attivita = Attivita.findBySingolare(singolare);
+                if (attivita != null) {
+                    lista.add(attivita.getId());
+                }// end of if cycle
+            }// end of for cycle
+        }// end of if cycle
+
+        return lista;
     }// end of method
 
     /**
@@ -136,7 +194,7 @@ public class Attivita extends BaseEntity {
      * @return lista di tutte le istanze di Attivita
      */
     @SuppressWarnings("unchecked")
-    public  static ArrayList<Attivita> findAll() {
+    public static ArrayList<Attivita> findAll() {
         return (ArrayList<Attivita>) AQuery.getLista(Attivita.class);
     }// end of method
 

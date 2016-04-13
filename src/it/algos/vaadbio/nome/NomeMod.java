@@ -6,10 +6,9 @@ import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.MenuBar;
 import com.vaadin.ui.Notification;
 import it.algos.vaadbio.esegue.Esegue;
-import it.algos.vaadbio.liste.ListaAnnoMorto;
-import it.algos.vaadbio.liste.ListaAnnoNato;
 import it.algos.vaadbio.liste.ListaNome;
 import it.algos.webbase.web.module.ModulePop;
+import it.algos.webbase.web.search.SearchManager;
 import it.algos.webbase.web.table.ATable;
 
 /**
@@ -73,6 +72,10 @@ public class NomeMod extends ModulePop {
         return new NomeTable(this);
     }// end of method
 
+    @Override
+    public SearchManager createSearchManager() {
+        return new NomeSearch(this);
+    }// end of method
 
     /**
      * Crea i sottomenu specifici del modulo

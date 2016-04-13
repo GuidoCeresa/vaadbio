@@ -44,7 +44,7 @@
             <!--<property name="eclipselink.ddl-generation.output-mode" value="sql-script" />-->
             <!--<property name="eclipselink.create-ddl-jdbc-file-name" value="apippo.text" />-->
             <!--<property name="eclipselink.application-location" value="/Users/gac" />-->
-            <property name="eclipselink.logging.level" value="FINE" />
+            <!--<property name="eclipselink.logging.level" value="FINE" />-->
 
 
         </properties>

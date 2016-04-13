@@ -12,7 +12,9 @@ import it.algos.webbase.domain.pref.Pref;
 import it.algos.webbase.web.lib.LibText;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * Created by gac on 27 dic 2015.
@@ -48,7 +50,7 @@ public class ListaNome extends ListaBio {
         super.elaboraParametri();
 
         // head
-        usaHeadTocIndice=true;
+        usaHeadTocIndice = true;
         usaHeadIncipit = true;
 
         // body
@@ -56,6 +58,7 @@ public class ListaNome extends ListaBio {
         usaBodyRigheMultiple = false;
         usaBodyDoppiaColonna = false;
         usaSottopagine = true;
+        usaTitoloParagrafoConLink=true;
 
         // footer
 
@@ -83,17 +86,18 @@ public class ListaNome extends ListaBio {
         int taglio = Pref.getInt(CostBio.TAGLIO_NOMI_PAGINA, 100);
         ArrayList<String> lista;
         String chiaveParagrafo;
+        HashMap<String, Object> mappa;
 
         if (nome != null) {
             listaNomi = nome.bioNome();
         }// end of if cycle
 
         if (listaNomi != null && listaNomi.size() >= taglio) {
-            mappaBiografie = new LinkedHashMap<String, ArrayList<String>>();
             for (Bio bio : listaNomi) {
                 chiaveParagrafo = getTitoloParagrafo(bio);
                 didascalia = bio.getDidascaliaListe();
 
+                //--deprecato (se l'altro funziona)
                 if (mappaBiografie.containsKey(chiaveParagrafo)) {
                     lista = mappaBiografie.get(chiaveParagrafo);
                     lista.add(didascalia);
@@ -102,6 +106,22 @@ public class ListaNome extends ListaBio {
                     lista.add(didascalia);
                     mappaBiografie.put(chiaveParagrafo, lista);
                 }// end of if/else cycle
+
+                //--doppione (per il momento)
+                if (mappaBio.containsKey(chiaveParagrafo)) {
+                    lista = (ArrayList<String>) mappaBio.get(chiaveParagrafo).get(KEY_MAP_LISTA);
+                    lista.add(didascalia);
+                } else {
+                    mappa = new HashMap<String, Object>();
+                    lista = new ArrayList<>();
+                    lista.add(didascalia);
+                    mappa.put(KEY_MAP_LINK, getPaginaLinkata(bio));
+                    mappa.put(KEY_MAP_TITOLO, getTitoloPar(bio));
+                    mappa.put(KEY_MAP_LISTA, lista);
+                    mappa.put(KEY_MAP_SESSO, bio.getSesso());
+                    mappaBio.put(chiaveParagrafo, mappa);
+                }// end of if/else cycle
+
             }// end of if cycle
             numPersone = listaNomi.size();
         }// end of for cycle
@@ -116,7 +136,7 @@ public class ListaNome extends ListaBio {
      * Genere.plurale
      */
     protected String getTitoloParagrafo(Bio bio) {
-        String titoloParagrafo = ALTRE;
+        String titoloParagrafo = tagParagrafoNullo;
         Professione professione = null;
         String professioneTxt;
         String paginaWiki = CostBio.VUOTO;
@@ -162,6 +182,68 @@ public class ListaNome extends ListaBio {
     }// fine del metodo
 
     /**
+     * Costruisce il link alla pagina linkata da inserire nel titolo del paragrafo
+     */
+    protected String getPaginaLinkata(Bio bio) {
+        String paginaWiki = CostBio.VUOTO;
+        Professione professione = null;
+        String professioneTxt;
+        Attivita attivita = null;
+        String attivitaSingolare = CostBio.VUOTO;
+
+        if (bio == null) {
+            return CostBio.VUOTO;
+        }// end of if cycle
+
+        attivita = bio.getAttivitaPunta();
+        if (attivita != null) {
+            attivitaSingolare = attivita.getSingolare();
+            professione = Professione.findBySingolare(attivitaSingolare);
+        }// end of if cycle
+
+        if (professione != null) {
+            professioneTxt = professione.getPagina();
+        } else {
+            professioneTxt = attivitaSingolare;
+        }// end of if/else cycle
+        if (!professioneTxt.equals(CostBio.VUOTO)) {
+            paginaWiki = LibText.primaMaiuscola(professioneTxt);
+        }// end of if cycle
+
+        return paginaWiki;
+    }// fine del metodo
+
+    /**
+     * Costruisce il titolo visibile del paragrafo
+     */
+    protected String getTitoloPar(Bio bio) {
+        String titoloParagrafo = tagParagrafoNullo;
+        Genere genere = null;
+        String genereTxt;
+        Attivita attivita = null;
+        String attivitaSingolare = CostBio.VUOTO;
+
+        if (bio == null) {
+            return CostBio.VUOTO;
+        }// end of if cycle
+
+        attivita = bio.getAttivitaPunta();
+        if (attivita != null) {
+            attivitaSingolare = attivita.getSingolare();
+            genere = Genere.findBySingolareAndSesso(attivitaSingolare, bio.getSesso());
+        }// end of if cycle
+
+        if (genere != null) {
+            genereTxt = genere.getPlurale();
+            if (!genereTxt.equals(CostBio.VUOTO)) {
+                titoloParagrafo = LibText.primaMaiuscola(genereTxt);
+            }// end of if cycle
+        }// end of if cycle
+
+        return titoloParagrafo;
+    }// fine del metodo
+
+    /**
      * Costruisce il titolo
      * Controlla se il titolo visibile (link) non esiste già
      * Se esiste, sostituisce la pagina (prima parte del titolo) con quella già esistente
@@ -169,6 +251,10 @@ public class ListaNome extends ListaBio {
     private String costruisceTitolo(String paginaWiki, String linkVisibile) {
         String titoloParagrafo = LibWiki.setLink(paginaWiki, linkVisibile);
         String link;
+
+        if (linkVisibile.equals(tagParagrafoNullo)) {
+            return linkVisibile;
+        }// end of if cycle
 
         for (String keyCompleta : mappaBiografie.keySet()) {
             link = keyCompleta.substring(keyCompleta.indexOf("|") + 1);
@@ -179,25 +265,78 @@ public class ListaNome extends ListaBio {
             }// end of if cycle
         }// end of for cycle
 
-        titoloParagrafo = LibBio.fixLink(titoloParagrafo);
+        for (String keyCompleta : mappaBio.keySet()) {
+            link = keyCompleta.substring(keyCompleta.indexOf("|") + 1);
+            link = LibWiki.setNoQuadre(link);
+            if (link.equals(linkVisibile)) {
+                titoloParagrafo = keyCompleta;
+                break;
+            }// end of if cycle
+        }// end of for cycle
+
+        if (usaTitoloParagrafoConLink) {
+            titoloParagrafo = LibBio.fixLink(titoloParagrafo);
+        }// end of if/else cycle
+
         return titoloParagrafo;
+    }// fine del metodo
+
+
+    /**
+     * Costruisce il paragrafo
+     * Sovrascrivibile
+     */
+    @Override
+    protected String righeParagrafo() {
+        String text = CostBio.VUOTO;
+        String key;
+        int numVociParagrafo;
+        HashMap<String, Object> mappa;
+        String titoloParagrafo;
+        String titoloSottopagina;
+        String paginaLinkata;
+        String titoloVisibile;
+        String sesso;
+        ArrayList<String> lista;
+
+        for (Map.Entry<String, HashMap> mappaTmp : mappaBio.entrySet()) {
+            text += CostBio.A_CAPO;
+
+            key = mappaTmp.getKey();
+            mappa = mappaTmp.getValue();
+
+            paginaLinkata = (String) mappa.get(KEY_MAP_LINK);
+            titoloVisibile = (String) mappa.get(KEY_MAP_TITOLO);
+            lista = (ArrayList<String>) mappa.get(KEY_MAP_LISTA);
+            numVociParagrafo = lista.size();
+
+            titoloParagrafo = costruisceTitolo(paginaLinkata, titoloVisibile);
+            text += LibWiki.setParagrafo(titoloParagrafo);
+            text += CostBio.A_CAPO;
+
+            if (usaSottopagine && numVociParagrafo > maxVociParagrafo) {
+                titoloSottopagina = titoloPagina + "/" + titoloVisibile;
+                text += "{{Vedi anche|" + titoloSottopagina + "}}";
+                creaSottopagina(mappa);
+            } else {
+                for (String didascalia : lista) {
+                    text += CostBio.ASTERISCO;
+                    text += didascalia;
+                    text += CostBio.A_CAPO;
+                }// end of for cycle
+            }// end of if/else cycle
+
+        }// end of for cycle
+
+        return text;
     }// fine del metodo
 
     /**
      * Costruisce la sottopagina
      * Metodo sovrascritto
      */
-    @Override
-    protected void creaSottopagina(ListaBio listaBio, String chiaveParagrafo, String titoloParagrafo) {
-        ArrayList<String> lista = null;
-        LinkedHashMap<String, ArrayList<String>> mappa = listaBio.mappaBiografie;
-        String paragrafo = LibBio.estraeLink(chiaveParagrafo);
-
-        if (mappa.get(chiaveParagrafo) != null) {
-            lista = mappa.get(chiaveParagrafo);
-        }// end of if cycle
-
-        new ListaNomeABC(lista, chiaveParagrafo,titoloPagina, getNomeTxt(), paragrafo);
+    protected void creaSottopagina(HashMap<String, Object> mappa) {
+        new ListaNomeABC(getNome(), mappa);
     }// fine del metodo
 
 

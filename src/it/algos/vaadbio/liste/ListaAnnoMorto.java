@@ -52,7 +52,6 @@ public class ListaAnnoMorto extends ListaAnno {
         }// end of if cycle
 
         if (listaMorti != null && listaMorti.size() > 0) {
-            mappaBiografie = new LinkedHashMap<String, ArrayList<String>>();
             for (Bio bio : listaMorti) {
                 giornoTxt = CostBio.VUOTO;
                 giorno = bio.getGiornoMortoPunta();
