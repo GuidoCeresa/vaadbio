@@ -319,7 +319,7 @@ public class ListaNome extends ListaBio {
      * Metodo sovrascritto
      */
     protected void creaSottopagina(HashMap<String, Object> mappa) {
-        new ListaNomeABC(getNome(), mappa);
+        new ListaNomeABC(this, mappa);
     }// fine del metodo
 
 
