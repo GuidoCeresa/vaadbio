@@ -49,7 +49,6 @@ public class UploadNomi {
                 Log.setDebug("upload", "Aggiornate solo le pagine dei nomi modificate (" + modTxt + ") in " + LibTime.difText(inizio));
             }// end of if/else cycle
         }// end of if cycle
-        Log.setInfo("upload", "Aggiornate le pagine delle persone in " + LibTime.difText(inizio));
     }// end of method
 
 }// fine della classe
