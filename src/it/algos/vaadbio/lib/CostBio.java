@@ -65,13 +65,15 @@ public abstract class CostBio {
     public final static String USA_RITORNO_CRONO = "usaRitornoCrono";
     public final static String TEMPLATE_AVVISO_CRONO = "templateAvvisoCrono";
     public final static String USA_BODY_RIGHE_MULTIPLE_CRONO = "usaBodyRigheMultipleCrono";
-    public final static String REGISTRA_SOLO_MODIFICHE_SOSTANZIALI_CRONO = "usaEditSoloVoceDiversaCrono";
+    public final static String USA_REGISTRA_SEMPRE_CRONO = "salvaSempreCrono";
     public final static String MAX_VOCI_PARAGRAFO = "maxVociParagrafo";
 
     // persone - nomi
     public final static String USA_NOME_SINGOLO = "usaNomeSingolo";
     public final static String TAGLIO_NOMI_PAGINA = "taglioNomiPagina";
     public final static String TAGLIO_NOMI_ELENCO = "taglioNomiElenco";
+    public final static String USA_REGISTRA_SEMPRE_PERSONA = "salvaSemprePersona";
+    public final static String USA_REGISTRA_SEMPRE_ATT_NAZ = "salvaSempreAttNaz";
 
     //--chiavi mappa volori numerici passati come valore di ritorno multiplo
     public final static String KEY_MAPPA_REGISTRATE = "registrate";

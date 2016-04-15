@@ -2,6 +2,7 @@ package it.algos.vaadbio.liste;
 
 import it.algos.vaadbio.bio.Bio;
 import it.algos.vaadbio.lib.CostBio;
+import it.algos.vaadbio.lib.LibBio;
 import it.algos.webbase.domain.pref.Pref;
 
 import java.util.ArrayList;
@@ -131,6 +132,21 @@ public abstract class ListaCrono extends ListaBio {
         }// fine del blocco if
 
         return testoOut;
+    }// fine del metodo
+
+    /**
+     * Controlla che la modifica sia sostanziale
+     * Se il flag è false, registra sempre
+     * Se il flag è vero, controlla la differenza del testo
+     * Sovrascritto
+     */
+    @Override
+    protected boolean checkPossoRegistrare(String titolo, String testo) {
+        if (Pref.getBool(CostBio.USA_REGISTRA_SEMPRE_CRONO, false)) {
+            return true;
+        } else {
+            return LibBio.checkModificaSostanziale(titolo, testo, tagHeadTemplateAvviso, "}}");
+        }// end of if/else cycle
     }// fine del metodo
 
     /**

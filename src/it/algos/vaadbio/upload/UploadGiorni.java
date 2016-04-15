@@ -1,9 +1,12 @@
 package it.algos.vaadbio.upload;
 
 import it.algos.vaadbio.giorno.Giorno;
+import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.liste.ListaGiornoMorto;
 import it.algos.vaadbio.liste.ListaGiornoNato;
 import it.algos.webbase.domain.log.Log;
+import it.algos.webbase.domain.pref.Pref;
+import it.algos.webbase.web.lib.LibNum;
 import it.algos.webbase.web.lib.LibTime;
 
 import java.util.ArrayList;
@@ -29,13 +32,27 @@ public class UploadGiorni {
     private void doInit() {
         ArrayList<Giorno> listaGiorni = Giorno.findAll();
         long inizio = System.currentTimeMillis();
+        int modNati = 0;
+        int modMorti = 0;
+        String modTxt;
 
         for (Giorno giorno : listaGiorni) {
-            new ListaGiornoNato(giorno);
-            new ListaGiornoMorto(giorno);
+            if (new ListaGiornoNato(giorno).isRegistrata()) {
+                modNati++;
+            }// end of if cycle
+            if (new ListaGiornoMorto(giorno).isRegistrata()) {
+                modMorti++;
+            }// end of if cycle
         }// end of for cycle
 
-        Log.setInfo("upload", "Aggiornate le pagine dei giorni (nati e morti) in " + LibTime.difText(inizio));
+        modTxt = LibNum.format(modNati) + "+" + LibNum.format(modMorti);
+        if (Pref.getBool(CostBio.USA_LOG_DEBUG)) {
+            if (Pref.getBool(CostBio.USA_REGISTRA_SEMPRE_CRONO)) {
+                Log.setDebug("upload", "Aggiornate tutte (366*2) le pagine dei giorni (nati e morti) in " + LibTime.difText(inizio));
+            } else {
+                Log.setDebug("upload", "Aggiornate solo le pagine modificate (" + modTxt + ") dei giorni (nati e morti) in " + LibTime.difText(inizio));
+            }// end of if/else cycle
+        }// end of if cycle
     }// end of method
 
 }// fine della classe

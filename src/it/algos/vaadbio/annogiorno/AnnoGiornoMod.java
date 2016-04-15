@@ -10,9 +10,6 @@ import com.vaadin.ui.UI;
 import it.algos.vaadbio.ciclo.CicloDownload;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.liste.ListaBio;
-import it.algos.vaadbio.statistiche.StatGiorni;
-import it.algos.vaadbio.upload.UploadAnni;
-import it.algos.vaadbio.upload.UploadGiorni;
 import it.algos.webbase.domain.pref.Pref;
 import it.algos.webbase.web.dialog.ConfirmDialog;
 import it.algos.webbase.web.module.ModulePop;
@@ -144,7 +141,8 @@ public abstract class AnnoGiornoMod extends ModulePop {
             public void menuSelected(MenuBar.MenuItem selectedItem) {
                 boolean usaDialoghi = Pref.getBool(CostBio.USA_DIALOGHI_CONFERMA, true);
                 boolean usaDebug = Pref.getBool(CostBio.USA_DEBUG, false);
-                boolean usaLog = Pref.getBool(CostBio.USA_LOG_CICLO, false);
+                boolean usaRegistraSempre = Pref.getBool(CostBio.USA_REGISTRA_SEMPRE_CRONO);
+                boolean usaLog = Pref.getBool(CostBio.USA_LOG_DEBUG, false);
                 if (usaDialoghi) {
                     String nomePagina = "<b><span style=\"color:red\">" + ListaBio.PAGINA_PROVA + "</span></b>";
                     String newMsg;
@@ -156,6 +154,11 @@ public abstract class AnnoGiornoMod extends ModulePop {
                     if (usaDebug) {
                         newMsg += "<br>Le preferenze prevedono di usare la singola pagina di debug: " + nomePagina;
                     }// end of if cycle
+                    if (usaRegistraSempre) {
+                        newMsg += "<br>Le preferenze prevedono di registrare <b><span style=\"color:red\">sempre</span></b> la pagina";
+                    } else {
+                        newMsg += "<br>Le preferenze prevedono di registrare la pagina <b><span style=\"color:red\">solo</span></b> se modificata significativamente";
+                    }// end of if/else cycle
                     if (usaLog) {
                         newMsg += "<br>Le preferenze prevedono di registrare il risultato nei <b><span style=\"color:red\">log</span></b>";
                     } else {
@@ -194,7 +197,8 @@ public abstract class AnnoGiornoMod extends ModulePop {
             public void menuSelected(MenuBar.MenuItem selectedItem) {
                 boolean usaDialoghi = Pref.getBool(CostBio.USA_DIALOGHI_CONFERMA, true);
                 boolean usaDebug = Pref.getBool(CostBio.USA_DEBUG, false);
-                boolean usaLog = Pref.getBool(CostBio.USA_LOG_CICLO, false);
+                boolean usaRegistraSempre = Pref.getBool(CostBio.USA_REGISTRA_SEMPRE_CRONO);
+                boolean usaLog = Pref.getBool(CostBio.USA_LOG_DEBUG, false);
                 if (usaDialoghi) {
                     String nomePagina = "<b><span style=\"color:red\">" + ListaBio.PAGINA_PROVA + "</span></b>";
                     String newMsg;
@@ -206,6 +210,11 @@ public abstract class AnnoGiornoMod extends ModulePop {
                     if (usaDebug) {
                         newMsg += "<br>Le preferenze prevedono di usare la singola pagina di debug: " + nomePagina;
                     }// end of if cycle
+                    if (usaRegistraSempre) {
+                        newMsg += "<br>Le preferenze prevedono di registrare <b><span style=\"color:red\">sempre</span></b> la pagina";
+                    } else {
+                        newMsg += "<br>Le preferenze prevedono di registrare la pagina <b><span style=\"color:red\">solo</span></b> se modificata significativamente";
+                    }// end of if/else cycle
                     if (usaLog) {
                         newMsg += "<br>Le preferenze prevedono di registrare il risultato nei <b><span style=\"color:red\">log</span></b>";
                     } else {

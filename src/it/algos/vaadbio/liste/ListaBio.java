@@ -58,6 +58,8 @@ public abstract class ListaBio {
     protected boolean usaFooterCategorie;
     protected Object oggetto;  //Giorno, Anno, Attivita, Nazionalita, Antroponimo, ecc
 
+    private boolean registrata;
+
     /**
      * Costruttore senza parametri
      */
@@ -253,12 +255,20 @@ public abstract class ListaBio {
                 titolo = titoloPagina;
             }// fine del blocco if-else
 
-            if (LibBio.checkModificaSostanzialeCrono(titolo, testo, tagHeadTemplateAvviso)) {
-                Api.scriveVoce(titolo, testo, summary);
+            if (checkPossoRegistrare(titolo, testo)) {
+                registrata = Api.scriveVoce(titolo, testo, summary);
             }// end of if cycle
-
         }// fine del blocco if
 
+    }// fine del metodo
+
+    /**
+     * Controlla che la modifica sia sostanziale
+     * <p>
+     * Sovrascritto
+     */
+    protected boolean checkPossoRegistrare(String titolo, String testo) {
+        return false;
     }// fine del metodo
 
     /**
@@ -666,4 +676,7 @@ public abstract class ListaBio {
         return oggetto;
     }// end of getter method
 
+    public boolean isRegistrata() {
+        return registrata;
+    }// end of getter method
 }// fine della classe

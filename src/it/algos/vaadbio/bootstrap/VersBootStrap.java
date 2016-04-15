@@ -262,6 +262,21 @@ public class VersBootStrap implements ServletContextListener {
             LibPref.newVersInt(CostBio.MAX_VOCI_PARAGRAFO, 100, "Numero di voci del paragrafo per creare una sotto-pagina");
         }// fine del blocco if
 
+        //--creata una nuova preferenza
+        if (LibVers.installa(++k)) {
+            LibPref.newVersBool(CostBio.USA_REGISTRA_SEMPRE_CRONO, false, "Registra sempre la pagina di giorni ed anni. Di default falso.");
+        }// fine del blocco if
+
+        //--creata una nuova preferenza
+        if (LibVers.installa(++k)) {
+            LibPref.newVersBool(CostBio.USA_REGISTRA_SEMPRE_PERSONA, false, "Registra sempre la pagina di nomi e cognomi. Di default falso.");
+        }// fine del blocco if
+
+        //--creata una nuova preferenza
+        if (LibVers.installa(++k)) {
+            LibPref.newVersBool(CostBio.USA_REGISTRA_SEMPRE_ATT_NAZ, false, "Registra sempre la pagina di attività e nazionalità. Di default falso.");
+        }// fine del blocco if
+
 
 //        //--creata una nuova preferenza
 //        if (LibVers.installa(11)) {
@@ -317,13 +332,6 @@ public class VersBootStrap implements ServletContextListener {
 //        if (LibVers.installa(26)) {
 //            LibPref.newVersBool(CostBio.USA_BODY_RIGHE_MULTIPLE_CRONO, true, "Uso delle righe multiple nelle liste cronologiche. Di default vero.");
 //        }// fine del blocco if
-//
-//        //--creata una nuova preferenza
-//        if (LibVers.installa(27)) {
-//            LibPref.newVersBool(CostBio.REGISTRA_SOLO_MODIFICHE_SOSTANZIALI_CRONO, true, "Uso la registrazione solo se la voce è significativamente diversa nelle liste cronologiche. Di default vero.");
-//        }// fine del blocco if
-//
-//
 //
 //
     }// end of method

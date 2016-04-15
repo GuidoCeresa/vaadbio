@@ -335,6 +335,21 @@ public class ListaNome extends ListaBio {
         return LibWiki.setGraffe(text);
     }// fine del metodo
 
+    /**
+     * Controlla che la modifica sia sostanziale
+     * Se il flag è false, registra sempre
+     * Se il flag è vero, controlla la differenza del testo
+     * Sovrascritto
+     */
+    @Override
+    protected boolean checkPossoRegistrare(String titolo, String testo) {
+        if (Pref.getBool(CostBio.USA_REGISTRA_SEMPRE_PERSONA, false)) {
+            return true;
+        } else {
+            return LibBio.checkModificaSostanziale(titolo, testo, tagHeadTemplateAvviso, "}}");
+        }// end of if/else cycle
+    }// fine del metodo
+
 
     /**
      * Piede della pagina
