@@ -5,6 +5,7 @@ import it.algos.vaadbio.attivita.Attivita;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.lib.LibBio;
 import it.algos.vaadbio.nome.Nome;
+import it.algos.webbase.domain.pref.Pref;
 import it.algos.webbase.web.lib.LibText;
 
 import java.util.ArrayList;
@@ -155,6 +156,9 @@ public class ListaNomeABC extends ListaNome {
         didascalia = (String) ((Object[]) obj)[1];
         if (!cognome.equals(CostBio.VUOTO)) {
             key = cognome.substring(0, 1);
+            if (Pref.getBool(CostBio.USA_CASE_UGUALI, false)) {
+                key = key.toUpperCase();
+            }// end of if cycle
         } else {
             key = tagParagrafoNullo;
         }// end of if/else cycle

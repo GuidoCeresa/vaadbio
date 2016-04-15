@@ -1,8 +1,11 @@
 package it.algos.vaadbio.upload;
 
+import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.liste.ListaNome;
 import it.algos.vaadbio.nome.Nome;
 import it.algos.webbase.domain.log.Log;
+import it.algos.webbase.domain.pref.Pref;
+import it.algos.webbase.web.lib.LibNum;
 import it.algos.webbase.web.lib.LibTime;
 
 import java.util.ArrayList;
@@ -29,11 +32,23 @@ public class UploadNomi {
     private void doInit() {
         ArrayList<Nome> listaNomi = Nome.findAll();
         long inizio = System.currentTimeMillis();
+        int mod = 0;
+        String modTxt;
 
         for (Nome nome : listaNomi) {
-            new ListaNome(nome);
+            if (new ListaNome(nome).isRegistrata()) {
+                mod++;
+            }// end of if cycle
         }// end of for cycle
 
+        if (Pref.getBool(CostBio.USA_LOG_DEBUG)) {
+            modTxt = LibNum.format(mod);
+            if (Pref.getBool(CostBio.USA_REGISTRA_SEMPRE_PERSONA)) {
+                Log.setDebug("upload", "Aggiornate tutte le pagine dei nomi in " + LibTime.difText(inizio));
+            } else {
+                Log.setDebug("upload", "Aggiornate solo le pagine dei nomi modificate (" + modTxt + ") in " + LibTime.difText(inizio));
+            }// end of if/else cycle
+        }// end of if cycle
         Log.setInfo("upload", "Aggiornate le pagine delle persone in " + LibTime.difText(inizio));
     }// end of method
 

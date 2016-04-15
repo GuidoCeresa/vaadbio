@@ -45,8 +45,8 @@ public class UploadGiorni {
             }// end of if cycle
         }// end of for cycle
 
-        modTxt = LibNum.format(modNati) + "+" + LibNum.format(modMorti);
         if (Pref.getBool(CostBio.USA_LOG_DEBUG)) {
+            modTxt = LibNum.format(modNati) + "+" + LibNum.format(modMorti);
             if (Pref.getBool(CostBio.USA_REGISTRA_SEMPRE_CRONO)) {
                 Log.setDebug("upload", "Aggiornate tutte (366*2) le pagine dei giorni (nati e morti) in " + LibTime.difText(inizio));
             } else {

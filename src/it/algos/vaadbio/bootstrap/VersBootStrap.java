@@ -277,6 +277,11 @@ public class VersBootStrap implements ServletContextListener {
             LibPref.newVersBool(CostBio.USA_REGISTRA_SEMPRE_ATT_NAZ, false, "Registra sempre la pagina di attività e nazionalità. Di default falso.");
         }// fine del blocco if
 
+        //--creata una nuova preferenza
+        if (LibVers.installa(++k)) {
+            LibPref.newVersBool(CostBio.USA_CASE_UGUALI, true, "Nei titoli dei paragrafi, maiuscole e minuscole uguali. Di default vero.");
+        }// fine del blocco if
+
 
 //        //--creata una nuova preferenza
 //        if (LibVers.installa(11)) {
