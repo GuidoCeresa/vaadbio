@@ -46,7 +46,7 @@ public class UploadNomi {
             if (Pref.getBool(CostBio.USA_REGISTRA_SEMPRE_PERSONA)) {
                 Log.setDebug("upload", "Aggiornate tutte le pagine dei nomi in " + LibTime.difText(inizio));
             } else {
-                Log.setDebug("upload", "Aggiornate solo le pagine dei nomi modificate (" + modTxt + ") in " + LibTime.difText(inizio));
+                Log.setDebug("upload", "Aggiornate solo le pagine modificate dei nomi (" + modTxt + ") in " + LibTime.difText(inizio));
             }// end of if/else cycle
         }// end of if cycle
     }// end of method
