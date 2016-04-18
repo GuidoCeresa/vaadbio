@@ -30,8 +30,8 @@ public class UploadNomi {
 
     //--Esegue un ciclo di creazione (UPLOAD) delle liste di nomi
     private void doInit() {
-        ArrayList<Nome> listaNomi = Nome.findAll();
         long inizio = System.currentTimeMillis();
+        ArrayList<Nome> listaNomi = Nome.findAllSuperaTaglioPagina();
         int mod = 0;
         String modTxt;
 

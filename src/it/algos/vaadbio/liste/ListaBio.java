@@ -79,7 +79,6 @@ public abstract class ListaBio {
     protected void doInit() {
         elaboraParametri();
         elaboraTitolo();
-
         elaboraMappaBiografie();
         ordinaMappaBiografie();
         elaboraPagina();
@@ -138,6 +137,7 @@ public abstract class ListaBio {
 
     /**
      * Costruisce una mappa di biografie che hanno una valore valido per il link specifico
+     * Sovrascritto
      */
     protected void elaboraMappaBiografie() {
         ArrayList<Bio> listaBio = getListaBio();

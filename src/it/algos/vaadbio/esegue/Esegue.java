@@ -9,10 +9,7 @@ import it.algos.vaadbio.nazionalita.NazionalitaService;
 import it.algos.vaadbio.nome.Nome;
 import it.algos.vaadbio.nome.NomeService;
 import it.algos.vaadbio.professione.ProfessioneService;
-import it.algos.vaadbio.statistiche.StatAnni;
-import it.algos.vaadbio.statistiche.StatDidascalieCrono;
-import it.algos.vaadbio.statistiche.StatGiorni;
-import it.algos.vaadbio.statistiche.StatSintesi;
+import it.algos.vaadbio.statistiche.*;
 import it.algos.vaadbio.upload.UploadAnni;
 import it.algos.vaadbio.upload.UploadGiorni;
 import it.algos.vaadbio.upload.UploadNomi;
@@ -66,6 +63,7 @@ public abstract class Esegue {
         uploadGiorni();
         statisticaSintesi();
         uploadNomi();
+        statisticheNomi();
         uploadAnni();
     } // fine del metodo
 
@@ -171,5 +169,18 @@ public abstract class Esegue {
         new StatDidascalieCrono();
     } // fine del metodo
 
+
+    /**
+     * Crea la pagina riepilogativa dei nomi
+     * Crea la pagina di riepilogo di tutti i nomi
+     * Crea la pagina di controllo didascalie
+     */
+    public static void statisticheNomi() {
+        new StatNomiPagine();
+
+//        creaPaginaListe();
+
+//        creaPaginaDidascalie();
+    }// fine del metodo
 
 }// end of abstract static class

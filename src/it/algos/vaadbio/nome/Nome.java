@@ -5,6 +5,9 @@ import com.vaadin.data.Container;
 import com.vaadin.data.util.filter.Compare;
 import it.algos.vaadbio.attivita.Attivita;
 import it.algos.vaadbio.bio.Bio;
+import it.algos.vaadbio.lib.CostBio;
+import it.algos.vaadbio.lib.LibBio;
+import it.algos.webbase.domain.pref.Pref;
 import it.algos.webbase.web.entity.BaseEntity;
 import it.algos.webbase.web.query.AQuery;
 import org.eclipse.persistence.annotations.Index;
@@ -14,6 +17,7 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -161,6 +165,47 @@ public class Nome extends BaseEntity {
         return (ArrayList<Nome>) AQuery.getLista(Nome.class, filtro);
     }// end of method
 
+    /**
+     * Recupera una lista (array) parziale dei records
+     *
+     * @return lista di alcune istanze di Nome
+     */
+    @SuppressWarnings("unchecked")
+    public synchronized static ArrayList<Nome> findAllSuperaTaglioPagina() {
+        ArrayList<Nome> listaParziale = new ArrayList<>();
+        ArrayList<Nome> listaCompleta = findAll();
+
+        for (Nome nome : listaCompleta) {
+            if (nome.superaTaglioPagina()) {
+                listaParziale.add(nome);
+            }// end of if cycle
+        }// end of for cycle
+
+        return listaParziale;
+    }// end of method
+
+    /**
+     * Recupera una mappa con occorrenze dei records che rispettano il criterio
+     *
+     * @return mappa di alcune istanze di Nome
+     */
+    @SuppressWarnings("unchecked")
+    public synchronized static LinkedHashMap<Nome, Integer> findMappaTaglioPagina() {
+        LinkedHashMap<Nome, Integer> mappa = new LinkedHashMap<Nome, Integer>();
+        ArrayList<Nome> listaCompleta = findAll();
+        long numRecords = 0;
+        int maxVoci = Pref.getInt(CostBio.TAGLIO_NOMI_PAGINA, 20);
+
+        for (Nome nome : listaCompleta) {
+            numRecords = nome.countBioNome();
+            if (numRecords > maxVoci) {
+                mappa.put(nome, (int) numRecords);
+            }// end of if cycle
+        }// end of for cycle
+
+        return mappa;
+    }// end of method
+
     @Override
     public String toString() {
         return nome;
@@ -181,7 +226,6 @@ public class Nome extends BaseEntity {
     public void setPrincipale(boolean principale) {
         this.principale = principale;
     }//end of setter method
-
 
     public boolean isNomeDoppio() {
         return nomeDoppio;
@@ -244,6 +288,66 @@ public class Nome extends BaseEntity {
         }// end of if cycle
 
         return lista;
+    }// fine del metodo
+
+    /**
+     * Recupera il numero di records Bio che usano questa istanza di Nome nella property nomePunta
+     *
+     * @return numero di records di Bio che usano questo nome
+     */
+    @SuppressWarnings("all")
+    public long countBioNome() {
+        long numRecords = 0;
+        ArrayList lista;
+        String query = CostBio.VUOTO;
+        String queryBase = "select count(bio.id) from Bio bio";
+        String queryWhere = " where bio.nomePunta.id=" + getId();
+
+        query = queryBase + queryWhere;
+        lista = LibBio.queryFind(query);
+
+        if (lista != null && lista.size() == 1) {
+            numRecords = (long) lista.get(0);
+        }// end of if cycle
+
+        return numRecords;
+    }// fine del metodo
+
+    /**
+     * Controlla che il numero di records che usano questa istanza, superi il taglio previsto per la creazione della pagina
+     *
+     * @return vero se esistono più records del minimo previsto
+     */
+    @SuppressWarnings("all")
+    public boolean superaTaglioPagina() {
+        return superaTaglio(Pref.getInt(CostBio.TAGLIO_NOMI_PAGINA, 20));
+    }// fine del metodo
+
+    /**
+     * Controlla che il numero di records che usano questa istanza, superi il taglio previsto per l'inserimento nell'elenco
+     *
+     * @return vero se esistono più records del minimo previsto
+     */
+    @SuppressWarnings("all")
+    public boolean superaTaglioElenco() {
+        return superaTaglio(Pref.getInt(CostBio.TAGLIO_NOMI_ELENCO, 20));
+    }// fine del metodo
+
+    /**
+     * Controlla che il numero di records che usano questa istanza, superi il taglio previsto
+     *
+     * @return vero se esistono più records del minimo previsto
+     */
+    @SuppressWarnings("all")
+    private boolean superaTaglio(int maxVoci) {
+        boolean status = false;
+        long numRecords = countBioNome();
+
+        if (numRecords > maxVoci) {
+            status = true;
+        }// end of if cycle
+
+        return status;
     }// fine del metodo
 
 }// end of entity class

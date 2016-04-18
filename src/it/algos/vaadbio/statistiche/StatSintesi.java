@@ -126,7 +126,7 @@ public class StatSintesi extends Statistiche {
      */
     private ArrayList getRigaGiorni() {
         String prefCode = CostBio.STAT_NUM_GIORNI;
-        String descrizione = PATH + "Giorni|Giorni interessati";
+        String descrizione = tagPath + "Giorni|Giorni interessati";
         int oldValue = Pref.getInt(prefCode, 366);
         int newValue = Giorno.count();
         String nota = "Previsto il [[29 febbraio]] per gli [[Anno bisestile|anni bisestili]]";
@@ -140,7 +140,7 @@ public class StatSintesi extends Statistiche {
     private ArrayList getRigaAnni() {
         String prefCode = CostBio.STAT_NUM_ANNI;
         int anniPreCristo = 1000;
-        String descrizione = PATH + "Anni|Anni interessati";
+        String descrizione = tagPath + "Anni|Anni interessati";
         int oldValue = Pref.getInt(prefCode, 3000);
         int newValue = LibDate.getYear() + anniPreCristo;
         String nota = "Potenzialmente dal [[1000 a.C.]] al [[{{CURRENTYEAR}}]]";
@@ -153,7 +153,7 @@ public class StatSintesi extends Statistiche {
      */
     private ArrayList getRigaAttivita() {
         String prefCode = CostBio.STAT_NUM_ATTIVITA;
-        String descrizione = PATH + "Attività|Attività utilizzate";
+        String descrizione = tagPath + "Attività|Attività utilizzate";
         int oldValue = Pref.getInt(prefCode, 600);
         int newValue = Attivita.countDistinct();
         String nota = "Le attività sono quelle '''convenzionalmente''' previste dalla comunità ed inserite nell'elenco utilizzato dal template Bio";
@@ -166,7 +166,7 @@ public class StatSintesi extends Statistiche {
      */
     private ArrayList getRigaNazionalita() {
         String prefCode = CostBio.STAT_NUM_NAZIONALITA;
-        String descrizione = PATH + "Nazionalità|Nazionalità utilizzate";
+        String descrizione = tagPath + "Nazionalità|Nazionalità utilizzate";
         int oldValue = Pref.getInt(prefCode, 300);
         int newValue = 87;
         String nota = "Le nazionalità sono quelle '''convenzionalmente''' previste dalla comunità ed inserite nell'elenco utilizzato dal template Bio";

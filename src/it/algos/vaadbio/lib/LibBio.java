@@ -1686,8 +1686,8 @@ public abstract class LibBio {
      *
      * @param titoloVoce eventualmente da modificare
      * @param testoNew   della modifica
-     * @param tagIni inizio del testo iniziale (incipit) da considerare NON sostanziale
-     * @param tagEnd fine del testo iniziale (incipit) da considerare NON sostanziale
+     * @param tagIni     inizio del testo iniziale (incipit) da considerare NON sostanziale
+     * @param tagEnd     fine del testo iniziale (incipit) da considerare NON sostanziale
      * @return la modifica va effettuata
      */
     public static boolean checkModificaSostanziale(String titoloVoce, String testoNew, String tagIni, String tagEnd) {
@@ -1697,6 +1697,10 @@ public abstract class LibBio {
         String testoOld = Api.leggeVoce(titoloVoce);
         int pos1 = 0;
         int pos2 = 0;
+
+        if (testoOldSignificativo.equals(CostBio.VUOTO)) {
+            return true;
+        }// fine del blocco if
 
         if (!testoOld.equals(CostBio.VUOTO) && !testoNew.equals(CostBio.VUOTO)) {
             pos1 = testoOld.indexOf(tagIni);
@@ -1713,6 +1717,7 @@ public abstract class LibBio {
                 status = true;
             }// fine del blocco if
         }// fine del blocco if
+
 
         return status;
     } // fine del metodo

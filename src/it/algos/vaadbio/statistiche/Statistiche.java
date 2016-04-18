@@ -16,13 +16,16 @@ import java.util.Date;
 public abstract class Statistiche {
 
     public final static String A_CAPO = "\n";
-    protected static String PATH = "Progetto:Biografie/";
-    protected static String DISCUSSIONI_PATH = "Discussioni " + PATH;
+    //    protected static String PATH = "Progetto:Biografie/";
+    protected static String PATH_BIO = "Progetto:Biografie/";
+    protected static String PATH_NOMI = "Progetto:Antroponimi/";
+        protected static String DISCUSSIONI = "Discussioni ";
     protected static String TAG_INDICE = "__FORCETOC__";
     protected static String TAG_NO_INDICE = "__NOTOC__";
     protected static String PAGINA_PROVA = "Utente:Biobot/2";
     protected static boolean usaSpazi;
     protected String titoloPagina;
+    protected String tagPath;
     protected boolean usaHeadToc;
     protected boolean usaHeadTocIndice;
     protected boolean usaHeadInclude; // vero per Sintesi
@@ -45,6 +48,7 @@ public abstract class Statistiche {
      */
     public void doInit() {
         elaboraParametri();
+        elaboraMappaBiografie();
         elaboraPagina();
         elaboraPreferenze();
     }// end of method
@@ -63,6 +67,7 @@ public abstract class Statistiche {
         usaHeadRitorno = false; //--normalmente false. Sovrascrivibile da preferenze
         usaHeadTemplateAvviso = true; //--normalmente true. Sovrascrivibile nelle sottoclassi
         tagHeadTemplateAvviso = "StatBio"; //--Sovrascrivibile da preferenze
+        tagPath = PATH_BIO;
 
         // body
         usaSpazi = true;
@@ -72,6 +77,12 @@ public abstract class Statistiche {
         usaFooterCorrelate = false;
     }// fine del metodo
 
+    /**
+     * Costruisce una mappa di valori varii
+     * Sovrascritto
+     */
+    protected void elaboraMappaBiografie() {
+    }// fine del metodo
 
     /**
      * Elaborazione principale della pagina
@@ -108,12 +119,14 @@ public abstract class Statistiche {
 
             if (debug) {
                 titolo = PAGINA_PROVA;
+                testo = titoloPagina + CostBio.A_CAPO + testo;
             } else {
-                titolo = PATH + titoloPagina;
+                titolo = tagPath + titoloPagina;
             }// fine del blocco if-else
 
             Api.scriveVoce(titolo, testo, summary);
         }// fine del blocco if
+
     }// fine del metodo
 
 

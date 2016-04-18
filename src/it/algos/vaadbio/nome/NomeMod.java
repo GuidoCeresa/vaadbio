@@ -91,6 +91,7 @@ public class NomeMod extends ModulePop {
         addCommandAggiorna(menuItem);
         addCommandElabora(menuItem);
         addCommandUpload(menuItem);
+        addCommandStatistiche(menuItem);
     }// end of method
 
     /**
@@ -146,6 +147,19 @@ public class NomeMod extends ModulePop {
         });// end of anonymous class
     }// end of method
 
+    /**
+     * Comando bottone/item Statistiche
+     *
+     * @param menuItem a cui agganciare il bottone/item
+     */
+    private void addCommandStatistiche(MenuBar.MenuItem menuItem) {
+        menuItem.addItem("Statistiche", FontAwesome.COG, new MenuBar.Command() {
+            public void menuSelected(MenuBar.MenuItem selectedItem) {
+                esegueStatistiche();
+            }// end of method
+        });// end of anonymous class
+    }// end of method
+
 
     /**
      * Esegue l'aggiornamento della lista dei nomi doppi
@@ -174,6 +188,13 @@ public class NomeMod extends ModulePop {
      */
     protected void esegueUploadAll() {
         Esegue.uploadNomi();
+    }// end of method
+
+    /**
+     * Crea le pagine delle statistiche (3)
+     */
+    protected void esegueStatistiche() {
+        Esegue.statisticheNomi();
     }// end of method
 
     /**

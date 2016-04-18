@@ -160,11 +160,11 @@ public class StatNazionalita extends Statistiche {
      */
     private ArrayList getRigaNazionalita(HashMap mappa) {
         ArrayList riga = new ArrayList();
-        String plurale="";
+        String plurale = "";
         int numVoci = 0;
         ArrayList<Nazionalita> listaNazionalita;
         String tagCat = ":Categoria:";
-        String tagListe = PATH + "Nazionalità/";
+        String tagListe = tagPath + "Nazionalità/";
         String pipe = "|";
         String lista;
         String categoria = "";
@@ -222,9 +222,9 @@ public class StatNazionalita extends Statistiche {
         text += A_CAPO;
         text += "==Voci correlate==";
         text += A_CAPO;
-        text += "*[[" + DISCUSSIONI_PATH + "Nazionalità]]";
+        text += "*[[" + DISCUSSIONI + tagPath + "Nazionalità]]";
         text += A_CAPO;
-        text += "*[[" + PATH + "Attività]]";
+        text += "*[[" + tagPath + "Attività]]";
         text += A_CAPO;
         text += "*[[:Categoria:Bio nazionalità]]";
         text += A_CAPO;
