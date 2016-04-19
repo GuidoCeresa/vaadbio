@@ -50,7 +50,8 @@ public class StatNomiPagine extends StatNomi {
         super.elaboraParametri();
 
         // head
-        titoloPagina = "Statistiche";
+        tagPath = PATH_NOMI;
+        titoloPagina = "Nomi";
         usaHeadInclude = false;
         usaHeadTocIndice = false;
 

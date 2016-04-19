@@ -119,7 +119,7 @@ public abstract class Statistiche {
 
             if (debug) {
                 titolo = PAGINA_PROVA;
-                testo = titoloPagina + CostBio.A_CAPO + testo;
+                testo = tagPath + titoloPagina + CostBio.A_CAPO + testo;
             } else {
                 titolo = tagPath + titoloPagina;
             }// fine del blocco if-else
