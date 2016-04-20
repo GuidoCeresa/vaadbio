@@ -10,4 +10,26 @@ package it.algos.vaadbio.statistiche;
  *
  */
 public abstract class StatNomi extends Statistiche {
+
+
+    /**
+     * Regola alcuni (eventuali) parametri specifici della sottoclasse
+     * <p>
+     * Nelle sottoclassi va SEMPRE richiamata la superclasse PRIMA di regolare localmente le variabili <br>
+     * Sovrascritto
+     */
+    @Override
+    protected void elaboraParametri() {
+        super.elaboraParametri();
+
+        // head
+        tagPath = PATH_NOMI;
+        usaHeadInclude = false;
+        usaHeadTocIndice = false;
+
+        // footer
+        usaFooterNote = false;
+        usaFooterCorrelate = true;
+    }// fine del metodo
+
 }// end of class

@@ -1,6 +1,8 @@
 package it.algos.vaadbio.statistiche;
 
+import it.algos.vaad.wiki.Cost;
 import it.algos.vaad.wiki.LibWiki;
+import it.algos.vaadbio.bio.Bio;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.nome.Nome;
 import it.algos.webbase.domain.pref.Pref;
@@ -8,15 +10,16 @@ import it.algos.webbase.web.lib.LibNum;
 import it.algos.webbase.web.lib.LibText;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
  * Created by gac on 17 apr 2016.
  * Pagina di controllo del progetto Antroponimi
- * - Progetto:Antroponimi/Nomi: Elenco dei xxx nomi che hanno più di yy ricorrenze nelle voci biografiche
+ * - Progetto:Antroponimi/Liste nomi: Elenco dei xxx nomi '''differenti'''  utilizzati nelle yyyy voci biografiche con occorrenze maggiori di zz
  */
-public class StatNomiPagine extends StatNomi {
+public class StatNomiListe extends StatNomi {
 
     private ArrayList<Nome> listaNomi;
     private LinkedHashMap<Nome, Integer> mappaNomi;
@@ -27,14 +30,14 @@ public class StatNomiPagine extends StatNomi {
     /**
      * Costruttore vuoto
      */
-    public StatNomiPagine() {
+    public StatNomiListe() {
         super();
     }// end of constructor
 
     /**
      * Costruttore completo
      */
-    public StatNomiPagine(LinkedHashMap<Nome, Integer> mappaNomi) {
+    public StatNomiListe(LinkedHashMap<Nome, Integer> mappaNomi) {
         this.mappaNomi = mappaNomi;
         doInit();
     }// end of constructor
@@ -48,7 +51,7 @@ public class StatNomiPagine extends StatNomi {
     @Override
     protected void elaboraParametri() {
         super.elaboraParametri();
-        titoloPagina = "Nomi";
+        titoloPagina = "Liste nomi";
     }// fine del metodo
 
     /**
@@ -58,7 +61,7 @@ public class StatNomiPagine extends StatNomi {
     @Override
     protected void elaboraMappaBiografie() {
         if (mappaNomi == null) {
-            mappaNomi = Nome.findMappaTaglioPagina();
+            mappaNomi = Nome.findMappaTaglioListe();
         }// end of if cycle
     }// fine del metodo
 
@@ -69,17 +72,19 @@ public class StatNomiPagine extends StatNomi {
     @Override
     protected String elaboraBody() {
         String text = CostBio.VUOTO;
-        int numVoci = mappaNomi.size();
-        int taglioPagine = Pref.getInt(CostBio.TAGLIO_NOMI_PAGINA);
+        int numNomi = mappaNomi.size();
+        int numVoci = Bio.count();
+        int taglioVoci = Pref.getInt(CostBio.TAGLIO_NOMI_ELENCO);
 
         text += A_CAPO;
         text += "==Nomi==";
         text += A_CAPO;
         text += "Elenco dei ";
+        text += LibWiki.setBold(LibNum.format(numNomi));
+        text += " nomi '''differenti'''  utilizzati nelle ";
         text += LibWiki.setBold(LibNum.format(numVoci));
-        text += " nomi che hanno più di ";
-        text += LibWiki.setBold(taglioPagine);
-        text += " ricorrenze nelle voci biografiche";
+        text += " voci biografiche con occorrenze maggiori di ";
+        text += LibWiki.setBold(taglioVoci);
         text += A_CAPO;
         text += creaElenco();
         text += A_CAPO;
@@ -91,31 +96,45 @@ public class StatNomiPagine extends StatNomi {
      * Corpo con elenco delle pagine
      */
     private String creaElenco() {
-        String text = CostBio.VUOTO;
+        String testoTabella = CostBio.VUOTO;
         String riga = CostBio.VUOTO;
+        ArrayList listaPagine = new ArrayList();
+        ArrayList listaRiga;
+        HashMap mappaTavola = new HashMap();
         Nome nome;
         String nomeText;
         int num;
+        int taglioPagine = Pref.getInt(CostBio.TAGLIO_NOMI_PAGINA);
         String numText;
         String tag = "Persone di nome ";
+        ArrayList titoli = new ArrayList();
+        titoli.add(LibWiki.setBold("Nome"));
+        titoli.add(LibWiki.setBold("Voci"));
 
         for (Map.Entry mappa : mappaNomi.entrySet()) {
+
             nome = (Nome) mappa.getKey();
             nomeText = nome.getNome();
             num = (Integer) mappa.getValue();
             numText = LibNum.format(num);
-            numText = LibWiki.setBold(numText);
-            numText = "(" + numText + ")";
+            if (num > taglioPagine) {
+                nomeText = tag + nomeText + CostBio.PIPE + nomeText;
+                nomeText = LibWiki.setQuadre(nomeText);
+                nomeText = LibWiki.setBold(nomeText);
+            }// end of if cycle
 
-            riga = tag + nomeText + CostBio.PIPE + nomeText;
-            riga = LibWiki.setQuadre(riga);
-            riga += CostBio.SPAZIO;
-            riga += numText;
-            riga = "*" + riga + CostBio.A_CAPO;
-            text += riga;
+            listaRiga = new ArrayList();
+            listaRiga.add(nomeText);
+            listaRiga.add(num);
+            listaPagine.add(listaRiga);
+
         }// end of for cycle
+        mappaTavola.put(Cost.KEY_MAPPA_SORTABLE_BOOLEAN, true);
+        mappaTavola.put(Cost.KEY_MAPPA_TITOLI, titoli);
+        mappaTavola.put(Cost.KEY_MAPPA_RIGHE_LISTA, listaPagine);
+        testoTabella = LibWiki.creaTable(mappaTavola);
 
-        return LibWiki.listaDueColonne(text);
+        return testoTabella;
     }// fine del metodo
 
     /**
@@ -130,8 +149,8 @@ public class StatNomiPagine extends StatNomi {
             text += "==Voci correlate==";
             text += A_CAPO;
             text += LibWiki.setRigaQuadre(LibText.levaCoda(PATH_NOMI, "/"));
+            text += LibWiki.setRigaQuadre(PATH_NOMI + "Nomi");
             text += LibWiki.setRigaQuadre(PATH_NOMI + "Nomi doppi");
-            text += LibWiki.setRigaQuadre(PATH_NOMI + "Liste nomi");
             text += LibWiki.setRigaQuadre(PATH_NOMI + "Didascalie");
         }// end of if cycle
 

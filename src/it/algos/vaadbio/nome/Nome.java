@@ -191,10 +191,29 @@ public class Nome extends BaseEntity {
      */
     @SuppressWarnings("unchecked")
     public synchronized static LinkedHashMap<Nome, Integer> findMappaTaglioPagina() {
+        return findMappa(Pref.getInt(CostBio.TAGLIO_NOMI_PAGINA, 50));
+    }// end of method
+
+    /**
+     * Recupera una mappa con occorrenze dei records che rispettano il criterio
+     *
+     * @return mappa di alcune istanze di Nome
+     */
+    @SuppressWarnings("unchecked")
+    public synchronized static LinkedHashMap<Nome, Integer> findMappaTaglioListe() {
+        return findMappa(Pref.getInt(CostBio.TAGLIO_NOMI_ELENCO, 20));
+    }// end of method
+
+    /**
+     * Recupera una mappa con occorrenze dei records che rispettano il criterio
+     *
+     * @return mappa di alcune istanze di Nome
+     */
+    @SuppressWarnings("unchecked")
+    private synchronized static LinkedHashMap<Nome, Integer> findMappa(int maxVoci) {
         LinkedHashMap<Nome, Integer> mappa = new LinkedHashMap<Nome, Integer>();
         ArrayList<Nome> listaCompleta = findAll();
         long numRecords = 0;
-        int maxVoci = Pref.getInt(CostBio.TAGLIO_NOMI_PAGINA, 20);
 
         for (Nome nome : listaCompleta) {
             numRecords = nome.countBioNome();

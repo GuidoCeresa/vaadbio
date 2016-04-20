@@ -177,8 +177,7 @@ public abstract class Esegue {
      */
     public static void statisticheNomi() {
         new StatNomiPagine();
-
-//        creaPaginaListe();
+        new StatNomiListe();
 
 //        creaPaginaDidascalie();
     }// fine del metodo
