@@ -1698,7 +1698,7 @@ public abstract class LibBio {
         int pos1 = 0;
         int pos2 = 0;
 
-        if (testoOldSignificativo.equals(CostBio.VUOTO)) {
+        if (testoOld.equals(CostBio.VUOTO)) {
             return true;
         }// fine del blocco if
 
