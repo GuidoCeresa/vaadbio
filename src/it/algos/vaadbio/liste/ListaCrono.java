@@ -51,8 +51,11 @@ public abstract class ListaCrono extends ListaBio {
 
         // footer
         usaFooterPortale = Pref.getBool(CostBio.USA_FOOTER_PORTALE_CRONO, true);
-        usaFooterCategorie = Pref.getBool(CostBio.USA_FOOTER_CATEGORIE_CRONO, true);
-
+        if (Pref.getBool(CostBio.USA_DEBUG, false)) {
+            usaFooterCategorie = false;
+        } else {
+            usaFooterCategorie = Pref.getBool(CostBio.USA_FOOTER_CATEGORIE_CRONO, true);
+        }// end of if/else cycle
     }// fine del metodo
 
 
@@ -161,10 +164,6 @@ public abstract class ListaCrono extends ListaBio {
         String testoCategoria = getTestoCategoria();
         boolean usaInclude = usaFooterPortale || usaFooterCategorie;
 
-        if (usaInclude) {
-            text += "<noinclude>";
-        }// end of if cycle
-
         if (usaFooterPortale) {
             text += CostBio.A_CAPO;
             text += "{{Portale|biografie}}";
@@ -178,8 +177,7 @@ public abstract class ListaCrono extends ListaBio {
         }// end of if cycle
 
         if (usaInclude) {
-            text += CostBio.A_CAPO;
-            text += "</noinclude>";
+            text = LibBio.setNoInclude(text);
         }// end of if cycle
 
         return text;

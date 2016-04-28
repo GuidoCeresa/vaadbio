@@ -282,6 +282,26 @@ public class VersBootStrap implements ServletContextListener {
             LibPref.newVersBool(CostBio.USA_CASE_UGUALI, true, "Nei titoli dei paragrafi, maiuscole e minuscole uguali. Di default vero.");
         }// fine del blocco if
 
+        //--creata una nuova preferenza
+        if (LibVers.installa(++k)) {
+            LibPref.newVersBool(CostBio.USA_FOOTER_PORTALE_CRONO, true, "Portale biografie nel footer delle liste crono. Di default vero.");
+        }// fine del blocco if
+
+        //--creata una nuova preferenza
+        if (LibVers.installa(++k)) {
+            LibPref.newVersBool(CostBio.USA_FOOTER_CATEGORIE_CRONO, true, "Categorie nel footer delle liste crono. Di default vero.");
+        }// fine del blocco if
+
+        //--creata una nuova preferenza
+        if (LibVers.installa(++k)) {
+            LibPref.newVersBool(CostBio.USA_FOOTER_PORTALE_NOMI, true, "Portale antroponimi nel footer delle liste di persone. Di default vero.");
+        }// fine del blocco if
+
+        //--creata una nuova preferenza
+        if (LibVers.installa(++k)) {
+            LibPref.newVersBool(CostBio.USA_FOOTER_CATEGORIE_NOMI, true, "Categorie nel footer delle liste di persone. Di default vero.");
+        }// fine del blocco if
+
 
 //        //--creata una nuova preferenza
 //        if (LibVers.installa(11)) {
@@ -313,15 +333,6 @@ public class VersBootStrap implements ServletContextListener {
 //            LibPref.newVersBool(CostBio.USA_TOC_INDICE_CRONO, false, "Uso dell'indice dei paragrafi in testa alle liste cronologiche. Tipicamente sempre falso.");
 //        }// fine del blocco if
 //
-//        //--creata una nuova preferenza
-//        if (LibVers.installa(22)) {
-//            LibPref.newVersBool(CostBio.USA_FOOTER_PORTALE_CRONO, true, "Uso del portale biografie nel footer delle liste cronologiche. Tipicamente sempre vero.");
-//        }// fine del blocco if
-//
-//        //--creata una nuova preferenza
-//        if (LibVers.installa(23)) {
-//            LibPref.newVersBool(CostBio.USA_FOOTER_CATEGORIE_CRONO, true, "Uso delle cateegorie nel footer delle liste cronologiche. Tipicamente sempre vero.");
-//        }// fine del blocco if
 //
 //        //--creata una nuova preferenza
 //        if (LibVers.installa(24)) {

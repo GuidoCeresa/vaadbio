@@ -4,11 +4,7 @@ import it.algos.vaad.wiki.Api;
 import it.algos.vaad.wiki.Page;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.wrapperbio.WrapBio;
-import it.algos.webbase.domain.log.Log;
 import it.algos.webbase.domain.pref.Pref;
-import it.algos.webbase.web.entity.EM;
-import it.algos.webbase.web.lib.LibNum;
-import it.algos.webbase.web.lib.LibTime;
 
 import javax.persistence.EntityManager;
 import java.util.ArrayList;
@@ -31,21 +27,20 @@ public class DownloadPages {
      *
      * @param bloccoPageids lista (pageids) di pagine da scaricare dal server wiki
      */
-    public DownloadPages(ArrayList<Long> bloccoPageids,EntityManager manager) {
-        doInit(bloccoPageids,manager);
+    public DownloadPages(ArrayList<Long> bloccoPageids, EntityManager manager) {
+        doInit(bloccoPageids, manager);
     }// end of constructor
 
     /**
      * @param bloccoPageids lista (pageids) di pagine da scaricare dal server wiki
      */
-    private void doInit(ArrayList<Long> bloccoPageids,EntityManager manager) {
+    private void doInit(ArrayList<Long> bloccoPageids, EntityManager manager) {
         if (Pref.getBool(CostBio.USA_COMMIT_MULTI_RECORDS, true)) {
-            doInitCommit(bloccoPageids,manager);
+            doInitCommit(bloccoPageids, manager);
         } else {
             doInitSenzaCommit(bloccoPageids);
         }// end of if/else cycle
     }// end of method
-
 
 
 //    /**
@@ -84,10 +79,14 @@ public class DownloadPages {
     /**
      * @param bloccoPageids lista (pageids) di pagine da scaricare dal server wiki
      */
-    private void doInitCommit(ArrayList<Long> bloccoPageids,EntityManager manager) {
+    private void doInitCommit(ArrayList<Long> bloccoPageids, EntityManager manager) {
         long inizio = 0;
         long fine = 0;
         WrapBio wrap;
+
+        if (bloccoPageids == null) {
+            return;
+        }// end of if cycle
 
         inizio = System.currentTimeMillis();
         pages = Api.leggePages(bloccoPageids);
@@ -117,6 +116,10 @@ public class DownloadPages {
         long inizio = 0;
         long fine = 0;
         WrapBio wrap;
+
+        if (bloccoPageids == null) {
+            return;
+        }// end of if cycle
 
         inizio = System.currentTimeMillis();
         pages = Api.leggePages(bloccoPageids);

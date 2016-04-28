@@ -29,6 +29,8 @@ public abstract class Esegue {
     public static void cicloCompleto() {
         cicloDownload();
         cicloUpdate();
+        cicloElabora();
+        cicloUpload();
     } // fine del metodo
 
     /**

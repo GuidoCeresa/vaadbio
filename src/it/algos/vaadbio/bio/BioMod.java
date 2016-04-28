@@ -226,6 +226,7 @@ public class BioMod extends ModulePop {
     @Override
     public void addSottoMenu(MenuBar.MenuItem menuItem) {
         addCommandCicloDownIniziale(menuItem);
+        addCommandCicloCompleto(menuItem);
         addCommandCicloDown(menuItem);
         addCommandCicloUpdate(menuItem);
         addCommandCicloElabora(menuItem);
@@ -237,7 +238,7 @@ public class BioMod extends ModulePop {
     }// end of method
 
     /**
-     * Comando bottone/item Elabora singola voce
+     * Comando bottone/item Download iniziale
      *
      * @param menuItem a cui agganciare il bottone/item
      */
@@ -246,6 +247,21 @@ public class BioMod extends ModulePop {
             public void menuSelected(MenuBar.MenuItem selectedItem) {
                 for (int k = 0; k < 30; k++) {
                     Esegue.cicloDownload();
+                }// end of for cycle
+            }// end of method
+        });// end of anonymous class
+    }// end of method
+
+    /**
+     * Comando bottone/item ciclo comp'leto
+     *
+     * @param menuItem a cui agganciare il bottone/item
+     */
+    private void addCommandCicloCompleto(MenuBar.MenuItem menuItem) {
+        menuItem.addItem("Ciclo completo", FontAwesome.COG, new MenuBar.Command() {
+            public void menuSelected(MenuBar.MenuItem selectedItem) {
+                for (int k = 0; k < 30; k++) {
+                    Esegue.cicloCompleto();
                 }// end of for cycle
             }// end of method
         });// end of anonymous class

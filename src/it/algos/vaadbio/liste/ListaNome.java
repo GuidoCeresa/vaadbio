@@ -61,6 +61,13 @@ public class ListaNome extends ListaBio {
         usaTaglioVociPagina = true;
         maxVociPagina = Pref.getInt(CostBio.TAGLIO_NOMI_PAGINA, 100);
 
+        // footer
+        usaFooterPortale = Pref.getBool(CostBio.USA_FOOTER_PORTALE_NOMI, true);
+        if (Pref.getBool(CostBio.USA_DEBUG, false)) {
+            usaFooterCategorie = false;
+        } else {
+            usaFooterCategorie = Pref.getBool(CostBio.USA_FOOTER_CATEGORIE_NOMI, true);
+        }// end of if/else cycle
     }// fine del metodo
 
     /**
@@ -331,8 +338,15 @@ public class ListaNome extends ListaBio {
      */
     @Override
     protected String elaboraIncipitSpecifico() {
-        String text = "incipit lista nomi|nome=" + getNomeTxt();
-        return LibWiki.setGraffe(text);
+//        String text = "incipit lista nomi|nome=" + getNomeTxt();
+//        return LibWiki.setGraffe(text);
+
+        String text = CostBio.VUOTO;
+        text += "Questa è una lista di persone che hanno il [[prenome]] ";
+        text += LibWiki.setBold(getNomeTxt());
+        text += ", suddivise per attività principale";
+
+        return text;
     }// fine del metodo
 
     /**
@@ -358,12 +372,24 @@ public class ListaNome extends ListaBio {
      */
     @Override
     protected String elaboraFooter() {
-        String text = "Categoria:Liste di persone per nome|" + getNomeTxt();
+        String text = CostBio.VUOTO;
+        boolean usaInclude = usaFooterPortale || usaFooterCategorie;
 
-        text = LibWiki.setQuadre(text);
-        text = LibBio.setNoInclude(text);
+        if (usaFooterPortale) {
+            text += CostBio.A_CAPO;
+            text += "{{Portale|antroponimi}}";
+        }// end of if cycle
 
-        return CostBio.A_CAPO + text;
+        if (usaFooterCategorie) {
+            text += CostBio.A_CAPO;
+            text += "[[Categoria:Liste di persone per nome|" + getNomeTxt()+"]]";
+        }// end of if cycle
+
+        if (usaInclude) {
+            text = LibBio.setNoInclude(text);
+        }// end of if cycle
+
+        return text;
     }// fine del metodo
 
     public Nome getNome() {
