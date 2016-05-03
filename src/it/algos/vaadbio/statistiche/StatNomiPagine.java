@@ -77,7 +77,7 @@ public class StatNomiPagine extends StatNomi {
         text += A_CAPO;
         text += "Elenco dei ";
         text += LibWiki.setBold(LibNum.format(numVoci));
-        text += " nomi che hanno più di ";
+        text += " nomi che raggiungono o superano le ";
         text += LibWiki.setBold(taglioPagine);
         text += " ricorrenze nelle voci biografiche";
         text += A_CAPO;

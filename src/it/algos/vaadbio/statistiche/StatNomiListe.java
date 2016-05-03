@@ -117,7 +117,7 @@ public class StatNomiListe extends StatNomi {
             nomeText = nome.getNome();
             num = (Integer) mappa.getValue();
             numText = LibNum.format(num);
-            if (num > taglioPagine) {
+            if (num >= taglioPagine) {
                 nomeText = tag + nomeText + CostBio.PIPE + nomeText;
                 nomeText = LibWiki.setQuadre(nomeText);
                 nomeText = LibWiki.setBold(nomeText);

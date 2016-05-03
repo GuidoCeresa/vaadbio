@@ -1619,18 +1619,59 @@ public abstract class LibBio {
      * Aggiunge SOLO se già non esiste TODO Non ancora
      * Se arriva una stringa vuota, restituisce una stringa vuota
      * Elimina spazi vuoti iniziali e finali
+     * Inserisce i tag (iniziale e finale) su due nuove righe
      * Elimina eventuali 'NoInclude' già presenti, per evitare di metterli doppi TODO Non ancora
      *
      * @param stringaIn in ingresso
      * @return stringa coi tag aggiunti
      */
-    public static String setNoInclude(String stringaIn) {
+    public static String setNoIncludeMultiRiga(String stringaIn) {
+        return setNoIncludeBase(stringaIn, true);
+    } // fine del metodo
+
+    /**
+     * Aggiunge tag 'NoInclude' in testa e coda alla stringa.
+     * <p>
+     * Aggiunge SOLO se già non esiste TODO Non ancora
+     * Se arriva una stringa vuota, restituisce una stringa vuota
+     * Elimina spazi vuoti iniziali e finali
+     * Inserisce i tag (iniziale e finale) sulla stessa riga di testo
+     * Elimina eventuali 'NoInclude' già presenti, per evitare di metterli doppi TODO Non ancora
+     *
+     * @param stringaIn in ingresso
+     * @return stringa coi tag aggiunti
+     */
+    public static String setNoIncludeRiga(String stringaIn) {
+        return setNoIncludeBase(stringaIn, false);
+    } // fine del metodo
+
+    /**
+     * Aggiunge tag 'NoInclude' in testa e coda alla stringa.
+     * <p>
+     * Aggiunge SOLO se già non esiste TODO Non ancora
+     * Se arriva una stringa vuota, restituisce una stringa vuota
+     * Elimina spazi vuoti iniziali e finali
+     * Inserisce i tag (iniziale e finale) sulla stessa riga di testo
+     * Elimina eventuali 'NoInclude' già presenti, per evitare di metterli doppi TODO Non ancora
+     *
+     * @param stringaIn in ingresso
+     * @return stringa coi tag aggiunti
+     */
+    private static String setNoIncludeBase(String stringaIn, boolean righeDiverse) {
         String stringaOut = stringaIn.trim();
         String tagIni = "<noinclude>";
         String tagEnd = "</noinclude>";
 
         if (!stringaIn.equals("")) {
-            stringaOut = tagIni + stringaOut + tagEnd;
+            stringaOut = tagIni;
+            if (righeDiverse) {
+                stringaOut += CostBio.A_CAPO;
+            }// end of if cycle
+            stringaOut += stringaIn.trim();
+            if (righeDiverse) {
+                stringaOut += CostBio.A_CAPO;
+            }// end of if cycle
+            stringaOut += tagEnd;
             stringaOut = stringaOut.trim();
         }// fine del blocco if
 

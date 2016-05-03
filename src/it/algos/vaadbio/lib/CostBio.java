@@ -60,6 +60,7 @@ public abstract class CostBio {
     public final static String USA_LOG_UPLOAD_ELABORATA = "usaLogUploadElaborata";
 
     // liste
+    public final static String USA_HEAD_NON_SCRIVERE = "usaHeadNonScrivere";
     public final static String USA_FOOTER_PORTALE_CRONO = "usaFooterPortaleCrono";
     public final static String USA_FOOTER_CATEGORIE_CRONO = "usaFooterCategorieCrono";
     public final static String USA_TOC_INDICE_CRONO = "usaTocIndiceCrono";

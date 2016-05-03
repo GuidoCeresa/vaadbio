@@ -51,7 +51,7 @@ public class ListaNome extends ListaBio {
         // head
         usaHeadTocIndice = true;
         usaHeadIncipit = true;
-
+        tagHeadTemplateProgetto = "antroponimi";
         // body
         usaSuddivisioneParagrafi = true;
         usaBodyRigheMultiple = false;
@@ -338,15 +338,15 @@ public class ListaNome extends ListaBio {
      */
     @Override
     protected String elaboraIncipitSpecifico() {
-//        String text = "incipit lista nomi|nome=" + getNomeTxt();
-//        return LibWiki.setGraffe(text);
+        String text = "incipit lista nomi|nome=" + getNomeTxt();
+        return LibWiki.setGraffe(text);
+//        ricordati di cambiare anche sotto
 
-        String text = CostBio.VUOTO;
-        text += "Questa è una lista di persone che hanno il [[prenome]] ";
-        text += LibWiki.setBold(getNomeTxt());
-        text += ", suddivise per attività principale";
-
-        return text;
+//        String text = CostBio.VUOTO;
+//        text += "Questa è una lista di persone che hanno il [[prenome]] ";
+//        text += LibWiki.setBold(getNomeTxt());
+//        text += ", suddivise per attività principale";
+//        return text;
     }// fine del metodo
 
     /**
@@ -382,11 +382,11 @@ public class ListaNome extends ListaBio {
 
         if (usaFooterCategorie) {
             text += CostBio.A_CAPO;
-            text += "[[Categoria:Liste di persone per nome|" + getNomeTxt()+"]]";
+            text += "[[Categoria:Liste di persone per nome|" + getNomeTxt() + "]]";
         }// end of if cycle
 
         if (usaInclude) {
-            text = LibBio.setNoInclude(text);
+            text = CostBio.A_CAPO + LibBio.setNoIncludeMultiRiga(text);
         }// end of if cycle
 
         return text;

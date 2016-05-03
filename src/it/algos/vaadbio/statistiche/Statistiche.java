@@ -235,7 +235,7 @@ public abstract class Statistiche {
         String testoOut = testoIn;
 
         if (usaHeadInclude) {
-            testoOut = LibBio.setNoInclude(testoIn);
+            testoOut = LibBio.setNoIncludeRiga(testoIn);
         }// fine del blocco if
 
         return testoOut;
@@ -325,7 +325,7 @@ public abstract class Statistiche {
      * Sovrascritto
      */
     protected String elaboraFooterCategorie() {
-        return A_CAPO + LibBio.setNoInclude("[[Categoria:Progetto Biografie|{{PAGENAME}}]]");
+        return A_CAPO + LibBio.setNoIncludeMultiRiga("[[Categoria:Progetto Biografie|{{PAGENAME}}]]");
     }// fine del metodo
 
 }// end of class

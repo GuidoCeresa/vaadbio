@@ -302,6 +302,11 @@ public class VersBootStrap implements ServletContextListener {
             LibPref.newVersBool(CostBio.USA_FOOTER_CATEGORIE_NOMI, true, "Categorie nel footer delle liste di persone. Di default vero.");
         }// fine del blocco if
 
+        //--creata una nuova preferenza
+        if (LibVers.installa(++k)) {
+            LibPref.newVersBool(CostBio.USA_HEAD_NON_SCRIVERE, true, "Avvertenza di 'non scrivere' nelle liste. Di default vero.");
+        }// fine del blocco if
+
 
 //        //--creata una nuova preferenza
 //        if (LibVers.installa(11)) {

@@ -92,6 +92,7 @@ public class NomeMod extends ModulePop {
         addCommandElabora(menuItem);
         addCommandUpload(menuItem);
         addCommandStatistiche(menuItem);
+        addCommandTestIncipit(menuItem);
     }// end of method
 
     /**
@@ -160,6 +161,19 @@ public class NomeMod extends ModulePop {
         });// end of anonymous class
     }// end of method
 
+    /**
+     * Comando bottone/item Test Incipit
+     *
+     * @param menuItem a cui agganciare il bottone/item
+     */
+    private void addCommandTestIncipit(MenuBar.MenuItem menuItem) {
+        menuItem.addItem("Test", FontAwesome.COG, new MenuBar.Command() {
+            public void menuSelected(MenuBar.MenuItem selectedItem) {
+                esegueTestIncipit();
+            }// end of method
+        });// end of anonymous class
+    }// end of method
+
 
     /**
      * Esegue l'aggiornamento della lista dei nomi doppi
@@ -195,6 +209,13 @@ public class NomeMod extends ModulePop {
      */
     protected void esegueStatistiche() {
         Esegue.statisticheNomi();
+    }// end of method
+
+    /**
+     * Crea la pagina di test per l'incipit
+     */
+    protected void esegueTestIncipit() {
+        Esegue.testIncipitNomi();
     }// end of method
 
     /**

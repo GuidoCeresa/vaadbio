@@ -177,7 +177,7 @@ public abstract class ListaCrono extends ListaBio {
         }// end of if cycle
 
         if (usaInclude) {
-            text = LibBio.setNoInclude(text);
+            text = CostBio.A_CAPO + LibBio.setNoIncludeMultiRiga(text);
         }// end of if cycle
 
         return text;

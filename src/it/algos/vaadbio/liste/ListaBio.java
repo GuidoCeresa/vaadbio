@@ -18,25 +18,28 @@ import java.util.*;
  */
 public abstract class ListaBio {
 
+    public final static String PAGINA_PROVA = "Utente:Biobot/2";
     protected final static String TAG_INDICE = "__FORCETOC__";
     protected final static String TAG_NO_INDICE = "__NOTOC__";
+    protected final static String TAG_NON_SCRIVERE = "<!-- NON MODIFICATE DIRETTAMENTE QUESTA PAGINA - GRAZIE -->";
     protected final static String ALTRE = "Altre...";
     protected final static String KEY_MAP_TITOLO = "keyMapTitolo";
     protected final static String KEY_MAP_LINK = "keyMapLink";
     protected final static String KEY_MAP_SESSO = "keyMapSesso";
     protected final static String KEY_MAP_LISTA = "keyMapLista";
-    public static String PAGINA_PROVA = "Utente:Biobot/2";
     protected String titoloPagina;
     protected ArrayList<String> listaBiografie;
     protected LinkedHashMap<String, HashMap> mappaBio = new LinkedHashMap<String, HashMap>();
     protected int numPersone = 0;
 
+    protected boolean usaHeadNonScrivere;
     protected boolean usaHeadInclude; // vero per Giorni ed Anni
     protected boolean usaHeadToc;
     protected boolean usaHeadTocIndice;
     protected boolean usaHeadRitorno; // prima del template di avviso
     protected boolean usaHeadTemplateAvviso; // uso del template StatBio
     protected String tagHeadTemplateAvviso; // template 'StatBio'
+    protected String  tagHeadTemplateProgetto;
     protected boolean usaHeadIncipit; // dopo il template di avviso
 
     protected boolean usaSuddivisioneParagrafi;
@@ -92,12 +95,14 @@ public abstract class ListaBio {
      */
     protected void elaboraParametri() {
         // head
+        usaHeadNonScrivere = Pref.getBool(CostBio.USA_HEAD_NON_SCRIVERE, true);
         usaHeadInclude = true; //--tipicamente sempre true. Si attiva solo se c'è del testo (iniziale) da includere
         usaHeadToc = true; //--tipicamente sempre true.
         usaHeadTocIndice = true; //--normalmente true. Sovrascrivibile da preferenze
         usaHeadRitorno = false; //--normalmente false. Sovrascrivibile da preferenze
         usaHeadTemplateAvviso = true; //--normalmente true. Sovrascrivibile nelle sottoclassi
-        tagHeadTemplateAvviso = "StatBio"; //--Sovrascrivibile da preferenze
+        tagHeadTemplateAvviso = "ListaBio"; //--Sovrascrivibile da preferenze
+        tagHeadTemplateProgetto = "biografie"; //--Sovrascrivibile da preferenze
         usaHeadIncipit = false; //--normalmente false. Sovrascrivibile da preferenze
 
         // body
@@ -287,6 +292,9 @@ public abstract class ListaBio {
         String text = CostBio.VUOTO;
         String testoIncluso = CostBio.VUOTO;
 
+        // Avviso visibile solo in modifica
+        text += elaboraAvvisoScrittura();
+
         // Posiziona il TOC
         testoIncluso += elaboraTOC();
 
@@ -300,10 +308,11 @@ public abstract class ListaBio {
         text += elaboraInclude(testoIncluso);
 
         // Posiziona l'incipit della pagina
+        text += CostBio.A_CAPO;
         text += elaboraIncipit();
 
         // valore di ritorno
-        return finale(text);
+        return text;
     }// fine del metodo
 
     /**
@@ -547,6 +556,22 @@ public abstract class ListaBio {
     }// fine del metodo
 
     /**
+     * Avviso visibile solo in modifica
+     * <p>
+     * Non sovrascrivibile <br>
+     */
+    private String elaboraAvvisoScrittura() {
+        String text = CostBio.VUOTO;
+
+        if (usaHeadNonScrivere) {
+            text += TAG_NON_SCRIVERE;
+            text += CostBio.A_CAPO;
+        }// end of if cycle
+
+        return text;
+    }// fine del metodo
+
+    /**
      * Costruisce il TOC (tavola contenuti)
      * <p>
      * Non sovrascrivibile <br>
@@ -612,6 +637,8 @@ public abstract class ListaBio {
             text += personeTxt;
             text += "|data=";
             text += dataCorrente.trim();
+            text += "|progetto=";
+            text += tagHeadTemplateProgetto;
             text = LibWiki.setGraffe(text);
         }// end of if cycle
 
@@ -628,7 +655,7 @@ public abstract class ListaBio {
         String testoOut = testoIn;
 
         if (usaHeadInclude) {
-            testoOut = LibBio.setNoInclude(testoIn);
+            testoOut = LibBio.setNoIncludeRiga(testoIn);
         }// fine del blocco if
 
         return testoOut;

@@ -184,4 +184,11 @@ public abstract class Esegue {
 //        creaPaginaDidascalie();
     }// fine del metodo
 
+    /**
+     * Crea una pagina di prova
+     */
+    public static void testIncipitNomi() {
+        NomeService.testIncipitNomi();
+    } // fine del metodo
+
 }// end of abstract static class

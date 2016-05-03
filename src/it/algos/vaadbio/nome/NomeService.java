@@ -1,6 +1,7 @@
 package it.algos.vaadbio.nome;
 
 import it.algos.vaad.wiki.Api;
+import it.algos.vaad.wiki.LibWiki;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.lib.LibBio;
 import it.algos.webbase.domain.pref.Pref;
@@ -410,5 +411,25 @@ public abstract class NomeService {
 
         return lista;
     }// fine del metodo
+
+    /**
+     * Crea una pagina di prova
+     */
+    public static void testIncipitNomi() {
+        String titolo = "Utente:Gac/Sandbox4279";
+        String template;
+        String testo;
+
+        template = "template:Incipit lista nomi";
+//        template = "Utente:Dr Zimbu/Sandbox3";
+        testo = "Test per controllare il funzionamento del template " + LibWiki.setBold(LibWiki.setLink(template)) + CostBio.A_CAPO;
+
+        ArrayList<String> lista = Nome.findListaTaglioPagina();
+        for (String nome : lista) {
+            testo += "# Nella pagina [[persone di nome " + nome + "]] l'incipit sarà: {{" + template + "|nome=" + nome + "}}<br>\n";
+        }// end of for cycle
+
+        Api.scriveVoce(titolo, testo);
+    } // fine del metodo
 
 }//end of class

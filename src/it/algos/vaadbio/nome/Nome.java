@@ -185,6 +185,23 @@ public class Nome extends BaseEntity {
     }// end of method
 
     /**
+     * Recupera una lista dei nomi che rispettano il criterio
+     *
+     * @return mappa di alcune istanze di Nome
+     */
+    @SuppressWarnings("unchecked")
+    public synchronized static ArrayList<String> findListaTaglioPagina() {
+        ArrayList<String> lista = new ArrayList<>();
+        LinkedHashMap<Nome, Integer> mappa = findMappaTaglioPagina();
+
+        for (Nome nome : mappa.keySet()) {
+            lista.add(nome.getNome());
+        }// end of for cycle
+
+        return lista;
+    }// end of method
+
+    /**
      * Recupera una mappa con occorrenze dei records che rispettano il criterio
      *
      * @return mappa di alcune istanze di Nome
@@ -217,7 +234,7 @@ public class Nome extends BaseEntity {
 
         for (Nome nome : listaCompleta) {
             numRecords = nome.countBioNome();
-            if (numRecords > maxVoci) {
+            if (numRecords >= maxVoci) {
                 mappa.put(nome, (int) numRecords);
             }// end of if cycle
         }// end of for cycle
@@ -362,7 +379,7 @@ public class Nome extends BaseEntity {
         boolean status = false;
         long numRecords = countBioNome();
 
-        if (numRecords > maxVoci) {
+        if (numRecords >= maxVoci) {
             status = true;
         }// end of if cycle
 
