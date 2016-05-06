@@ -84,6 +84,10 @@ public class WrapBio {
             registrata = false;
             if (Pref.getBool(CostBio.USA_LOG_CICLO, true)) {
                 testoPagina = pagina.getText();
+                if (testoPagina.equals(CostBio.VUOTO)) {
+                    Log.setDebug("cicloNew", "La pagina " + LibWiki.setQuadre(wikiTitle) + ", non è stata letta");
+                    return;
+                }// end of if cycle
                 if (testoPagina.startsWith(CostBio.DISAMBIGUA)) {
                     Log.setDebug("cicloNew", "La pagina " + LibWiki.setQuadre(wikiTitle) + ", non è stata registrata perché è una disambigua");
                     return;
