@@ -155,6 +155,17 @@ public class Nome extends BaseEntity {
     }// end of method
 
     /**
+     * Recupera una lista (array) di tutti i records di Nome doppi
+     *
+     * @return lista di tutte le istanze di Nome
+     */
+    @SuppressWarnings("unchecked")
+    public synchronized static ArrayList<Nome> findAllDoppi() {
+        Container.Filter filtro = new Compare.Equal("nomeDoppio", true);
+        return (ArrayList<Nome>) AQuery.getLista(Nome.class, filtro);
+    }// end of method
+
+    /**
      * Recupera una lista (array) di tutti i records di Nome NON doppi
      *
      * @return lista di tutte le istanze di Nome
@@ -356,7 +367,7 @@ public class Nome extends BaseEntity {
      */
     @SuppressWarnings("all")
     public boolean superaTaglioPagina() {
-        return superaTaglio(Pref.getInt(CostBio.TAGLIO_NOMI_PAGINA, 20));
+        return superaTaglio(Pref.getInt(CostBio.TAGLIO_NOMI_PAGINA, 50));
     }// fine del metodo
 
     /**

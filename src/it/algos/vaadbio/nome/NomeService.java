@@ -75,8 +75,12 @@ public abstract class NomeService {
      * Elabora i records
      */
     public static void elabora() {
+        ArrayList<Nome> listaNomiDoppi;
         ArrayList<Nome> listaNomiCompleta;
         String nomeValido;
+
+        //--recupera una lista di tutti i nomi NON doppi
+        listaNomiDoppi = Nome.findAllDoppi();
 
         //--recupera una lista di tutti i nomi NON doppi
         listaNomiCompleta = Nome.findAllNotDoppi();
@@ -248,8 +252,9 @@ public abstract class NomeService {
      * <p>
      * Prima regola: considera solo i nomi più lunghi di 2 caratteri
      * Seconda regola: usa (secondo preferenze) i nomi singoli; Maria e Maria Cristina sono uguali
-     * Terza regola: elimina parti iniziali con caratteri/prefissi non accettati -> LibBio.checkNome()
-     * Quarta regola: elimina <ref>< finali e testo successivo
+     * Terza regola: controlla una lista di nomi doppi accettati come autonomi per la loro rilevanza
+     * Quarta regola: elimina parti iniziali con caratteri/prefissi non accettati -> LibBio.checkNome()
+     * Quinta regola: elimina <ref>< finali e testo successivo
      * <p>
      * Elimina caratteri 'anomali' dal nome
      * Gian, Lady, Sir, Maestro, Abd, 'Abd, Abu, Abū, Ibn, DJ, e J.
@@ -260,6 +265,7 @@ public abstract class NomeService {
         int pos;
         String tag = CostBio.VUOTO;
         boolean usaNomeSingolo = Pref.getBool(CostBio.USA_NOME_SINGOLO, true);
+        Nome nomeEsistente = null;
 
         //--prima regola
         if (nomeIn.length() < 3) {
@@ -268,21 +274,31 @@ public abstract class NomeService {
             nomeOut = nomeIn.trim();
         }// end of if/else cycle
 
-        //--seconda regola
-        if (usaNomeSingolo) {
-            if (nomeOut.contains(CostBio.SPAZIO)) {
+        if (nomeOut.contains(CostBio.SPAZIO)) {
+            //--seconda regola
+            if (usaNomeSingolo) {
                 pos = nomeOut.indexOf(CostBio.SPAZIO);
                 nomeOut = nomeOut.substring(0, pos);
                 nomeOut = nomeOut.trim();
-            }// fine del blocco if
+            }// end of if cycle
+
+            //--terza regola
+            nomeEsistente = Nome.findByNome(nomeIn.trim());
+            if (nomeEsistente != null) {
+                if (nomeEsistente.isNomeDoppio()) {
+                    nomeOut = nomeEsistente.getNome();
+                }// end of if cycle
+            } else {
+                int a = 87;
+            }// end of if/else cycle
         }// fine del blocco if
 
-        //--terza regola
+        // --quarta regola
         if (!checkNome(nomeOut)) {
             nomeOut = CostBio.VUOTO;
         }// fine del blocco if
 
-        //--quarta regola
+        //--quinta regola
         nomeOut = LibBio.fixCampo(nomeOut);
 
         //--prima regola ricontrollata dopo l'uso del nome singolo

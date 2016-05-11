@@ -63,7 +63,7 @@ public class WrapBio {
         long pageid;
         String wikiTitle;
         String tmplBio;
-        String testoPagina;
+        String testoPagina=CostBio.VUOTO;
 
         if (pagina == null) {
             return;
