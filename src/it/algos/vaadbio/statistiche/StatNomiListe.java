@@ -21,6 +21,8 @@ import java.util.Map;
  */
 public class StatNomiListe extends StatNomi {
 
+    private static String TITOLO_PAGINA = "Liste nomi";
+
     private ArrayList<Nome> listaNomi;
     private LinkedHashMap<Nome, Integer> mappaNomi;
     private long inizio = System.currentTimeMillis();
@@ -51,7 +53,7 @@ public class StatNomiListe extends StatNomi {
     @Override
     protected void elaboraParametri() {
         super.elaboraParametri();
-        titoloPagina = "Liste nomi";
+        titoloPagina = TITOLO_PAGINA;
     }// fine del metodo
 
     /**

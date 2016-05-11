@@ -10,6 +10,7 @@ import it.algos.vaadbio.lib.LibBio;
 import it.algos.webbase.domain.pref.Pref;
 import it.algos.webbase.web.entity.BaseEntity;
 import it.algos.webbase.web.query.AQuery;
+import it.algos.webbase.web.query.SortProperty;
 import org.eclipse.persistence.annotations.Index;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -150,8 +151,8 @@ public class Nome extends BaseEntity {
      * @return lista di tutte le istanze di Nome
      */
     @SuppressWarnings("unchecked")
-    public synchronized static ArrayList<Nome> findAll() {
-        return (ArrayList<Nome>) AQuery.getLista(Nome.class);
+    public synchronized static ArrayList<BaseEntity> findAll() {
+        return AQuery.getList(Nome.class, new SortProperty(Nome_.nome.getName()), (Container.Filter) null);
     }// end of method
 
     /**
@@ -184,11 +185,15 @@ public class Nome extends BaseEntity {
     @SuppressWarnings("unchecked")
     public synchronized static ArrayList<Nome> findAllSuperaTaglioPagina() {
         ArrayList<Nome> listaParziale = new ArrayList<>();
-        ArrayList<Nome> listaCompleta = findAll();
+        ArrayList<BaseEntity> listaCompleta = findAll();
+        Nome nome;
 
-        for (Nome nome : listaCompleta) {
-            if (nome.superaTaglioPagina()) {
-                listaParziale.add(nome);
+        for (BaseEntity entity : listaCompleta) {
+            if (entity instanceof Nome) {
+                nome = (Nome) entity;
+                if (nome.superaTaglioPagina()) {
+                    listaParziale.add(nome);
+                }// end of if cycle
             }// end of if cycle
         }// end of for cycle
 
@@ -240,13 +245,17 @@ public class Nome extends BaseEntity {
     @SuppressWarnings("unchecked")
     private synchronized static LinkedHashMap<Nome, Integer> findMappa(int maxVoci) {
         LinkedHashMap<Nome, Integer> mappa = new LinkedHashMap<Nome, Integer>();
-        ArrayList<Nome> listaCompleta = findAll();
         long numRecords = 0;
+        ArrayList<BaseEntity> listaCompleta = findAll();
+        Nome nome;
 
-        for (Nome nome : listaCompleta) {
-            numRecords = nome.countBioNome();
-            if (numRecords >= maxVoci) {
-                mappa.put(nome, (int) numRecords);
+        for (BaseEntity entity : listaCompleta) {
+            if (entity instanceof Nome) {
+                nome = (Nome) entity;
+                numRecords = nome.countBioNome();
+                if (numRecords >= maxVoci) {
+                    mappa.put(nome, (int) numRecords);
+                }// end of if cycle
             }// end of if cycle
         }// end of for cycle
 

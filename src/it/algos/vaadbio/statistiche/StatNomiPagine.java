@@ -18,11 +18,13 @@ import java.util.Map;
  */
 public class StatNomiPagine extends StatNomi {
 
+    private static String TITOLO_PAGINA = "Nomi";
     private ArrayList<Nome> listaNomi;
     private LinkedHashMap<Nome, Integer> mappaNomi;
     private long inizio = System.currentTimeMillis();
     private int mod = 0;
     private String modTxt;
+
 
     /**
      * Costruttore vuoto
@@ -48,7 +50,7 @@ public class StatNomiPagine extends StatNomi {
     @Override
     protected void elaboraParametri() {
         super.elaboraParametri();
-        titoloPagina = "Nomi";
+        titoloPagina = TITOLO_PAGINA;
     }// fine del metodo
 
     /**
