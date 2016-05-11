@@ -88,7 +88,7 @@ public class NomeMod extends ModulePop {
     @Override
     public void addSottoMenu(MenuBar.MenuItem menuItem) {
         addCommandDownloadDoppi(menuItem);
-        addCommandAggiorna(menuItem);
+        addCommandAggiunge(menuItem);
         addCommandElabora(menuItem);
         addCommandUpload(menuItem);
         addCommandStatistiche(menuItem);
@@ -96,7 +96,7 @@ public class NomeMod extends ModulePop {
     }// end of method
 
     /**
-     * Comando bottone/item download
+     * Comando bottone/item download dei nomi doppi
      *
      * @param menuItem a cui agganciare il bottone/item
      */
@@ -110,14 +110,14 @@ public class NomeMod extends ModulePop {
 
 
     /**
-     * Comando bottone/item elabora i records esistenti
+     * Comando bottone/item aggiounge nuovi nomi individuati nei records di Bio
      *
      * @param menuItem a cui agganciare il bottone/item
      */
-    private void addCommandAggiorna(MenuBar.MenuItem menuItem) {
-        menuItem.addItem("Aggiorna", FontAwesome.BEER, new MenuBar.Command() {
+    private void addCommandAggiunge(MenuBar.MenuItem menuItem) {
+        menuItem.addItem("Aggiunge", FontAwesome.BEER, new MenuBar.Command() {
             public void menuSelected(MenuBar.MenuItem selectedItem) {
-                esegueAggiorna();
+                esegueAggiunge();
             }// end of method
         });// end of anonymous class
     }// end of method
@@ -186,7 +186,7 @@ public class NomeMod extends ModulePop {
     /**
      * Esegue l'aggiunta dei nuovi records
      */
-    protected void esegueAggiorna() {
+    protected void esegueAggiunge() {
         Esegue.aggiungeNomi();
     }// end of method
 

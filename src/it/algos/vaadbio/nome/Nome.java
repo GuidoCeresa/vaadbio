@@ -146,6 +146,44 @@ public class Nome extends BaseEntity {
     }// end of method
 
     /**
+     * Creazione iniziale di una istanza
+     * La crea SOLO se non esiste già
+     *
+     * @param nome della persona
+     * @return istanza della classe
+     */
+    public synchronized static Nome crea(String nome) {
+        return crea(nome, true, true, null);
+    }// end of static method
+
+
+    /**
+     * Creazione iniziale di una istanza
+     * La crea SOLO se non esiste già
+     *
+     * @param nome        della persona
+     * @param principale  flag
+     * @param nomeDoppio  flag
+     * @param riferimento al nome che raggruppa le varie dizioni
+     * @return istanza della classe
+     */
+    public synchronized static Nome crea(String nome, boolean principale, boolean nomeDoppio, Nome riferimento) {
+        Nome instance = Nome.findByNome(nome);
+
+        if (instance == null) {
+            instance = new Nome(nome, principale, nomeDoppio, riferimento);
+            instance.save();
+            if (riferimento == null) {
+                instance.setRiferimento(instance);
+                instance.save();
+            }// end of if cycle
+        }// end of if cycle
+
+        return instance;
+    }// end of static method
+
+
+    /**
      * Recupera una lista (array) di tutti i records della Domain Class
      *
      * @return lista di tutte le istanze di Nome

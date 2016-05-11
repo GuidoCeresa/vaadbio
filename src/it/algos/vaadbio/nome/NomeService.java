@@ -129,6 +129,7 @@ public abstract class NomeService {
      * Vengono creati i records mancanti nel database per tutti i nomi doppi
      * Questo perché spazzolando il parametro nome delle biografie, di norma identifica SOLO il primo nome
      * Occorre aggiungere quindi i nomi doppi esplicitamente previsti nella lista su wiki
+     * Vengono eliminati im precedenti nomi doppi non più presenti nella pagina del progetto
      */
     public static void listaNomiDoppi() {
         String titolo = TITOLO_LISTA_NOMI_DOPPI;
@@ -137,41 +138,69 @@ public abstract class NomeService {
         String tagFine = "\n\n";
         String[] righe = null;
         String testoPagina = Api.leggeVoce(titolo);
+        ArrayList<String> listaServer = new ArrayList<>();
+        ArrayList<String> listaDB = new ArrayList<>();
+        ArrayList<String> mancano = new ArrayList<>();
+        ArrayList<String> avanzano = new ArrayList<>();
+        String tagRigaNomiMultipli = ",";
+        String[] arrayNomiDoppi = null;
 
         if (!testoPagina.equals(CostBio.VUOTO)) {
             testoPagina = testoPagina.substring(testoPagina.indexOf(tagInizio), testoPagina.indexOf(tagFine));
             righe = testoPagina.split(tagRiga);
         }// fine del blocco if
 
+//        if (righe != null && righe.length > 0) {
+//            for (String stringa : righe) {
+//                if (!stringa.equals(CostBio.VUOTO)) {
+//                    elaboraRigaNomiDoppi(stringa.trim());
+//                }// end of if cycle
+//            }// end of for cycle
+//        }// end of if cycle
+
         if (righe != null && righe.length > 0) {
             for (String stringa : righe) {
                 if (!stringa.equals(CostBio.VUOTO)) {
-                    elaboraRigaNomiDoppi(stringa.trim());
+                    if (stringa.contains(tagRigaNomiMultipli)) {
+                        arrayNomiDoppi = stringa.split(tagRigaNomiMultipli);
+                        if (arrayNomiDoppi.length > 1) {
+                            for (String nome : arrayNomiDoppi) {
+                                listaServer.add(nome.trim());
+                            }// end of for cycle
+                        }// end of if/else cycle
+                    } else {
+                        listaServer.add(stringa.trim());
+                    }// end of if/else cycle
                 }// end of if cycle
             }// end of for cycle
         }// end of if cycle
+
+        listaDB = LibBio.queryFindTxt("select nome.nome from Nome nome where nome.nomeDoppio=1 order by nome.nome asc");
+        mancano = LibArray.differenza(listaServer, listaDB);
+        avanzano = LibArray.differenza(listaDB, listaServer);
+        int a = 87;
     }// fine del metodo
 
 
-    /**
-     * Controllo della pagina Progetto:Antroponimi/Nomi doppi
-     */
-    private static void elaboraRigaNomiDoppi(String riga) {
-        String tagNome = ",";
-        String nomeTxt;
-        Nome nome = null;
-        String[] nomiDoppi = riga.split(tagNome);
-
-        if (nomiDoppi.length > 0) {
-            nomeTxt = nomiDoppi[0];
-            nome = elaboraSingolo(nomeTxt, true);
-            if (nomiDoppi.length > 1) {
-                for (int k = 1; k < nomiDoppi.length; k++) {
-                    elaboraSingolo(nomiDoppi[k], nome);
-                }// end of for cycle
-            }// end of if/else cycle
-        }// fine del blocco if
-    }// fine del metodo
+//    /**
+//     * Controllo della pagina Progetto:Antroponimi/Nomi doppi
+//     */
+//    private static void elaboraRigaNomiDoppi(String riga) {
+//        String tagNome = ",";
+//        String nomeTxt;
+//        Nome nome = null;
+//        String[] nomiDoppi = riga.split(tagNome);
+//
+//        if (nomiDoppi.length > 0) {
+//            nomeTxt = nomiDoppi[0];
+//            nome = elaboraSingolo(nomeTxt, true);
+//            if (nomiDoppi.length > 1) {
+//                for (int k = 1; k < nomiDoppi.length; k++) {
+//                    elaboraSingolo(nomiDoppi[k], nome);
+//                }// end of for cycle
+//            }// end of if/else cycle
+//        }// fine del blocco if
+//    }// fine del metodo
 
 
     /**
