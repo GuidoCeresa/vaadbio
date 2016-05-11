@@ -64,8 +64,7 @@ public abstract class Esegue {
     public static void cicloUpload() {
         uploadGiorni();
         statisticaSintesi();
-        uploadNomi();
-        statisticheNomi();
+        cicloNomi();
         uploadAnni();
     } // fine del metodo
 
@@ -86,41 +85,44 @@ public abstract class Esegue {
 
 
     /**
-     * Esegue il download completo dei nomi
+     * Ciclo normale di aggiornamento ed upload dei nomi
+     *
+     * Esegue l'aggiornamento della lista dei nomi doppi
      */
-    public static void esegueDownloadNomi() {
+    public static void cicloNomi() {
         long inizio = System.currentTimeMillis();
 
-        NomeService.listaNomiDoppi();
-        NomeService.aggiunge();
-        NomeService.elabora();
+        aggiornaNomi();
+        elaboraNomi();
+        uploadNomi();
+        statisticheNomi();
 
-        Log.setDebug("nomi", "Letti i nomi doppi, aggiunti ed elaborati tutti i nomi in " + LibTime.difText(inizio));
+        Log.setDebug("nomi", "Nomi doppi, aggiunti ed elaborati i nomi, upload di tutti e statistiche in " + LibTime.difText(inizio));
     } // fine del metodo
+
 
     /**
      * Esegue l'aggiornamento della lista dei nomi doppi
      */
-    public static void esegueDownloadDoppi() {
+    public static void downloadNomiDoppi() {
         NomeService.listaNomiDoppi();
-    } // fine del metodo
+    }// end of method
 
 
     /**
-     * Aggiunta nomi.
+     * Esegue l'aggiornamento e la creazione dei nuovi records
      */
-    public static void aggiungeNomi() {
-        NomeService.listaNomiDoppi();
-        NomeService.aggiunge();
-    } // fine del metodo
-
+    public static void aggiornaNomi() {
+        NomeService.aggiorna();
+    }// end of method
 
     /**
-     * Elaborazione nomi.
+     * Esegue l'elaborazione dei records esistenti
      */
     public static void elaboraNomi() {
         NomeService.elabora();
-    } // fine del metodo
+    }// end of method
+
 
     /**
      * Upload nomi

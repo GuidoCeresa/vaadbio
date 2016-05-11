@@ -94,7 +94,6 @@ public class DaemonCicloCrono extends Scheduler {
             if (Bio.count() > NUMERO_VOCI_MINIMO_PER_OPERATIVITA_NORMALE) {
                 Esegue.cicloUpdate();
                 Esegue.cicloElabora();
-//                Esegue.esegueDownloadNomi();
 
                 if (Pref.getBool(CostBio.USA_DAEMONS_CRONO, true)) {
                     Esegue.cicloUpload();

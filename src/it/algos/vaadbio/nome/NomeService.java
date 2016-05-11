@@ -71,39 +71,12 @@ public abstract class NomeService {
     }// fine del metodo
 
 
-    /**
-     * Elabora i records
-     */
-    public static void elabora() {
-        ArrayList<Nome> listaNomiDoppi;
-        ArrayList<Nome> listaNomiCompleta;
-        String nomeValido;
-
-        //--recupera una lista di tutti i nomi NON doppi
-        listaNomiDoppi = Nome.findAllDoppi();
-
-        //--recupera una lista di tutti i nomi NON doppi
-        listaNomiCompleta = Nome.findAllNotDoppi();
-
-        for (Nome nome : listaNomiCompleta) {
-            nomeValido = check(nome.getNome());
-            if (!nomeValido.equals(nome.getNome())) {
-                if (nomeValido.equals(CostBio.VUOTO)) {
-                    nome.delete();
-                } else {
-                    nome.setNome(nomeValido);
-                    nome.save();
-                }// end of if/else cycle
-            }// fine del blocco if
-        }// end of for cycle
-
-    }// fine del metodo
 
     /**
-     * Aggiunta nuovi records
+     * Aggiunta nuovi records e modifica di quelli esistenti
      * Vengono creati nuovi records per i nomi presenti nelle voci (bioGrails) che superano la soglia minima
      */
-    public static void aggiunge() {
+    public static void aggiorna() {
         ArrayList<String> listaNomiCompleta;
         List alfa;
         ArrayList<String> listaNomiUnici;
@@ -194,6 +167,34 @@ public abstract class NomeService {
         }// end of for cycle
     }// fine del metodo
 
+
+    /**
+     * Elabora i records
+     */
+    public static void elabora() {
+        ArrayList<Nome> listaNomiDoppi;
+        ArrayList<Nome> listaNomiCompleta;
+        String nomeValido;
+
+        //--recupera una lista di tutti i nomi NON doppi
+        listaNomiDoppi = Nome.findAllDoppi();
+
+        //--recupera una lista di tutti i nomi NON doppi
+        listaNomiCompleta = Nome.findAllNotDoppi();
+
+        for (Nome nome : listaNomiCompleta) {
+            nomeValido = check(nome.getNome());
+            if (!nomeValido.equals(nome.getNome())) {
+                if (nomeValido.equals(CostBio.VUOTO)) {
+                    nome.delete();
+                } else {
+                    nome.setNome(nomeValido);
+                    nome.save();
+                }// end of if/else cycle
+            }// fine del blocco if
+        }// end of for cycle
+
+    }// fine del metodo
 
     /**
      * Crea (controllando che non esista già) un record principale di Nome

@@ -115,9 +115,9 @@ public class NomeMod extends ModulePop {
      * @param menuItem a cui agganciare il bottone/item
      */
     private void addCommandAggiunge(MenuBar.MenuItem menuItem) {
-        menuItem.addItem("Aggiunge", FontAwesome.BEER, new MenuBar.Command() {
+        menuItem.addItem("Aggiorna", FontAwesome.BEER, new MenuBar.Command() {
             public void menuSelected(MenuBar.MenuItem selectedItem) {
-                esegueAggiunge();
+                esegueAggiorna();
             }// end of method
         });// end of anonymous class
     }// end of method
@@ -179,15 +179,15 @@ public class NomeMod extends ModulePop {
      * Esegue l'aggiornamento della lista dei nomi doppi
      */
     protected void esegueDownloadDoppi() {
-        Esegue.esegueDownloadDoppi();
+        Esegue.downloadNomiDoppi();
     }// end of method
 
 
     /**
      * Esegue l'aggiunta dei nuovi records
      */
-    protected void esegueAggiunge() {
-        Esegue.aggiungeNomi();
+    protected void esegueAggiorna() {
+        Esegue.aggiornaNomi();
     }// end of method
 
     /**
@@ -215,7 +215,7 @@ public class NomeMod extends ModulePop {
      * Crea la pagina di test per l'incipit
      */
     protected void esegueTestIncipit() {
-        Esegue.testIncipitNomi();
+        Esegue.cicloNomi();
     }// end of method
 
     /**
