@@ -182,7 +182,6 @@ public class Nome extends BaseEntity {
         return instance;
     }// end of static method
 
-
     /**
      * Recupera una lista (array) di tutti i records della Domain Class
      *
@@ -298,6 +297,23 @@ public class Nome extends BaseEntity {
         }// end of for cycle
 
         return mappa;
+    }// end of method
+
+    /**
+     * Removes this entity from the database using a local EntityManager
+     * <p>
+     * Cancella prima i records linkati qui:
+     * nella tavola Bio
+     */
+    public void delete() {
+        ArrayList<Bio> lista = this.bioNome();
+
+        for (Bio bio : lista) {
+            bio.setNomePunta(null);
+            bio.save();
+        }// end of for cycle
+
+        super.delete();
     }// end of method
 
     @Override

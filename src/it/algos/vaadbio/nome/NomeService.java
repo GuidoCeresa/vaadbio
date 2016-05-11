@@ -139,9 +139,7 @@ public abstract class NomeService {
         String[] righe = null;
         String testoPagina = Api.leggeVoce(titolo);
         ArrayList<String> listaServer = new ArrayList<>();
-        ArrayList<String> listaDB = new ArrayList<>();
-        ArrayList<String> mancano = new ArrayList<>();
-        ArrayList<String> avanzano = new ArrayList<>();
+        ArrayList<String> listaDB;
         String tagRigaNomiMultipli = ",";
         String[] arrayNomiDoppi = null;
 
@@ -149,14 +147,6 @@ public abstract class NomeService {
             testoPagina = testoPagina.substring(testoPagina.indexOf(tagInizio), testoPagina.indexOf(tagFine));
             righe = testoPagina.split(tagRiga);
         }// fine del blocco if
-
-//        if (righe != null && righe.length > 0) {
-//            for (String stringa : righe) {
-//                if (!stringa.equals(CostBio.VUOTO)) {
-//                    elaboraRigaNomiDoppi(stringa.trim());
-//                }// end of if cycle
-//            }// end of for cycle
-//        }// end of if cycle
 
         if (righe != null && righe.length > 0) {
             for (String stringa : righe) {
@@ -176,31 +166,33 @@ public abstract class NomeService {
         }// end of if cycle
 
         listaDB = LibBio.queryFindTxt("select nome.nome from Nome nome where nome.nomeDoppio=1 order by nome.nome asc");
-        mancano = LibArray.differenza(listaServer, listaDB);
-        avanzano = LibArray.differenza(listaDB, listaServer);
-        int a = 87;
+        aggiungeMancanti(LibArray.differenza(listaServer, listaDB));
+        cancellaEccedenti(LibArray.differenza(listaDB, listaServer));
     }// fine del metodo
 
 
-//    /**
-//     * Controllo della pagina Progetto:Antroponimi/Nomi doppi
-//     */
-//    private static void elaboraRigaNomiDoppi(String riga) {
-//        String tagNome = ",";
-//        String nomeTxt;
-//        Nome nome = null;
-//        String[] nomiDoppi = riga.split(tagNome);
-//
-//        if (nomiDoppi.length > 0) {
-//            nomeTxt = nomiDoppi[0];
-//            nome = elaboraSingolo(nomeTxt, true);
-//            if (nomiDoppi.length > 1) {
-//                for (int k = 1; k < nomiDoppi.length; k++) {
-//                    elaboraSingolo(nomiDoppi[k], nome);
-//                }// end of for cycle
-//            }// end of if/else cycle
-//        }// fine del blocco if
-//    }// fine del metodo
+    /**
+     * Crea i records che mancano
+     */
+    private static void aggiungeMancanti(ArrayList<String> listaMancanti) {
+        for (String nome : listaMancanti) {
+            Nome.crea(nome);
+        }// end of for cycle
+    }// fine del metodo
+
+    /**
+     * Cancella i records che avanzano
+     */
+    private static void cancellaEccedenti(ArrayList<String> listaEccedenti) {
+        Nome nome;
+
+        for (String nomeTxt : listaEccedenti) {
+            nome = Nome.findByNome(nomeTxt);
+            if (nome != null) {
+                nome.delete();
+            }// end of if cycle
+        }// end of for cycle
+    }// fine del metodo
 
 
     /**
