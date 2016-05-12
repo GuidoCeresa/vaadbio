@@ -3,6 +3,7 @@ package it.algos.vaadbio.nome;
 
 import com.vaadin.event.Action;
 import com.vaadin.server.FontAwesome;
+import com.vaadin.server.Resource;
 import com.vaadin.ui.MenuBar;
 import com.vaadin.ui.Notification;
 import it.algos.vaadbio.esegue.Esegue;
@@ -14,15 +15,17 @@ import it.algos.webbase.web.table.ATable;
 /**
  * Gestione (minimale) del modulo
  */
-@SuppressWarnings("serial")
 public class NomeMod extends ModulePop {
 
+    private static final long serialVersionUID = 1L;
 
-    // indirizzo interno del modulo (serve nei menu)
+    // indirizzo interno del modulo - etichetta del menu
     public static String MENU_ADDRESS = "Nomi";
 
-    private Action actionUpload = new Action("Upload", FontAwesome.ARROW_UP);
+    // icona (eventuale) del modulo
+    public static Resource ICON = FontAwesome.LIST_UL;
 
+    private Action actionUpload = new Action("Upload", FontAwesome.ARROW_UP);
 
     /**
      * Costruttore senza parametri
@@ -33,9 +36,7 @@ public class NomeMod extends ModulePop {
      * (facoltativo) icona del menu (se manca usa un'icona standard)
      */
     public NomeMod() {
-        super(Nome.class, MENU_ADDRESS, FontAwesome.LIST_UL);
-        ATable tavola = getTable();
-        addActionHandler(tavola);
+        super(Nome.class, MENU_ADDRESS, ICON);
     }// end of constructor
 
 
@@ -44,7 +45,7 @@ public class NomeMod extends ModulePop {
      *
      * @see com.vaadin.event.Action.Container#addActionHandler(Action.Handler)
      */
-    private void addActionHandler(ATable tavola) {
+    protected void addActionHandler(ATable tavola) {
         tavola.addActionHandler(new Action.Handler() {
             public Action[] getActions(Object target, Object sender) {
                 Action[] actions = null;

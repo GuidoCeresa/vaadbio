@@ -26,7 +26,6 @@ public class Cognome extends BaseEntity {
     private String cognome="";
 
     /**
-     *
      */
     @Index()
     private boolean principale;

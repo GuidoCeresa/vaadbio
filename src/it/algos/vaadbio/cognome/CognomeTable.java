@@ -1,4 +1,4 @@
-package it.algos.vaadbio.nome;
+package it.algos.vaadbio.cognome;
 
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.ui.Component;
@@ -7,15 +7,16 @@ import com.vaadin.ui.Notification;
 import com.vaadin.ui.Table;
 import it.algos.vaad.wiki.Api;
 import it.algos.vaadbio.lib.CostBio;
+import it.algos.vaadbio.nome.Nome;
 import it.algos.webbase.web.entity.BaseEntity;
 import it.algos.webbase.web.module.ModulePop;
 import it.algos.webbase.web.table.ModuleTable;
 
 /**
- * Created by gac on 25 nov 2015.
+ * Created by gac on 12 mag 2016.
  * .
  */
-public class NomeTable extends ModuleTable {
+public class CognomeTable extends ModuleTable {
 
     public static final String WIKI_BASE = "https://it.wikipedia.org/";
     public static final String WIKI_URL = WIKI_BASE + "wiki/";
@@ -24,7 +25,7 @@ public class NomeTable extends ModuleTable {
     private static boolean checkLista = false;
 
 
-    public NomeTable(ModulePop modulo) {
+    public CognomeTable(ModulePop modulo) {
         super(modulo);
     }// end of constructor
 
@@ -44,7 +45,7 @@ public class NomeTable extends ModuleTable {
     @Override
     @SuppressWarnings("rawtypes")
     protected Object[] getDisplayColumns() {
-        return new Object[]{Nome_.nome, Nome_.principale, Nome_.nomeDoppio, colLink};
+        return new Object[]{Cognome_.cognome, Cognome_.principale, colLink};
     }// end of method
 
     /**
@@ -56,11 +57,11 @@ public class NomeTable extends ModuleTable {
     @SuppressWarnings("unchecked")
     private Component generateCellLink(Object itemId) {
         String wikiTitle = CostBio.VUOTO;
-        Nome istanza = null;
+        Cognome istanza = null;
         BaseEntity bean = getBean(itemId);
 
         if (bean != null && bean instanceof Nome) {
-            istanza = (Nome) bean;
+            istanza = (Cognome) bean;
             wikiTitle = getTitolo(istanza.getRiferimento());
         }// end of if cycle
 
@@ -86,8 +87,8 @@ public class NomeTable extends ModuleTable {
     public void itemClick(ItemClickEvent itemClickEvent) {
         BaseEntity bean = getBeanClickOnColumn(itemClickEvent, colLink);
 
-        if (bean != null && bean instanceof Nome) {
-            clickOnLink((Nome) bean);
+        if (bean != null && bean instanceof Cognome) {
+            clickOnLink((Cognome) bean);
         }// end of if cycle
 
     }// end of method
@@ -98,31 +99,31 @@ public class NomeTable extends ModuleTable {
      *
      * @param istanzaNome record selezionato
      */
-    private void clickOnLink(Nome istanzaNome) {
+    private void clickOnLink(Cognome istanzaNome) {
         String wikiTitle = getTitolo(istanzaNome);
         String message = CostBio.VUOTO;
 
         if (Api.esiste(wikiTitle)) {
             this.getUI().getPage().open(WIKI_URL + wikiTitle, "_blank");
         } else {
-            message += "Su wikipedia non esiste (ancora) una lista di persone di nome ";
-            message += istanzaNome.getNome();
-            message += ".\n Ci sono troppe poche voci biografiche che usano questo nome.";
+            message += "Su wikipedia non esiste (ancora) una lista di persone di cognome ";
+            message += istanzaNome.getCognome();
+            message += ".\n Ci sono troppe poche voci biografiche che usano questo cognome.";
             Notification.show("Avviso", message, Notification.Type.HUMANIZED_MESSAGE);
         }// end of if/else cycle
 
     }// end of method
 
     /**
-     * @param istanzaNome record selezionato
+     * @param istanza record selezionato
      */
-    private String getTitolo(Nome istanzaNome) {
+    private String getTitolo(Cognome istanza) {
         String wikiTitle = "";
-        String nome = istanzaNome.getNome();
-        String tag = "Persone di nome ";
+        String cognome = istanza.getCognome();
+        String tag = "Persone di cognome ";
 
-        if (!nome.equals(CostBio.VUOTO)) {
-            wikiTitle = tag + nome;
+        if (!cognome.equals(CostBio.VUOTO)) {
+            wikiTitle = tag + cognome;
         }// fine del blocco if
 
         return wikiTitle;
