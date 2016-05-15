@@ -33,9 +33,9 @@ public class ElaboraParametri {
         }// end of if cycle
 
         for (ParBio par : ParBio.values()) {
-            if (mappaBio.get(par.getTag()) != null) {
+//            if (mappaBio.get(par.getTag()) != null) {
                 par.setBio(bio, mappaBio.get(par.getTag()));
-            }// end of if cycle
+//            }// end of if cycle
         } // fine del ciclo for-each
 
     }// end of method

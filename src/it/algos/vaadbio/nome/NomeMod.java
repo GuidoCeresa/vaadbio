@@ -6,11 +6,15 @@ import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Resource;
 import com.vaadin.ui.MenuBar;
 import com.vaadin.ui.Notification;
+import it.algos.vaadbio.bio.Bio;
 import it.algos.vaadbio.esegue.Esegue;
+import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.liste.ListaNome;
 import it.algos.webbase.web.module.ModulePop;
 import it.algos.webbase.web.search.SearchManager;
 import it.algos.webbase.web.table.ATable;
+
+import java.util.ArrayList;
 
 /**
  * Gestione (minimale) del modulo
@@ -216,7 +220,19 @@ public class NomeMod extends ModulePop {
      * Crea la pagina di test per l'incipit
      */
     protected void esegueTestIncipit() {
-        Esegue.cicloNomi();
+        ArrayList<Bio> lista= Bio.findAll();
+int k=0;
+
+        for (Bio bio : lista) {
+            if (!bio.getAttivita().equals(CostBio.VUOTO)) {
+                k++;
+                if (bio.getAttivita().equals(bio.getAttivita2())) {
+                    int a=87;
+                }// end of if cycle
+            }// end of if cycle
+        }// end of for cycle
+
+
     }// end of method
 
     /**
