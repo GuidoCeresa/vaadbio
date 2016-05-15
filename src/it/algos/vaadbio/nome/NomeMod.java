@@ -49,6 +49,7 @@ public class NomeMod extends ModulePop {
      *
      * @see com.vaadin.event.Action.Container#addActionHandler(Action.Handler)
      */
+    @Override
     protected void addActionHandler(ATable tavola) {
         tavola.addActionHandler(new Action.Handler() {
             public Action[] getActions(Object target, Object sender) {
@@ -220,14 +221,14 @@ public class NomeMod extends ModulePop {
      * Crea la pagina di test per l'incipit
      */
     protected void esegueTestIncipit() {
-        ArrayList<Bio> lista= Bio.findAll();
-int k=0;
+        ArrayList<Bio> lista = Bio.findAll();
+        int k = 0;
 
         for (Bio bio : lista) {
             if (!bio.getAttivita().equals(CostBio.VUOTO)) {
                 k++;
                 if (bio.getAttivita().equals(bio.getAttivita2())) {
-                    int a=87;
+                    int a = 87;
                 }// end of if cycle
             }// end of if cycle
         }// end of for cycle

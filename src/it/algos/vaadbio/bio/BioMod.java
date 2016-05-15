@@ -180,7 +180,7 @@ public class BioMod extends ModulePop {
      *
      * @see com.vaadin.event.Action.Container#addActionHandler(Action.Handler)
      */
-    private void addActionHandler(ATable tavola) {
+    protected void addActionHandler(ATable tavola) {
         tavola.addActionHandler(new Action.Handler() {
             public Action[] getActions(Object target, Object sender) {
                 Action[] actions = null;

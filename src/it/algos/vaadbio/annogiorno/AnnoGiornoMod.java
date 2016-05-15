@@ -72,8 +72,6 @@ public abstract class AnnoGiornoMod extends ModulePop {
      */
     public AnnoGiornoMod(Class entity, String menuLabel, Resource menuIcon) {
         super(entity, menuLabel, menuIcon);
-        ATable tavola = getTable();
-        addActionHandler(tavola);
     }// end of constructor
 
 
@@ -82,7 +80,8 @@ public abstract class AnnoGiornoMod extends ModulePop {
      *
      * @see com.vaadin.event.Action.Container#addActionHandler(Action.Handler)
      */
-    private void addActionHandler(ATable tavola) {
+    @Override
+    protected void addActionHandler(ATable tavola) {
         tavola.addActionHandler(new Action.Handler() {
             public Action[] getActions(Object target, Object sender) {
                 Action[] actions = null;

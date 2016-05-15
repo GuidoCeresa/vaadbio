@@ -34,8 +34,6 @@ public class AttivitaMod extends ModulePop {
      */
     public AttivitaMod() {
         super(Attivita.class, MENU_ADDRESS, FontAwesome.LIST_UL);
-        ATable tavola = getTable();
-        addActionHandler(tavola);
     }// end of constructor
 
 
@@ -44,7 +42,8 @@ public class AttivitaMod extends ModulePop {
      *
      * @see com.vaadin.event.Action.Container#addActionHandler(Action.Handler)
      */
-    private void addActionHandler(ATable tavola) {
+    @Override
+    protected void addActionHandler(ATable tavola) {
         tavola.addActionHandler(new Action.Handler() {
             public Action[] getActions(Object target, Object sender) {
                 Action[] actions = null;
