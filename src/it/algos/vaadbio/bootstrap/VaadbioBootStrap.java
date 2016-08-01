@@ -40,9 +40,9 @@ public class VaadbioBootStrap extends ABootStrap {
         // registra il servlet context non appena è disponibile
         VaadbioApp.setServletContext(svltCtx);
 
-        // eventuali modifiche allle dimensioni dei bottoni
-        Toolbar.ALTEZZA_BOTTONI = 40;
-        Toolbar.LARGHEZZA_BOTTONI = 140;
+//        // eventuali modifiche allle dimensioni dei bottoni
+//        Toolbar.ALTEZZA_BOTTONI = 40;
+//        Toolbar.LARGHEZZA_BOTTONI = 140;
 
         // eventuali modifiche ai flag generali di regolazione
         AlgosApp.USE_SECURITY = true;

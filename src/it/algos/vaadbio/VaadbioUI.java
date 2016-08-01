@@ -20,6 +20,7 @@ import it.algos.webbase.domain.pref.PrefMod;
 import it.algos.webbase.domain.utente.UtenteModulo;
 import it.algos.webbase.domain.vers.VersMod;
 import it.algos.webbase.web.lib.LibSession;
+import it.algos.webbase.web.login.LoginEvent;
 import it.algos.webbase.web.ui.AlgosUI;
 import it.algos.vaadbio.genere.GenereMod;
 import it.algos.vaadbio.professione.ProfessioneMod;
@@ -136,5 +137,9 @@ public class VaadbioUI extends AlgosUI {
         this.addModulo(new NazionalitaMod());
     }// end of method
 
+    @Override
+    public void onUserLogin(LoginEvent e) {
+
+    }
 }//end of UI class
 

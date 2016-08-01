@@ -237,7 +237,7 @@ public class NomeMod extends ModulePop {
     }// end of method
 
     /**
-     * Esegue l'upload di un nome solamente
+     * Esegue l'upload di un singolo nome
      */
     protected void esegueUpload() {
         Nome nome = getNome();

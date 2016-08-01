@@ -41,9 +41,9 @@ public class UploadNomi {
             }// end of if cycle
         }// end of for cycle
 
-        if (Pref.getBool(CostBio.USA_LOG_DEBUG)) {
+        if (Pref.getBoolean(CostBio.USA_LOG_DEBUG)) {
             modTxt = LibNum.format(mod);
-            if (Pref.getBool(CostBio.USA_REGISTRA_SEMPRE_PERSONA)) {
+            if (Pref.getBoolean(CostBio.USA_REGISTRA_SEMPRE_PERSONA)) {
                 Log.setDebug("upload", "Aggiornate tutte le pagine dei nomi in " + LibTime.difText(inizio));
             } else {
                 Log.setDebug("upload", "Aggiornate solo le pagine modificate dei nomi (" + modTxt + ") in " + LibTime.difText(inizio));

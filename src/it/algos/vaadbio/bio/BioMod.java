@@ -275,16 +275,16 @@ public class BioMod extends ModulePop {
     private void addCommandCicloDown(MenuBar.MenuItem menuItem) {
         menuItem.addItem("Ciclo download", FontAwesome.COG, new MenuBar.Command() {
             public void menuSelected(MenuBar.MenuItem selectedItem) {
-                boolean usaDialoghi = Pref.getBool(CostBio.USA_DIALOGHI_CONFERMA, true);
-                boolean usaDebug = Pref.getBool(CostBio.USA_DEBUG, false);
-                boolean usaLimite = Pref.getBool(CostBio.USA_LIMITE_CICLO, false);
-                boolean usaLog = Pref.getBool(CostBio.USA_LOG_CICLO, false);
-                boolean usaUpdate = Pref.getBool(CostBio.USA_UPLOAD_DOWNLOADATA, false);
-                boolean usaCancella = Pref.getBool(CostBio.USA_CANCELLA_VOCE_MANCANTE, false);
-                boolean usaCommitUnico = Pref.getBool(CostBio.USA_COMMIT_MULTI_RECORDS, false);
-                boolean usaLogDebug = Pref.getBool(CostBio.USA_LOG_DEBUG, false);
-                int maxDowloadNew = Pref.getInt(CostBio.MAX_CICLO, 1000);
-                int numRecordsCommit = Pref.getInt(CostBio.NUM_RECORDS_COMMIT, 500);
+                boolean usaDialoghi = Pref.getBoolean(CostBio.USA_DIALOGHI_CONFERMA, true);
+                boolean usaDebug = Pref.getBoolean(CostBio.USA_DEBUG, false);
+                boolean usaLimite = Pref.getBoolean(CostBio.USA_LIMITE_CICLO, false);
+                boolean usaLog = Pref.getBoolean(CostBio.USA_LOG_CICLO, false);
+                boolean usaUpdate = Pref.getBoolean(CostBio.USA_UPLOAD_DOWNLOADATA, false);
+                boolean usaCancella = Pref.getBoolean(CostBio.USA_CANCELLA_VOCE_MANCANTE, false);
+                boolean usaCommitUnico = Pref.getBoolean(CostBio.USA_COMMIT_MULTI_RECORDS, false);
+                boolean usaLogDebug = Pref.getBoolean(CostBio.USA_LOG_DEBUG, false);
+                int maxDowloadNew = Pref.getInteger(CostBio.MAX_CICLO, 1000);
+                int numRecordsCommit = Pref.getInteger(CostBio.NUM_RECORDS_COMMIT, 500);
                 String nomeCat = "";
                 if (usaDialoghi) {
                     if (usaDebug) {
@@ -367,12 +367,12 @@ public class BioMod extends ModulePop {
 
         menuItem.addItem("Ciclo update", FontAwesome.COG, new MenuBar.Command() {
             public void menuSelected(MenuBar.MenuItem selectedItem) {
-                boolean usaDialoghi = Pref.getBool(CostBio.USA_DIALOGHI_CONFERMA, true);
-                boolean usaDebug = Pref.getBool(CostBio.USA_DEBUG, false);
-                boolean usaLimite = Pref.getBool(CostBio.USA_LIMITE_CICLO, false);
-                boolean usaLog = Pref.getBool(CostBio.USA_LOG_CICLO, false);
-                boolean usaUpdate = Pref.getBool(CostBio.USA_UPLOAD_DOWNLOADATA, false);
-                boolean usaCancella = Pref.getBool(CostBio.USA_CANCELLA_VOCE_MANCANTE, false);
+                boolean usaDialoghi = Pref.getBoolean(CostBio.USA_DIALOGHI_CONFERMA, true);
+                boolean usaDebug = Pref.getBoolean(CostBio.USA_DEBUG, false);
+                boolean usaLimite = Pref.getBoolean(CostBio.USA_LIMITE_CICLO, false);
+                boolean usaLog = Pref.getBoolean(CostBio.USA_LOG_CICLO, false);
+                boolean usaUpdate = Pref.getBoolean(CostBio.USA_UPLOAD_DOWNLOADATA, false);
+                boolean usaCancella = Pref.getBoolean(CostBio.USA_CANCELLA_VOCE_MANCANTE, false);
                 String nomeCat = "";
                 if (usaDialoghi) {
                     if (usaDebug) {
@@ -380,7 +380,7 @@ public class BioMod extends ModulePop {
                     } else {
                         nomeCat = "<b><span style=\"color:red\">" + CicloDownload.TAG_BIO + "</span></b>";
                     }// end of if/else cycle
-                    int maxDowloadNew = Pref.getInt(CostBio.MAX_CICLO, 1000);
+                    int maxDowloadNew = Pref.getInteger(CostBio.MAX_CICLO, 1000);
                     String newMsg = "Esegue un ciclo di sincronizzazione tra le pagine della categoria " + nomeCat + " ed i records della tavola Bio<br/>";
                     newMsg += "<br/>Esegue un ciclo (<b><span style=\"color:green\">update</span></b>) di controllo e aggiornamento di tutti i records esistenti nel database<br/>";
                     if (usaDebug) {
@@ -434,12 +434,12 @@ public class BioMod extends ModulePop {
     private void addCommandCicloElabora(MenuBar.MenuItem menuItem) {
         menuItem.addItem("Ciclo elabora", FontAwesome.COG, new MenuBar.Command() {
             public void menuSelected(MenuBar.MenuItem selectedItem) {
-                boolean usaDialoghi = Pref.getBool(CostBio.USA_DIALOGHI_CONFERMA, true);
-                boolean usaLimite = Pref.getBool(CostBio.USA_LIMITE_CICLO, false);
-                boolean usaLog = Pref.getBool(CostBio.USA_LOG_CICLO, false);
-                boolean usaUpdate = Pref.getBool(CostBio.USA_UPLOAD_ELABORATA, false);
+                boolean usaDialoghi = Pref.getBoolean(CostBio.USA_DIALOGHI_CONFERMA, true);
+                boolean usaLimite = Pref.getBoolean(CostBio.USA_LIMITE_CICLO, false);
+                boolean usaLog = Pref.getBoolean(CostBio.USA_LOG_CICLO, false);
+                boolean usaUpdate = Pref.getBoolean(CostBio.USA_UPLOAD_ELABORATA, false);
                 if (usaDialoghi) {
-                    int maxElabora = Pref.getInt(CostBio.MAX_CICLO, 1000);
+                    int maxElabora = Pref.getInteger(CostBio.MAX_CICLO, 1000);
                     String newMsg = "Elabora le informazioni dei records Bio nel database";
                     if (usaLimite) {
                         newMsg += "<br>Le preferenze prevedono di elaborare <b><span style=\"color:red\">" + LibNum.format(maxElabora) + "</span></b> records Bio nel database";

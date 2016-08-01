@@ -35,7 +35,7 @@ public class DownloadPages {
      * @param bloccoPageids lista (pageids) di pagine da scaricare dal server wiki
      */
     private void doInit(ArrayList<Long> bloccoPageids, EntityManager manager) {
-        if (Pref.getBool(CostBio.USA_COMMIT_MULTI_RECORDS, true)) {
+        if (Pref.getBoolean(CostBio.USA_COMMIT_MULTI_RECORDS, true)) {
             doInitCommit(bloccoPageids, manager);
         } else {
             doInitSenzaCommit(bloccoPageids);

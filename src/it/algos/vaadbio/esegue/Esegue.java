@@ -4,6 +4,7 @@ import it.algos.vaadbio.attivita.AttivitaService;
 import it.algos.vaadbio.ciclo.CicloDownload;
 import it.algos.vaadbio.ciclo.CicloElabora;
 import it.algos.vaadbio.ciclo.CicloUpdate;
+import it.algos.vaadbio.cognome.CognomeService;
 import it.algos.vaadbio.liste.ListaNome;
 import it.algos.vaadbio.nazionalita.NazionalitaService;
 import it.algos.vaadbio.nome.Nome;
@@ -131,6 +132,12 @@ public abstract class Esegue {
         new UploadNomi();
     } // fine del metodo
 
+    /**
+     * Esegue l'aggiornamento e la creazione dei nuovi records
+     */
+    public static void aggiornaCognomi() {
+        CognomeService.aggiorna();
+    }// end of method
 
     /**
      * Crea tutte le pagine statistiche previste

@@ -39,22 +39,22 @@ public abstract class ListaCrono extends ListaBio {
         super.elaboraParametri();
 
         // head
-        usaHeadTocIndice = Pref.getBool(CostBio.USA_TOC_INDICE_CRONO, false);
-        usaHeadRitorno = Pref.getBool(CostBio.USA_RITORNO_CRONO, true);
+        usaHeadTocIndice = Pref.getBoolean(CostBio.USA_TOC_INDICE_CRONO, false);
+        usaHeadRitorno = Pref.getBoolean(CostBio.USA_RITORNO_CRONO, true);
         tagHeadTemplateAvviso = Pref.getStr(CostBio.TEMPLATE_AVVISO_CRONO, "ListaBio");
 
         // body
         usaSuddivisioneParagrafi = false; //--escluso per le voci crono
         usaBodySottopagine = false; //--escluso per le voci crono
-        usaBodyRigheMultiple = Pref.getBool(CostBio.USA_BODY_RIGHE_MULTIPLE_CRONO, true);
+        usaBodyRigheMultiple = Pref.getBoolean(CostBio.USA_BODY_RIGHE_MULTIPLE_CRONO, true);
         usaBodyTemplate = true; //--obbligatorio per le voci crono
 
         // footer
-        usaFooterPortale = Pref.getBool(CostBio.USA_FOOTER_PORTALE_CRONO, true);
-        if (Pref.getBool(CostBio.USA_DEBUG, false)) {
+        usaFooterPortale = Pref.getBoolean(CostBio.USA_FOOTER_PORTALE_CRONO, true);
+        if (Pref.getBoolean(CostBio.USA_DEBUG, false)) {
             usaFooterCategorie = false;
         } else {
-            usaFooterCategorie = Pref.getBool(CostBio.USA_FOOTER_CATEGORIE_CRONO, true);
+            usaFooterCategorie = Pref.getBoolean(CostBio.USA_FOOTER_CATEGORIE_CRONO, true);
         }// end of if/else cycle
     }// fine del metodo
 
@@ -145,7 +145,7 @@ public abstract class ListaCrono extends ListaBio {
      */
     @Override
     protected boolean checkPossoRegistrare(String titolo, String testo) {
-        if (Pref.getBool(CostBio.USA_REGISTRA_SEMPRE_CRONO, false)) {
+        if (Pref.getBoolean(CostBio.USA_REGISTRA_SEMPRE_CRONO, false)) {
             return true;
         } else {
             return LibBio.checkModificaSostanziale(titolo, testo, tagHeadTemplateAvviso, "}}");

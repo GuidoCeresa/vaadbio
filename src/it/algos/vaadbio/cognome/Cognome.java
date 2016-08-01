@@ -1,7 +1,9 @@
 package it.algos.vaadbio.cognome;
 
+import com.vaadin.data.Container;
 import it.algos.webbase.web.entity.BaseEntity;
 import it.algos.webbase.web.query.AQuery;
+import it.algos.webbase.web.query.SortProperty;
 import org.apache.commons.beanutils.BeanUtils;
 import org.eclipse.persistence.annotations.Index;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -23,7 +25,7 @@ public class Cognome extends BaseEntity {
 
     @NotEmpty
     @Index()
-    private String cognome="";
+    private String cognome = "";
 
     /**
      */
@@ -104,6 +106,16 @@ public class Cognome extends BaseEntity {
     }// end of method
 
     /**
+     * Recupera una lista (array) di tutti i records della Domain Class
+     *
+     * @return lista di tutte le istanze di Cognome
+     */
+    @SuppressWarnings("unchecked")
+    public synchronized static ArrayList<BaseEntity> findAll() {
+        return AQuery.getList(Cognome.class, new SortProperty(Cognome_.cognome.getName()), (Container.Filter) null);
+    }// end of method
+
+    /**
      * Recupera il valore del numero totale di records della Domain Class
      *
      * @return numero totale di records della tavola
@@ -119,15 +131,6 @@ public class Cognome extends BaseEntity {
         return totRec;
     }// end of method
 
-    /**
-     * Recupera una lista (array) di tutti i records della Domain Class
-     *
-     * @return lista di tutte le istanze di Cognome
-     */
-    @SuppressWarnings("unchecked")
-    public synchronized static ArrayList<Cognome> findAll() {
-        return (ArrayList<Cognome>) AQuery.getList(Cognome.class);
-    }// end of method
 
     @Override
     public String toString() {

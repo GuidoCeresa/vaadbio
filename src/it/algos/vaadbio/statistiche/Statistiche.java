@@ -95,7 +95,7 @@ public abstract class Statistiche {
      * Registra la pagina <br>
      */
     protected void elaboraPagina() {
-        boolean debug = Pref.getBool(CostBio.USA_DEBUG, false);
+        boolean debug = Pref.getBoolean(CostBio.USA_DEBUG, false);
         String summary = LibWiki.getSummary();
         String testo = CostBio.VUOTO;
         String titolo;

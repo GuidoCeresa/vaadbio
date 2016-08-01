@@ -104,8 +104,8 @@ public class CicloUpdate extends CicloDownload {
         }// end of if cycle
 
         // Recupera il numero globale di voci da controllare; tutto il database oppure un tot stabilito nelle preferenze
-        if (Pref.getBool(CostBio.USA_LIMITE_CICLO, true)) {
-            numVociDaControllare = Pref.getInt(CostBio.MAX_CICLO, 50000);
+        if (Pref.getBoolean(CostBio.USA_LIMITE_CICLO, true)) {
+            numVociDaControllare = Pref.getInteger(CostBio.MAX_CICLO, 50000);
         } else {
             numVociDaControllare = Bio.count();
         }// end of if/else cycle

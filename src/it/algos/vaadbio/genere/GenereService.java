@@ -42,7 +42,7 @@ public abstract class GenereService {
                 aggiungeRecord(elementoDellaMappa);
             }// end of for cycle
 
-            if (Pref.getBool(CostBio.USA_LOG_DEBUG, false)) {
+            if (Pref.getBoolean(CostBio.USA_LOG_DEBUG, false)) {
                 secondi = LibTime.difText(inizio);
                 records = LibNum.format(mappa.size());
                 Log.setDebug("gen", "Aggiornati in " + secondi + " i " + records + " records di attività per genere");

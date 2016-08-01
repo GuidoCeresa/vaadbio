@@ -130,6 +130,17 @@ public class Nome extends BaseEntity {
     }// end of method
 
     /**
+     * Recupera una lista (array) di tutti i records della Domain Class
+     *
+     * @return lista di tutte le istanze di Nome
+     */
+    @SuppressWarnings("unchecked")
+    public synchronized static ArrayList<BaseEntity> findAll() {
+        return AQuery.getList(Nome.class, new SortProperty(Nome_.nome.getName()), (Container.Filter) null);
+    }// end of method
+
+
+    /**
      * Recupera il valore del numero totale di records della Domain Class
      *
      * @return numero totale di records della tavola
@@ -182,15 +193,6 @@ public class Nome extends BaseEntity {
         return instance;
     }// end of static method
 
-    /**
-     * Recupera una lista (array) di tutti i records della Domain Class
-     *
-     * @return lista di tutte le istanze di Nome
-     */
-    @SuppressWarnings("unchecked")
-    public synchronized static ArrayList<BaseEntity> findAll() {
-        return AQuery.getList(Nome.class, new SortProperty(Nome_.nome.getName()), (Container.Filter) null);
-    }// end of method
 
     /**
      * Recupera una lista (array) di tutti i records di Nome doppi
@@ -261,7 +263,7 @@ public class Nome extends BaseEntity {
      */
     @SuppressWarnings("unchecked")
     public synchronized static LinkedHashMap<Nome, Integer> findMappaTaglioPagina() {
-        return findMappa(Pref.getInt(CostBio.TAGLIO_NOMI_PAGINA, 50));
+        return findMappa(Pref.getInteger(CostBio.TAGLIO_NOMI_PAGINA, 50));
     }// end of method
 
     /**
@@ -271,7 +273,7 @@ public class Nome extends BaseEntity {
      */
     @SuppressWarnings("unchecked")
     public synchronized static LinkedHashMap<Nome, Integer> findMappaTaglioListe() {
-        return findMappa(Pref.getInt(CostBio.TAGLIO_NOMI_ELENCO, 20));
+        return findMappa(Pref.getInteger(CostBio.TAGLIO_NOMI_ELENCO, 20));
     }// end of method
 
     /**
@@ -430,7 +432,7 @@ public class Nome extends BaseEntity {
      */
     @SuppressWarnings("all")
     public boolean superaTaglioPagina() {
-        return superaTaglio(Pref.getInt(CostBio.TAGLIO_NOMI_PAGINA, 50));
+        return superaTaglio(Pref.getInteger(CostBio.TAGLIO_NOMI_PAGINA, 50));
     }// fine del metodo
 
     /**
@@ -440,7 +442,7 @@ public class Nome extends BaseEntity {
      */
     @SuppressWarnings("all")
     public boolean superaTaglioElenco() {
-        return superaTaglio(Pref.getInt(CostBio.TAGLIO_NOMI_ELENCO, 20));
+        return superaTaglio(Pref.getInteger(CostBio.TAGLIO_NOMI_ELENCO, 20));
     }// fine del metodo
 
     /**

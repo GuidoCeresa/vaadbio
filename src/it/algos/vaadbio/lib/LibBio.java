@@ -983,7 +983,7 @@ public abstract class LibBio {
         if (LibBio.isLoggatoBot()) {
             return true;
         } else {
-            if (Pref.getBool(CostBio.USA_CICLI_ANCHE_SENZA_BOT, true)) {
+            if (Pref.getBoolean(CostBio.USA_CICLI_ANCHE_SENZA_BOT, true)) {
                 return true;
             } else {
                 return false;

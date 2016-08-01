@@ -56,7 +56,7 @@ public class CicloDelete extends CicloDownload{
                 }// end of if cycle
             } // fine del ciclo for-each
 
-            if (Pref.getBool(CostBio.USA_LOG_CICLO, true)) {
+            if (Pref.getBoolean(CostBio.USA_LOG_CICLO, true)) {
                 if (numRecordsCancellati > 0) {
                     Log.setInfo("delete", "Cancellati " + LibNum.format(numRecordsCancellati) + " records (che non avevano più la corrispondente voce nella categoria) in " + LibTime.difText(inizio));
                 }// end of if cycle

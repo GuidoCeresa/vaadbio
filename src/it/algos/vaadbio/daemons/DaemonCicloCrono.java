@@ -54,7 +54,7 @@ public class DaemonCicloCrono extends Scheduler {
             // Schedule task
             // Ogni giorno
             schedule("1 0 * * *", new TaskCicloBio()); //dal 11 dic 2015
-            if (Pref.getBool(CostBio.USA_LOG_DAEMONS, true)) {
+            if (Pref.getBoolean(CostBio.USA_LOG_DAEMONS, true)) {
                 Log.setDebug("daemonCicloCrono", "Attivato ciclo daemonCicloCrono; flag in preferenze per confermare esecuzione alle 0:01");
             }// fine del blocco if
         }// fine del blocco if
@@ -69,7 +69,7 @@ public class DaemonCicloCrono extends Scheduler {
             ServletContext svc = ABootStrap.getServletContext();
             svc.setAttribute(DAEMON_NAME, false);
 
-            if (Pref.getBool(CostBio.USA_LOG_DAEMONS, true)) {
+            if (Pref.getBoolean(CostBio.USA_LOG_DAEMONS, true)) {
                 Log.setDebug("daemonCicloCrono", "Spento");
             }// fine del blocco if
 
@@ -87,7 +87,7 @@ public class DaemonCicloCrono extends Scheduler {
                 VaadApp.WIKI_LOGIN = wikiLogin;
             }// end of if cycle
 
-            if (Pref.getBool(CostBio.USA_DAEMONS_DOWNLOAD, true)) {
+            if (Pref.getBoolean(CostBio.USA_DAEMONS_DOWNLOAD, true)) {
                 Esegue.cicloDownload();
             }// fine del blocco if
 
@@ -95,7 +95,7 @@ public class DaemonCicloCrono extends Scheduler {
                 Esegue.cicloUpdate();
                 Esegue.cicloElabora();
 
-                if (Pref.getBool(CostBio.USA_DAEMONS_CRONO, true)) {
+                if (Pref.getBoolean(CostBio.USA_DAEMONS_CRONO, true)) {
                     Esegue.cicloUpload();
                 }// end of if cycle
             }// end of if cycle

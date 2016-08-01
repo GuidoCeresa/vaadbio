@@ -63,8 +63,8 @@ public class CicloNew extends CicloDownload {
             return;
         }// end of if/else cycle
 
-        if (Pref.getBool(CostBio.USA_LIMITE_CICLO, false)) {
-            numVociDaScaricare = Math.min(numVociDaScaricare, Pref.getInt(CostBio.MAX_CICLO, 1000));
+        if (Pref.getBoolean(CostBio.USA_LIMITE_CICLO, false)) {
+            numVociDaScaricare = Math.min(numVociDaScaricare, Pref.getInteger(CostBio.MAX_CICLO, 1000));
         }// fine del blocco if
 
         listaVociDaScaricare = new ArrayList<Long>(listaVociMancanti.subList(0, numVociDaScaricare));
@@ -84,13 +84,13 @@ public class CicloNew extends CicloDownload {
 
         //--info
         fine = System.currentTimeMillis();
-        if (Pref.getBool(CostBio.USA_LOG_CICLO, true)) {
-            if (Pref.getBool(CostBio.USA_COMMIT_MULTI_RECORDS, true)) {
+        if (Pref.getBoolean(CostBio.USA_LOG_CICLO, true)) {
+            if (Pref.getBoolean(CostBio.USA_COMMIT_MULTI_RECORDS, true)) {
                 txtMessage = " nuove voci con commit multirecords in ";
             } else {
                 txtMessage = " nuove voci con commit di ogni singolo record in ";
             }// end of if/else cycle
-            if (Pref.getBool(CostBio.USA_LOG_DEBUG, true)) {
+            if (Pref.getBoolean(CostBio.USA_LOG_DEBUG, true)) {
                 numVociTotali = Bio.count();
                 Log.setDebug("new", "Create " + LibNum.format(numVociRegistrate) + "/" + LibNum.format(numVociTotali) + txtMessage + LibNum.format((fine - inizio) / 1000) + " sec.");
             } else {
