@@ -69,9 +69,9 @@ public class UploadAnni {
         if (Pref.getBoolean(CostBio.USA_LOG_DEBUG)) {
             modTxt = LibNum.format(modNati) + "+" + LibNum.format(modMorti);
             if (Pref.getBoolean(CostBio.USA_REGISTRA_SEMPRE_CRONO)) {
-                Log.setDebug("upload", "Aggiornate tutte (3020*2) le pagine degli anni (nati e morti) in " + LibTime.difText(inizio));
+                Log.debug("upload", "Aggiornate tutte (3020*2) le pagine degli anni (nati e morti) in " + LibTime.difText(inizio));
             } else {
-                Log.setDebug("upload", "Aggiornate solo le pagine modificate (" + modTxt + ") degli anni (nati e morti) in " + LibTime.difText(inizio));
+                Log.debug("upload", "Aggiornate solo le pagine modificate (" + modTxt + ") degli anni (nati e morti) in " + LibTime.difText(inizio));
             }// end of if/else cycle
         }// end of if cycle
     }// end of method

@@ -55,7 +55,7 @@ public class DaemonCicloCrono extends Scheduler {
             // Ogni giorno
             schedule("1 0 * * *", new TaskCicloBio()); //dal 11 dic 2015
             if (Pref.getBoolean(CostBio.USA_LOG_DAEMONS, true)) {
-                Log.setDebug("daemonCicloCrono", "Attivato ciclo daemonCicloCrono; flag in preferenze per confermare esecuzione alle 0:01");
+                Log.debug("daemonCicloCrono", "Attivato ciclo daemonCicloCrono; flag in preferenze per confermare esecuzione alle 0:01");
             }// fine del blocco if
         }// fine del blocco if
     }// end of method
@@ -70,7 +70,7 @@ public class DaemonCicloCrono extends Scheduler {
             svc.setAttribute(DAEMON_NAME, false);
 
             if (Pref.getBoolean(CostBio.USA_LOG_DAEMONS, true)) {
-                Log.setDebug("daemonCicloCrono", "Spento");
+                Log.debug("daemonCicloCrono", "Spento");
             }// fine del blocco if
 
         }// fine del blocco if

@@ -98,7 +98,7 @@ public abstract class Esegue {
         uploadNomi();
         statisticheNomi();
 
-        Log.setDebug("nomi", "Nomi doppi, aggiunti ed elaborati i nomi, upload di tutti e statistiche in " + LibTime.difText(inizio));
+        Log.debug("nomi", "Nomi doppi, aggiunti ed elaborati i nomi, upload di tutti e statistiche in " + LibTime.difText(inizio));
     } // fine del metodo
 
 

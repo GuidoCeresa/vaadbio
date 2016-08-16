@@ -99,7 +99,7 @@ public class CicloUpdate extends CicloDownload {
         // Il ciclo necessita del login come bot per il funzionamento normale
         // oppure del flag USA_CICLI_ANCHE_SENZA_BOT per un funzionamento ridotto
         if (!LibBio.checkLoggin()) {
-            Log.setDebug("bioCicloUpdate", "Ciclo interrotto. Non sei loggato come bot ed il flag usaCicliAncheSenzaBot è false");
+            Log.debug("bioCicloUpdate", "Ciclo interrotto. Non sei loggato come bot ed il flag usaCicliAncheSenzaBot è false");
             return;
         }// end of if cycle
 
@@ -150,7 +150,7 @@ public class CicloUpdate extends CicloDownload {
             message += LibNum.format(numVociModificate) + " modificate e ";
             message += LibNum.format(numVociUploadate) + " uploadate) in " + LibTime.difText(inizio) + " ";
             message += ultima;
-            Log.setInfo("update", message);
+            Log.info("update", message);
         }// end of if cycle
 
         numVociModificate = listaVociModificate.size();
@@ -158,7 +158,7 @@ public class CicloUpdate extends CicloDownload {
         message += LibNum.format(numVociModificate) + " modificate e ";
         message += LibNum.format(numVociUploadate) + " uploadate) in " + LibTime.difText(inizio) + " ";
         message += ultima;
-        Log.setInfo("update", message);
+        Log.info("update", message);
 
     }// end of method
 

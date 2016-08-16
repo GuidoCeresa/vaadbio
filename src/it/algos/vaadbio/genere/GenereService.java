@@ -45,7 +45,7 @@ public abstract class GenereService {
             if (Pref.getBoolean(CostBio.USA_LOG_DEBUG, false)) {
                 secondi = LibTime.difText(inizio);
                 records = LibNum.format(mappa.size());
-                Log.setDebug("gen", "Aggiornati in " + secondi + " i " + records + " records di attività per genere");
+                Log.debug("gen", "Aggiornati in " + secondi + " i " + records + " records di attività per genere");
             }// fine del blocco if
             return true;
         }// end of if/else cycle

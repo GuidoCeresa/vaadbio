@@ -591,7 +591,7 @@ public class BioMod extends ModulePop {
     public void esegueDownload(String wikiTitle) {
         if (!wikiTitle.equals("")) {
             if (new Download(wikiTitle).isRegistrata()) {
-                Log.setInfo("download", "Singolo download della voce " + LibWiki.setQuadre(wikiTitle));
+                Log.info("download", "Singolo download della voce " + LibWiki.setQuadre(wikiTitle));
             }// end of if cycle
         } else {
             Notification.show("Devi selezionare una riga per scaricare la voce dal server wiki");

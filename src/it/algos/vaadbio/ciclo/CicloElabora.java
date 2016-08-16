@@ -87,7 +87,7 @@ public class CicloElabora extends CicloDownload {
                 message += "Elaborati " + LibNum.format(numRecordsElaborati) + " records in " + LibTime.difText(inizio) + " " + ultima;
             }// end of if/else cycle
 
-            Log.setInfo("elabora", message);
+            Log.info("elabora", message);
         }// end of if cycle
 
     }// end of method

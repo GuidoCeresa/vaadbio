@@ -92,9 +92,9 @@ public class CicloNew extends CicloDownload {
             }// end of if/else cycle
             if (Pref.getBoolean(CostBio.USA_LOG_DEBUG, true)) {
                 numVociTotali = Bio.count();
-                Log.setDebug("new", "Create " + LibNum.format(numVociRegistrate) + "/" + LibNum.format(numVociTotali) + txtMessage + LibNum.format((fine - inizio) / 1000) + " sec.");
+                Log.debug("new", "Create " + LibNum.format(numVociRegistrate) + "/" + LibNum.format(numVociTotali) + txtMessage + LibNum.format((fine - inizio) / 1000) + " sec.");
             } else {
-                Log.setInfo("new", "Create " + LibNum.format(numVociRegistrate) + txtMessage + LibTime.difText(inizio));
+                Log.debug("new", "Create " + LibNum.format(numVociRegistrate) + txtMessage + LibTime.difText(inizio));
             }// end of if/else cycle
         }// fine del blocco if
 

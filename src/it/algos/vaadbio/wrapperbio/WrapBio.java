@@ -71,7 +71,7 @@ public class WrapBio {
 
         if (pagina.getTitle() == null) {
             if (Pref.getBoolean(CostBio.USA_LOG_CICLO, true)) {
-                Log.setDebug("cicloNew", "Una pagina (non so quale) non è valida");
+                Log.debug("cicloNew", "Una pagina (non so quale) non è valida");
             }// fine del blocco if
             return;
         }// fine del blocco if
@@ -85,18 +85,18 @@ public class WrapBio {
             if (Pref.getBoolean(CostBio.USA_LOG_CICLO, true)) {
                 testoPagina = pagina.getText();
                 if (testoPagina.equals(CostBio.VUOTO)) {
-                    Log.setDebug("cicloNew", "La pagina " + LibWiki.setQuadre(wikiTitle) + ", non è stata letta");
+                    Log.debug("cicloNew", "La pagina " + LibWiki.setQuadre(wikiTitle) + ", non è stata letta");
                     return;
                 }// end of if cycle
                 if (testoPagina.startsWith(CostBio.DISAMBIGUA)) {
-                    Log.setDebug("cicloNew", "La pagina " + LibWiki.setQuadre(wikiTitle) + ", non è stata registrata perché è una disambigua");
+                    Log.debug("cicloNew", "La pagina " + LibWiki.setQuadre(wikiTitle) + ", non è stata registrata perché è una disambigua");
                     return;
                 }// end of if cycle
                 if (testoPagina.startsWith(CostBio.REDIRECT) || testoPagina.startsWith(CostBio.REDIRECT)) {
-                    Log.setDebug("cicloNew", "La pagina " + LibWiki.setQuadre(wikiTitle) + ", non è stata registrata perché è un redirect");
+                    Log.debug("cicloNew", "La pagina " + LibWiki.setQuadre(wikiTitle) + ", non è stata registrata perché è un redirect");
                     return;
                 }// end of if cycle
-                Log.setDebug("cicloNew", "La pagina " + LibWiki.setQuadre(wikiTitle) + ", non è stata registrata perché  manca il tmplBio");
+                Log.debug("cicloNew", "La pagina " + LibWiki.setQuadre(wikiTitle) + ", non è stata registrata perché  manca il tmplBio");
                 return;
             }// fine del blocco if
             return;

@@ -106,9 +106,9 @@ public class CicloDownload {
         inizio = System.currentTimeMillis();
         listaTotaleCategoria = Api.leggeCatLong(nomeCategoria);
         if (listaTotaleCategoria != null) {
-            Log.setDebug("categoria", "Letti e caricati in memoria i pageids di " + LibNum.format(listaTotaleCategoria.size()) + " pagine della categoria '" + nomeCategoria + "' in " + LibTime.difText(inizio));
+            Log.debug("categoria", "Letti e caricati in memoria i pageids di " + LibNum.format(listaTotaleCategoria.size()) + " pagine della categoria '" + nomeCategoria + "' in " + LibTime.difText(inizio));
         } else {
-            Log.setDebug("categoria", "Categoria '" + nomeCategoria + "' non trovata. Probabilmente manca il Login ");
+            Log.debug("categoria", "Categoria '" + nomeCategoria + "' non trovata. Probabilmente manca il Login ");
         }// end of if/else cycle
 
         // recupera la lista dei records esistenti nel database
@@ -164,7 +164,7 @@ public class CicloDownload {
                         mess = "Commit unico blocco di " + LibNum.format(dimBloccoLettura);
                         mess += " Save " + LibNum.format(numVociRegistrate) + "/" + LibNum.format(numVociDaScaricare) + " voci";
                         mess += " in " + LibNum.format(fineCommit - inizioCommit) + " milliSec./" + LibTime.difText(inizio);
-                        Log.setDebug("test", mess);
+                        Log.debug("test", mess);
                     }// end of if cycle
                 }// end of for cycle
             } else {
@@ -195,7 +195,7 @@ public class CicloDownload {
             if (Pref.getBoolean(CostBio.USA_CICLI_ANCHE_SENZA_BOT)) {
                 dimBlocco = 50;
             } else {
-                Log.setDebug("bioCicloUpdate", "Ciclo interrotto. Non sei loggato come bot ed il flag usaCicliAncheSenzaBot è false");
+                Log.debug("bioCicloUpdate", "Ciclo interrotto. Non sei loggato come bot ed il flag usaCicliAncheSenzaBot è false");
                 return 0;
             }// end of if/else cycle
         }// end of if/else cycle

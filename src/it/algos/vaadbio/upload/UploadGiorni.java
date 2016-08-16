@@ -48,9 +48,9 @@ public class UploadGiorni {
         if (Pref.getBoolean(CostBio.USA_LOG_DEBUG)) {
             modTxt = LibNum.format(modNati) + "+" + LibNum.format(modMorti);
             if (Pref.getBoolean(CostBio.USA_REGISTRA_SEMPRE_CRONO)) {
-                Log.setDebug("upload", "Aggiornate tutte (366*2) le pagine dei giorni (nati e morti) in " + LibTime.difText(inizio));
+                Log.debug("upload", "Aggiornate tutte (366*2) le pagine dei giorni (nati e morti) in " + LibTime.difText(inizio));
             } else {
-                Log.setDebug("upload", "Aggiornate solo le pagine modificate (" + modTxt + ") dei giorni (nati e morti) in " + LibTime.difText(inizio));
+                Log.debug("upload", "Aggiornate solo le pagine modificate (" + modTxt + ") dei giorni (nati e morti) in " + LibTime.difText(inizio));
             }// end of if/else cycle
         }// end of if cycle
     }// end of method

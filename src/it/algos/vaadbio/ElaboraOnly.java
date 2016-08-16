@@ -98,7 +98,7 @@ public class ElaboraOnly {
             elaborato = true;
         } catch (Exception unErrore) { // intercetta l'errore
             //--Recupera i dati dal record della tavola Wikibio
-            Log.setDebug("elabora", "Non sono riuscito ad elaborare la voce " + LibWiki.setQuadre(bio.getTitle()));
+            Log.debug("elabora", "Non sono riuscito ad elaborare la voce " + LibWiki.setQuadre(bio.getTitle()));
         }// fine del blocco try-catch
 
     }// end of method
