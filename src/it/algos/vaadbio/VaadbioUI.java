@@ -129,17 +129,19 @@ public class VaadbioUI extends AlgosUI {
         }// end of if cycle
 
 
-        this.addModulo(new NomeMod());
-        this.addModulo(new CognomeMod());
-        this.addModulo(new ProfessioneMod());
-        this.addModulo(new GenereMod());
-        this.addModulo(new AttivitaMod());
-        this.addModulo(new NazionalitaMod());
+//        this.addModulo(new NomeMod());
+//        this.addModulo(new CognomeMod());
+//        this.addModulo(new ProfessioneMod());
+//        this.addModulo(new GenereMod());
+//        this.addModulo(new AttivitaMod());
+//        this.addModulo(new NazionalitaMod());
     }// end of method
 
     @Override
     public void onUserLogin(LoginEvent e) {
-
+//        WikiLogin login = new WikiLogin()
+        Object obj = LibSession.getAttribute(WikiLogin.WIKI_LOGIN_KEY_IN_SESSION);
+int a=87;
     }
 }//end of UI class
 

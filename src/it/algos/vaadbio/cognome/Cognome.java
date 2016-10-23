@@ -11,6 +11,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Classe di tipo JavaBean
@@ -111,7 +112,7 @@ public class Cognome extends BaseEntity {
      * @return lista di tutte le istanze di Cognome
      */
     @SuppressWarnings("unchecked")
-    public synchronized static ArrayList<BaseEntity> findAll() {
+    public synchronized static List<? extends BaseEntity> findAll() {
         return AQuery.getList(Cognome.class, new SortProperty(Cognome_.cognome.getName()), (Container.Filter) null);
     }// end of method
 

@@ -24,7 +24,7 @@ import javax.servlet.annotation.WebServlet;
  * which provides you with the option to select UI by referring the UI class
  * directly toggle productionMode using a boolean and more
  */
-@WebServlet(urlPatterns = { "/*" , "/VAADIN/*" }, asyncSupported = true, displayName = "Vaadbio")
+@WebServlet(urlPatterns = {"/*", "/VAADIN/*"}, asyncSupported = true, displayName = "Vaadbio")
 @VaadinServletConfiguration(productionMode = false, ui = VaadbioUI.class)
 public class VaadbioServlet extends AlgosServlet {
 
@@ -64,11 +64,13 @@ public class VaadbioServlet extends AlgosServlet {
             if (loginBase.isLogged()) {
                 nick = loginBase.getUser().getNickname();
                 password = loginBase.getUser().getPassword();
-                clearPass = LibCrypto.decrypt(password);
+//                clearPass = LibCrypto.decrypt(password);//todo ATTENZIONE - PATCH
             }// end of if cycle
         }// end of if cycle
 
-        if (!nick.equals("") && !clearPass.equals("")) {
+        //todo ATTENZIONE - PATCH
+        clearPass=password;
+        if (!nick.equals("") && clearPass != null && !clearPass.equals("")) {
             loginWiki = new WikiLogin(nick, clearPass);
             status = loginWiki.isValido();
             LibSession.setAttribute("logged", true);

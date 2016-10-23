@@ -343,7 +343,7 @@ public abstract class ListaBio {
         }// fine del blocco if
 
         if (usaBodyTemplate) {
-            if (Pref.getBoolean(CostBio.USA_DEBUG, true)) {
+            if (Pref.getBoolean(CostBio.USA_DEBUG, false)) {
                 text = elaboraTemplate("") + text;
             } else {
                 text = elaboraTemplate(text);

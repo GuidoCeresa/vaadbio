@@ -135,7 +135,7 @@ public class Nome extends BaseEntity {
      * @return lista di tutte le istanze di Nome
      */
     @SuppressWarnings("unchecked")
-    public synchronized static ArrayList<BaseEntity> findAll() {
+    public synchronized static List<? extends BaseEntity> findAll() {
         return AQuery.getList(Nome.class, new SortProperty(Nome_.nome.getName()), (Container.Filter) null);
     }// end of method
 
@@ -224,7 +224,7 @@ public class Nome extends BaseEntity {
     @SuppressWarnings("unchecked")
     public synchronized static ArrayList<Nome> findAllSuperaTaglioPagina() {
         ArrayList<Nome> listaParziale = new ArrayList<>();
-        ArrayList<BaseEntity> listaCompleta = findAll();
+        List<? extends BaseEntity> listaCompleta = findAll();
         Nome nome;
 
         for (BaseEntity entity : listaCompleta) {
@@ -285,7 +285,7 @@ public class Nome extends BaseEntity {
     private synchronized static LinkedHashMap<Nome, Integer> findMappa(int maxVoci) {
         LinkedHashMap<Nome, Integer> mappa = new LinkedHashMap<Nome, Integer>();
         long numRecords = 0;
-        ArrayList<BaseEntity> listaCompleta = findAll();
+        List<? extends BaseEntity> listaCompleta = findAll();
         Nome nome;
 
         for (BaseEntity entity : listaCompleta) {
