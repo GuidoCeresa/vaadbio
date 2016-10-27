@@ -76,7 +76,7 @@ public class StatNomiListe extends StatNomi {
         String text = CostBio.VUOTO;
         int numNomi = mappaNomi.size();
         int numVoci = Bio.count();
-        int taglioVoci = Pref.getInteger(CostBio.TAGLIO_NOMI_ELENCO);
+        int taglioVoci = Pref.getInt(CostBio.TAGLIO_NOMI_ELENCO);
 
         text += A_CAPO;
         text += "==Nomi==";
@@ -106,7 +106,7 @@ public class StatNomiListe extends StatNomi {
         Nome nome;
         String nomeText;
         int num;
-        int taglioPagine = Pref.getInteger(CostBio.TAGLIO_NOMI_PAGINA);
+        int taglioPagine = Pref.getInt(CostBio.TAGLIO_NOMI_PAGINA);
         String numText;
         String tag = "Persone di nome ";
         ArrayList titoli = new ArrayList();

@@ -76,7 +76,7 @@ public class Cognome extends BaseEntity {
      */
     public static Cognome find(long id) {
         Cognome instance = null;
-        BaseEntity entity = AQuery.queryById(Cognome.class, id);
+        BaseEntity entity = AQuery.find(Cognome.class, id);
 
         if (entity != null) {
             if (entity instanceof Cognome) {
@@ -95,7 +95,7 @@ public class Cognome extends BaseEntity {
      */
     public static Cognome findByCognome(String cognome) {
         Cognome instance = null;
-        BaseEntity entity = AQuery.queryOne(Cognome.class, Cognome_.cognome, cognome);
+        BaseEntity entity = AQuery.getEntity(Cognome.class, Cognome_.cognome, cognome);
 
         if (entity != null) {
             if (entity instanceof Cognome) {
@@ -123,7 +123,7 @@ public class Cognome extends BaseEntity {
      */
     public synchronized static int count() {
         int totRec = 0;
-        long totTmp = AQuery.getCount(Cognome.class);
+        long totTmp = AQuery.count(Cognome.class);
 
         if (totTmp > 0) {
             totRec = (int) totTmp;

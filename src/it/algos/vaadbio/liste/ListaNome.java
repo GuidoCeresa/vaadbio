@@ -59,14 +59,14 @@ public class ListaNome extends ListaBio {
         usaSottopagine = true;
         usaTitoloParagrafoConLink = true;
         usaTaglioVociPagina = true;
-        maxVociPagina = Pref.getInteger(CostBio.TAGLIO_NOMI_PAGINA, 100);
+        maxVociPagina = Pref.getInt(CostBio.TAGLIO_NOMI_PAGINA, 100);
 
         // footer
-        usaFooterPortale = Pref.getBoolean(CostBio.USA_FOOTER_PORTALE_NOMI, true);
-        if (Pref.getBoolean(CostBio.USA_DEBUG, false)) {
+        usaFooterPortale = Pref.getBool(CostBio.USA_FOOTER_PORTALE_NOMI, true);
+        if (Pref.getBool(CostBio.USA_DEBUG, false)) {
             usaFooterCategorie = false;
         } else {
-            usaFooterCategorie = Pref.getBoolean(CostBio.USA_FOOTER_CATEGORIE_NOMI, true);
+            usaFooterCategorie = Pref.getBool(CostBio.USA_FOOTER_CATEGORIE_NOMI, true);
         }// end of if/else cycle
     }// fine del metodo
 
@@ -357,7 +357,7 @@ public class ListaNome extends ListaBio {
      */
     @Override
     protected boolean checkPossoRegistrare(String titolo, String testo) {
-        if (Pref.getBoolean(CostBio.USA_REGISTRA_SEMPRE_PERSONA, false)) {
+        if (Pref.getBool(CostBio.USA_REGISTRA_SEMPRE_PERSONA, false)) {
             return true;
         } else {
             return LibBio.checkModificaSostanziale(titolo, testo, tagHeadTemplateAvviso, "}}");

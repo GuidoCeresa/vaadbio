@@ -54,7 +54,7 @@ public class Delta extends BaseEntity {
      */
     public static Delta find(long id) {
         Delta instance = null;
-        BaseEntity entity = AQuery.queryById(Delta.class, id);
+        BaseEntity entity = AQuery.find(Delta.class, id);
 
         if (entity != null) {
             if (entity instanceof Delta) {
@@ -73,7 +73,7 @@ public class Delta extends BaseEntity {
      */
     public static Delta findBySorgente(String nome) {
         Delta instance = null;
-        BaseEntity entity = AQuery.queryOne(Delta.class, Delta_.sorgente, nome);
+        BaseEntity entity = AQuery.getEntity(Delta.class, Delta_.sorgente, nome);
 
         if (entity != null) {
             if (entity instanceof Delta) {
@@ -91,7 +91,7 @@ public class Delta extends BaseEntity {
      */
     public synchronized static int count() {
         int totRec = 0;
-        long totTmp = AQuery.getCount(Delta.class);
+        long totTmp = AQuery.count(Delta.class);
 
         if (totTmp > 0) {
             totRec = (int) totTmp;
@@ -107,7 +107,7 @@ public class Delta extends BaseEntity {
      */
     @SuppressWarnings("unchecked")
     public synchronized static ArrayList<Delta> findAll() {
-        return (ArrayList<Delta>) AQuery.getLista(Delta.class);
+        return (ArrayList<Delta>) AQuery.getList(Delta.class);
     }// end of method
 
     @Override

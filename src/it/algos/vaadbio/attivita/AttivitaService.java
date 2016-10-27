@@ -43,7 +43,7 @@ public abstract class AttivitaService {
                 aggiungeRecord(elementoDellaMappa);
             }// end of for cycle
 
-            if (Pref.getBoolean(CostBio.USA_LOG_DEBUG, false)) {
+            if (Pref.getBool(CostBio.USA_LOG_DEBUG, false)) {
                 secondi = LibTime.difText(inizio);
                 records = LibNum.format(mappa.size());
                 Log.debug("attivita", "Aggiornati in " + secondi + " i " + records + " records di attività (plurale)");

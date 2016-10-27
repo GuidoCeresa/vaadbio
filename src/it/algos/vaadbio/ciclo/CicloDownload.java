@@ -86,19 +86,19 @@ public class CicloDownload {
         }// end of if cycle
 
         // seleziona la categoria normale o di debug
-        if (Pref.getBoolean(CostBio.USA_DEBUG, false)) {
+        if (Pref.getBool(CostBio.USA_DEBUG, false)) {
             nomeCategoria = TAG_CAT_DEBUG;
         } else {
             nomeCategoria = TAG_BIO;
         }// fine del blocco if-else
 
         // aggiorna la tavola delle attività
-        if (!Pref.getBoolean(CostBio.USA_DEBUG, false)) {
+        if (!Pref.getBool(CostBio.USA_DEBUG, false)) {
             AttivitaService.download();
         }// fine del blocco if-else
 
         // aggiorna la tavola delle nazionalità
-        if (!Pref.getBoolean(CostBio.USA_DEBUG, false)) {
+        if (!Pref.getBool(CostBio.USA_DEBUG, false)) {
             NazionalitaService.download();
         }// fine del blocco if-else
 
@@ -116,10 +116,13 @@ public class CicloDownload {
 
         // elabora le liste delle differenze per la sincronizzazione
         listaMancanti = LibWiki.delta(listaTotaleCategoria, listaEsistentiDataBase);
-        listaEccedenti = LibWiki.delta(listaEsistentiDataBase, listaTotaleCategoria);
 
         // Cancella tutti i records non più presenti nella categoria
-        new CicloDelete(listaEccedenti);
+        // Solo se NON è in debug (la categoria sarebbe minima e cancellerebbe quasi tutto)
+        if (!Pref.getBool(CostBio.USA_DEBUG, false)) {
+            listaEccedenti = LibWiki.delta(listaEsistentiDataBase, listaTotaleCategoria);
+            new CicloDelete(listaEccedenti);
+        }// fine del blocco if-else
 
         // Scarica la lista di voci mancanti dal server e crea i nuovi records di Bio
         new CicloNew(listaMancanti);
@@ -147,7 +150,7 @@ public class CicloDownload {
 
         if (listaVociDaScaricare != null && listaVociDaScaricare.size() > 0) {
             numVociDaScaricare = listaVociDaScaricare.size();
-            if (Pref.getBoolean(CostBio.USA_COMMIT_MULTI_RECORDS, false)) {
+            if (Pref.getBool(CostBio.USA_COMMIT_MULTI_RECORDS, false)) {
                 numCicliLetturaPagine = LibArray.numCicli(listaVociDaScaricare.size(), dimBloccoLettura);
                 for (int k = 0; k < numCicliLetturaPagine; k++) {
                     bloccoPageids = LibArray.estraeSublistaLong(listaVociDaScaricare, dimBloccoLettura, k);
@@ -160,7 +163,7 @@ public class CicloDownload {
                     MANAGER.getTransaction().commit();
                     fineCommit = System.currentTimeMillis();
 
-                    if (Pref.getBoolean(CostBio.USA_LOG_DEBUG, false)) {
+                    if (Pref.getBool(CostBio.USA_LOG_DEBUG, false)) {
                         mess = "Commit unico blocco di " + LibNum.format(dimBloccoLettura);
                         mess += " Save " + LibNum.format(numVociRegistrate) + "/" + LibNum.format(numVociDaScaricare) + " voci";
                         mess += " in " + LibNum.format(fineCommit - inizioCommit) + " milliSec./" + LibTime.difText(inizio);
@@ -190,9 +193,9 @@ public class CicloDownload {
         int dimBlocco = 0;
 
         if (LibBio.isLoggatoBot()) {
-            dimBlocco = Pref.getInteger(CostBio.NUM_PAGEIDS_REQUEST, 500);
+            dimBlocco = Pref.getInt(CostBio.NUM_PAGEIDS_REQUEST, 500);
         } else {
-            if (Pref.getBoolean(CostBio.USA_CICLI_ANCHE_SENZA_BOT)) {
+            if (Pref.getBool(CostBio.USA_CICLI_ANCHE_SENZA_BOT)) {
                 dimBlocco = 50;
             } else {
                 Log.debug("bioCicloUpdate", "Ciclo interrotto. Non sei loggato come bot ed il flag usaCicliAncheSenzaBot è false");

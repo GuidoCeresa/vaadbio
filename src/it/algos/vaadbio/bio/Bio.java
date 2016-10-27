@@ -224,7 +224,7 @@ public class Bio extends BaseEntity {
 
     public synchronized static int count() {
         int totRec = 0;
-        long totTmp = AQuery.getCount(Bio.class);
+        long totTmp = AQuery.count(Bio.class);
 
         if (totTmp > 0) {
             totRec = (int) totTmp;
@@ -242,7 +242,7 @@ public class Bio extends BaseEntity {
      */
     public synchronized static Bio find(long id) {
         Bio instance = null;
-        BaseEntity entity = AQuery.queryById(Bio.class, id);
+        BaseEntity entity = AQuery.find(Bio.class, id);
 
         if (entity != null) {
             if (entity instanceof Bio) {
@@ -261,7 +261,7 @@ public class Bio extends BaseEntity {
      */
     public synchronized static Bio findByPageid(long pageid) {
         Bio instance = null;
-        BaseEntity entity = AQuery.queryOne(Bio.class, Bio_.pageid, pageid);
+        BaseEntity entity = AQuery.getEntity(Bio.class, Bio_.pageid, pageid);
 
         if (entity != null) {
             if (entity instanceof Bio) {
@@ -280,7 +280,7 @@ public class Bio extends BaseEntity {
      */
     public synchronized static Bio findByTitle(String title) {
         Bio instance = null;
-        BaseEntity entity = AQuery.queryOne(Bio.class, Bio_.title, title);
+        BaseEntity entity = AQuery.getEntity(Bio.class, Bio_.title, title);
 
         if (entity != null) {
             if (entity instanceof Bio) {
@@ -381,7 +381,7 @@ public class Bio extends BaseEntity {
      */
     @SuppressWarnings("unchecked")
     public synchronized static ArrayList<Bio> findAll() {
-        return (ArrayList<Bio>) AQuery.getLista(Bio.class);
+        return (ArrayList<Bio>) AQuery.getList(Bio.class);
     }// end of method
 
     public long getPageid() {

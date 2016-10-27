@@ -156,7 +156,7 @@ public class ListaNomeABC extends ListaNome {
         didascalia = (String) ((Object[]) obj)[1];
         if (!cognome.equals(CostBio.VUOTO)) {
             key = cognome.substring(0, 1);
-            if (Pref.getBoolean(CostBio.USA_CASE_UGUALI, false)) {
+            if (Pref.getBool(CostBio.USA_CASE_UGUALI, false)) {
                 key = key.toUpperCase();
             }// end of if cycle
         } else {

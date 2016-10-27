@@ -70,7 +70,7 @@ public class WrapBio {
         }// fine del blocco if
 
         if (pagina.getTitle() == null) {
-            if (Pref.getBoolean(CostBio.USA_LOG_CICLO, true)) {
+            if (Pref.getBool(CostBio.USA_LOG_CICLO, true)) {
                 Log.debug("cicloNew", "Una pagina (non so quale) non è valida");
             }// fine del blocco if
             return;
@@ -82,7 +82,7 @@ public class WrapBio {
 
         if (tmplBio.equals("")) {
             registrata = false;
-            if (Pref.getBoolean(CostBio.USA_LOG_CICLO, true)) {
+            if (Pref.getBool(CostBio.USA_LOG_CICLO, true)) {
                 testoPagina = pagina.getText();
                 if (testoPagina.equals(CostBio.VUOTO)) {
                     Log.debug("cicloNew", "La pagina " + LibWiki.setQuadre(wikiTitle) + ", non è stata letta");

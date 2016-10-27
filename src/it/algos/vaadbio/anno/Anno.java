@@ -76,7 +76,7 @@ public class Anno extends BaseEntity {
      */
     public static Anno find(long id) {
         Anno instance = null;
-        BaseEntity entity = AQuery.queryById(Anno.class, id);
+        BaseEntity entity = AQuery.find(Anno.class, id);
 
         if (entity != null) {
             if (entity instanceof Anno) {
@@ -106,7 +106,7 @@ public class Anno extends BaseEntity {
      */
     public static Anno findByTitolo(String titolo) {
         Anno instance = null;
-        BaseEntity entity = AQuery.queryOne(Anno.class, Anno_.titolo, titolo);
+        BaseEntity entity = AQuery.getEntity(Anno.class, Anno_.titolo, titolo);
 
         if (entity != null) {
             if (entity instanceof Anno) {
@@ -125,7 +125,7 @@ public class Anno extends BaseEntity {
      */
     public static int count() {
         int totRec = 0;
-        long totTmp = AQuery.getCount(Anno.class);
+        long totTmp = AQuery.count(Anno.class);
 
         if (totTmp > 0) {
             totRec = (int) totTmp;
@@ -142,7 +142,7 @@ public class Anno extends BaseEntity {
      */
     @SuppressWarnings("unchecked")
     public static ArrayList<Anno> findAll() {
-        return (ArrayList<Anno>) AQuery.getLista(Anno.class);
+        return (ArrayList<Anno>) AQuery.getList(Anno.class);
     }// end of method
 
 

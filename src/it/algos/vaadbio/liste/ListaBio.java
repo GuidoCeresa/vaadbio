@@ -95,7 +95,7 @@ public abstract class ListaBio {
      */
     protected void elaboraParametri() {
         // head
-        usaHeadNonScrivere = Pref.getBoolean(CostBio.USA_HEAD_NON_SCRIVERE, true);
+        usaHeadNonScrivere = Pref.getBool(CostBio.USA_HEAD_NON_SCRIVERE, true);
         usaHeadInclude = true; //--tipicamente sempre true. Si attiva solo se c'è del testo (iniziale) da includere
         usaHeadToc = true; //--tipicamente sempre true.
         usaHeadTocIndice = true; //--normalmente true. Sovrascrivibile da preferenze
@@ -113,7 +113,7 @@ public abstract class ListaBio {
         usaBodyDoppiaColonna = true; //--normalmente true. Sovrascrivibile nelle sottoclassi
         usaBodyTemplate = false; //--normalmente false. Sovrascrivibile nelle sottoclassi
         usaSottopagine = false; //--normalmente false. Sovrascrivibile nelle sottoclassi
-        maxVociParagrafo = Pref.getInteger(CostBio.MAX_VOCI_PARAGRAFO, 100);//--tipicamente 100. Sovrascrivibile nelle sottoclassi
+        maxVociParagrafo = Pref.getInt(CostBio.MAX_VOCI_PARAGRAFO, 100);//--tipicamente 100. Sovrascrivibile nelle sottoclassi
         tagParagrafoNullo = ALTRE;
         usaTitoloParagrafoConLink = false;
         usaTaglioVociPagina = false;
@@ -230,7 +230,7 @@ public abstract class ListaBio {
      * Registra la pagina <br>
      */
     protected void elaboraPagina() {
-        boolean debug = Pref.getBoolean(CostBio.USA_DEBUG, false);
+        boolean debug = Pref.getBool(CostBio.USA_DEBUG, false);
         String summary = LibWiki.getSummary();
         String testo = CostBio.VUOTO;
         String titolo;
@@ -343,7 +343,7 @@ public abstract class ListaBio {
         }// fine del blocco if
 
         if (usaBodyTemplate) {
-            if (Pref.getBoolean(CostBio.USA_DEBUG, false)) {
+            if (Pref.getBool(CostBio.USA_DEBUG, false)) {
                 text = elaboraTemplate("") + text;
             } else {
                 text = elaboraTemplate(text);

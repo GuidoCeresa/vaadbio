@@ -63,7 +63,7 @@ public class Professione extends BaseEntity {
      */
     public static Professione find(long id) {
         Professione instance = null;
-        BaseEntity entity = AQuery.queryById(Professione.class, id);
+        BaseEntity entity = AQuery.find(Professione.class, id);
 
         if (entity != null) {
             if (entity instanceof Professione) {
@@ -82,7 +82,7 @@ public class Professione extends BaseEntity {
      */
     public static Professione findBySingolare(String singolare) {
         Professione instance = null;
-        BaseEntity entity = AQuery.queryOne(Professione.class, Professione_.singolare, singolare);
+        BaseEntity entity = AQuery.getEntity(Professione.class, Professione_.singolare, singolare);
 
         if (entity != null) {
             if (entity instanceof Professione) {
@@ -101,7 +101,7 @@ public class Professione extends BaseEntity {
      */
     public static Professione findByPagina(String pagina) {
         Professione instance = null;
-        BaseEntity entity = AQuery.queryOne(Professione.class, Professione_.pagina, pagina);
+        BaseEntity entity = AQuery.getEntity(Professione.class, Professione_.pagina, pagina);
 
         if (entity != null) {
             if (entity instanceof Professione) {
@@ -137,7 +137,7 @@ public class Professione extends BaseEntity {
      */
     public static int count() {
         int totRec = 0;
-        long totTmp = AQuery.getCount(Professione.class);
+        long totTmp = AQuery.count(Professione.class);
 
         if (totTmp > 0) {
             totRec = (int) totTmp;
@@ -153,7 +153,7 @@ public class Professione extends BaseEntity {
      */
     @SuppressWarnings("unchecked")
     public static ArrayList<Professione> findAll() {
-        return (ArrayList<Professione>) AQuery.getLista(Professione.class);
+        return (ArrayList<Professione>) AQuery.getList(Professione.class);
     }// end of method
 
     @Override

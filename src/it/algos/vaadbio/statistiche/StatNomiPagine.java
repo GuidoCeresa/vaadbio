@@ -72,7 +72,7 @@ public class StatNomiPagine extends StatNomi {
     protected String elaboraBody() {
         String text = CostBio.VUOTO;
         int numVoci = mappaNomi.size();
-        int taglioPagine = Pref.getInteger(CostBio.TAGLIO_NOMI_PAGINA);
+        int taglioPagine = Pref.getInt(CostBio.TAGLIO_NOMI_PAGINA);
 
         text += A_CAPO;
         text += "==Nomi==";

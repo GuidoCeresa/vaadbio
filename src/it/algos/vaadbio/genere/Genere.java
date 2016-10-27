@@ -69,7 +69,7 @@ public class Genere extends BaseEntity {
      */
     public static Genere find(long id) {
         Genere instance = null;
-        BaseEntity entity = AQuery.queryById(Genere.class, id);
+        BaseEntity entity = AQuery.find(Genere.class, id);
 
         if (entity != null) {
             if (entity instanceof Genere) {
@@ -88,7 +88,7 @@ public class Genere extends BaseEntity {
      */
     public static Genere findBySingolare(String singolare) {
         Genere instance = null;
-        BaseEntity entity = AQuery.queryOne(Genere.class, Genere_.singolare, singolare);
+        BaseEntity entity = AQuery.getEntity(Genere.class, Genere_.singolare, singolare);
 
         if (entity != null) {
             if (entity instanceof Genere) {
@@ -108,7 +108,7 @@ public class Genere extends BaseEntity {
      */
     public static Genere findBySingolareAndSesso(String singolare, String sesso) {
         Genere instance;
-        List<? extends BaseEntity> entities = AQuery.queryList(Genere.class, Genere_.singolare, singolare);
+        List<? extends BaseEntity> entities = AQuery.getList(Genere.class, Genere_.singolare, singolare);
 
         if (entities != null) {
             for (BaseEntity entity : entities) {
@@ -134,7 +134,7 @@ public class Genere extends BaseEntity {
      */
     public static Genere findByPlurale(String plurale) {
         Genere instance = null;
-        BaseEntity entity = AQuery.queryOne(Genere.class, Genere_.plurale, plurale);
+        BaseEntity entity = AQuery.getEntity(Genere.class, Genere_.plurale, plurale);
 
         if (entity != null) {
             if (entity instanceof Genere) {
@@ -152,7 +152,7 @@ public class Genere extends BaseEntity {
      */
     public static int count() {
         int totRec = 0;
-        long totTmp = AQuery.getCount(Genere.class);
+        long totTmp = AQuery.count(Genere.class);
 
         if (totTmp > 0) {
             totRec = (int) totTmp;
@@ -168,7 +168,7 @@ public class Genere extends BaseEntity {
      */
     @SuppressWarnings("unchecked")
     public static ArrayList<Genere> findAll() {
-        return (ArrayList<Genere>) AQuery.getLista(Genere.class);
+        return (ArrayList<Genere>) AQuery.getList(Genere.class);
     }// end of method
 
     @Override

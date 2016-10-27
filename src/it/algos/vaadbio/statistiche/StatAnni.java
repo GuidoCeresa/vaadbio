@@ -36,7 +36,7 @@ public class StatAnni extends Statistiche {
         super.elaboraParametri();
         titoloPagina = "Anni";
 
-        soglia = Pref.getInteger(CostBio.NUM_VOCI_ANNI, 300);
+        soglia = Pref.getInt(CostBio.NUM_VOCI_ANNI, 300);
     }// fine del metodo
 
     /**

@@ -53,12 +53,12 @@ public class CicloElabora extends CicloDownload {
         String message = "";
         int numRecordsElaborati = 0;
         int numVociUploadate = 0;
-        boolean usaUpdate = Pref.getBoolean(CostBio.USA_UPLOAD_ELABORATA, false);
+        boolean usaUpdate = Pref.getBool(CostBio.USA_UPLOAD_ELABORATA, false);
         Elabora elabora;
 
         // Recupera il numero globale di voci da elaborare; tutto il database oppure un tot stabilito nelle preferenze
-        if (Pref.getBoolean(CostBio.USA_LIMITE_CICLO, true)) {
-            limite = Pref.getInteger(CostBio.MAX_CICLO, 10000);
+        if (Pref.getBool(CostBio.USA_LIMITE_CICLO, true)) {
+            limite = Pref.getInt(CostBio.MAX_CICLO, 10000);
             vociDaElaborare = Bio.findLast(limite);
         } else {
             vociDaElaborare = Bio.findLast();

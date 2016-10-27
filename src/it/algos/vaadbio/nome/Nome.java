@@ -99,7 +99,7 @@ public class Nome extends BaseEntity {
      */
     public static Nome find(long id) {
         Nome instance = null;
-        BaseEntity entity = AQuery.queryById(Nome.class, id);
+        BaseEntity entity = AQuery.find(Nome.class, id);
 
         if (entity != null) {
             if (entity instanceof Nome) {
@@ -118,7 +118,7 @@ public class Nome extends BaseEntity {
      */
     public static Nome findByNome(String nome) {
         Nome instance = null;
-        BaseEntity entity = AQuery.queryOne(Nome.class, Nome_.nome, nome);
+        BaseEntity entity = AQuery.getEntity(Nome.class, Nome_.nome, nome);
 
         if (entity != null) {
             if (entity instanceof Nome) {
@@ -147,7 +147,7 @@ public class Nome extends BaseEntity {
      */
     public synchronized static int count() {
         int totRec = 0;
-        long totTmp = AQuery.getCount(Nome.class);
+        long totTmp = AQuery.count(Nome.class);
 
         if (totTmp > 0) {
             totRec = (int) totTmp;
@@ -202,7 +202,7 @@ public class Nome extends BaseEntity {
     @SuppressWarnings("unchecked")
     public synchronized static ArrayList<Nome> findAllDoppi() {
         Container.Filter filtro = new Compare.Equal("nomeDoppio", true);
-        return (ArrayList<Nome>) AQuery.getLista(Nome.class, filtro);
+        return (ArrayList<Nome>) AQuery.getList(Nome.class, filtro);
     }// end of method
 
     /**
@@ -213,7 +213,7 @@ public class Nome extends BaseEntity {
     @SuppressWarnings("unchecked")
     public synchronized static ArrayList<Nome> findAllNotDoppi() {
         Container.Filter filtro = new Compare.Equal("nomeDoppio", false);
-        return (ArrayList<Nome>) AQuery.getLista(Nome.class, filtro);
+        return (ArrayList<Nome>) AQuery.getList(Nome.class, filtro);
     }// end of method
 
     /**
@@ -263,7 +263,7 @@ public class Nome extends BaseEntity {
      */
     @SuppressWarnings("unchecked")
     public synchronized static LinkedHashMap<Nome, Integer> findMappaTaglioPagina() {
-        return findMappa(Pref.getInteger(CostBio.TAGLIO_NOMI_PAGINA, 50));
+        return findMappa(Pref.getInt(CostBio.TAGLIO_NOMI_PAGINA, 50));
     }// end of method
 
     /**
@@ -273,7 +273,7 @@ public class Nome extends BaseEntity {
      */
     @SuppressWarnings("unchecked")
     public synchronized static LinkedHashMap<Nome, Integer> findMappaTaglioListe() {
-        return findMappa(Pref.getInteger(CostBio.TAGLIO_NOMI_ELENCO, 20));
+        return findMappa(Pref.getInt(CostBio.TAGLIO_NOMI_ELENCO, 20));
     }// end of method
 
     /**
@@ -307,7 +307,7 @@ public class Nome extends BaseEntity {
      * Cancella prima i records linkati qui:
      * nella tavola Bio
      */
-    public void delete() {
+    public boolean delete() {
         ArrayList<Bio> lista = this.bioNome();
 
         for (Bio bio : lista) {
@@ -315,7 +315,7 @@ public class Nome extends BaseEntity {
             bio.save();
         }// end of for cycle
 
-        super.delete();
+        return super.delete();
     }// end of method
 
     @Override
@@ -432,7 +432,7 @@ public class Nome extends BaseEntity {
      */
     @SuppressWarnings("all")
     public boolean superaTaglioPagina() {
-        return superaTaglio(Pref.getInteger(CostBio.TAGLIO_NOMI_PAGINA, 50));
+        return superaTaglio(Pref.getInt(CostBio.TAGLIO_NOMI_PAGINA, 50));
     }// fine del metodo
 
     /**
@@ -442,7 +442,7 @@ public class Nome extends BaseEntity {
      */
     @SuppressWarnings("all")
     public boolean superaTaglioElenco() {
-        return superaTaglio(Pref.getInteger(CostBio.TAGLIO_NOMI_ELENCO, 20));
+        return superaTaglio(Pref.getInt(CostBio.TAGLIO_NOMI_ELENCO, 20));
     }// fine del metodo
 
     /**

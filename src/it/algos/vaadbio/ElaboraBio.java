@@ -15,7 +15,7 @@ public class ElaboraBio {
     private boolean uploadata = false;
 
     public ElaboraBio(long pageid) {
-        this(pageid, Pref.getBoolean(CostBio.USA_UPLOAD_ELABORATA, false));
+        this(pageid, Pref.getBool(CostBio.USA_UPLOAD_ELABORATA, false));
     }// end of constructor
 
     public ElaboraBio(long pageid, boolean upload) {
@@ -23,7 +23,7 @@ public class ElaboraBio {
     }// end of constructor
 
     public ElaboraBio(String wikiTitle) {
-        this(wikiTitle, Pref.getBoolean(CostBio.USA_UPLOAD_ELABORATA, false));
+        this(wikiTitle, Pref.getBool(CostBio.USA_UPLOAD_ELABORATA, false));
     }// end of constructor
 
     public ElaboraBio(String wikiTitle, boolean upload) {
@@ -31,7 +31,7 @@ public class ElaboraBio {
     }// end of constructor
 
     public ElaboraBio(Bio bio) {
-        this(bio, Pref.getBoolean(CostBio.USA_UPLOAD_ELABORATA, false));
+        this(bio, Pref.getBool(CostBio.USA_UPLOAD_ELABORATA, false));
     }// end of constructor
 
     public ElaboraBio(Bio bio, boolean upload) {

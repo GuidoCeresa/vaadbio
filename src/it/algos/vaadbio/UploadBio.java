@@ -94,7 +94,7 @@ public class UploadBio {
             scritta = Api.scriveVoce(wikiTitle, newTextVoce, summary);
         }// end of if cycle
 
-        if (scritta && Pref.getBoolean(CostBio.USA_LOG_UPLOAD_ELABORATA, true)) {
+        if (scritta && Pref.getBool(CostBio.USA_LOG_UPLOAD_ELABORATA, true)) {
             Log.debug("upload", "Caricata sul server la voce: " + LibWiki.setQuadre(wikiTitle));
         }// fine del blocco if
 

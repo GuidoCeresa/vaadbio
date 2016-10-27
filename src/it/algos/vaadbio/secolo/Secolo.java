@@ -67,7 +67,7 @@ public class Secolo extends BaseEntity {
      */
     public static Secolo find(long id) {
         Secolo instance = null;
-        BaseEntity entity = AQuery.queryById(Secolo.class, id);
+        BaseEntity entity = AQuery.find(Secolo.class, id);
 
         if (entity != null) {
             if (entity instanceof Secolo) {
@@ -86,7 +86,7 @@ public class Secolo extends BaseEntity {
      */
     public static Secolo findByTitolo(String titolo) {
         Secolo instance = null;
-        BaseEntity entity = AQuery.queryOne(Secolo.class, Secolo_.titolo, titolo);
+        BaseEntity entity = AQuery.getEntity(Secolo.class, Secolo_.titolo, titolo);
 
         if (entity != null) {
             if (entity instanceof Secolo) {
@@ -104,7 +104,7 @@ public class Secolo extends BaseEntity {
      */
     public  static int count() {
         int totRec = 0;
-        long totTmp = AQuery.getCount(Secolo.class);
+        long totTmp = AQuery.count(Secolo.class);
 
         if (totTmp > 0) {
             totRec = (int) totTmp;
@@ -120,7 +120,7 @@ public class Secolo extends BaseEntity {
      */
     @SuppressWarnings("unchecked")
     public  static ArrayList<Secolo> findAll() {
-        return (ArrayList<Secolo>) AQuery.getLista(Secolo.class);
+        return (ArrayList<Secolo>) AQuery.getList(Secolo.class);
     }// end of method
 
     @Override

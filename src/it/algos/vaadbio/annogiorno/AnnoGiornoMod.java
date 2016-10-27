@@ -138,10 +138,10 @@ public abstract class AnnoGiornoMod extends ModulePop {
     private void addCommandUpload(MenuBar.MenuItem menuItem) {
         menuItem.addItem("Upload all", FontAwesome.COG, new MenuBar.Command() {
             public void menuSelected(MenuBar.MenuItem selectedItem) {
-                boolean usaDialoghi = Pref.getBoolean(CostBio.USA_DIALOGHI_CONFERMA, true);
-                boolean usaDebug = Pref.getBoolean(CostBio.USA_DEBUG, false);
-                boolean usaRegistraSempre = Pref.getBoolean(CostBio.USA_REGISTRA_SEMPRE_CRONO,false);
-                boolean usaLog = Pref.getBoolean(CostBio.USA_LOG_DEBUG, false);
+                boolean usaDialoghi = Pref.getBool(CostBio.USA_DIALOGHI_CONFERMA, true);
+                boolean usaDebug = Pref.getBool(CostBio.USA_DEBUG, false);
+                boolean usaRegistraSempre = Pref.getBool(CostBio.USA_REGISTRA_SEMPRE_CRONO,false);
+                boolean usaLog = Pref.getBool(CostBio.USA_LOG_DEBUG, false);
                 if (usaDialoghi) {
                     String nomePagina = "<b><span style=\"color:red\">" + ListaBio.PAGINA_PROVA + "</span></b>";
                     String newMsg;
@@ -194,10 +194,10 @@ public abstract class AnnoGiornoMod extends ModulePop {
     private void addCommandUploadContrario(MenuBar.MenuItem menuItem) {
         menuItem.addItem("Upload contrario", FontAwesome.COG, new MenuBar.Command() {
             public void menuSelected(MenuBar.MenuItem selectedItem) {
-                boolean usaDialoghi = Pref.getBoolean(CostBio.USA_DIALOGHI_CONFERMA, true);
-                boolean usaDebug = Pref.getBoolean(CostBio.USA_DEBUG, false);
-                boolean usaRegistraSempre = Pref.getBoolean(CostBio.USA_REGISTRA_SEMPRE_CRONO,false);
-                boolean usaLog = Pref.getBoolean(CostBio.USA_LOG_DEBUG, false);
+                boolean usaDialoghi = Pref.getBool(CostBio.USA_DIALOGHI_CONFERMA, true);
+                boolean usaDebug = Pref.getBool(CostBio.USA_DEBUG, false);
+                boolean usaRegistraSempre = Pref.getBool(CostBio.USA_REGISTRA_SEMPRE_CRONO,false);
+                boolean usaLog = Pref.getBool(CostBio.USA_LOG_DEBUG, false);
                 if (usaDialoghi) {
                     String nomePagina = "<b><span style=\"color:red\">" + ListaBio.PAGINA_PROVA + "</span></b>";
                     String newMsg;

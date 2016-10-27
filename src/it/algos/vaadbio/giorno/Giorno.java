@@ -76,7 +76,7 @@ public class Giorno extends BaseEntity {
      */
     public  static Giorno find(long id) {
         Giorno instance = null;
-        BaseEntity entity = AQuery.queryById(Giorno.class, id);
+        BaseEntity entity = AQuery.find(Giorno.class, id);
 
         if (entity != null) {
             if (entity instanceof Giorno) {
@@ -104,7 +104,7 @@ public class Giorno extends BaseEntity {
      */
     public  static Giorno findByTitolo(String titolo) {
         Giorno instance = null;
-        BaseEntity entity = AQuery.queryOne(Giorno.class, Giorno_.titolo, titolo);
+        BaseEntity entity = AQuery.getEntity(Giorno.class, Giorno_.titolo, titolo);
 
         if (entity != null) {
             if (entity instanceof Giorno) {
@@ -123,7 +123,7 @@ public class Giorno extends BaseEntity {
      */
     public  static int count() {
         int totRec = 0;
-        long totTmp = AQuery.getCount(Giorno.class);
+        long totTmp = AQuery.count(Giorno.class);
 
         if (totTmp > 0) {
             totRec = (int) totTmp;
@@ -140,7 +140,7 @@ public class Giorno extends BaseEntity {
      */
     @SuppressWarnings("unchecked")
     public  static ArrayList<Giorno> findAll() {
-        return (ArrayList<Giorno>) AQuery.getLista(Giorno.class);
+        return (ArrayList<Giorno>) AQuery.getList(Giorno.class);
     }// end of method
 
 
@@ -188,7 +188,7 @@ public class Giorno extends BaseEntity {
     @SuppressWarnings("all")
     public ArrayList<Bio> bioNati() {
         ArrayList<Bio> lista = null;
-        List entities = AQuery.getLista(Bio.class, this.getFiltroNati());
+        List entities = AQuery.getList(Bio.class, this.getFiltroNati());
 
         Comparator comp = new Comparator() {
             @Override

@@ -9,6 +9,7 @@ import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.lib.LibBio;
 import it.algos.vaadbio.nazionalita.Nazionalita;
 import it.algos.webbase.domain.pref.Pref;
+import it.algos.webbase.domain.pref.PrefType;
 import it.algos.webbase.domain.pref.TypePref;
 import it.algos.webbase.web.lib.LibDate;
 import it.algos.webbase.web.lib.LibTime;
@@ -86,7 +87,7 @@ public class StatSintesi extends Statistiche {
     private ArrayList<String> getCaption() {
         ArrayList<String> titoli = new ArrayList<String>();
         String statistiche = "Statistiche";
-        Date oldDate = Pref.getDataOld(CostBio.STAT_DATA_ULTIMA_SINTESI, LibTime.adesso());
+        Date oldDate = Pref.getDate(CostBio.STAT_DATA_ULTIMA_SINTESI, LibTime.adesso());
         String vecchiaData = LibTime.getGioMeseAnnoLungo(oldDate);
         String nuovaData = LibTime.getGioMeseAnnoLungo(new Date());
         String differenze = "&nbsp;&nbsp;&nbsp;&nbsp;Δ";
@@ -113,7 +114,7 @@ public class StatSintesi extends Statistiche {
     private ArrayList getRigaVoci() {
         String prefCode = CostBio.STAT_NUM_VOCI;
         String descrizione = ":Categoria:BioBot|Template bio";
-        int oldValue = Pref.getInteger(prefCode, 300000);
+        int oldValue = Pref.getInt(prefCode, 300000);
         int newValue = Bio.count();
         String nota = "Una differenza di '''poche unità''' tra le pagine della categoria e le voci gestite dal bot è '''fisiologica''' e dovuta ad imprecisioni nella redazione del tmpl Bio";
 
@@ -127,7 +128,7 @@ public class StatSintesi extends Statistiche {
     private ArrayList getRigaGiorni() {
         String prefCode = CostBio.STAT_NUM_GIORNI;
         String descrizione = tagPath + "Giorni|Giorni interessati";
-        int oldValue = Pref.getInteger(prefCode, 366);
+        int oldValue = Pref.getInt(prefCode, 366);
         int newValue = Giorno.count();
         String nota = "Previsto il [[29 febbraio]] per gli [[Anno bisestile|anni bisestili]]";
 
@@ -141,7 +142,7 @@ public class StatSintesi extends Statistiche {
         String prefCode = CostBio.STAT_NUM_ANNI;
         int anniPreCristo = 1000;
         String descrizione = tagPath + "Anni|Anni interessati";
-        int oldValue = Pref.getInteger(prefCode, 3000);
+        int oldValue = Pref.getInt(prefCode, 3000);
         int newValue = LibDate.getYear() + anniPreCristo;
         String nota = "Potenzialmente dal [[1000 a.C.]] al [[{{CURRENTYEAR}}]]";
 
@@ -154,7 +155,7 @@ public class StatSintesi extends Statistiche {
     private ArrayList getRigaAttivita() {
         String prefCode = CostBio.STAT_NUM_ATTIVITA;
         String descrizione = tagPath + "Attività|Attività utilizzate";
-        int oldValue = Pref.getInteger(prefCode, 600);
+        int oldValue = Pref.getInt(prefCode, 600);
         int newValue = Attivita.countDistinct();
         String nota = "Le attività sono quelle '''convenzionalmente''' previste dalla comunità ed inserite nell'elenco utilizzato dal template Bio";
 
@@ -167,7 +168,7 @@ public class StatSintesi extends Statistiche {
     private ArrayList getRigaNazionalita() {
         String prefCode = CostBio.STAT_NUM_NAZIONALITA;
         String descrizione = tagPath + "Nazionalità|Nazionalità utilizzate";
-        int oldValue = Pref.getInteger(prefCode, 300);
+        int oldValue = Pref.getInt(prefCode, 300);
         int newValue = 87;
         String nota = "Le nazionalità sono quelle '''convenzionalmente''' previste dalla comunità ed inserite nell'elenco utilizzato dal template Bio";
 
@@ -180,7 +181,7 @@ public class StatSintesi extends Statistiche {
     private ArrayList getRigaAttesa() {
         String prefCode = CostBio.STAT_GIORNI_ATTESA;
         String descrizione = "Giorni di attesa";
-        int oldValue = Pref.getInteger(prefCode, 5);
+        int oldValue = Pref.getInt(prefCode, 5);
         int newValue = NUOVA_ATTESA;
         String nota = "Giorni di attesa '''indicativi''' prima che ogni singola voce venga ricontrollata per registrare eventuali modifiche intervenute nei parametri significativi.";
 
@@ -253,28 +254,28 @@ public class StatSintesi extends Statistiche {
      * Sovrascritto
      */
     private void registraPreferenza(Pref pref, String chiave, Object valore) {
-        TypePref type;
+        PrefType tipo;
 
         if (pref != null) {
-            type = pref.getType();
+            tipo = pref.getTipo();
 
-            switch (type) {
-                case booleano:
+            switch (tipo) {
+                case bool:
                     if (valore instanceof Boolean) {
                         pref.setBool((Boolean) valore);
                     }// fine del blocco if
                     break;
-                case intero:
+                case integer:
                     if (valore instanceof Integer) {
                         pref.setIntero((Integer) valore);
                     }// fine del blocco if
                     break;
-                case stringa:
+                case string:
                     if (valore instanceof String) {
                         pref.setStringa((String) valore);
                     }// fine del blocco if
                     break;
-                case data:
+                case date:
                     if (valore instanceof Date) {
                         pref.setData((Date) valore);
                     }// fine del blocco if

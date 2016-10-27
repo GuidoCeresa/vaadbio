@@ -70,7 +70,7 @@ public class Mese extends BaseEntity {
      */
     public static Mese find(long id) {
         Mese instance = null;
-        BaseEntity entity = AQuery.queryById(Mese.class, id);
+        BaseEntity entity = AQuery.find(Mese.class, id);
 
         if (entity != null) {
             if (entity instanceof Mese) {
@@ -89,7 +89,7 @@ public class Mese extends BaseEntity {
      */
     public static Mese findByTitoloBreve(String titoloBreve) {
         Mese instance = null;
-        BaseEntity entity = AQuery.queryOne(Mese.class, Mese_.titoloBreve, titoloBreve);
+        BaseEntity entity = AQuery.getEntity(Mese.class, Mese_.titoloBreve, titoloBreve);
 
         if (entity != null) {
             if (entity instanceof Mese) {
@@ -108,7 +108,7 @@ public class Mese extends BaseEntity {
      */
     public static Mese findByTitoloLungo(String titoloLungo) {
         Mese instance = null;
-        BaseEntity entity = AQuery.queryOne(Mese.class, Mese_.titoloLungo, titoloLungo);
+        BaseEntity entity = AQuery.getEntity(Mese.class, Mese_.titoloLungo, titoloLungo);
 
         if (entity != null) {
             if (entity instanceof Mese) {
@@ -126,7 +126,7 @@ public class Mese extends BaseEntity {
      */
     public  static int count() {
         int totRec = 0;
-        long totTmp = AQuery.getCount(Mese.class);
+        long totTmp = AQuery.count(Mese.class);
 
         if (totTmp > 0) {
             totRec = (int) totTmp;
@@ -142,7 +142,7 @@ public class Mese extends BaseEntity {
      */
     @SuppressWarnings("unchecked")
     public  static ArrayList<Mese> findAll() {
-        return (ArrayList<Mese>) AQuery.getLista(Mese.class);
+        return (ArrayList<Mese>) AQuery.getList(Mese.class);
     }// end of method
 
     @Override

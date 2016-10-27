@@ -7,12 +7,15 @@ import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.mese.MeseService;
 import it.algos.vaadbio.nazionalita.NazionalitaService;
 import it.algos.vaadbio.secolo.SecoloService;
+import it.algos.webbase.domain.pref.Pref;
+import it.algos.webbase.domain.pref.PrefType;
 import it.algos.webbase.web.lib.LibPref;
 import it.algos.webbase.web.lib.LibTime;
 import it.algos.webbase.web.lib.LibVers;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+import java.util.Date;
 
 /**
  * Log delle versioni, modifiche e patch installate
@@ -135,7 +138,6 @@ public class VersBootStrap implements ServletContextListener {
             LibPref.newVersBool(CostBio.USA_LOG_CICLO, true, "Uso del log di registrazione nel cicloDownload e nel cicloElabora", "Livello debug");
         }// fine del blocco if
 
-
         //--creata una nuova preferenza
         if (LibVers.installa(++k)) {
             LibPref.newVersBool(CostBio.USA_LIMITE_CICLO, false, "Uso di un limite di pagine nel cicloDownload e nel cicloElabora");
@@ -145,7 +147,6 @@ public class VersBootStrap implements ServletContextListener {
         if (LibVers.installa(++k)) {
             LibPref.newVersInt(CostBio.MAX_CICLO, 100000, "Numero max di pagine da scaricare/aggiornare nel cicloDownload e nel cicloElabora");
         }// fine del blocco if
-
 
         //--creata una nuova preferenza
         if (LibVers.installa(++k)) {
@@ -305,6 +306,23 @@ public class VersBootStrap implements ServletContextListener {
         //--creata una nuova preferenza
         if (LibVers.installa(++k)) {
             LibPref.newVersBool(CostBio.USA_HEAD_NON_SCRIVERE, true, "Avvertenza di 'non scrivere' nelle liste. Di default vero.");
+        }// fine del blocco if
+
+        //--converte preferenze
+        if (LibVers.installa(++k)) {
+            new ConvertePreferenze();
+            LibVers.nuova("Preferenze", "Convertite alla nuova versione");
+        }// fine del blocco if
+
+        //--fix errore del tipo di una preferenza
+        if (LibVers.installa(++k)) {
+            Pref pref = Pref.findByCode(CostBio.STAT_DATA_ULTIMA_SINTESI);
+            if (pref != null) {
+                pref.setTipo(PrefType.date);
+                pref.setValore(new Date());
+                pref.save();
+            }// end of if cycle
+            LibVers.nuova("Preferenze", "Corretto il tipo della preferenza 'ultimaSintesi'");
         }// fine del blocco if
 
 

@@ -120,7 +120,7 @@ public class Elabora {
             elaborata = true;
         } catch (Exception unErrore) { // intercetta l'errore
             //--Recupera i dati dal record della tavola Wikibio
-            if (Pref.getBoolean(CostBio.USA_LOG_CICLO, true)) {
+            if (Pref.getBool(CostBio.USA_LOG_CICLO, true)) {
                 Log.debug("elabora", "Non sono riuscito ad elaborare la voce " + LibWiki.setQuadre(bio.getTitle()));
             }// end of if cycle
         }// fine del blocco try-catch

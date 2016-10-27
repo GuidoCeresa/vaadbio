@@ -286,7 +286,7 @@ public abstract class NomeService {
         ArrayList listaTagIniziali = new ArrayList();
         int pos;
         String tag = CostBio.VUOTO;
-        boolean usaNomeSingolo = Pref.getBoolean(CostBio.USA_NOME_SINGOLO, true);
+        boolean usaNomeSingolo = Pref.getBool(CostBio.USA_NOME_SINGOLO, true);
         Nome nomeEsistente = null;
 
         //--prima regola

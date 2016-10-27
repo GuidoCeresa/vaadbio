@@ -55,7 +55,7 @@ public class Attivita extends BaseEntity {
      */
     public static Attivita find(long id) {
         Attivita instance = null;
-        BaseEntity entity = AQuery.queryById(Attivita.class, id);
+        BaseEntity entity = AQuery.find(Attivita.class, id);
 
         if (entity != null) {
             if (entity instanceof Attivita) {
@@ -74,7 +74,7 @@ public class Attivita extends BaseEntity {
      */
     public static Attivita findBySingolare(String singolare) {
         Attivita instance = null;
-        BaseEntity entity = AQuery.queryOne(Attivita.class, Attivita_.singolare, singolare.toLowerCase());
+        BaseEntity entity = AQuery.getEntity(Attivita.class, Attivita_.singolare, singolare.toLowerCase());
 
         if (entity != null) {
             if (entity instanceof Attivita) {
@@ -93,7 +93,7 @@ public class Attivita extends BaseEntity {
      */
     public static Attivita findByPlurale(String plurale) {
         Attivita instance = null;
-        BaseEntity entity = AQuery.queryOne(Attivita.class, Attivita_.plurale, plurale.toLowerCase());
+        BaseEntity entity = AQuery.getEntity(Attivita.class, Attivita_.plurale, plurale.toLowerCase());
 
         if (entity != null) {
             if (entity instanceof Attivita) {
@@ -168,7 +168,7 @@ public class Attivita extends BaseEntity {
      */
     public static int count() {
         int totRec = 0;
-        long totTmp = AQuery.getCount(Attivita.class);
+        long totTmp = AQuery.count(Attivita.class);
 
         if (totTmp > 0) {
             totRec = (int) totTmp;
@@ -195,7 +195,7 @@ public class Attivita extends BaseEntity {
      */
     @SuppressWarnings("unchecked")
     public static ArrayList<Attivita> findAll() {
-        return (ArrayList<Attivita>) AQuery.getLista(Attivita.class);
+        return (ArrayList<Attivita>) AQuery.getList(Attivita.class);
     }// end of method
 
     @Override

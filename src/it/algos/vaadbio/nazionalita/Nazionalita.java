@@ -58,7 +58,7 @@ public class Nazionalita extends BaseEntity {
      */
     public static Nazionalita find(long id) {
         Nazionalita instance = null;
-        BaseEntity entity = AQuery.queryById(Nazionalita.class, id);
+        BaseEntity entity = AQuery.find(Nazionalita.class, id);
 
         if (entity != null) {
             if (entity instanceof Nazionalita) {
@@ -77,7 +77,7 @@ public class Nazionalita extends BaseEntity {
      */
     public static Nazionalita findBySingolare(String singolare) {
         Nazionalita instance = null;
-        BaseEntity entity = AQuery.queryOne(Nazionalita.class, Nazionalita_.singolare, singolare);
+        BaseEntity entity = AQuery.getEntity(Nazionalita.class, Nazionalita_.singolare, singolare);
 
         if (entity != null) {
             if (entity instanceof Nazionalita) {
@@ -96,7 +96,7 @@ public class Nazionalita extends BaseEntity {
      */
     public static Nazionalita findByPlurale(String plurale) {
         Nazionalita instance = null;
-        BaseEntity entity = AQuery.queryOne(Nazionalita.class, Nazionalita_.plurale, plurale);
+        BaseEntity entity = AQuery.getEntity(Nazionalita.class, Nazionalita_.plurale, plurale);
 
         if (entity != null) {
             if (entity instanceof Nazionalita) {
@@ -114,7 +114,7 @@ public class Nazionalita extends BaseEntity {
      */
     public static int count() {
         int totRec = 0;
-        long totTmp = AQuery.getCount(Nazionalita.class);
+        long totTmp = AQuery.count(Nazionalita.class);
 
         if (totTmp > 0) {
             totRec = (int) totTmp;
@@ -150,7 +150,7 @@ public class Nazionalita extends BaseEntity {
      */
     @SuppressWarnings("unchecked")
     public synchronized static ArrayList<Nazionalita> findAll() {
-        return (ArrayList<Nazionalita>) AQuery.getLista(Nazionalita.class);
+        return (ArrayList<Nazionalita>) AQuery.getList(Nazionalita.class);
     }// end of method
 
     /**
