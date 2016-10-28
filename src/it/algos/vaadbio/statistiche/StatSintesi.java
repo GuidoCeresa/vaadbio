@@ -7,10 +7,8 @@ import it.algos.vaadbio.bio.Bio;
 import it.algos.vaadbio.giorno.Giorno;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.lib.LibBio;
-import it.algos.vaadbio.nazionalita.Nazionalita;
 import it.algos.webbase.domain.pref.Pref;
 import it.algos.webbase.domain.pref.PrefType;
-import it.algos.webbase.domain.pref.TypePref;
 import it.algos.webbase.web.lib.LibDate;
 import it.algos.webbase.web.lib.LibTime;
 
@@ -243,50 +241,12 @@ public class StatSintesi extends Statistiche {
             chiave = (String) mappa.getKey();
             valore = mappa.getValue();
             pref = Pref.findByCode(chiave);
-            registraPreferenza(pref, chiave, valore);
+            pref.setValore(valore);
+            pref.save();
         }// end of for cycle
 
         mappaSintesi.clear();
     }// fine del metodo
 
-    /**
-     * Registra la singola preferenza
-     * Sovrascritto
-     */
-    private void registraPreferenza(Pref pref, String chiave, Object valore) {
-        PrefType tipo;
-
-        if (pref != null) {
-            tipo = pref.getTipo();
-
-            switch (tipo) {
-                case bool:
-                    if (valore instanceof Boolean) {
-                        pref.setBool((Boolean) valore);
-                    }// fine del blocco if
-                    break;
-                case integer:
-                    if (valore instanceof Integer) {
-                        pref.setIntero((Integer) valore);
-                    }// fine del blocco if
-                    break;
-                case string:
-                    if (valore instanceof String) {
-                        pref.setStringa((String) valore);
-                    }// fine del blocco if
-                    break;
-                case date:
-                    if (valore instanceof Date) {
-                        pref.setData((Date) valore);
-                    }// fine del blocco if
-                    break;
-                default: // caso non definito
-                    break;
-            } // fine del blocco switch
-
-            pref.save();
-        }// fine del blocco if
-
-    }// fine del metodo
 
 }// end of class

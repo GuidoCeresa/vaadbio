@@ -1746,11 +1746,19 @@ public abstract class LibBio {
         if (!testoOld.equals(CostBio.VUOTO) && !testoNew.equals(CostBio.VUOTO)) {
             pos1 = testoOld.indexOf(tagIni);
             pos2 = testoOld.indexOf(tagEnd, pos1);
-            testoOldSignificativo = testoOld.substring(pos2);
+            try { // prova ad eseguire il codice
+                testoOldSignificativo = testoOld.substring(pos2);
+            } catch (Exception unErrore) { // intercetta l'errore
+                int a = 87; //todo per ora niente (spedire mail)
+            }// fine del blocco try-catch
 
             pos1 = testoNew.indexOf(tagIni);
             pos2 = testoNew.indexOf(tagEnd, pos1);
-            testoNewSignificativo = testoNew.substring(pos2);
+            try { // prova ad eseguire il codice
+                testoNewSignificativo = testoNew.substring(pos2);
+            } catch (Exception unErrore) { // intercetta l'errore
+                int a = 87; //todo per ora niente (spedire mail)
+            }// fine del blocco try-catch
         }// fine del blocco if
 
         if (!testoOldSignificativo.equals(CostBio.VUOTO) && !testoNewSignificativo.equals(CostBio.VUOTO)) {
