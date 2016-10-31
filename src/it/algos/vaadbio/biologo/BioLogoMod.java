@@ -1,6 +1,8 @@
 package it.algos.vaadbio.biologo;
 
+import com.vaadin.event.Action;
 import com.vaadin.server.FontAwesome;
+import com.vaadin.ui.Notification;
 import it.algos.webbase.domain.log.Log;
 import it.algos.webbase.domain.log.LogMod;
 import it.algos.webbase.domain.vers.Versione;
@@ -12,6 +14,7 @@ import it.algos.webbase.web.table.ATable;
  * Sovrascritta la classe esistente nel plugin Webbase, per modificare la Table
  */
 public class BioLogoMod extends LogMod {
+
 
     /**
      * Costruttore standard senza parametri
@@ -32,5 +35,6 @@ public class BioLogoMod extends LogMod {
     public ATable createTable() {
         return (new BioLogoTable(this));
     }// end of method
+
 
 }// end of class

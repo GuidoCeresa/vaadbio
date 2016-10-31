@@ -63,13 +63,14 @@ public class BioLogoTable extends ModuleTable {
     private void clickOnDescrizione(Log logo) {
         String desc = logo.getDescrizione();
         String tag1 = "La pagina";
-        String tag2 = "Le mappe della voce";
-        String tag3 = "Singolo download";
-        String tag4 = "sul server la voce";
+        String tag2 = "la voce";
+        String tag3 = "Le mappe della voce";
+        String tag4 = "Singolo download";
+        String tag5 = "sul server la voce";
         String wikiTitle = "";
 
         if (desc != null) {
-            if (desc.contains(tag1) || desc.contains(tag2) || desc.contains(tag3)) {
+            if (desc.contains(tag1) || desc.contains(tag2) || desc.contains(tag3)|| desc.contains(tag4)) {
                 wikiTitle = VaadWiki.estraeDoppiaQuadra(desc);
                 if (!wikiTitle.equals("")) {
                     this.getUI().getPage().open(WIKI_URL + wikiTitle, "_blank");
