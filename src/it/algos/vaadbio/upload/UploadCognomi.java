@@ -1,6 +1,8 @@
 package it.algos.vaadbio.upload;
 
+import it.algos.vaadbio.cognome.Cognome;
 import it.algos.vaadbio.lib.CostBio;
+import it.algos.vaadbio.liste.ListaCognome;
 import it.algos.vaadbio.liste.ListaNome;
 import it.algos.vaadbio.nome.Nome;
 import it.algos.webbase.domain.log.Log;
@@ -11,31 +13,32 @@ import it.algos.webbase.web.lib.LibTime;
 import java.util.ArrayList;
 
 /**
- * Esegue un ciclo di creazione (UPLOAD) delle liste di nomi
+ * Created by gac on 30 ott 2016.
+ * Esegue un ciclo di creazione (UPLOAD) delle liste di cognomi
  * <p>
  * Il ciclo viene chiamato da DaemonCrono (con frequenza giornaliera ?)
- * Il ciclo può essere invocato dal bottone 'Upload all' nella tavola Nomi
+ * Il ciclo può essere invocato dal bottone 'Upload all' nella tavola Cognomi
  * Il ciclo necessita del login come bot
  */
-public class UploadNomi {
+public class UploadCognomi {
 
     /**
      * Costruttore completo
      */
-    public UploadNomi() {
+    public UploadCognomi() {
         doInit();
     }// end of constructor
 
 
-    //--Esegue un ciclo di creazione (UPLOAD) delle liste di nomi
+    //--Esegue un ciclo di creazione (UPLOAD) delle liste di cognomi
     private void doInit() {
         long inizio = System.currentTimeMillis();
-        ArrayList<Nome> listaNomi = Nome.findAllSuperaTaglioPagina();
+        ArrayList<Cognome> listaCognomi = Cognome.findAllSuperaTaglioPagina();
         int mod = 0;
         String modTxt;
 
-        for (Nome nome : listaNomi) {
-            if (new ListaNome(nome).isRegistrata()) {
+        for (Cognome cognome : listaCognomi) {
+            if (new ListaCognome(cognome).isRegistrata()) {
                 mod++;
             }// end of if cycle
         }// end of for cycle
@@ -43,11 +46,12 @@ public class UploadNomi {
         if (Pref.getBool(CostBio.USA_LOG_DEBUG)) {
             modTxt = LibNum.format(mod);
             if (Pref.getBool(CostBio.USA_REGISTRA_SEMPRE_PERSONA)) {
-                Log.debug("upload", "Aggiornate tutte le pagine dei nomi in " + LibTime.difText(inizio));
+                Log.debug("upload", "Aggiornate tutte le pagine dei cognomi in " + LibTime.difText(inizio));
             } else {
-                Log.debug("upload", "Aggiornate solo le pagine modificate dei nomi (" + modTxt + ") in " + LibTime.difText(inizio));
+                Log.debug("upload", "Aggiornate solo le pagine modificate dei cognomi (" + modTxt + ") in " + LibTime.difText(inizio));
             }// end of if/else cycle
         }// end of if cycle
     }// end of method
+
 
 }// fine della classe

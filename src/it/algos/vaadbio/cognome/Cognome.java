@@ -1,6 +1,9 @@
 package it.algos.vaadbio.cognome;
 
 import com.vaadin.data.Container;
+import it.algos.vaadbio.lib.CostBio;
+import it.algos.vaadbio.lib.LibBio;
+import it.algos.webbase.domain.pref.Pref;
 import it.algos.webbase.web.entity.BaseEntity;
 import it.algos.webbase.web.query.AQuery;
 import it.algos.webbase.web.query.SortProperty;
@@ -115,6 +118,81 @@ public class Cognome extends BaseEntity {
     public synchronized static List<? extends BaseEntity> findAll() {
         return AQuery.getList(Cognome.class, new SortProperty(Cognome_.cognome.getName()), (Container.Filter) null);
     }// end of method
+
+
+    /**
+     * Recupera una lista (array) parziale dei records
+     *
+     * @return lista di alcune istanze di Nome
+     */
+    @SuppressWarnings("unchecked")
+    public synchronized static ArrayList<Cognome> findAllSuperaTaglioPagina() {
+        ArrayList<Cognome> listaParziale = new ArrayList<>();
+        List<? extends BaseEntity> listaCompleta = findAll();
+        Cognome cognome;
+
+        for (BaseEntity entity : listaCompleta) {
+            if (entity instanceof Cognome) {
+                cognome = (Cognome) entity;
+                if (cognome.superaTaglioPagina()) {
+                    listaParziale.add(cognome);
+                }// end of if cycle
+            }// end of if cycle
+        }// end of for cycle
+
+        return listaParziale;
+    }// end of method
+
+    /**
+     * Controlla che il numero di records che usano questa istanza, superi il taglio previsto per la creazione della pagina
+     *
+     * @return vero se esistono più records del minimo previsto
+     */
+    @SuppressWarnings("all")
+    public boolean superaTaglioPagina() {
+        return superaTaglio(Pref.getInt(CostBio.TAGLIO_NOMI_PAGINA, 50));
+    }// fine del metodo
+
+    /**
+     * Controlla che il numero di records che usano questa istanza, superi il taglio previsto
+     *
+     * @return vero se esistono più records del minimo previsto
+     */
+    @SuppressWarnings("all")
+    private boolean superaTaglio(int maxVoci) {
+        boolean status = false;
+        long numRecords = countBioCognome();
+
+        if (numRecords >= maxVoci) {
+            status = true;
+        }// end of if cycle
+
+        return status;
+    }// fine del metodo
+
+
+    /**
+     * Recupera il numero di records Bio che usano questa istanza di Cognome nella property cognomePunta
+     *
+     * @return numero di records di Bio che usano questo cognome
+     */
+    @SuppressWarnings("all")
+    public long countBioCognome() {
+        long numRecords = 0;
+        ArrayList lista;
+        String query = CostBio.VUOTO;
+        String queryBase = "select count(bio.id) from Bio bio";
+        String queryWhere = " where bio.cognomePunta.id=" + getId();
+
+        query = queryBase + queryWhere;
+        lista = LibBio.queryFind(query);
+
+        if (lista != null && lista.size() == 1) {
+            numRecords = (long) lista.get(0);
+        }// end of if cycle
+
+        return numRecords;
+    }// fine del metodo
 
     /**
      * Recupera il valore del numero totale di records della Domain Class

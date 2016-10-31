@@ -2,12 +2,12 @@ import it.algos.vaadbio.anno.Anno;
 import it.algos.vaadbio.attivita.Attivita;
 import it.algos.vaadbio.bio.Bio;
 import it.algos.vaadbio.didascalia.*;
+import it.algos.vaadbio.elabora.Elabora;
 import it.algos.vaadbio.giorno.Giorno;
+import it.algos.vaadbio.lib.LibBio;
 import it.algos.vaadbio.mese.Mese;
 import it.algos.vaadbio.nazionalita.Nazionalita;
 import it.algos.vaadbio.nome.Nome;
-import it.algos.vaadbio.secolo.Secolo;
-import it.algos.webbase.web.lib.MeseEnum;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -21,6 +21,7 @@ public class DidascaliaTest {
     private String luogoNascita = "Bomba";
     private String luogoMorte = "Roma";
     private Bio bio;
+    private Bio bioServer;
     private Giorno giornoNatoPunta;
     private Giorno giornoMortoPunta;
     private Anno annoNatoPunta;
@@ -149,6 +150,22 @@ public class DidascaliaTest {
 
     }// end of single test
 
+    @Test
+    public void unaDidascalia() {
+        System.out.println();
+        String titolo = "Fred Guy";
+        String didascalia;
+        Elabora elaborata;
+
+        bioServer = LibBio.leggeBio(titolo);
+        didascalia = bioServer.getDidascaliaListe();
+        System.out.println(didascalia);
+        elaborata = new Elabora(bioServer);
+        bioServer = elaborata.getBio();
+        didascalia = bioServer.getDidascaliaListe();
+        System.out.println(didascalia);
+
+    }// end of single test
 
     private String getDidascalia(boolean isLuogoNascita, boolean isAnnoNascita, boolean isLuogoMorte, boolean isAnnoMorte) {
 

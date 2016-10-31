@@ -74,6 +74,18 @@ public class Elabora {
      *
      * @param bio istanza da elaborare
      */
+    public Elabora(Bio bio) {
+        if (bio != null) {
+            this.bio = bio;
+            this.doInit();
+        }// end of if cycle
+    }// end of constructor
+
+    /**
+     * Costruttore completo
+     *
+     * @param bio istanza da elaborare
+     */
     public Elabora(Bio bio, EntityManager manager) {
         if (bio != null) {
             this.bio = bio;

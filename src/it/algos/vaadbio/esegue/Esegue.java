@@ -5,17 +5,17 @@ import it.algos.vaadbio.ciclo.CicloDownload;
 import it.algos.vaadbio.ciclo.CicloElabora;
 import it.algos.vaadbio.ciclo.CicloUpdate;
 import it.algos.vaadbio.cognome.CognomeService;
-import it.algos.vaadbio.liste.ListaNome;
+import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.nazionalita.NazionalitaService;
-import it.algos.vaadbio.nome.Nome;
 import it.algos.vaadbio.nome.NomeService;
 import it.algos.vaadbio.professione.ProfessioneService;
 import it.algos.vaadbio.statistiche.*;
 import it.algos.vaadbio.upload.UploadAnni;
+import it.algos.vaadbio.upload.UploadCognomi;
 import it.algos.vaadbio.upload.UploadGiorni;
 import it.algos.vaadbio.upload.UploadNomi;
 import it.algos.webbase.domain.log.Log;
-import it.algos.webbase.web.lib.LibNum;
+import it.algos.webbase.domain.pref.Pref;
 import it.algos.webbase.web.lib.LibTime;
 
 /**
@@ -66,6 +66,7 @@ public abstract class Esegue {
         uploadGiorni();
         statisticaSintesi();
         cicloNomi();
+        cicloCognomi();
         uploadAnni();
     } // fine del metodo
 
@@ -84,21 +85,40 @@ public abstract class Esegue {
     } // fine del metodo
 
 
-
     /**
      * Ciclo normale di aggiornamento ed upload dei nomi
-     *
+     * <p>
      * Esegue l'aggiornamento della lista dei nomi doppi
      */
     public static void cicloNomi() {
         long inizio = System.currentTimeMillis();
 
-        aggiornaNomi();
-        elaboraNomi();
-        uploadNomi();
-        statisticheNomi();
+        if (Pref.getBool(CostBio.USA_DAEMONS_NOMI, false)) {
+            aggiornaNomi();
+            elaboraNomi();
+            uploadNomi();
+            statisticheNomi();
 
-        Log.debug("nomi", "Nomi doppi, aggiunti ed elaborati i nomi, upload di tutti e statistiche in " + LibTime.difText(inizio));
+            Log.debug("nomi", "Nomi doppi, aggiunti ed elaborati i nomi, upload di tutti e statistiche in " + LibTime.difText(inizio));
+        }// end of if cycle
+    } // fine del metodo
+
+    /**
+     * Ciclo normale di aggiornamento ed upload dei cognomi
+     * <p>
+     * Esegue l'aggiornamento della lista dei nomi doppi
+     */
+    public static void cicloCognomi() {
+        long inizio = System.currentTimeMillis();
+
+        if (Pref.getBool(CostBio.USA_DAEMONS_COGNOMI, false)) {
+            aggiornaCognomi();
+            elaboraCognomi();
+            uploadCognomi();
+            statisticheCognomi();
+
+            Log.debug("nomi", "Nomi doppi, aggiunti ed elaborati i nomi, upload di tutti e statistiche in " + LibTime.difText(inizio));
+        }// end of if cycle
     } // fine del metodo
 
 
@@ -133,11 +153,50 @@ public abstract class Esegue {
     } // fine del metodo
 
     /**
+     * Crea la pagina riepilogativa dei nomi
+     * Crea la pagina di riepilogo di tutti i nomi
+     * Crea la pagina di controllo didascalie
+     */
+    public static void statisticheNomi() {
+        new StatNomiPagine();
+        new StatNomiListe();
+
+//        creaPaginaDidascalie();
+    }// fine del metodo
+
+    /**
      * Esegue l'aggiornamento e la creazione dei nuovi records
      */
     public static void aggiornaCognomi() {
         CognomeService.aggiorna();
     }// end of method
+
+    /**
+     * Esegue l'elaborazione dei records esistenti
+     */
+    public static void elaboraCognomi() {
+//        CognomeService.elabora();
+    }// end of method
+
+
+    /**
+     * Upload nomi
+     */
+    public static void uploadCognomi() {
+        new UploadCognomi();
+    } // fine del metodo
+
+    /**
+     * Crea la pagina riepilogativa dei cognomi
+     * Crea la pagina di riepilogo di tutti i nomi
+     * Crea la pagina di controllo didascalie
+     */
+    public static void statisticheCognomi() {
+//        new StatCognomiPagine();
+//        new StatCognomiListe();
+
+//        creaPaginaDidascalie();
+    }// fine del metodo
 
     /**
      * Crea tutte le pagine statistiche previste
@@ -180,18 +239,6 @@ public abstract class Esegue {
         new StatDidascalieCrono();
     } // fine del metodo
 
-
-    /**
-     * Crea la pagina riepilogativa dei nomi
-     * Crea la pagina di riepilogo di tutti i nomi
-     * Crea la pagina di controllo didascalie
-     */
-    public static void statisticheNomi() {
-        new StatNomiPagine();
-        new StatNomiListe();
-
-//        creaPaginaDidascalie();
-    }// fine del metodo
 
     /**
      * Crea una pagina di prova

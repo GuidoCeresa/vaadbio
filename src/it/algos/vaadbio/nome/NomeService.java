@@ -78,7 +78,6 @@ public abstract class NomeService {
      */
     public static void aggiorna() {
         ArrayList<String> listaNomiCompleta;
-        List alfa;
         ArrayList<String> listaNomiUnici;
 
         listaNomiDoppi();
@@ -283,9 +282,7 @@ public abstract class NomeService {
      */
     public static String check(String nomeIn) {
         String nomeOut = CostBio.VUOTO;
-        ArrayList listaTagIniziali = new ArrayList();
         int pos;
-        String tag = CostBio.VUOTO;
         boolean usaNomeSingolo = Pref.getBool(CostBio.USA_NOME_SINGOLO, true);
         Nome nomeEsistente = null;
 
@@ -311,7 +308,6 @@ public abstract class NomeService {
                     nomeOut = nomeEsistente.getNome();
                 }// end of if cycle
             } else {
-                int a = 87;
             }// end of if/else cycle
         }// fine del blocco if
 

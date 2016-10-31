@@ -125,7 +125,9 @@ public abstract class Didascalia {
             }// fine del blocco if
             this.localitaNato = localitaNato;
             if (!bio.getLuogoNascitaLinkValido().equals(CostBio.VUOTO)) {
-                this.localitaNato = bio.getLuogoNascitaLinkValido() + "|" + localitaNato;
+                if (!bio.getLuogoNascitaLinkValido().equals(localitaNato)) {
+                    this.localitaNato = bio.getLuogoNascitaLinkValido() + "|" + localitaNato;
+                }// end of if cycle
             }// end of if cycle
 
         } catch (Exception unErrore) { // intercetta l'errore
@@ -140,7 +142,9 @@ public abstract class Didascalia {
             }// fine del blocco if
             this.localitaMorto = localitaMorto;
             if (!bio.getLuogoMorteLinkValido().equals(CostBio.VUOTO)) {
-                this.localitaMorto = bio.getLuogoMorteLinkValido() + "|" + localitaMorto;
+                if (!bio.getLuogoMorteLinkValido().equals(localitaMorto)) {
+                    this.localitaMorto = bio.getLuogoMorteLinkValido() + "|" + localitaMorto;
+                }// end of if cycle
             }// end of if cycle
         } catch (Exception unErrore) { // intercetta l'errore
         }// fine del blocco try-catch

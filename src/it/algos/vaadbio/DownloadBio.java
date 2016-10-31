@@ -36,6 +36,10 @@ public class DownloadBio {
     }// end of constructor
 
 
+    public DownloadBio(String wikiTitle) {
+        this(wikiTitle, true);
+    }// end of constructor
+
     public DownloadBio(String wikiTitle, boolean esegueElabora) {
         doInit(Api.leggePage(wikiTitle), esegueElabora);
     }// end of constructor
