@@ -16,9 +16,9 @@ import java.util.HashMap;
  * Created by gac on 27 dic 2015.
  * Crea la sottopagina della lista di persone per l'attività indicata e la carica sul server wiki
  */
-public class ListaNomeABC extends ListaNome {
+public class ListaAntroNomeABC extends ListaAntroNome {
 
-    private ListaNome listaSuperNome;
+    private ListaAntroNome listaSuperNome;
     private String paginaLinkata;
     private String titoloVisibile;
     private String sesso;
@@ -28,7 +28,7 @@ public class ListaNomeABC extends ListaNome {
      *
      * @param nome dell'antroponimo
      */
-    public ListaNomeABC(Nome nome) {
+    public ListaAntroNomeABC(Nome nome) {
         super(nome);
     }// fine del costruttore
 
@@ -39,7 +39,7 @@ public class ListaNomeABC extends ListaNome {
      * @param listaSuperNome della superPagina
      * @param mappa          del paragrafo
      */
-    public ListaNomeABC(ListaNome listaSuperNome, HashMap<String, Object> mappa) {
+    public ListaAntroNomeABC(ListaAntroNome listaSuperNome, HashMap<String, Object> mappa) {
         this.listaSuperNome = listaSuperNome;
         this.oggetto = listaSuperNome.getOggetto();
         this.paginaLinkata = (String) mappa.get(KEY_MAP_LINK);

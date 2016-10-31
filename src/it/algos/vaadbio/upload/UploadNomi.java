@@ -1,7 +1,7 @@
 package it.algos.vaadbio.upload;
 
 import it.algos.vaadbio.lib.CostBio;
-import it.algos.vaadbio.liste.ListaNome;
+import it.algos.vaadbio.liste.ListaAntroNome;
 import it.algos.vaadbio.nome.Nome;
 import it.algos.webbase.domain.log.Log;
 import it.algos.webbase.domain.pref.Pref;
@@ -35,7 +35,7 @@ public class UploadNomi {
         String modTxt;
 
         for (Nome nome : listaNomi) {
-            if (new ListaNome(nome).isRegistrata()) {
+            if (new ListaAntroNome(nome).isRegistrata()) {
                 mod++;
             }// end of if cycle
         }// end of for cycle

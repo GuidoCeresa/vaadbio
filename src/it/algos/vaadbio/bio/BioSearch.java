@@ -17,11 +17,12 @@ public class BioSearch extends SearchManager {
 
     @Override
     public ArrayList<Container.Filter> createFilters() {
-        ArrayList<Container.Filter> filters = new ArrayList<Container.Filter>();
+        ArrayList<Container.Filter> filters = new ArrayList<>();
 
         filters.add(createStringFilter(Bio_.pageid, SearchManager.SearchType.MATCHES));
         filters.add(createStringFilter(Bio_.nome, SearchType.MATCHES));
         filters.add(createStringFilter(Bio_.cognome, SearchType.MATCHES));
+        filters.add(createStringFilter(Bio_.title, SearchType.MATCHES));
         return filters;
     }// end of method
 

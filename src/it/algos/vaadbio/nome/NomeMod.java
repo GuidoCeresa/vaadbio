@@ -9,7 +9,7 @@ import com.vaadin.ui.Notification;
 import it.algos.vaadbio.bio.Bio;
 import it.algos.vaadbio.esegue.Esegue;
 import it.algos.vaadbio.lib.CostBio;
-import it.algos.vaadbio.liste.ListaNome;
+import it.algos.vaadbio.liste.ListaAntroNome;
 import it.algos.webbase.web.module.ModulePop;
 import it.algos.webbase.web.search.SearchManager;
 import it.algos.webbase.web.table.ATable;
@@ -243,7 +243,7 @@ public class NomeMod extends ModulePop {
         Nome nome = getNome();
 
         if (nome != null) {
-            new ListaNome(nome);
+            new ListaAntroNome(nome);
         } else {
             Notification.show("Devi selezionare una riga per creare la lista su wikipedia");
         }// end of if/else cycle

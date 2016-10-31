@@ -2,9 +2,7 @@ package it.algos.vaadbio.upload;
 
 import it.algos.vaadbio.cognome.Cognome;
 import it.algos.vaadbio.lib.CostBio;
-import it.algos.vaadbio.liste.ListaCognome;
-import it.algos.vaadbio.liste.ListaNome;
-import it.algos.vaadbio.nome.Nome;
+import it.algos.vaadbio.liste.ListaAntroCognome;
 import it.algos.webbase.domain.log.Log;
 import it.algos.webbase.domain.pref.Pref;
 import it.algos.webbase.web.lib.LibNum;
@@ -38,7 +36,7 @@ public class UploadCognomi {
         String modTxt;
 
         for (Cognome cognome : listaCognomi) {
-            if (new ListaCognome(cognome).isRegistrata()) {
+            if (new ListaAntroCognome(cognome).isRegistrata()) {
                 mod++;
             }// end of if cycle
         }// end of for cycle

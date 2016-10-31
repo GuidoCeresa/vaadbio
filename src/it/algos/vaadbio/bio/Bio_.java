@@ -2,6 +2,7 @@ package it.algos.vaadbio.bio;
 
 import it.algos.vaadbio.anno.Anno;
 import it.algos.vaadbio.attivita.Attivita;
+import it.algos.vaadbio.cognome.Cognome;
 import it.algos.vaadbio.giorno.Giorno;
 import it.algos.vaadbio.nazionalita.Nazionalita;
 import it.algos.vaadbio.nome.Nome;
@@ -104,6 +105,7 @@ public class Bio_ extends BaseEntity_ {
     public static volatile SingularAttribute<Bio, Nazionalita> nazionalitaPunta;
 
     public static volatile SingularAttribute<Bio, Nome> nomePunta;
+    public static volatile SingularAttribute<Bio, Cognome> cognomePunta;
 
     public static volatile SingularAttribute<Bio, String> didascaliaGiornoNato;
     public static volatile SingularAttribute<Bio, String> didascaliaGiornoMorto;

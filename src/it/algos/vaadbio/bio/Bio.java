@@ -2,6 +2,7 @@ package it.algos.vaadbio.bio;
 
 import it.algos.vaadbio.anno.Anno;
 import it.algos.vaadbio.attivita.Attivita;
+import it.algos.vaadbio.cognome.Cognome;
 import it.algos.vaadbio.giorno.Giorno;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.lib.LibBio;
@@ -200,6 +201,8 @@ public class Bio extends BaseEntity {
     private Nazionalita nazionalitaPunta = null;
     @ManyToOne
     private Nome nomePunta = null;
+    @ManyToOne
+    private Cognome cognomePunta = null;
 
 //    Nazionalita nazionalitaLista = null;
 //    Localita luogoNatoLista= null;
@@ -1001,4 +1004,11 @@ public class Bio extends BaseEntity {
         this.didascaliaListe = didascaliaListe;
     }//end of setter method
 
+    public Cognome getCognomePunta() {
+        return cognomePunta;
+    }// end of getter method
+
+    public void setCognomePunta(Cognome cognomePunta) {
+        this.cognomePunta = cognomePunta;
+    }//end of setter method
 }// end of entity class

@@ -1,6 +1,9 @@
 package it.algos.vaadbio.cognome;
 
 import com.vaadin.data.Container;
+import com.vaadin.data.util.filter.Compare;
+import it.algos.vaadbio.attivita.Attivita;
+import it.algos.vaadbio.bio.Bio;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.lib.LibBio;
 import it.algos.webbase.domain.pref.Pref;
@@ -14,6 +17,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -144,6 +148,22 @@ public class Cognome extends BaseEntity {
     }// end of method
 
     /**
+     * Recupera il valore del numero totale di records della Domain Class
+     *
+     * @return numero totale di records della tavola
+     */
+    public synchronized static int count() {
+        int totRec = 0;
+        long totTmp = AQuery.count(Cognome.class);
+
+        if (totTmp > 0) {
+            totRec = (int) totTmp;
+        }// fine del blocco if
+
+        return totRec;
+    }// end of method
+
+    /**
      * Controlla che il numero di records che usano questa istanza, superi il taglio previsto per la creazione della pagina
      *
      * @return vero se esistono più records del minimo previsto
@@ -170,7 +190,6 @@ public class Cognome extends BaseEntity {
         return status;
     }// fine del metodo
 
-
     /**
      * Recupera il numero di records Bio che usano questa istanza di Cognome nella property cognomePunta
      *
@@ -193,23 +212,6 @@ public class Cognome extends BaseEntity {
 
         return numRecords;
     }// fine del metodo
-
-    /**
-     * Recupera il valore del numero totale di records della Domain Class
-     *
-     * @return numero totale di records della tavola
-     */
-    public synchronized static int count() {
-        int totRec = 0;
-        long totTmp = AQuery.count(Cognome.class);
-
-        if (totTmp > 0) {
-            totRec = (int) totTmp;
-        }// fine del blocco if
-
-        return totRec;
-    }// end of method
-
 
     @Override
     public String toString() {
@@ -239,6 +241,54 @@ public class Cognome extends BaseEntity {
     public void setRiferimento(Cognome riferimento) {
         this.riferimento = riferimento;
     }//end of setter method
+
+    /**
+     * Costruisce il filtro per trovare i records di Bio che questa istanza di Cognome nella property cognomePunta
+     *
+     * @return filtro per i cognomi
+     */
+    private Container.Filter getFiltroCognome() {
+//        return new Compare.Equal("cognomePunta.id", getId());
+        return new Compare.Equal("cognomeValido", getCognome());//todo provvisorio
+    }// fine del metodo
+
+    /**
+     * Recupera una lista (array) di records Bio che usano questa istanza di Cognome nella property cognomePunta
+     *
+     * @return lista delle istanze di Bio che usano questo cognome
+     */
+    @SuppressWarnings("all")
+    public ArrayList<Bio> bioCognome() {
+        ArrayList<Bio> lista = null;
+        List entities = AQuery.getList(Bio.class, this.getFiltroCognome());
+
+        Comparator comp = new Comparator() {
+            @Override
+            public int compare(Object objA, Object objB) {
+                String attivitaA = "";
+                String attivitaB = "";
+                Bio bioA = (Bio) objA;
+                Bio bioB = (Bio) objB;
+                Attivita objAttivitaA = bioA.getAttivitaPunta();
+                Attivita objAttivitaB = bioB.getAttivitaPunta();
+                if (objAttivitaA != null) {
+                    attivitaA = objAttivitaA.getPlurale();
+                }// end of if cycle
+                if (objAttivitaB != null) {
+                    attivitaB = objAttivitaB.getPlurale();
+                }// end of if cycle
+
+                return attivitaA.compareTo(attivitaB);
+            }// end of inner method
+        };// end of anonymous inner class
+        entities.sort(comp);
+
+        if (entities != null) {
+            lista = new ArrayList<>(entities);
+        }// end of if cycle
+
+        return lista;
+    }// fine del metodo
 
     /**
      * Clone di questa istanza

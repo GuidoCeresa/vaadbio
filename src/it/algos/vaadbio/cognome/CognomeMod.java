@@ -7,7 +7,7 @@ import com.vaadin.server.Resource;
 import com.vaadin.ui.MenuBar;
 import com.vaadin.ui.Notification;
 import it.algos.vaadbio.esegue.Esegue;
-import it.algos.vaadbio.liste.ListaCognome;
+import it.algos.vaadbio.liste.ListaAntroCognome;
 import it.algos.webbase.web.module.ModulePop;
 import it.algos.webbase.web.table.ATable;
 
@@ -97,7 +97,7 @@ public class CognomeMod extends ModulePop {
         Cognome cognome = getCognome();
 
         if (cognome != null) {
-            new ListaCognome(cognome);
+            new ListaAntroCognome(cognome);
         } else {
             Notification.show("Devi selezionare una riga per creare la lista su wikipedia");
         }// end of if/else cycle

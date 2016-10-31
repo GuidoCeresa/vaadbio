@@ -16,25 +16,26 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by gac on 27 dic 2015.
- * Crea la lista delle persone col nome indicato e la carica sul server wiki
+ * Created by gac on 31 ott 2016.
+ * <p>
+ * Crea la lista antroponima
+ * <p>
+ * Crea la lista dei nomi e la carica sul server wiki
+ * Crea la lista dei cognomi e la carica sul server wiki
  */
-public class ListaNome extends ListaBio {
-
+public abstract class ListaAntroponimo extends ListaBio {
 
     /**
      * Costruttore senza parametri
      */
-    protected ListaNome() {
+    protected ListaAntroponimo() {
     }// fine del costruttore
 
     /**
      * Costruttore completo
-     *
-     * @param nome indicato
      */
-    public ListaNome(Nome nome) {
-        super(nome);
+    public ListaAntroponimo(Object oggetto) {
+        super(oggetto);
     }// fine del costruttore
 
 
@@ -70,33 +71,6 @@ public class ListaNome extends ListaBio {
         }// end of if/else cycle
     }// fine del metodo
 
-    /**
-     * Titolo della pagina da creare/caricare su wikipedia
-     * Sovrascritto
-     */
-    @Override
-    protected void elaboraTitolo() {
-        String tag = "Persone di nome ";
-
-        titoloPagina = tag + getNomeTxt();
-    }// fine del metodo
-
-
-    /**
-     * Lista delle biografie che hanno una valore valido per il link specifico
-     * Sovrascritto
-     */
-    @Override
-    protected ArrayList<Bio> getListaBio() {
-        ArrayList<Bio> listaBio = null;
-        Nome nome = this.getNome();
-
-        if (nome != null) {
-            listaBio = nome.bioNome();
-        }// end of if cycle
-
-        return listaBio;
-    }// fine del metodo
 
     /**
      * Costruisce una singola mappa
@@ -126,6 +100,7 @@ public class ListaNome extends ListaBio {
             mappaBio.put(chiaveParagrafo, mappa);
         }// end of if/else cycle
     }// fine del metodo
+
 
     /**
      * Costruisce il titolo del paragrafo
@@ -179,6 +154,7 @@ public class ListaNome extends ListaBio {
 
         return titoloParagrafo;
     }// fine del metodo
+
 
     /**
      * Costruisce il link alla pagina linkata da inserire nel titolo del paragrafo
@@ -242,6 +218,7 @@ public class ListaNome extends ListaBio {
         return titoloParagrafo;
     }// fine del metodo
 
+
     /**
      * Costruisce il titolo
      * Controlla se il titolo visibile (link) non esiste già
@@ -270,7 +247,6 @@ public class ListaNome extends ListaBio {
 
         return titoloParagrafo;
     }// fine del metodo
-
 
     /**
      * Costruisce il paragrafo
@@ -326,28 +302,8 @@ public class ListaNome extends ListaBio {
      * Metodo sovrascritto
      */
     protected void creaSottopagina(HashMap<String, Object> mappa) {
-        new ListaNomeABC(this, mappa);
     }// fine del metodo
 
-
-    /**
-     * Costruisce la frase di incipit iniziale
-     * <p>
-     * Sovrascrivibile <br>
-     * Parametrizzato (nelle sottoclassi) l'utilizzo e la formulazione <br>
-     */
-    @Override
-    protected String elaboraIncipitSpecifico() {
-        String text = "incipit lista nomi|nome=" + getNomeTxt();
-        return LibWiki.setGraffe(text);
-//        ricordati di cambiare anche sotto
-
-//        String text = CostBio.VUOTO;
-//        text += "Questa è una lista di persone che hanno il [[prenome]] ";
-//        text += LibWiki.setBold(getNomeTxt());
-//        text += ", suddivise per attività principale";
-//        return text;
-    }// fine del metodo
 
     /**
      * Controlla che la modifica sia sostanziale
@@ -364,47 +320,5 @@ public class ListaNome extends ListaBio {
         }// end of if/else cycle
     }// fine del metodo
 
-
-    /**
-     * Piede della pagina
-     * <p>
-     * Sovrascritto
-     */
-    @Override
-    protected String elaboraFooter() {
-        String text = CostBio.VUOTO;
-        boolean usaInclude = usaFooterPortale || usaFooterCategorie;
-
-        if (usaFooterPortale) {
-            text += CostBio.A_CAPO;
-            text += "{{Portale|antroponimi}}";
-        }// end of if cycle
-
-        if (usaFooterCategorie) {
-            text += CostBio.A_CAPO;
-            text += "[[Categoria:Liste di persone per nome|" + getNomeTxt() + "]]";
-        }// end of if cycle
-
-        if (usaInclude) {
-            text = CostBio.A_CAPO + LibBio.setNoIncludeMultiRiga(text);
-        }// end of if cycle
-
-        return text;
-    }// fine del metodo
-
-    public Nome getNome() {
-        return (Nome) getOggetto();
-    }// end of getter method
-
-    public String getNomeTxt() {
-        String nomeTxt = "";
-        Nome nome = getNome();
-
-        if (nome != null) {
-            nomeTxt = nome.getNome();
-        }// end of if cycle
-
-        return nomeTxt;
-    }// end of getter method
 
 }// fine della classe
