@@ -75,6 +75,7 @@ public class CognomeMod extends ModulePop {
     @Override
     public void addSottoMenu(MenuBar.MenuItem menuItem) {
         addCommandAggiunge(menuItem);
+        addCommandUpload(menuItem);
     }// end of method
 
     /**
@@ -88,6 +89,26 @@ public class CognomeMod extends ModulePop {
                 esegueAggiorna();
             }// end of method
         });// end of anonymous class
+    }// end of method
+
+    /**
+     * Comando bottone/item Upload
+     *
+     * @param menuItem a cui agganciare il bottone/item
+     */
+    private void addCommandUpload(MenuBar.MenuItem menuItem) {
+        menuItem.addItem("Upload all", FontAwesome.COG, new MenuBar.Command() {
+            public void menuSelected(MenuBar.MenuItem selectedItem) {
+                esegueUploadAll();
+            }// end of method
+        });// end of anonymous class
+    }// end of method
+
+    /**
+     * Esegue l'upload di tutti i record
+     */
+    protected void esegueUploadAll() {
+        Esegue.uploadCognomi();
     }// end of method
 
     /**
