@@ -16,6 +16,7 @@ import it.algos.vaadbio.upload.UploadGiorni;
 import it.algos.vaadbio.upload.UploadNomi;
 import it.algos.webbase.domain.log.Log;
 import it.algos.webbase.domain.pref.Pref;
+import it.algos.webbase.web.lib.LibNum;
 import it.algos.webbase.web.lib.LibTime;
 
 /**
@@ -59,6 +60,14 @@ public abstract class Esegue {
         new CicloElabora();
     } // fine del metodo
 
+
+    /**
+     * todo da fare
+     */
+    public static void elabora() {
+    } // fine del metodo
+
+
     /**
      * Ciclo normale di upload
      */
@@ -66,7 +75,7 @@ public abstract class Esegue {
         uploadGiorni();
         statisticaSintesi();
         cicloNomi();
-        cicloCognomi();
+        cicloGiornalieroCognomi();
         uploadAnni();
     } // fine del metodo
 
@@ -98,24 +107,6 @@ public abstract class Esegue {
             elaboraNomi();
             uploadNomi();
             statisticheNomi();
-
-            Log.debug("nomi", "Nomi doppi, aggiunti ed elaborati i nomi, upload di tutti e statistiche in " + LibTime.difText(inizio));
-        }// end of if cycle
-    } // fine del metodo
-
-    /**
-     * Ciclo normale di aggiornamento ed upload dei cognomi
-     * <p>
-     * Esegue l'aggiornamento della lista dei nomi doppi
-     */
-    public static void cicloCognomi() {
-        long inizio = System.currentTimeMillis();
-
-        if (Pref.getBool(CostBio.USA_DAEMONS_COGNOMI, false)) {
-            aggiornaCognomi();
-            elaboraCognomi();
-            uploadCognomi();
-            statisticheCognomi();
 
             Log.debug("nomi", "Nomi doppi, aggiunti ed elaborati i nomi, upload di tutti e statistiche in " + LibTime.difText(inizio));
         }// end of if cycle
@@ -164,39 +155,6 @@ public abstract class Esegue {
 //        creaPaginaDidascalie();
     }// fine del metodo
 
-    /**
-     * Esegue l'aggiornamento e la creazione dei nuovi records
-     */
-    public static void aggiornaCognomi() {
-        CognomeService.aggiorna();
-    }// end of method
-
-    /**
-     * Esegue l'elaborazione dei records esistenti
-     */
-    public static void elaboraCognomi() {
-//        CognomeService.elabora();
-    }// end of method
-
-
-    /**
-     * Upload nomi
-     */
-    public static void uploadCognomi() {
-        new UploadCognomi();
-    } // fine del metodo
-
-    /**
-     * Crea la pagina riepilogativa dei cognomi
-     * Crea la pagina di riepilogo di tutti i nomi
-     * Crea la pagina di controllo didascalie
-     */
-    public static void statisticheCognomi() {
-//        new StatCognomiPagine();
-//        new StatCognomiListe();
-
-//        creaPaginaDidascalie();
-    }// fine del metodo
 
     /**
      * Crea tutte le pagine statistiche previste
@@ -239,6 +197,82 @@ public abstract class Esegue {
         new StatDidascalieCrono();
     } // fine del metodo
 
+
+    //------------------------------------------------------------------------------------------------------------------------
+    // Cognomi
+    //------------------------------------------------------------------------------------------------------------------------
+
+    /**
+     * Ciclo normale settimanale di controllo e manutenzione dei cognomi
+     */
+    public static void cicloSettimanaleCognomi() {
+        long inizio = System.currentTimeMillis();
+
+        if (Pref.getBool(CostBio.USA_DAEMONS_COGNOMI, false)) {
+            Esegue.creaAggiornaCognomi();
+            Esegue.elaboraCognomi();
+            Esegue.contaCognomi();
+            Log.debug("cognomi", "Aggiunti ed elaborati i records dei cognopmi in " + LibTime.difText(inizio));
+        }// end of if cycle
+    } // fine del metodo
+
+    /**
+     * Ciclo normale giornaliero di upload dei cognomi
+     */
+    public static void cicloGiornalieroCognomi() {
+        int vociUplodate = 0;
+        long inizio = System.currentTimeMillis();
+
+        if (Pref.getBool(CostBio.USA_DAEMONS_COGNOMI, false)) {
+            vociUplodate = Esegue.uploadCognomi();
+            Log.debug("cognomi", "Caricate sul server le " + LibNum.format(vociUplodate) + " pagine di liste di cognomi in " + LibTime.difText(inizio));
+            Esegue.statisticheCognomi(); //todo se è troppo lungo, spostare in cicloSettimanaleCognomi
+        }// end of if cycle
+    } // fine del metodo
+
+    /**
+     * Esegue l'aggiornamento e la creazione dei nuovi records
+     */
+    public static void creaAggiornaCognomi() {
+        CognomeService.creaAggiorna();
+    }// end of method
+
+    /**
+     * Esegue l'elaborazione dei records esistenti
+     * todo da fare
+     */
+    public static void elaboraCognomi() {
+//        CognomeService.elabora();
+    }// end of method
+
+    /**
+     * todo da fare
+     */
+    public static void contaCognomi() {
+    } // fine del metodo
+
+    /**
+     * Upload nomi
+     */
+    public static int uploadCognomi() {
+        return new UploadCognomi().getVociUplodate();
+    } // fine del metodo
+
+    /**
+     * Crea la pagina riepilogativa dei cognomi
+     * Crea la pagina di controllo didascalie
+     */
+    public static void statisticheCognomi() {
+//        new StatCognomiPagine();
+//        new StatCognomiListe();
+
+//        creaPaginaDidascalie();
+    }// fine del metodo
+
+
+    //------------------------------------------------------------------------------------------------------------------------
+    // Test
+    //------------------------------------------------------------------------------------------------------------------------
 
     /**
      * Crea una pagina di prova

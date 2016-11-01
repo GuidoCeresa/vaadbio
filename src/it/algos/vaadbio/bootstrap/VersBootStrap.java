@@ -325,6 +325,15 @@ public class VersBootStrap implements ServletContextListener {
             LibVers.nuova("Preferenze", "Corretto il tipo della preferenza 'ultimaSintesi'");
         }// fine del blocco if
 
+        //--creata una nuova preferenza
+        if (LibVers.installa(++k)) {
+            LibPref.newVersInt(CostBio.TAGLIO_COGNOMI_ELENCO, 20, "Taglio per registrare il record e creare la riga nella lista statistica. Di default 20.");
+        }// fine del blocco if
+
+        //--creata una nuova preferenza
+        if (LibVers.installa(++k)) {
+            LibPref.newVersInt(CostBio.TAGLIO_COGNOMI_PAGINA, 50, "Taglio per creare una pagina del cognome. Di default 50.");
+        }// fine del blocco if
 
 //        //--creata una nuova preferenza
 //        if (LibVers.installa(11)) {

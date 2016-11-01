@@ -20,6 +20,8 @@ import java.util.ArrayList;
  */
 public class UploadCognomi {
 
+    private int vociUplodate=0;
+
     /**
      * Costruttore completo
      */
@@ -51,5 +53,11 @@ public class UploadCognomi {
         }// end of if cycle
     }// end of method
 
+    public int getVociUplodate() {
+        return vociUplodate;
+    }// end of getter method
 
+    public void setVociUplodate(int vociUplodate) {
+        this.vociUplodate = vociUplodate;
+    }//end of setter method
 }// fine della classe

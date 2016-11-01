@@ -1857,4 +1857,22 @@ public abstract class LibBio {
         return LibWiki.setQuadre(link);
     }// fine del metodo
 
+    /**
+     * Crea una lista dalle matrici
+     */
+    public static ArrayList<String> sumTag(String[]... matrici) {
+        ArrayList<String> lista = null;
+
+        if (matrici != null && matrici.length > 0) {
+            lista = new ArrayList<>();
+            for (String[] matrice : matrici) {
+                for (String singleTag : matrice) {
+                    lista.add(singleTag);
+                }// end of for cycle
+            }// end of for cycle
+        }// end of if cycle
+
+        return lista;
+    }// fine del metodo
+
 }// end of abstract static class

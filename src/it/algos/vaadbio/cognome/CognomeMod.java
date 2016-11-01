@@ -9,6 +9,7 @@ import com.vaadin.ui.Notification;
 import it.algos.vaadbio.esegue.Esegue;
 import it.algos.vaadbio.liste.ListaAntroCognome;
 import it.algos.webbase.web.module.ModulePop;
+import it.algos.webbase.web.query.AQuery;
 import it.algos.webbase.web.table.ATable;
 
 /**
@@ -74,16 +75,19 @@ public class CognomeMod extends ModulePop {
      */
     @Override
     public void addSottoMenu(MenuBar.MenuItem menuItem) {
-        addCommandAggiunge(menuItem);
+        addCommandCreaAggiorna(menuItem);
+        addCommandElabora(menuItem);
+        addCommandConta(menuItem);
         addCommandUpload(menuItem);
+        addCommandUploadAll(menuItem);
     }// end of method
 
     /**
-     * Comando bottone/item aggiounge nuovi cognomi individuati nei records di Bio
+     * Comando bottone/item crea e/o aggiunge nuovi cognomi individuati nei records di Bio
      *
      * @param menuItem a cui agganciare il bottone/item
      */
-    private void addCommandAggiunge(MenuBar.MenuItem menuItem) {
+    private void addCommandCreaAggiorna(MenuBar.MenuItem menuItem) {
         menuItem.addItem("Aggiorna", FontAwesome.BEER, new MenuBar.Command() {
             public void menuSelected(MenuBar.MenuItem selectedItem) {
                 esegueAggiorna();
@@ -92,11 +96,50 @@ public class CognomeMod extends ModulePop {
     }// end of method
 
     /**
-     * Comando bottone/item Upload
+     * Comando bottone/item elabora tutte i records di Bio per sincronizzare i link ai cognomi
+     *
+     * @param menuItem a cui agganciare il bottone/item
+     */
+    private void addCommandElabora(MenuBar.MenuItem menuItem) {
+        menuItem.addItem("Elabora", FontAwesome.BEER, new MenuBar.Command() {
+            public void menuSelected(MenuBar.MenuItem selectedItem) {
+                esegueElabora();
+            }// end of method
+        });// end of anonymous class
+    }// end of method
+
+    /**
+     * Comando bottone/item conta tutte le pagine di Bio che hanno usano questo cognome
+     *
+     * @param menuItem a cui agganciare il bottone/item
+     */
+    private void addCommandConta(MenuBar.MenuItem menuItem) {
+        menuItem.addItem("Conta", FontAwesome.BEER, new MenuBar.Command() {
+            public void menuSelected(MenuBar.MenuItem selectedItem) {
+                esegueConta();
+            }// end of method
+        });// end of anonymous class
+    }// end of method
+
+    /**
+     * Comando bottone/item crea una pagina con la lista di un cognome sul servere wiki
      *
      * @param menuItem a cui agganciare il bottone/item
      */
     private void addCommandUpload(MenuBar.MenuItem menuItem) {
+        menuItem.addItem("Upload", FontAwesome.COG, new MenuBar.Command() {
+            public void menuSelected(MenuBar.MenuItem selectedItem) {
+                esegueUpload();
+            }// end of method
+        });// end of anonymous class
+    }// end of method
+
+    /**
+     * Comando bottone/item crea tutte le pagine delle liste sul servere wiki
+     *
+     * @param menuItem a cui agganciare il bottone/item
+     */
+    private void addCommandUploadAll(MenuBar.MenuItem menuItem) {
         menuItem.addItem("Upload all", FontAwesome.COG, new MenuBar.Command() {
             public void menuSelected(MenuBar.MenuItem selectedItem) {
                 esegueUploadAll();
@@ -105,16 +148,32 @@ public class CognomeMod extends ModulePop {
     }// end of method
 
     /**
-     * Esegue l'upload di tutti i record
+     * Crea e/o aggiunge nuovi cognomi individuati nei records di Bio
      */
-    protected void esegueUploadAll() {
-        Esegue.uploadCognomi();
+    private void esegueAggiorna() {
+        Esegue.creaAggiornaCognomi();
     }// end of method
+
+    /**
+     * Elabora tutte i records di Bio per sincronizzare i link ai cognomi
+     */
+    private void esegueElabora() {
+        Esegue.elaboraCognomi();
+        Esegue.elabora();
+    }// end of method
+
+    /**
+     * Conta tutte le pagine di Bio che hanno usano questo cognome
+     */
+    private void esegueConta() {
+        Esegue.contaCognomi();
+    }// end of method
+
 
     /**
      * Esegue l'upload di un singolo cognome
      */
-    protected void esegueUpload() {
+    private void esegueUpload() {
         Cognome cognome = getCognome();
 
         if (cognome != null) {
@@ -125,12 +184,14 @@ public class CognomeMod extends ModulePop {
 
     }// end of method
 
+
     /**
-     * Esegue l'aggiunta dei nuovi records
+     * Esegue l'upload di tutti i record
      */
-    protected void esegueAggiorna() {
-        Esegue.aggiornaCognomi();
+    private void esegueUploadAll() {
+        Esegue.uploadCognomi();
     }// end of method
+
 
     /**
      * Recupera la voce selezionata

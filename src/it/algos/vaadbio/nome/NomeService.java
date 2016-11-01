@@ -398,8 +398,8 @@ public abstract class NomeService {
      */
     public static boolean checkNome(String nome) {
         boolean accettato = true;
-        ArrayList<String> tagIniziale = sumTag(TAG_INI_NUMERI, TAG_INI_CHAR, TAG_INI_APICI, TAG_INI_NOMI);
-        ArrayList<String> tagAll = sumTag(TAG_ALL_ARABI, TAG_ALL_TITOLI, TAG_ALL_NOMI, TAG_ALL_NOMI_CINESI, TAG_ALL_COGNOMI);
+        ArrayList<String> tagIniziale = LibBio.sumTag(TAG_INI_NUMERI, TAG_INI_CHAR, TAG_INI_APICI, TAG_INI_NOMI);
+        ArrayList<String> tagAll = LibBio.sumTag(TAG_ALL_ARABI, TAG_ALL_TITOLI, TAG_ALL_NOMI, TAG_ALL_NOMI_CINESI, TAG_ALL_COGNOMI);
         ArrayList<String> tagSomma = LibArray.somma(tagIniziale, tagAll);
         String spazio = CostBio.SPAZIO;
 
@@ -428,23 +428,6 @@ public abstract class NomeService {
         return accettato;
     }// fine del metodo
 
-    /**
-     * Crea una lista dalle matrici
-     */
-    public static ArrayList<String> sumTag(String[]... matrici) {
-        ArrayList<String> lista = null;
-
-        if (matrici != null && matrici.length > 0) {
-            lista = new ArrayList<>();
-            for (String[] matrice : matrici) {
-                for (String singleTag : matrice) {
-                    lista.add(singleTag);
-                }// end of for cycle
-            }// end of for cycle
-        }// end of if cycle
-
-        return lista;
-    }// fine del metodo
 
     /**
      * Crea una pagina di prova
