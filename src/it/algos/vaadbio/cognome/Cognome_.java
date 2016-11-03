@@ -9,5 +9,7 @@ import javax.persistence.metamodel.StaticMetamodel;
 public class Cognome_ extends BaseEntity_ {
 	public static volatile SingularAttribute<Cognome, String> cognome;
 	public static volatile SingularAttribute<Cognome, Boolean> principale;
+	public static volatile SingularAttribute<Cognome, Integer> voci;
+	public static volatile SingularAttribute<Cognome, Boolean> valido;
 	public static volatile SingularAttribute<Cognome, Cognome> riferimento;
 }// end of entity class

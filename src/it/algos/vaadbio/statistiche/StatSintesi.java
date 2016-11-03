@@ -31,7 +31,7 @@ import java.util.Map;
 public class StatSintesi extends Statistiche {
 
     private static HashMap<String, Object> mappaSintesi = new HashMap();
-    private static int NUOVA_ATTESA = 5;
+    private static int NUOVA_ATTESA = 4;
 
     /**
      * Costruttore completo

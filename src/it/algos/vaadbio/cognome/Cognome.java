@@ -54,7 +54,7 @@ public class Cognome extends BaseEntity {
 
     @Index()
     @ManyToOne
-    private Cognome riferimento;
+    private Cognome riferimento = null;
 
     /**
      * Costruttore senza argomenti

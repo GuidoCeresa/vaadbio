@@ -92,7 +92,8 @@ public class VaadbioUI extends AlgosUI {
 //        footerLayout.addComponent(new Label("Vaadbio versione 4.7 del 27 ott 2016"));
 //        footerLayout.addComponent(new Label("Vaadbio versione 4.8 del 28 ott 2016"));
 //        footerLayout.addComponent(new Label("Vaadbio versione 4.9 del 31 ott 2016"));
-        footerLayout.addComponent(new Label("Vaadbio versione 5.0 del 1 nov 2016"));
+//        footerLayout.addComponent(new Label("Vaadbio versione 5.0 del 1 nov 2016"));
+        footerLayout.addComponent(new Label("Vaadbio versione 5.1 del 3 nov 2016"));
 
 //        this.checkLogin();
         boolean loggato = false;
