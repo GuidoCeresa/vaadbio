@@ -155,21 +155,10 @@ public class Cognome extends BaseEntity {
      * @return lista di alcune istanze di Nome
      */
     @SuppressWarnings("unchecked")
-    public static ArrayList<Cognome> findAllSuperaTaglioPagina() {
-        ArrayList<Cognome> listaParziale = new ArrayList<>();
-        List<? extends BaseEntity> listaCompleta = findAll();
-        Cognome cognome;
-
-        for (BaseEntity entity : listaCompleta) {
-            if (entity instanceof Cognome) {
-                cognome = (Cognome) entity;
-                if (cognome.superaTaglioPagina()) {
-                    listaParziale.add(cognome);
-                }// end of if cycle
-            }// end of if cycle
-        }// end of for cycle
-
-        return listaParziale;
+    public static List<Cognome> findAllSuperaTaglioPagina() {
+        int taglio = Pref.getInt(CostBio.TAGLIO_NOMI_PAGINA, 50);
+        Container.Filter filtro = new Compare.GreaterOrEqual(Cognome_.voci.getName(), taglio);
+        return (List<Cognome>)AQuery.getList(Cognome.class, filtro);
     }// end of method
 
     /**
@@ -194,30 +183,17 @@ public class Cognome extends BaseEntity {
      * @return numero di biografie
      */
     public static Vector findMappa(EntityManager manager) {
-        Vector vettore=null;
-//        int numBio = 0;
+        Vector vettore = null;
         Query query;
-        String queryTxt="select bio.cognome,count(bio.cognome) from Bio bio group by bio.cognome order by bio.cognome";
-//        Object obj = null;
-//        long objLong = 0L;
-
-//        String queryBase = "select count(bio.id) from Bio bio";
-//        String queryWhere = " where bio.cognomeValido='" + cognomeTxt + "'";
-//        queryTxt = queryBase + queryWhere;
+        String queryTxt = "select bio.cognome,count(bio.cognome) from Bio bio group by bio.cognome order by bio.cognome";
 
         try { // prova ad eseguire il codice
             query = manager.createQuery(queryTxt);
-            vettore = (Vector)query.getResultList();
+            vettore = (Vector) query.getResultList();
         } catch (Exception unErrore) { // intercetta l'errore
         }// fine del blocco try-catch
 
-//        if (obj != null && obj instanceof Long) {
-//            objLong = (Long) obj;
-//            numBio = (int) objLong;
-//        }// end of if cycle
-
         return vettore;
-//        return AQuery.count(Bio.class, Bio_.cognomeValido, cognomeTxt, manager);
     }// end of method
 
     /**
@@ -242,15 +218,15 @@ public class Cognome extends BaseEntity {
         return cognome;
     }// end of static method
 
-    /**
-     * Controlla che il numero di records che usano questa istanza, superi il taglio previsto per la creazione della pagina
-     *
-     * @return vero se esistono più records del minimo previsto
-     */
-    @SuppressWarnings("all")
-    public boolean superaTaglioPagina() {
-        return superaTaglio(Pref.getInt(CostBio.TAGLIO_NOMI_PAGINA, 50));
-    }// fine del metodo
+//    /**
+//     * Controlla che il numero di records che usano questa istanza, superi il taglio previsto per la creazione della pagina
+//     *
+//     * @return vero se esistono più records del minimo previsto
+//     */
+//    @SuppressWarnings("all")
+//    public boolean superaTaglioPagina() {
+//        return superaTaglio(Pref.getInt(CostBio.TAGLIO_NOMI_PAGINA, 50));
+//    }// fine del metodo
 
     /**
      * Controlla che il numero di records che usano questa istanza, superi il taglio previsto

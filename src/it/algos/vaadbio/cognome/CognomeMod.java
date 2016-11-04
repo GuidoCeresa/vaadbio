@@ -76,8 +76,8 @@ public class CognomeMod extends ModulePop {
     @Override
     public void addSottoMenu(MenuBar.MenuItem menuItem) {
         addCommandCrea(menuItem);
-        addCommandElabora(menuItem);
-        addCommandConta(menuItem);
+//        addCommandElabora(menuItem);
+//        addCommandConta(menuItem);
         addCommandUpload(menuItem);
         addCommandUploadAll(menuItem);
     }// end of method

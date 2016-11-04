@@ -8,7 +8,7 @@ import it.algos.webbase.domain.pref.Pref;
 import it.algos.webbase.web.lib.LibNum;
 import it.algos.webbase.web.lib.LibTime;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by gac on 30 ott 2016.
@@ -33,7 +33,7 @@ public class UploadCognomi {
     //--Esegue un ciclo di creazione (UPLOAD) delle liste di cognomi
     private void doInit() {
         long inizio = System.currentTimeMillis();
-        ArrayList<Cognome> listaCognomi = Cognome.findAllSuperaTaglioPagina();
+        List<Cognome> listaCognomi = Cognome.findAllSuperaTaglioPagina();
         int mod = 0;
         String modTxt;
 

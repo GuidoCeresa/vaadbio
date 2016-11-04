@@ -9,7 +9,6 @@ import it.algos.webbase.web.lib.LibText;
 import it.algos.webbase.web.query.AQuery;
 
 import javax.persistence.EntityManager;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
@@ -29,21 +28,17 @@ public abstract class CognomeService {
      * Vengono creati nuovi records per i cognomi (unici) presenti nelle voci (bioGrails)
      */
     public static int crea() {
-        int recordsCreati=0;
-        Vector vettore=null;
+        int recordsCreati = 0;
+        Vector vettore = null;
         EntityManager manager = EM.createEntityManager();
 
-//        List<String> listaCognomiUniciCompleta;
-        vettore= Cognome.findMappa(manager);
+        vettore = Cognome.findMappa(manager);
 
         //--cancella i records esistenti
         cancellaCognomi();
 
-        //--recupera una lista 'grezza' di tutti i cognomi
-//        listaCognomiUniciCompleta = creaListaCognomiCompleta();
-
         //--elabora i cognomi e li registra
-//        recordsCreati = spazzolaAllCognomiUnici(listaCognomiUniciCompleta);
+        recordsCreati = spazzolaAllCognomiUnici(vettore, manager);
 
         return recordsCreati;
     }// fine del metodo
@@ -57,37 +52,28 @@ public abstract class CognomeService {
     }// fine del metodo
 
     /**
-     * Recupera una lista 'grezza' di tutti i cognomi
-     * Si considera il campo Bio.cognomeValido
-     */
-    private static ArrayList<String> creaListaCognomiCompleta() {
-        return LibBio.queryFindDistinctStx("Bio", "cognomeValido");
-    }// fine del metodo
-
-    /**
      * Elabora tutti i cognomi
      * Controlla la validità di ogni singolo cognome
      * Controlla che ci siano almeno n voci biografiche per il singolo cognome
      * Registra il record
      */
-    private static int spazzolaAllCognomiUnici(List<String> listaCognomiUniciCompleta) {
+    private static int spazzolaAllCognomiUnici(Vector vettore, EntityManager manager) {
         int numCognomiRegistrati = 0;
-        EntityManager manager = EM.createEntityManager();
+        Object[] obj;
+        int taglio = Pref.getInt(CostBio.TAGLIO_COGNOMI_ELENCO, 20);
+        String cognomeTxt = "";
+        long numVociBio = 0;
 
-//        for (String cognomeDaControllare : listaCognomiUniciCompleta) {
-//            if (elaboraSingolo(cognomeDaControllare)) {
-//                numCognomiRegistrati++;
-//            }// end of if cycle
-//        }// end of for cycle
-//
-
-        String cognomeDaControllare;
-        for (int k = 0; k < 500; k++) {
-            cognomeDaControllare = listaCognomiUniciCompleta.get(k);
-            if (elaboraSingolo(cognomeDaControllare,manager)) {
-                numCognomiRegistrati++;
+        for (int k = 0; k < vettore.size(); k++) {
+            obj = (Object[])vettore.get(k);
+            cognomeTxt=(String)obj[0];
+            numVociBio=(long)obj[1];
+            if (numVociBio>taglio) {
+                if (creaSingolo(cognomeTxt, (int)numVociBio, manager)) {
+                    numCognomiRegistrati++;
+                }// end of if cycle
             }// end of if cycle
-        }// end of for cycle
+        }// endof for cycle
 
         return numCognomiRegistrati;
     }// fine del metodo
@@ -97,28 +83,20 @@ public abstract class CognomeService {
      * Controlla la validità del cognome
      * Calcola il numero di voci Bio esistenti per il cognome
      * Se supera il taglio TAGLIO_COGNOMI_ELENCO, registra il record
-     *
-     * @param cognomeTxt cognome della persona
      */
-    private static boolean elaboraSingolo(String cognomeTxt,EntityManager manager) {
+    private static boolean creaSingolo(String cognomeTxt, int numVociBio, EntityManager manager) {
         boolean registrato = false;
-        int taglio = Pref.getInt(CostBio.TAGLIO_COGNOMI_ELENCO, 20);
-        int numVociBio=0;
 
         cognomeTxt = check(cognomeTxt);
-
         if (cognomeTxt.equals(CostBio.VUOTO)) {
             return false;
         }// end of if cycle
 
-//        numVociBio = Cognome.countBioCognome(cognomeTxt,manager);
-        if (numVociBio >= taglio) {
-            try { // prova ad eseguire il codice
-                Cognome.crea(cognomeTxt, numVociBio,manager);
-                registrato = true;
-            } catch (Exception unErrore) { // intercetta l'errore
-            }// fine del blocco try-catch
-        }// end of if cycle
+        try { // prova ad eseguire il codice
+            Cognome.crea(cognomeTxt, numVociBio, manager);
+            registrato = true;
+        } catch (Exception unErrore) { // intercetta l'errore
+        }// fine del blocco try-catch
 
         return registrato;
     }// fine del metodo
@@ -126,7 +104,6 @@ public abstract class CognomeService {
 
     /**
      * Controllo di validità di un cognome <br>
-     * Prima regola: elimina cognomi di un solo carattere
      * Quarta regola: elimina parti iniziali con caratteri/prefissi non accettati -> LibBio.checkNome()
      * Quinta regola: elimina <ref>< finali e testo successivo
      * Elimina parti iniziali con caratteri/prefissi non accettati <br>
@@ -139,11 +116,6 @@ public abstract class CognomeService {
     private static String check(String cognomeIn) {
         String cognomeOut;
         List<String> tagIniziale = LibBio.sumTag(TAG_INI_NUMERI, TAG_INI_CHAR, TAG_INI_APICI);
-
-        // --prima regola
-//        if (cognomeIn.length() < 2) {
-//            return CostBio.VUOTO;
-//        }// fine del blocco if
 
         for (String tag : tagIniziale) {
             if (cognomeIn.startsWith(tag)) {

@@ -15,7 +15,6 @@
 		<class>it.algos.vaadbio.professione.Professione</class>
 		<class>it.algos.vaadbio.secolo.Secolo</class>
 		<class>it.algos.vaadbio.mese.Mese</class>
-		<class>it.algos.vaadbio.delta.Delta</class>
 		<class>it.algos.vaadbio.cognome.Cognome</class>
 		<class>it.algos.vaadbio.nazionalita.Nazionalita</class>
 		<class>it.algos.vaadbio.attivita.Attivita</class>
