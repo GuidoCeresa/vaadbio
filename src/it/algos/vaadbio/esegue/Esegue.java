@@ -209,7 +209,7 @@ public abstract class Esegue {
         long inizio = System.currentTimeMillis();
 
         if (Pref.getBool(CostBio.USA_DAEMONS_COGNOMI, false)) {
-            Esegue.creaAggiornaCognomi();
+            Esegue.creaCognomi();
             Esegue.elaboraCognomi();
             Esegue.contaCognomi();
             Log.debug("cognomi", "Aggiunti ed elaborati i records dei cognopmi in " + LibTime.difText(inizio));
@@ -233,8 +233,12 @@ public abstract class Esegue {
     /**
      * Esegue l'aggiornamento e la creazione dei nuovi records
      */
-    public static void creaAggiornaCognomi() {
-        CognomeService.creaAggiorna();
+    public static void creaCognomi() {
+        int recordsCreati;
+        long inizio = System.currentTimeMillis();
+
+        recordsCreati = CognomeService.crea();
+        Log.debug("cognomi", "Creati " + LibNum.format(recordsCreati) + " records di cognomi in " + LibTime.difText(inizio));
     }// end of method
 
     /**

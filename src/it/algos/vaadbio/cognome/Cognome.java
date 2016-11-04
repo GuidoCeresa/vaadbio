@@ -15,10 +15,12 @@ import org.eclipse.persistence.annotations.Index;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Vector;
 
 /**
  * Classe di tipo JavaBean
@@ -44,17 +46,17 @@ public class Cognome extends BaseEntity {
     private String cognome = "";
 
     @Index()
-    private boolean principale = true;
-
-    @Index()
     private int voci = 0;
 
-    @Index()
-    private boolean valido = true;
-
-    @Index()
-    @ManyToOne
-    private Cognome riferimento = null;
+//    @Index()
+//    private boolean principale = true;
+//
+//    @Index()
+//    private boolean valido = true;
+//
+//    @Index()
+//    @ManyToOne
+//    private Cognome riferimento = null;
 
     /**
      * Costruttore senza argomenti
@@ -71,22 +73,32 @@ public class Cognome extends BaseEntity {
      * @param cognome della persona
      */
     public Cognome(String cognome) {
-        this(cognome, true, null);
+        this(cognome, 0);
     }// end of general constructor
 
     /**
-     * Costruttore completo
+     * Costruttore
      *
-     * @param cognome     della persona
-     * @param principale  flag
-     * @param riferimento al cognome che raggruppa le varie dizioni
+     * @param cognome della persona
      */
-    public Cognome(String cognome, boolean principale, Cognome riferimento) {
-        super();
+    public Cognome(String cognome, int voci) {
         this.setCognome(cognome);
-        this.setPrincipale(principale);
-        this.setRiferimento(riferimento);
-    }// end of full constructor
+        this.setVoci(voci);
+    }// end of general constructor
+
+//    /**
+//     * Costruttore completo
+//     *
+//     * @param cognome     della persona
+//     * @param principale  flag
+//     * @param riferimento al cognome che raggruppa le varie dizioni
+//     */
+//    public Cognome(String cognome, boolean principale, Cognome riferimento) {
+//        super();
+//        this.setCognome(cognome);
+//        this.setPrincipale(principale);
+//        this.setRiferimento(riferimento);
+//    }// end of full constructor
 
     /**
      * Recupera una istanza di Cognome usando la query standard della Primary Key
@@ -132,7 +144,7 @@ public class Cognome extends BaseEntity {
      * @return lista di tutte le istanze di Cognome
      */
     @SuppressWarnings("unchecked")
-    public synchronized static List<? extends BaseEntity> findAll() {
+    public static List<? extends BaseEntity> findAll() {
         return AQuery.getList(Cognome.class, new SortProperty(Cognome_.cognome.getName()), (Container.Filter) null);
     }// end of method
 
@@ -143,7 +155,7 @@ public class Cognome extends BaseEntity {
      * @return lista di alcune istanze di Nome
      */
     @SuppressWarnings("unchecked")
-    public synchronized static ArrayList<Cognome> findAllSuperaTaglioPagina() {
+    public static ArrayList<Cognome> findAllSuperaTaglioPagina() {
         ArrayList<Cognome> listaParziale = new ArrayList<>();
         List<? extends BaseEntity> listaCompleta = findAll();
         Cognome cognome;
@@ -165,7 +177,7 @@ public class Cognome extends BaseEntity {
      *
      * @return numero totale di records della tavola
      */
-    public synchronized static int count() {
+    public static int count() {
         int totRec = 0;
         long totTmp = AQuery.count(Cognome.class);
 
@@ -175,6 +187,60 @@ public class Cognome extends BaseEntity {
 
         return totRec;
     }// end of method
+
+    /**
+     * Recupera una mappa dei cognomi e della loro frequenza
+     *
+     * @return numero di biografie
+     */
+    public static Vector findMappa(EntityManager manager) {
+        Vector vettore=null;
+//        int numBio = 0;
+        Query query;
+        String queryTxt="select bio.cognome,count(bio.cognome) from Bio bio group by bio.cognome order by bio.cognome";
+//        Object obj = null;
+//        long objLong = 0L;
+
+//        String queryBase = "select count(bio.id) from Bio bio";
+//        String queryWhere = " where bio.cognomeValido='" + cognomeTxt + "'";
+//        queryTxt = queryBase + queryWhere;
+
+        try { // prova ad eseguire il codice
+            query = manager.createQuery(queryTxt);
+            vettore = (Vector)query.getResultList();
+        } catch (Exception unErrore) { // intercetta l'errore
+        }// fine del blocco try-catch
+
+//        if (obj != null && obj instanceof Long) {
+//            objLong = (Long) obj;
+//            numBio = (int) objLong;
+//        }// end of if cycle
+
+        return vettore;
+//        return AQuery.count(Bio.class, Bio_.cognomeValido, cognomeTxt, manager);
+    }// end of method
+
+    /**
+     * Creazione iniziale di una istanza della Entity
+     * Filtrato sulla company passata come parametro.
+     * La crea SOLO se non esiste già
+     *
+     * @return istanza della Entity
+     */
+    public static Cognome crea(String cognomeTxt, int voci, EntityManager manager) {
+        Cognome cognome = (Cognome) AQuery.getEntity(Cognome.class, Cognome_.cognome, cognomeTxt, manager);
+
+        if (cognome == null) {
+            try { // prova ad eseguire il codice
+                cognome = new Cognome(cognomeTxt, voci);
+                cognome.save(manager);
+            } catch (Exception unErrore) { // intercetta l'errore
+                cognome = null;
+            }// fine del blocco try-catch
+        }// end of if cycle
+
+        return cognome;
+    }// end of static method
 
     /**
      * Controlla che il numero di records che usano questa istanza, superi il taglio previsto per la creazione della pagina
@@ -239,22 +305,6 @@ public class Cognome extends BaseEntity {
         this.cognome = cognome;
     }//end of setter method
 
-    public boolean isPrincipale() {
-        return principale;
-    }// end of getter method
-
-    public void setPrincipale(boolean principale) {
-        this.principale = principale;
-    }//end of setter method
-
-    public Cognome getRiferimento() {
-        return riferimento;
-    }// end of getter method
-
-    public void setRiferimento(Cognome riferimento) {
-        this.riferimento = riferimento;
-    }//end of setter method
-
     public int getVoci() {
         return voci;
     }// end of getter method
@@ -263,13 +313,30 @@ public class Cognome extends BaseEntity {
         this.voci = voci;
     }//end of setter method
 
-    public boolean isValido() {
-        return valido;
-    }// end of getter method
-
-    public void setValido(boolean valido) {
-        this.valido = valido;
-    }//end of setter method
+//    public boolean isPrincipale() {
+//        return principale;
+//    }// end of getter method
+//
+//    public void setPrincipale(boolean principale) {
+//        this.principale = principale;
+//    }//end of setter method
+//
+//    public Cognome getRiferimento() {
+//        return riferimento;
+//    }// end of getter method
+//
+//    public void setRiferimento(Cognome riferimento) {
+//        this.riferimento = riferimento;
+//    }//end of setter method
+//
+//
+//    public boolean isValido() {
+//        return valido;
+//    }// end of getter method
+//
+//    public void setValido(boolean valido) {
+//        this.valido = valido;
+//    }//end of setter method
 
     /**
      * Costruisce il filtro per trovare i records di Bio che questa istanza di Cognome nella property cognomePunta

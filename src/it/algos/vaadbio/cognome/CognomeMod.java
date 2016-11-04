@@ -75,7 +75,7 @@ public class CognomeMod extends ModulePop {
      */
     @Override
     public void addSottoMenu(MenuBar.MenuItem menuItem) {
-        addCommandCreaAggiorna(menuItem);
+        addCommandCrea(menuItem);
         addCommandElabora(menuItem);
         addCommandConta(menuItem);
         addCommandUpload(menuItem);
@@ -87,10 +87,10 @@ public class CognomeMod extends ModulePop {
      *
      * @param menuItem a cui agganciare il bottone/item
      */
-    private void addCommandCreaAggiorna(MenuBar.MenuItem menuItem) {
-        menuItem.addItem("Aggiorna", FontAwesome.BEER, new MenuBar.Command() {
+    private void addCommandCrea(MenuBar.MenuItem menuItem) {
+        menuItem.addItem("Creazione", FontAwesome.BEER, new MenuBar.Command() {
             public void menuSelected(MenuBar.MenuItem selectedItem) {
-                esegueAggiorna();
+                esegueCrea();
             }// end of method
         });// end of anonymous class
     }// end of method
@@ -148,10 +148,10 @@ public class CognomeMod extends ModulePop {
     }// end of method
 
     /**
-     * Crea e/o aggiunge nuovi cognomi individuati nei records di Bio
+     * Crea i nuovi cognomi individuati nei records di Bio
      */
-    private void esegueAggiorna() {
-        Esegue.creaAggiornaCognomi();
+    private void esegueCrea() {
+        Esegue.creaCognomi();
     }// end of method
 
     /**

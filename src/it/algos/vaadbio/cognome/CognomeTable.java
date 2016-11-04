@@ -45,7 +45,7 @@ public class CognomeTable extends ModuleTable {
     @Override
     @SuppressWarnings("rawtypes")
     protected Object[] getDisplayColumns() {
-        return new Object[]{Cognome_.cognome, Cognome_.principale, colLink};
+        return new Object[]{Cognome_.cognome, colLink};
     }// end of method
 
     /**
@@ -62,7 +62,7 @@ public class CognomeTable extends ModuleTable {
 
         if (bean != null && bean instanceof Nome) {
             istanza = (Cognome) bean;
-            wikiTitle = getTitolo(istanza.getRiferimento());
+            wikiTitle = getTitolo(istanza);
         }// end of if cycle
 
         if (checkLista) {
