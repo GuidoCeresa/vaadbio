@@ -1,8 +1,10 @@
 package it.algos.vaadbio;
 
 import com.vaadin.annotations.Theme;
+import com.vaadin.server.Resource;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.MenuBar;
 import com.vaadin.ui.Notification;
 import it.algos.vaad.wiki.WikiLogin;
 import it.algos.vaadbio.anno.AnnoMod;
@@ -17,11 +19,11 @@ import it.algos.vaadbio.nazionalita.NazionalitaMod;
 import it.algos.vaadbio.nome.NomeMod;
 import it.algos.vaadbio.secolo.SecoloMod;
 import it.algos.webbase.domain.pref.PrefMod;
-import it.algos.webbase.domain.utente.UtenteModulo;
 import it.algos.webbase.domain.vers.VersMod;
 import it.algos.webbase.web.lib.LibSession;
 import it.algos.webbase.web.login.Login;
 import it.algos.webbase.web.login.LoginEvent;
+import it.algos.webbase.web.module.ModulePop;
 import it.algos.webbase.web.ui.AlgosUI;
 
 /**
@@ -119,20 +121,21 @@ public class VaadbioUI extends AlgosUI {
      */
     @Override
     protected void addModuli() {
-        this.addModulo(new UtenteModulo("User"));
+//        MenuBar.MenuItem menuUtilities = topLayout.addItem("Utilities", null);
+//
+//        addMod(menuUtilities, new UtenteModulo("User"));
+//        addMod(menuUtilities, new VersMod());
+//        addMod(menuUtilities, new BioLogoMod());
+//        addMod(menuUtilities, new PrefMod());
         this.addModulo(new VersMod());
         this.addModulo(new BioLogoMod());
         this.addModulo(new PrefMod());
 
-        if (true) {
-            this.addModulo(new BioMod());
-//        this.addModulo(new DeltaMod());
-            this.addModulo(new MeseMod());
-            this.addModulo(new SecoloMod());
-            this.addModulo(new GiornoMod());
-            this.addModulo(new AnnoMod());
-        }// end of if cycle
-
+        this.addModulo(new BioMod());
+        this.addModulo(new MeseMod());
+        this.addModulo(new SecoloMod());
+        this.addModulo(new GiornoMod());
+        this.addModulo(new AnnoMod());
 
         this.addModulo(new NomeMod());
         this.addModulo(new CognomeMod());
@@ -141,6 +144,7 @@ public class VaadbioUI extends AlgosUI {
         this.addModulo(new AttivitaMod());
         this.addModulo(new NazionalitaMod());
     }// end of method
+
 
     @Override
     public void onUserLogin(LoginEvent evento) {

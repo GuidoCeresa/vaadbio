@@ -267,7 +267,7 @@ public abstract class Esegue {
      * Crea la pagina di controllo didascalie
      */
     public static void statisticheCognomi() {
-//        new StatCognomiPagine();
+        new StatCognomiPagine();
         new StatCognomiListe();
     }// fine del metodo
 
