@@ -80,6 +80,7 @@ public class CognomeMod extends ModulePop {
 //        addCommandConta(menuItem);
         addCommandUpload(menuItem);
         addCommandUploadAll(menuItem);
+        addCommandStatistichel(menuItem);
     }// end of method
 
     /**
@@ -146,6 +147,18 @@ public class CognomeMod extends ModulePop {
             }// end of method
         });// end of anonymous class
     }// end of method
+    /**
+     * Comando bottone/item crea tutte le pagine delle liste sul servere wiki
+     *
+     * @param menuItem a cui agganciare il bottone/item
+     */
+    private void addCommandStatistichel(MenuBar.MenuItem menuItem) {
+        menuItem.addItem("Statistiche", FontAwesome.COG, new MenuBar.Command() {
+            public void menuSelected(MenuBar.MenuItem selectedItem) {
+                esegueStatistiche();
+            }// end of method
+        });// end of anonymous class
+    }// end of method
 
     /**
      * Crea i nuovi cognomi individuati nei records di Bio
@@ -192,6 +205,12 @@ public class CognomeMod extends ModulePop {
         Esegue.uploadCognomi();
     }// end of method
 
+    /**
+     * Crea le pagine delle statistiche (2)
+     */
+    protected void esegueStatistiche() {
+        Esegue.statisticheCognomi();
+    }// end of method
 
     /**
      * Recupera la voce selezionata

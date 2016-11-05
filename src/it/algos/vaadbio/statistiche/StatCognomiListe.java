@@ -3,8 +3,8 @@ package it.algos.vaadbio.statistiche;
 import it.algos.vaad.wiki.Cost;
 import it.algos.vaad.wiki.LibWiki;
 import it.algos.vaadbio.bio.Bio;
+import it.algos.vaadbio.cognome.Cognome;
 import it.algos.vaadbio.lib.CostBio;
-import it.algos.vaadbio.nome.Nome;
 import it.algos.webbase.domain.pref.Pref;
 import it.algos.webbase.web.lib.LibNum;
 import it.algos.webbase.web.lib.LibText;
@@ -15,32 +15,32 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Created by gac on 17 apr 2016.
+ * Created by gac on 05 nov 2016.
  * Pagina di controllo del progetto Antroponimi
- * - Progetto:Antroponimi/Liste nomi: Elenco dei xxx nomi '''differenti'''  utilizzati nelle yyyy voci biografiche con occorrenze maggiori di zz
+ * - Progetto:Antroponimi/Liste cognomi: Elenco dei xxx cognomi '''differenti'''  utilizzati nelle yyyy voci biografiche con occorrenze maggiori di zz
  */
-public class StatNomiListe extends StatNomi {
+public class StatCognomiListe extends StatNomi {
+    private static String TITOLO_PAGINA = "Liste cognomi";
 
-    private static String TITOLO_PAGINA = "Liste nomi";
-
-    private ArrayList<Nome> listaNomi;
-    private LinkedHashMap<Nome, Integer> mappaNomi;
+    private ArrayList<Cognome> listaCognomi;
+    private LinkedHashMap<Cognome, Integer> mappaCognomi;
     private long inizio = System.currentTimeMillis();
     private int mod = 0;
     private String modTxt;
 
+
     /**
      * Costruttore vuoto
      */
-    public StatNomiListe() {
+    public StatCognomiListe() {
         super();
     }// end of constructor
 
     /**
      * Costruttore completo
      */
-    public StatNomiListe(LinkedHashMap<Nome, Integer> mappaNomi) {
-        this.mappaNomi = mappaNomi;
+    public StatCognomiListe(LinkedHashMap<Cognome, Integer> mappaCognomi) {
+        this.mappaCognomi = mappaCognomi;
         doInit();
     }// end of constructor
 
@@ -62,10 +62,11 @@ public class StatNomiListe extends StatNomi {
      */
     @Override
     protected void elaboraMappaBiografie() {
-        if (mappaNomi == null) {
-            mappaNomi = Nome.findMappaTaglioListe();
+        if (mappaCognomi == null) {
+            mappaCognomi = Cognome.findMappaTaglioListe();
         }// end of if cycle
     }// fine del metodo
+
 
     /**
      * Corpo della pagina
@@ -74,7 +75,7 @@ public class StatNomiListe extends StatNomi {
     @Override
     protected String elaboraBody() {
         String text = CostBio.VUOTO;
-        int numNomi = mappaNomi.size();
+        int numCognomi = mappaCognomi.size();
         int numVoci = Bio.count();
         int taglioVoci = Pref.getInt(CostBio.TAGLIO_NOMI_ELENCO);
 
@@ -82,8 +83,8 @@ public class StatNomiListe extends StatNomi {
         text += "==Nomi==";
         text += A_CAPO;
         text += "Elenco dei ";
-        text += LibWiki.setBold(LibNum.format(numNomi));
-        text += " nomi '''differenti'''  utilizzati nelle ";
+        text += LibWiki.setBold(LibNum.format(numCognomi));
+        text += " cognomi '''differenti'''  utilizzati nelle ";
         text += LibWiki.setBold(LibNum.format(numVoci));
         text += " voci biografiche con occorrenze maggiori di ";
         text += LibWiki.setBold(taglioVoci);
@@ -103,30 +104,30 @@ public class StatNomiListe extends StatNomi {
         ArrayList listaPagine = new ArrayList();
         ArrayList listaRiga;
         HashMap mappaTavola = new HashMap();
-        Nome nome;
-        String nomeText;
+        Cognome cognome;
+        String cognomeText;
         int num;
         int taglioPagine = Pref.getInt(CostBio.TAGLIO_NOMI_PAGINA);
         String numText;
-        String tag = "Persone di nome ";
+        String tag = "Persone di cognome ";
         ArrayList titoli = new ArrayList();
-        titoli.add(LibWiki.setBold("Nome"));
+        titoli.add(LibWiki.setBold("Cognome"));
         titoli.add(LibWiki.setBold("Voci"));
 
-        for (Map.Entry mappa : mappaNomi.entrySet()) {
+        for (Map.Entry mappa : mappaCognomi.entrySet()) {
 
-            nome = (Nome) mappa.getKey();
-            nomeText = nome.getNome();
+            cognome = (Cognome) mappa.getKey();
+            cognomeText = cognome.getCognome();
             num = (Integer) mappa.getValue();
             numText = LibNum.format(num);
             if (num >= taglioPagine) {
-                nomeText = tag + nomeText + CostBio.PIPE + nomeText;
-                nomeText = LibWiki.setQuadre(nomeText);
-                nomeText = LibWiki.setBold(nomeText);
+                cognomeText = tag + cognomeText + CostBio.PIPE + cognomeText;
+                cognomeText = LibWiki.setQuadre(cognomeText);
+                cognomeText = LibWiki.setBold(cognomeText);
             }// end of if cycle
 
             listaRiga = new ArrayList();
-            listaRiga.add(nomeText);
+            listaRiga.add(cognomeText);
             listaRiga.add(num);
             listaPagine.add(listaRiga);
 
@@ -151,8 +152,7 @@ public class StatNomiListe extends StatNomi {
             text += "==Voci correlate==";
             text += A_CAPO;
             text += LibWiki.setRigaQuadre(LibText.levaCoda(PATH_ANTRO, "/"));
-            text += LibWiki.setRigaQuadre(PATH_ANTRO + "Nomi");
-            text += LibWiki.setRigaQuadre(PATH_ANTRO + "Nomi doppi");
+            text += LibWiki.setRigaQuadre(PATH_ANTRO + "Cognomi");
             text += LibWiki.setRigaQuadre(PATH_ANTRO + "Didascalie");
         }// end of if cycle
 
@@ -168,8 +168,8 @@ public class StatNomiListe extends StatNomi {
         String text = CostBio.VUOTO;
 
         text += A_CAPO;
-        text += LibWiki.setRigaCat("Liste di persone per nome| ");
-        text += LibWiki.setRigaCat("Progetto Antroponimi|Nomi");
+        text += LibWiki.setRigaCat("Liste di persone per cognome| ");
+        text += LibWiki.setRigaCat("Progetto Antroponimi|Cognomi");
 
         return text;
     }// fine del metodo

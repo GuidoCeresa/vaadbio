@@ -17,10 +17,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Vector;
+import java.util.*;
 
 /**
  * Classe di tipo JavaBean
@@ -157,8 +154,11 @@ public class Cognome extends BaseEntity {
     @SuppressWarnings("unchecked")
     public static List<Cognome> findAllSuperaTaglioPagina() {
         int taglio = Pref.getInt(CostBio.TAGLIO_NOMI_PAGINA, 50);
-        Container.Filter filtro = new Compare.GreaterOrEqual(Cognome_.voci.getName(), taglio);
-        return (List<Cognome>)AQuery.getList(Cognome.class, filtro);
+        return (List<Cognome>) AQuery.getList(Cognome.class, getFiltroVoci(taglio));
+    }// end of method
+
+    public static Container.Filter getFiltroVoci(int maxVoci) {
+        return new Compare.GreaterOrEqual(Cognome_.voci.getName(), maxVoci);
     }// end of method
 
     /**
@@ -194,6 +194,43 @@ public class Cognome extends BaseEntity {
         }// fine del blocco try-catch
 
         return vettore;
+    }// end of method
+
+    /**
+     * Recupera una mappa con occorrenze dei records che rispettano il criterio
+     *
+     * @return mappa di alcune istanze di Nome
+     */
+    @SuppressWarnings("unchecked")
+    public static LinkedHashMap<Cognome, Integer> findMappaTaglioPagina() {
+        return findMappa(Pref.getInt(CostBio.TAGLIO_NOMI_PAGINA, 50));
+    }// end of method
+
+    /**
+     * Recupera una mappa con occorrenze dei records che rispettano il criterio
+     *
+     * @return mappa di alcune istanze di Nome
+     */
+    @SuppressWarnings("unchecked")
+    public static LinkedHashMap<Cognome, Integer> findMappaTaglioListe() {
+        return findMappa(Pref.getInt(CostBio.TAGLIO_NOMI_ELENCO, 20));
+    }// end of method
+
+    /**
+     * Recupera una mappa con occorrenze dei records che rispettano il criterio
+     *
+     * @return mappa di alcune istanze di Nome
+     */
+    @SuppressWarnings("unchecked")
+    private static LinkedHashMap<Cognome, Integer> findMappa(int maxVoci) {
+        LinkedHashMap<Cognome, Integer> mappa = new LinkedHashMap<>();
+        List<Cognome> lista = (List<Cognome>) AQuery.getList(Cognome.class, getFiltroVoci(maxVoci));
+
+        for (Cognome cognome : lista) {
+            mappa.put(cognome,cognome.getVoci());
+        }// end of for cycle
+
+        return mappa;
     }// end of method
 
     /**

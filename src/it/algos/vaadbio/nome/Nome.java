@@ -222,7 +222,7 @@ public class Nome extends BaseEntity {
      * @return lista di alcune istanze di Nome
      */
     @SuppressWarnings("unchecked")
-    public synchronized static ArrayList<Nome> findAllSuperaTaglioPagina() {
+    public  static ArrayList<Nome> findAllSuperaTaglioPagina() {
         ArrayList<Nome> listaParziale = new ArrayList<>();
         List<? extends BaseEntity> listaCompleta = findAll();
         Nome nome;
@@ -245,7 +245,7 @@ public class Nome extends BaseEntity {
      * @return mappa di alcune istanze di Nome
      */
     @SuppressWarnings("unchecked")
-    public synchronized static ArrayList<String> findListaTaglioPagina() {
+    public  static ArrayList<String> findListaTaglioPagina() {
         ArrayList<String> lista = new ArrayList<>();
         LinkedHashMap<Nome, Integer> mappa = findMappaTaglioPagina();
 
@@ -262,7 +262,7 @@ public class Nome extends BaseEntity {
      * @return mappa di alcune istanze di Nome
      */
     @SuppressWarnings("unchecked")
-    public synchronized static LinkedHashMap<Nome, Integer> findMappaTaglioPagina() {
+    public  static LinkedHashMap<Nome, Integer> findMappaTaglioPagina() {
         return findMappa(Pref.getInt(CostBio.TAGLIO_NOMI_PAGINA, 50));
     }// end of method
 
@@ -272,7 +272,7 @@ public class Nome extends BaseEntity {
      * @return mappa di alcune istanze di Nome
      */
     @SuppressWarnings("unchecked")
-    public synchronized static LinkedHashMap<Nome, Integer> findMappaTaglioListe() {
+    public  static LinkedHashMap<Nome, Integer> findMappaTaglioListe() {
         return findMappa(Pref.getInt(CostBio.TAGLIO_NOMI_ELENCO, 20));
     }// end of method
 
@@ -282,7 +282,7 @@ public class Nome extends BaseEntity {
      * @return mappa di alcune istanze di Nome
      */
     @SuppressWarnings("unchecked")
-    private synchronized static LinkedHashMap<Nome, Integer> findMappa(int maxVoci) {
+    private  static LinkedHashMap<Nome, Integer> findMappa(int maxVoci) {
         LinkedHashMap<Nome, Integer> mappa = new LinkedHashMap<Nome, Integer>();
         long numRecords = 0;
         List<? extends BaseEntity> listaCompleta = findAll();

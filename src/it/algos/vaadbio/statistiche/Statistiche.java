@@ -18,8 +18,8 @@ public abstract class Statistiche {
     public final static String A_CAPO = "\n";
     //    protected static String PATH = "Progetto:Biografie/";
     protected static String PATH_BIO = "Progetto:Biografie/";
-    protected static String PATH_NOMI = "Progetto:Antroponimi/";
-        protected static String DISCUSSIONI = "Discussioni ";
+    protected static String PATH_ANTRO = "Progetto:Antroponimi/";
+    protected static String DISCUSSIONI = "Discussioni ";
     protected static String TAG_INDICE = "__FORCETOC__";
     protected static String TAG_NO_INDICE = "__NOTOC__";
     protected static String PAGINA_PROVA = "Utente:Biobot/2";

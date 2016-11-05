@@ -268,9 +268,7 @@ public abstract class Esegue {
      */
     public static void statisticheCognomi() {
 //        new StatCognomiPagine();
-//        new StatCognomiListe();
-
-//        creaPaginaDidascalie();
+        new StatCognomiListe();
     }// fine del metodo
 
 

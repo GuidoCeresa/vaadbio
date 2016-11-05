@@ -20,10 +20,9 @@ import it.algos.webbase.domain.pref.PrefMod;
 import it.algos.webbase.domain.utente.UtenteModulo;
 import it.algos.webbase.domain.vers.VersMod;
 import it.algos.webbase.web.lib.LibSession;
+import it.algos.webbase.web.login.Login;
 import it.algos.webbase.web.login.LoginEvent;
 import it.algos.webbase.web.ui.AlgosUI;
-import it.algos.vaadbio.genere.GenereMod;
-import it.algos.vaadbio.professione.ProfessioneMod;
 
 /**
  * Crea l'interfaccia utente (User Interface) iniziale dell'applicazione
@@ -144,10 +143,17 @@ public class VaadbioUI extends AlgosUI {
     }// end of method
 
     @Override
-    public void onUserLogin(LoginEvent e) {
-//        WikiLogin login = new WikiLogin()
+    public void onUserLogin(LoginEvent evento) {
+        Login loginBase = (Login) evento.getSource();
+        String nick = loginBase.getUser().getNickname();
+        String pass = loginBase.getUser().getPassword();
+        WikiLogin login = new WikiLogin(nick, pass);
+        if (login.isValido()) {
+            LibSession.setAttribute(WikiLogin.WIKI_LOGIN_KEY_IN_SESSION, login);
+        }// end of if cycle
+
         Object obj = LibSession.getAttribute(WikiLogin.WIKI_LOGIN_KEY_IN_SESSION);
-int a=87;
+        int a = 87;
     }
 }//end of UI class
 

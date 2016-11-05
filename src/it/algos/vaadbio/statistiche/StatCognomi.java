@@ -1,15 +1,13 @@
 package it.algos.vaadbio.statistiche;
 
 /**
- * Created by gac on 17 apr 2016.
+ * Created by gac on 05 nov 2016.
  * Pagine di controllo del progetto Antroponimi
- * Crea 3 pagine:
- * - Progetto:Antroponimi/Nomi: Elenco dei xxx nomi che hanno più di yy ricorrenze nelle voci biografiche
- * - Progetto:Antroponimi/Liste nomi: Elenco dei xxx nomi differenti utilizzati nelle yyy voci biografiche con occorrenze maggiori di zz
- * - Progetto:Antroponimi/Didascalie: Pagina di servizio per il controllo delle didascalie utilizzate nelle Liste di persone di nome...
+ * Crea 2 pagine:
+ * - Progetto:Antroponimi/Cognomi: Elenco dei xxx cognomi che hanno più di yy ricorrenze nelle voci biografiche
+ * - Progetto:Antroponimi/Liste cognomi: Elenco dei xxx cognomi differenti utilizzati nelle yyy voci biografiche con occorrenze maggiori di zz
  */
-public abstract class StatNomi extends Statistiche {
-
+public class StatCognomi extends Statistiche{
     /**
      * Regola alcuni (eventuali) parametri specifici della sottoclasse
      * <p>

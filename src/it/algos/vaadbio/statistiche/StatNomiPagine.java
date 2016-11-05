@@ -131,10 +131,10 @@ public class StatNomiPagine extends StatNomi {
         if (usaFooterCorrelate) {
             text += "==Voci correlate==";
             text += A_CAPO;
-            text += LibWiki.setRigaQuadre(LibText.levaCoda(PATH_NOMI, "/"));
-            text += LibWiki.setRigaQuadre(PATH_NOMI + "Nomi doppi");
-            text += LibWiki.setRigaQuadre(PATH_NOMI + "Liste nomi");
-            text += LibWiki.setRigaQuadre(PATH_NOMI + "Didascalie");
+            text += LibWiki.setRigaQuadre(LibText.levaCoda(PATH_ANTRO, "/"));
+            text += LibWiki.setRigaQuadre(PATH_ANTRO + "Nomi doppi");
+            text += LibWiki.setRigaQuadre(PATH_ANTRO + "Liste nomi");
+            text += LibWiki.setRigaQuadre(PATH_ANTRO + "Didascalie");
         }// end of if cycle
 
         return text;
