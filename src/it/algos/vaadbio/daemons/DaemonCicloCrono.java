@@ -83,7 +83,7 @@ public class DaemonCicloCrono extends Scheduler {
 
             WikiLogin wikiLogin = VaadApp.WIKI_LOGIN;
             if (wikiLogin == null) {
-                wikiLogin = new WikiLogin("biobot", "fulvia");
+                wikiLogin = new WikiLogin("Gacbot@Gacbot", "tftgv0vhl16c0qnmfdqide3jqdp1i5m7");
                 VaadApp.WIKI_LOGIN = wikiLogin;
             }// end of if cycle
 
