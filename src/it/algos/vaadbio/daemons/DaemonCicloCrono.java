@@ -81,11 +81,11 @@ public class DaemonCicloCrono extends Scheduler {
         @Override
         public void execute(TaskExecutionContext context) throws RuntimeException {
 
-            WikiLogin wikiLogin = VaadApp.WIKI_LOGIN;
-            if (wikiLogin == null) {
-                wikiLogin = new WikiLogin("Gacbot@Gacbot", "tftgv0vhl16c0qnmfdqide3jqdp1i5m7");
-                VaadApp.WIKI_LOGIN = wikiLogin;
-            }// end of if cycle
+            WikiLogin loginWiki = VaadApp.WIKI_LOGIN;
+//            if (loginWiki == null) {
+            loginWiki = new WikiLogin("Gacbot@Gacbot", "tftgv0vhl16c0qnmfdqide3jqdp1i5m7");
+            VaadApp.WIKI_LOGIN = loginWiki;
+//            }// end of if cycle
 
             if (Pref.getBool(CostBio.USA_DAEMONS_DOWNLOAD, true)) {
                 Esegue.cicloDownload();

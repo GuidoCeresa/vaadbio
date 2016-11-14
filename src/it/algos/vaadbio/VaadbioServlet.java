@@ -3,6 +3,7 @@ package it.algos.vaadbio;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.server.ServiceException;
 import com.vaadin.server.SessionInitEvent;
+import it.algos.vaad.VaadApp;
 import it.algos.vaad.wiki.WikiLogin;
 import it.algos.webbase.web.lib.LibCrypto;
 import it.algos.webbase.web.lib.LibSession;
@@ -42,7 +43,11 @@ public class VaadbioServlet extends AlgosServlet {
     @Override
     public void sessionInit(SessionInitEvent event) throws ServiceException {
         super.sessionInit(event);
-        checkCookies();
+//        checkCookies();
+        WikiLogin loginWiki = new WikiLogin("Gacbot@Gacbot", "tftgv0vhl16c0qnmfdqide3jqdp1i5m7");
+        VaadApp.WIKI_LOGIN = loginWiki;
+        LibSession.setAttribute("logged", true);
+        LibSession.setAttribute(WikiLogin.WIKI_LOGIN_KEY_IN_SESSION, loginWiki);
     }// end of method
 
 
