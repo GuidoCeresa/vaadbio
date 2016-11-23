@@ -104,7 +104,7 @@ public class ListaAttivita extends ListaBio {
             lista.add(didascalia);
             mappa.put(KEY_MAP_LINK, chiaveParagrafo);
             mappa.put(KEY_MAP_TITOLO, chiaveParagrafo);
-            mappa.put(KEY_MAP_LISTA, lista);
+            mappa.put(KEY_MAP_LISTA, bio);
             mappa.put(KEY_MAP_SESSO, bio.getSesso());
             mappaBio.put(chiaveParagrafo, mappa);
         }// end of if/else cycle
@@ -219,10 +219,19 @@ public class ListaAttivita extends ListaBio {
         return listaBio;
     }// fine del metodo
 
+    /**
+     * Costruisce la sottopagina
+     * Metodo sovrascritto
+     */
+    protected void creaSottopagina(HashMap<String, Object> mappa) {
+        new ListaAttivitaABC(this, mappa);
+    }// fine del metodo
+
 
     public Attivita getAttivita() {
         return (Attivita) getOggetto();
     }// end of getter method
+
 
     public String getPluraleAttività() {
         String plurale = "";
