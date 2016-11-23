@@ -1,5 +1,8 @@
 package it.algos.vaadbio.attivita;
 
+import com.vaadin.data.Container;
+import com.vaadin.data.util.filter.Compare;
+import it.algos.vaadbio.bio.Bio;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.lib.LibBio;
 import it.algos.webbase.web.entity.BaseEntity;
@@ -11,6 +14,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Classe di tipo JavaBean
@@ -51,6 +55,7 @@ public class Attivita extends BaseEntity {
      * Recupera una istanza di Bolla usando la query standard della Primary Key
      *
      * @param id valore della Primary Key
+     *
      * @return istanza di Bolla, null se non trovata
      */
     public static Attivita find(long id) {
@@ -70,6 +75,7 @@ public class Attivita extends BaseEntity {
      * Recupera una istanza di Attivita usando la query di una property specifica
      *
      * @param singolare valore della property Singolare
+     *
      * @return istanza di Bolla, null se non trovata
      */
     public static Attivita findBySingolare(String singolare) {
@@ -89,6 +95,7 @@ public class Attivita extends BaseEntity {
      * Recupera una istanza di Attivita usando la query di una property specifica
      *
      * @param plurale valore della property plurale
+     *
      * @return istanza di Bolla, null se non trovata
      */
     public static Attivita findByPlurale(String plurale) {
@@ -108,6 +115,7 @@ public class Attivita extends BaseEntity {
      * Recupera una lista di Attivita (id) usando la query di una property specifica
      *
      * @param plurale valore della property plurale
+     *
      * @return lista di ID delle attività che hanno la property plurale indicata
      */
     public static ArrayList<Long> findAllSingolari(String plurale) {
@@ -123,6 +131,7 @@ public class Attivita extends BaseEntity {
      *
      * @param plurale valore della property plurale
      * @param sesso   delle persone (solo M o F)
+     *
      * @return lista di ID delle attività che hanno la property plurale indicata
      */
     public static ArrayList<Long> findAllSingolari(String plurale, String sesso) {
@@ -149,7 +158,7 @@ public class Attivita extends BaseEntity {
         listaGenere = LibBio.queryFindTxt(queryGen);
 
         if (listaGenere != null && listaGenere.size() > 0) {
-            lista = new ArrayList<Long>();
+            lista = new ArrayList<>();
             for (String singolare : listaGenere) {
                 attivita = Attivita.findBySingolare(singolare);
                 if (attivita != null) {
@@ -197,6 +206,52 @@ public class Attivita extends BaseEntity {
     public static ArrayList<Attivita> findAll() {
         return (ArrayList<Attivita>) AQuery.getList(Attivita.class);
     }// end of method
+
+    /**
+     * Recupera una lista (array) di tutti i records della Domain Class
+     *
+     * @return lista di tutte le istanze di Attivita
+     */
+    @SuppressWarnings("unchecked")
+    public static List<Attivita> findAllDistinct() {
+        return (List<Attivita>) LibBio.getDistinct(Attivita.class, "plurale");
+    }// end of method
+
+    /**
+     * Recupera una lista (array) di singolari relativi al plurale di questa attivita
+     * Cioè i noimi di tutte le attività che hanno questo plurale
+     *
+     * @return lista delle istanze di Attivita
+     */
+    @SuppressWarnings("unchecked")
+    public List<String> getListSingolari() {
+        Container.Filter filter = new Compare.Equal(Attivita_.plurale.getName(), plurale);
+        return AQuery.getListStr(Attivita.class, Attivita_.singolare, filter);
+    }// end of method
+
+
+    /**
+     * Recupera una lista (array) di records Bio che usano questa istanza di Attività nella property attivitaValida
+     *
+     * @return lista delle istanze di Bio che usano questa attività
+     */
+    @SuppressWarnings("all")
+    public List<Bio> bio() {
+        ArrayList<String> whereList = new ArrayList<>();
+        ArrayList<String> orderList = new ArrayList<>();
+
+        for (String singolare : getListSingolari()) {
+            whereList.add("attivitaValida=" + LibBio.setApici(singolare));
+            whereList.add("attivita2Valida=" + LibBio.setApici(singolare));
+            whereList.add("attivita3Valida=" + LibBio.setApici(singolare));
+        }// end of for cycle
+
+        orderList.add("nazionalita");
+        orderList.add("cognome");
+        orderList.add("nome");
+
+        return (List<Bio>) LibBio.getList(Bio.class, whereList, orderList);
+    }// fine del metodo
 
     @Override
     public String toString() {

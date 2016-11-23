@@ -10,10 +10,7 @@ import it.algos.vaadbio.nazionalita.NazionalitaService;
 import it.algos.vaadbio.nome.NomeService;
 import it.algos.vaadbio.professione.ProfessioneService;
 import it.algos.vaadbio.statistiche.*;
-import it.algos.vaadbio.upload.UploadAnni;
-import it.algos.vaadbio.upload.UploadCognomi;
-import it.algos.vaadbio.upload.UploadGiorni;
-import it.algos.vaadbio.upload.UploadNomi;
+import it.algos.vaadbio.upload.*;
 import it.algos.webbase.domain.log.Log;
 import it.algos.webbase.domain.pref.Pref;
 import it.algos.webbase.web.lib.LibNum;
@@ -91,6 +88,13 @@ public abstract class Esegue {
      */
     public static void uploadAnni() {
         new UploadAnni(false);
+    } // fine del metodo
+
+    /**
+     * Upload attività
+     */
+    public static void uploadAttivita() {
+        new UploadAttivita();
     } // fine del metodo
 
 

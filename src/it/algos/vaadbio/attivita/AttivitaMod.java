@@ -7,7 +7,9 @@ import com.vaadin.ui.MenuBar;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
 import it.algos.vaadbio.ciclo.CicloDownload;
+import it.algos.vaadbio.esegue.Esegue;
 import it.algos.vaadbio.lib.CostBio;
+import it.algos.vaadbio.liste.ListaAttivita;
 import it.algos.webbase.domain.pref.Pref;
 import it.algos.webbase.web.dialog.ConfirmDialog;
 import it.algos.webbase.web.module.ModulePop;
@@ -26,7 +28,7 @@ public class AttivitaMod extends ModulePop {
 
     /**
      * Costruttore senza parametri
-     * <p/>
+     * <p>
      * Invoca la superclasse passando i parametri:
      * (obbligatorio) la Entity specifica
      * (facoltativo) etichetta del menu (se manca usa il nome della Entity)
@@ -72,6 +74,8 @@ public class AttivitaMod extends ModulePop {
     @Override
     public void addSottoMenu(MenuBar.MenuItem menuItem) {
         addCommandDownload(menuItem);
+        addCommandUploadAll(menuItem);
+        addCommandUpload(menuItem);
     }// end of method
 
     /**
@@ -99,7 +103,7 @@ public class AttivitaMod extends ModulePop {
                     if (ui != null) {
                         dialog.show(ui);
                     } else {
-                        Notification.show("Avviso", "Devi prima entrare nel modulo Bio per eseguire questo comando", Notification.Type.WARNING_MESSAGE);
+                        Notification.show("Avviso", "Devi prima entrare nel modulo Attività per eseguire questo comando", Notification.Type.WARNING_MESSAGE);
                     }// end of if/else cycle
                 } else {
                     new CicloDownload();
@@ -108,6 +112,32 @@ public class AttivitaMod extends ModulePop {
         });// end of anonymous class
     }// end of method
 
+
+    /**
+     * Comando bottone/item Upload
+     *
+     * @param menuItem a cui agganciare il bottone/item
+     */
+    private void addCommandUploadAll(MenuBar.MenuItem menuItem) {
+        menuItem.addItem("Upload all", FontAwesome.COG, new MenuBar.Command() {
+            public void menuSelected(MenuBar.MenuItem selectedItem) {
+                esegueUploadAll();
+            }// end of method
+        });// end of anonymous class
+    }// end of method
+
+    /**
+     * Comando bottone/item Upload
+     *
+     * @param menuItem a cui agganciare il bottone/item
+     */
+    private void addCommandUpload(MenuBar.MenuItem menuItem) {
+        menuItem.addItem("Upload", FontAwesome.COG, new MenuBar.Command() {
+            public void menuSelected(MenuBar.MenuItem selectedItem) {
+                esegueUpload();
+            }// end of method
+        });// end of anonymous class
+    }// end of method
 
     /**
      * Esegue il download
@@ -119,10 +149,18 @@ public class AttivitaMod extends ModulePop {
     /**
      * Esegue l'upload per la lista dei nati
      */
+    public void esegueUploadAll() {
+        Esegue.uploadAttivita();
+    }// end of method
+
+    /**
+     * Esegue l'upload per la lista dei nati
+     */
     public void esegueUpload() {
         Attivita attivita = getAttivita();
 
         if (attivita != null) {
+            new ListaAttivita(attivita);
         } else {
             Notification.show("Devi selezionare una riga per creare la lista su wikipedia");
         }// end of if/else cycle

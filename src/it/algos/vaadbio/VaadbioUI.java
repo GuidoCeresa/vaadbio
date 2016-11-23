@@ -20,11 +20,17 @@ import it.algos.vaadbio.nome.NomeMod;
 import it.algos.vaadbio.secolo.SecoloMod;
 import it.algos.webbase.domain.pref.PrefMod;
 import it.algos.webbase.domain.vers.VersMod;
+import it.algos.webbase.web.entity.EM;
 import it.algos.webbase.web.lib.LibSession;
 import it.algos.webbase.web.login.Login;
 import it.algos.webbase.web.login.LoginEvent;
 import it.algos.webbase.web.module.ModulePop;
 import it.algos.webbase.web.ui.AlgosUI;
+
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import java.util.List;
+import java.util.Vector;
 
 /**
  * Crea l'interfaccia utente (User Interface) iniziale dell'applicazione
@@ -97,6 +103,7 @@ public class VaadbioUI extends AlgosUI {
 //        footerLayout.addComponent(new Label("Vaadbio versione 5.1 del 3 nov 2016"));
 //        footerLayout.addComponent(new Label("Vaadbio versione 5.2 del 4 nov 2016"));
         footerLayout.addComponent(new Label("Vaadbio versione 5.3 del 6 nov 2016"));
+
 
 //        this.checkLogin();
         boolean loggato = false;
