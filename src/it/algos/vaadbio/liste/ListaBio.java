@@ -32,7 +32,7 @@ public abstract class ListaBio {
     protected final static String KEY_MAP_SESSO = "keyMapSesso";
     protected final static String KEY_MAP_LISTA = "keyMapLista";
     protected String titoloPagina;
-    protected ArrayList<String> listaBiografie;
+    protected List<Bio> listaBio;
     protected LinkedHashMap<String, HashMap> mappaBio = new LinkedHashMap<String, HashMap>();
     protected int numPersone = 0;
 
@@ -43,7 +43,7 @@ public abstract class ListaBio {
     protected boolean usaHeadRitorno; // prima del template di avviso
     protected boolean usaHeadTemplateAvviso; // uso del template StatBio
     protected String tagHeadTemplateAvviso; // template 'StatBio'
-    protected String  tagHeadTemplateProgetto;
+    protected String tagHeadTemplateProgetto;
     protected boolean usaHeadIncipit; // dopo il template di avviso
 
     protected boolean usaSuddivisioneParagrafi;
@@ -86,6 +86,7 @@ public abstract class ListaBio {
     protected void doInit() {
         elaboraParametri();
         elaboraTitolo();
+        elaboraListaBiografie();
         elaboraMappaBiografie();
         ordinaMappaBiografie();
         elaboraPagina();
@@ -144,43 +145,71 @@ public abstract class ListaBio {
     protected void elaboraTitolo() {
     }// fine del metodo
 
+
     /**
-     * Costruisce una mappa di biografie che hanno una valore valido per il link specifico
+     * Costruisce una lista di biografie che hanno una valore valido per la pagina specifica
+     * Esegue una query
+     * Sovrascritto
+     */
+    protected void elaboraListaBiografie() {
+    }// fine del metodo
+
+
+    /**
+     * Costruisce una mappa di tutte le biografie della pagina,
+     * suddividendo la lista in paragrafi (attivitò, nazionalità, alfabetico, ecc.)
      * Sovrascritto
      */
     protected void elaboraMappaBiografie() {
-        List<Bio> listaBio = getListaBio();
-
         if (usaTaglioVociPagina && listaBio.size() < maxVociPagina) {
             return;
         }// end of if cycle
 
         if (listaBio != null && listaBio.size() > 0) {
             for (Bio bio : listaBio) {
-                elaboraMappa(bio);
+                elaboraMappaSingola(bio);
             }// end of if cycle
         }// end of for cycle
 
         if (listaBio != null) {
             numPersone = listaBio.size();
         }// end of if cycle
-
     }// fine del metodo
 
 
     /**
-     * Lista delle biografie che hanno una valore valido per il link specifico
+     * Costruisce una mappa di tutte le biografie della pagina, suddivisa in paragrafi
      * Sovrascritto
      */
-    protected List<Bio> getListaBio() {
-        return null;
+    @SuppressWarnings("all")
+    protected void elaboraMappaSingola(Bio bio) {
+        String didascalia;
+        ArrayList<Bio> lista;
+        String chiaveParagrafo;
+        HashMap<String, Object> mappa;
+
+        chiaveParagrafo = getChiaveParagrafo(bio);
+        if (mappaBio.containsKey(chiaveParagrafo)) {
+            lista = (ArrayList<Bio>) mappaBio.get(chiaveParagrafo).get(KEY_MAP_LISTA);
+            lista.add(bio);
+        } else {
+            mappa = new HashMap<>();
+            lista = new ArrayList<>();
+            lista.add(bio);
+            mappa.put(KEY_MAP_TITOLO, chiaveParagrafo);
+            mappa.put(KEY_MAP_LINK, getTitoloParagrafo(bio));
+            mappa.put(KEY_MAP_LISTA, lista);
+            mappa.put(KEY_MAP_SESSO, bio.getSesso());
+            mappaBio.put(chiaveParagrafo, mappa);
+        }// end of if/else cycle
     }// fine del metodo
 
     /**
-     * Costruisce una singola mappa
+     * Costruisce la chiave del paragrafo
      * Sovrascritto
      */
-    protected void elaboraMappa(Bio bio) {
+    protected String getChiaveParagrafo(Bio bio) {
+        return "";
     }// fine del metodo
 
     /**
@@ -485,19 +514,24 @@ public abstract class ListaBio {
         String titoloSottopagina;
         String paginaLinkata;
         String titoloVisibile;
-        ArrayList<String> lista;
+        List<Bio> lista;
 
         for (Map.Entry<String, HashMap> mappaTmp : mappaBio.entrySet()) {
             text += CostBio.A_CAPO;
 
             mappa = mappaTmp.getValue();
 
-            paginaLinkata = (String) mappa.get(KEY_MAP_LINK);
+            if (usaOrdineAlfabeticoParagrafi) {
+                titoloParagrafo = (String) mappa.get(KEY_MAP_TITOLO);
+            } else {
+                titoloParagrafo = (String) mappa.get(KEY_MAP_LINK);
+            }// end of if/else cycle
+
             titoloVisibile = (String) mappa.get(KEY_MAP_TITOLO);
-            lista = (ArrayList<String>) mappa.get(KEY_MAP_LISTA);
+            lista = (List<Bio>) mappa.get(KEY_MAP_LISTA);
             numVociParagrafo = lista.size();
 
-            titoloParagrafo = costruisceTitolo(paginaLinkata, titoloVisibile);
+//            titoloParagrafo = costruisceTitolo(paginaLinkata, titoloVisibile);
             text += LibWiki.setParagrafo(titoloParagrafo);
             text += CostBio.A_CAPO;
 
@@ -506,9 +540,9 @@ public abstract class ListaBio {
                 text += "{{Vedi anche|" + titoloSottopagina + "}}";
                 creaSottopagina(mappa);
             } else {
-                for (String didascalia : lista) {
+                for (Bio bio : lista) {
                     text += CostBio.ASTERISCO;
-                    text += didascalia;
+                    text += bio.getDidascaliaListe();
                     text += CostBio.A_CAPO;
                 }// end of for cycle
             }// end of if/else cycle
@@ -809,10 +843,6 @@ public abstract class ListaBio {
 
     protected String getTitoloPagina() {
         return titoloPagina;
-    }// end of getter method
-
-    protected ArrayList<String> getListaBiografie() {
-        return listaBiografie;
     }// end of getter method
 
     protected int getNumPersone() {

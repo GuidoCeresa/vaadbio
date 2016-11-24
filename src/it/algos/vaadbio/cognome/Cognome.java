@@ -2,8 +2,8 @@ package it.algos.vaadbio.cognome;
 
 import com.vaadin.data.Container;
 import com.vaadin.data.util.filter.Compare;
-import it.algos.vaadbio.attivita.Attivita;
 import it.algos.vaadbio.bio.Bio;
+import it.algos.vaadbio.bio.Bio_;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.lib.LibBio;
 import it.algos.webbase.domain.pref.Pref;
@@ -17,7 +17,10 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Vector;
 
 /**
  * Classe di tipo JavaBean
@@ -101,6 +104,7 @@ public class Cognome extends BaseEntity {
      * Recupera una istanza di Cognome usando la query standard della Primary Key
      *
      * @param id valore della Primary Key
+     *
      * @return istanza di Cognome, null se non trovata
      */
     public static Cognome find(long id) {
@@ -120,6 +124,7 @@ public class Cognome extends BaseEntity {
      * Recupera una istanza di Cognome usando la query di una property specifica
      *
      * @param cognome valore della property cognome
+     *
      * @return istanza di Cognome, null se non trovata
      */
     public static Cognome findByCognome(String cognome) {
@@ -227,7 +232,7 @@ public class Cognome extends BaseEntity {
         List<Cognome> lista = (List<Cognome>) AQuery.getList(Cognome.class, getFiltroVoci(maxVoci));
 
         for (Cognome cognome : lista) {
-            mappa.put(cognome,cognome.getVoci());
+            mappa.put(cognome, cognome.getVoci());
         }// end of for cycle
 
         return mappa;
@@ -351,15 +356,15 @@ public class Cognome extends BaseEntity {
 //        this.valido = valido;
 //    }//end of setter method
 
-    /**
-     * Costruisce il filtro per trovare i records di Bio che questa istanza di Cognome nella property cognomePunta
-     *
-     * @return filtro per i cognomi
-     */
-    private Container.Filter getFiltroCognome() {
-//        return new Compare.Equal("cognomePunta.id", getId());
-        return new Compare.Equal("cognomeValido", getCognome());//todo provvisorio
-    }// fine del metodo
+//    /**
+//     * Costruisce il filtro per trovare i records di Bio che questa istanza di Cognome nella property cognomePunta
+//     *
+//     * @return filtro per i cognomi
+//     */
+//    private Container.Filter getFiltroCognome() {
+////        return new Compare.Equal("cognomePunta.id", getId());
+//        return new Compare.Equal("cognomeValido", getCognome());//todo provvisorio
+//    }// fine del metodo
 
     /**
      * Recupera una lista (array) di records Bio che usano questa istanza di Cognome nella property cognomePunta
@@ -367,36 +372,37 @@ public class Cognome extends BaseEntity {
      * @return lista delle istanze di Bio che usano questo cognome
      */
     @SuppressWarnings("all")
-    public ArrayList<Bio> bioCognome() {
-        ArrayList<Bio> lista = null;
-        List entities = AQuery.getList(Bio.class, this.getFiltroCognome());
+    public List<Bio> listaBio() {
+        //        return new Compare.Equal("cognomePunta.id", getId());
+        Container.Filter filter = new Compare.Equal("cognomeValido", getCognome());//todo provvisorio
+        SortProperty sorts = new SortProperty(Bio_.attivita.getName(), Bio_.cognomeValido.getName(), Bio_.nomeValido.getName());
 
-        Comparator comp = new Comparator() {
-            @Override
-            public int compare(Object objA, Object objB) {
-                String attivitaA = "";
-                String attivitaB = "";
-                Bio bioA = (Bio) objA;
-                Bio bioB = (Bio) objB;
-                Attivita objAttivitaA = bioA.getAttivitaPunta();
-                Attivita objAttivitaB = bioB.getAttivitaPunta();
-                if (objAttivitaA != null) {
-                    attivitaA = objAttivitaA.getPlurale();
-                }// end of if cycle
-                if (objAttivitaB != null) {
-                    attivitaB = objAttivitaB.getPlurale();
-                }// end of if cycle
+//        Comparator comp = new Comparator() {
+//            @Override
+//            public int compare(Object objA, Object objB) {
+//                String attivitaA = "";
+//                String attivitaB = "";
+//                Bio bioA = (Bio) objA;
+//                Bio bioB = (Bio) objB;
+//                Attivita objAttivitaA = bioA.getAttivitaPunta();
+//                Attivita objAttivitaB = bioB.getAttivitaPunta();
+//                if (objAttivitaA != null) {
+//                    attivitaA = objAttivitaA.getPlurale();
+//                }// end of if cycle
+//                if (objAttivitaB != null) {
+//                    attivitaB = objAttivitaB.getPlurale();
+//                }// end of if cycle
+//
+//                return attivitaA.compareTo(attivitaB);
+//            }// end of inner method
+//        };// end of anonymous inner class
+//        entities.sort(comp);
 
-                return attivitaA.compareTo(attivitaB);
-            }// end of inner method
-        };// end of anonymous inner class
-        entities.sort(comp);
+//        if (entities != null) {
+//            lista = new ArrayList<>(entities);
+//        }// end of if cycle
 
-        if (entities != null) {
-            lista = new ArrayList<>(entities);
-        }// end of if cycle
-
-        return lista;
+        return (List<Bio>) AQuery.getList(Bio.class, sorts, filter);
     }// fine del metodo
 
     /**

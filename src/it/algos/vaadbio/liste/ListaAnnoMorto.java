@@ -37,7 +37,6 @@ public class ListaAnnoMorto extends ListaAnno {
      * Lista delle biografie che hanno una valore valido per il link specifico
      * Sovrascritto
      */
-    @Override
     protected ArrayList<Bio> getListaBio() {
         ArrayList<Bio> listaBio = null;
         Anno anno = super.getAnno();

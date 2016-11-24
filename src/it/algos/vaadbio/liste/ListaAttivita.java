@@ -81,34 +81,33 @@ public class ListaAttivita extends ListaBio {
     }// fine del metodo
 
 
-    /**
-     * Costruisce una singola mappa
-     * Sovrascritto
-     */
-    @Override
-    protected void elaboraMappa(Bio bio) {
-        String didascalia;
-        ArrayList<String> lista;
-        String chiaveParagrafo;
-        HashMap<String, Object> mappa;
-
-        chiaveParagrafo = getChiaveParagrafo(bio);
-        didascalia = bio.getDidascaliaListe();
-
-        if (mappaBio.containsKey(chiaveParagrafo)) {
-            lista = (ArrayList<String>) mappaBio.get(chiaveParagrafo).get(KEY_MAP_LISTA);
-            lista.add(didascalia);
-        } else {
-            mappa = new HashMap<>();
-            lista = new ArrayList<>();
-            lista.add(didascalia);
-            mappa.put(KEY_MAP_LINK, chiaveParagrafo);
-            mappa.put(KEY_MAP_TITOLO, chiaveParagrafo);
-            mappa.put(KEY_MAP_LISTA, bio);
-            mappa.put(KEY_MAP_SESSO, bio.getSesso());
-            mappaBio.put(chiaveParagrafo, mappa);
-        }// end of if/else cycle
-    }// fine del metodo
+//    /**
+//     * Costruisce una singola mappa
+//     * Sovrascritto
+//     */
+//    @Override
+//    @SuppressWarnings("all")
+//    protected void elaboraMappa(Bio bio) {
+//        String didascalia;
+//        ArrayList<Bio> lista;
+//        String chiaveParagrafo;
+//        HashMap<String, Object> mappa;
+//
+//        chiaveParagrafo = getChiaveParagrafo(bio);
+//        if (mappaBio.containsKey(chiaveParagrafo)) {
+//            lista = (ArrayList<Bio>) mappaBio.get(chiaveParagrafo).get(KEY_MAP_LISTA);
+//            lista.add(bio);
+//        } else {
+//            mappa = new HashMap<>();
+//            lista = new ArrayList<>();
+//            lista.add(bio);
+//            mappa.put(KEY_MAP_LINK, chiaveParagrafo);
+//            mappa.put(KEY_MAP_TITOLO, chiaveParagrafo);
+//            mappa.put(KEY_MAP_LISTA, lista);
+//            mappa.put(KEY_MAP_SESSO, bio.getSesso());
+//            mappaBio.put(chiaveParagrafo, mappa);
+//        }// end of if/else cycle
+//    }// fine del metodo
 
     /**
      * Costruisce la chiave del paragrafo
@@ -207,7 +206,6 @@ public class ListaAttivita extends ListaBio {
      * Lista delle biografie che hanno una valore valido per il link specifico
      * Sovrascritto
      */
-    @Override
     protected List<Bio> getListaBio() {
         List<Bio> listaBio = null;
         Attivita attivita = this.getAttivita();

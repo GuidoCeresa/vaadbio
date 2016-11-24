@@ -40,7 +40,6 @@ public class ListaAntroCognome extends ListaAntroponimo {
     @Override
     protected void elaboraTitolo() {
         String tag = "Persone di cognome ";
-
         titoloPagina = tag + getCognomeTxt();
     }// fine del metodo
 
@@ -59,19 +58,16 @@ public class ListaAntroCognome extends ListaAntroponimo {
 
 
     /**
-     * Lista delle biografie che hanno una valore valido per il link specifico
+     * Costruisce una lista di biografie che hanno una valore valido per la pagina specifica
+     * Esegue una query
      * Sovrascritto
      */
-    @Override
-    protected ArrayList<Bio> getListaBio() {
-        ArrayList<Bio> listaBio = null;
+    protected void elaboraListaBiografie() {
         Cognome cognome = getCognome();
 
         if (cognome != null) {
-            listaBio = cognome.bioCognome();
+            listaBio = cognome.listaBio();
         }// end of if cycle
-
-        return listaBio;
     }// fine del metodo
 
 
@@ -86,7 +82,6 @@ public class ListaAntroCognome extends ListaAntroponimo {
 
     /**
      * Piede della pagina
-     * <p>
      * Sovrascritto
      */
     @Override

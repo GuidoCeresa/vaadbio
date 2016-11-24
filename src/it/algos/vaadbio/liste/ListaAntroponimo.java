@@ -1,18 +1,13 @@
 package it.algos.vaadbio.liste;
 
 import it.algos.vaad.wiki.LibWiki;
-import it.algos.vaadbio.attivita.Attivita;
 import it.algos.vaadbio.bio.Bio;
-import it.algos.vaadbio.genere.Genere;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.lib.LibBio;
-import it.algos.vaadbio.nome.Nome;
-import it.algos.vaadbio.professione.Professione;
 import it.algos.webbase.domain.pref.Pref;
-import it.algos.webbase.web.lib.LibText;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -73,37 +68,42 @@ public abstract class ListaAntroponimo extends ListaBio {
 
 
     /**
-     * Costruisce una singola mappa
+     * Costruisce la chiave del paragrafo
      * Sovrascritto
      */
     @Override
-    protected void elaboraMappa(Bio bio) {
-        String didascalia;
-        ArrayList<String> lista;
-        String chiaveParagrafo;
-        HashMap<String, Object> mappa;
-
-        chiaveParagrafo = getTitoloParagrafo(bio);
-        didascalia = bio.getDidascaliaListe();
-
-        if (mappaBio.containsKey(chiaveParagrafo)) {
-            lista = (ArrayList<String>) mappaBio.get(chiaveParagrafo).get(KEY_MAP_LISTA);
-            lista.add(didascalia);
-        } else {
-            mappa = new HashMap<String, Object>();
-            lista = new ArrayList<>();
-            lista.add(didascalia);
-            mappa.put(KEY_MAP_LINK, getPaginaLinkata(bio));
-            mappa.put(KEY_MAP_TITOLO, getTitoloPar(bio));
-            mappa.put(KEY_MAP_LISTA, lista);
-            mappa.put(KEY_MAP_SESSO, bio.getSesso());
-            mappaBio.put(chiaveParagrafo, mappa);
-        }// end of if/else cycle
+    protected String getChiaveParagrafo(Bio bio) {
+        return LibBio.getChiavePerAttivita(bio, tagParagrafoNullo);
     }// fine del metodo
 
-
-
-
+//    /**
+//     * Costruisce una singola mappa
+//     * Sovrascritto
+//     */
+//    @Override
+//    protected void elaboraMappa(Bio bio) {
+//        String didascalia;
+//        ArrayList<String> lista;
+//        String chiaveParagrafo;
+//        HashMap<String, Object> mappa;
+//
+//        chiaveParagrafo = getTitoloParagrafo(bio);
+//        didascalia = bio.getDidascaliaListe();
+//
+//        if (mappaBio.containsKey(chiaveParagrafo)) {
+//            lista = (ArrayList<String>) mappaBio.get(chiaveParagrafo).get(KEY_MAP_LISTA);
+//            lista.add(didascalia);
+//        } else {
+//            mappa = new HashMap<String, Object>();
+//            lista = new ArrayList<>();
+//            lista.add(didascalia);
+//            mappa.put(KEY_MAP_LINK, getPaginaLinkata(bio));
+//            mappa.put(KEY_MAP_TITOLO, getTitoloPar(bio));
+//            mappa.put(KEY_MAP_LISTA, lista);
+//            mappa.put(KEY_MAP_SESSO, bio.getSesso());
+//            mappaBio.put(chiaveParagrafo, mappa);
+//        }// end of if/else cycle
+//    }// fine del metodo
 
 
     /**
@@ -111,7 +111,7 @@ public abstract class ListaAntroponimo extends ListaBio {
      * Controlla se il titolo visibile (link) non esiste già
      * Se esiste, sostituisce la pagina (prima parte del titolo) con quella già esistente
      */
-    protected String costruisceTitolo(String paginaWiki, String linkVisibile) {
+    protected String costruisceTitolo2(String paginaWiki, String linkVisibile) {
         String titoloParagrafo = LibWiki.setLink(paginaWiki, linkVisibile);
         String link;
 
@@ -139,8 +139,7 @@ public abstract class ListaAntroponimo extends ListaBio {
      * Costruisce il paragrafo
      * Sovrascrivibile
      */
-    @Override
-    protected String righeParagrafo() {
+    protected String righeParagrafo2() {
         String text = CostBio.VUOTO;
         int numVociParagrafo;
         String key;
@@ -150,7 +149,7 @@ public abstract class ListaAntroponimo extends ListaBio {
         String paginaLinkata;
         String titoloVisibile;
         String sesso;
-        ArrayList<String> lista;
+        List<Bio> lista;
 
         for (Map.Entry<String, HashMap> mappaTmp : mappaBio.entrySet()) {
             text += CostBio.A_CAPO;
@@ -160,7 +159,7 @@ public abstract class ListaAntroponimo extends ListaBio {
 
             paginaLinkata = (String) mappa.get(KEY_MAP_LINK);
             titoloVisibile = (String) mappa.get(KEY_MAP_TITOLO);
-            lista = (ArrayList<String>) mappa.get(KEY_MAP_LISTA);
+            lista = (List<Bio>) mappa.get(KEY_MAP_LISTA);
             numVociParagrafo = lista.size();
 
             titoloParagrafo = costruisceTitolo(paginaLinkata, titoloVisibile);
@@ -172,9 +171,9 @@ public abstract class ListaAntroponimo extends ListaBio {
                 text += "{{Vedi anche|" + titoloSottopagina + "}}";
                 creaSottopagina(mappa);
             } else {
-                for (String didascalia : lista) {
+                for (Bio bio : lista) {
                     text += CostBio.ASTERISCO;
-                    text += didascalia;
+                    text += bio.getDidascaliaListe();
                     text += CostBio.A_CAPO;
                 }// end of for cycle
             }// end of if/else cycle

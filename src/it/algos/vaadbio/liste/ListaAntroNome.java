@@ -67,7 +67,6 @@ public class ListaAntroNome extends ListaAntroponimo {
      * Lista delle biografie che hanno una valore valido per il link specifico
      * Sovrascritto
      */
-    @Override
     protected ArrayList<Bio> getListaBio() {
         ArrayList<Bio> listaBio = null;
         Nome nome = this.getNome();

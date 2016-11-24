@@ -37,7 +37,6 @@ public class ListaGiornoNato extends ListaGiorno {
      * Lista delle biografie che hanno una valore valido per il link specifico
      * Sovrascritto
      */
-    @Override
     protected ArrayList<Bio> getListaBio() {
         ArrayList<Bio> listaBio = null;
         Giorno giorno = super.getGiorno();

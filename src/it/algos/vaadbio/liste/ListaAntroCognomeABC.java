@@ -2,6 +2,7 @@ package it.algos.vaadbio.liste;
 
 import it.algos.vaad.wiki.LibWiki;
 import it.algos.vaadbio.attivita.Attivita;
+import it.algos.vaadbio.bio.Bio;
 import it.algos.vaadbio.cognome.Cognome;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.lib.LibBio;
@@ -10,18 +11,21 @@ import it.algos.webbase.web.lib.LibText;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by gac on 27 dic 2015.
  * Crea la sottopagina della lista di persone per l'attività indicata e la carica sul server wiki
  */
-public class ListaAntroCognomeABC extends ListaAntroCognome{
+public class ListaAntroCognomeABC extends ListaAntroCognome {
 
 
     private ListaAntroCognome listaSuperCognome;
+    private HashMap<String, Object> mappaSuper;
     private String paginaLinkata;
     private String titoloVisibile;
     private String sesso;
+
 
     /**
      * Costruttore
@@ -37,14 +41,15 @@ public class ListaAntroCognomeABC extends ListaAntroCognome{
      * Costruttore
      *
      * @param listaSuperCognome della superPagina
-     * @param mappa          del paragrafo
+     * @param mappaSuper        del paragrafo
      */
-    public ListaAntroCognomeABC(ListaAntroCognome listaSuperCognome, HashMap<String, Object> mappa) {
+    public ListaAntroCognomeABC(ListaAntroCognome listaSuperCognome, HashMap<String, Object> mappaSuper) {
         this.listaSuperCognome = listaSuperCognome;
+        this.mappaSuper = mappaSuper;
         this.oggetto = listaSuperCognome.getOggetto();
-        this.paginaLinkata = (String) mappa.get(KEY_MAP_LINK);
-        this.titoloVisibile = (String) mappa.get(KEY_MAP_TITOLO);
-        this.sesso = (String) mappa.get(KEY_MAP_SESSO);
+        this.paginaLinkata = (String) mappaSuper.get(KEY_MAP_LINK);
+        this.titoloVisibile = (String) mappaSuper.get(KEY_MAP_TITOLO);
+        this.sesso = (String) mappaSuper.get(KEY_MAP_SESSO);
         doInit();
     }// fine del costruttore
 
@@ -84,100 +89,6 @@ public class ListaAntroCognomeABC extends ListaAntroCognome{
     }// fine del metodo
 
 
-    @Override
-    public String getCognomeTxt() {
-        return super.getCognomeTxt() + "/" + titoloVisibile;
-    }// fine del metodo
-
-
-    /**
-     * Costruisce una mappa di biografie che hanno una valore valido per il link specifico
-     */
-    protected void elaboraMappaBiografie() {
-        ArrayList lista = getListaBioSottoPagina();
-
-        if (usaTaglioVociPagina && lista.size() < maxVociPagina) {
-            return;
-        }// end of if cycle
-
-        if (lista != null && lista.size() > 0) {
-            for (Object mappa : lista) {
-                elaboraMappa(mappa);
-            }// end of if cycle
-        }// end of for cycle
-
-        if (lista != null) {
-            numPersone = lista.size();
-        }// end of if cycle
-
-    }// fine del metodo
-
-    /**
-     * Lista delle biografie che hanno una valore valido per il link specifico
-     */
-    protected ArrayList getListaBioSottoPagina() {
-        ArrayList lista;
-        String tagOR = " or ";
-        String query;
-        String queryBase = "select bio.cognome,bio.didascaliaListe from Bio bio";
-        String queryWhere = " where bio.cognome='" + getCognome().getCognome()+"'";
-        String queryWhereOR = CostBio.VUOTO;
-        String queryOrder = " order by bio.cognome asc";
-        ArrayList<Long> listaAttivitaID = Attivita.findAllSingolari(titoloVisibile, sesso);
-
-        if (listaAttivitaID != null && listaAttivitaID.size() > 0) {
-            queryWhereOR += " and (";
-            for (long attivitaID : listaAttivitaID) {
-                queryWhereOR += "bio.attivitaPunta.id=" + attivitaID + tagOR;
-            }// end of for cycle
-            queryWhereOR = LibText.levaCoda(queryWhereOR, tagOR);
-            queryWhereOR = " " + queryWhereOR + ")";
-        } else {
-            if (titoloVisibile.equals(listaSuperCognome.tagParagrafoNullo)) {
-                queryWhereOR = " and bio.attivitaPunta.id=null";
-            }// end of if cycle
-        }// end of if/else cycle
-
-        query = queryBase + queryWhere + queryWhereOR + queryOrder;
-        lista = LibBio.queryFind(query);
-        return lista;
-    }// fine del metodo
-
-    /**
-     * Costruisce una singola mappa
-     */
-    protected void elaboraMappa(Object obj) {
-        ArrayList<String> lista;
-        String cognome;
-        String key;
-        String didascalia;
-        HashMap<String, Object> mappa;
-
-        cognome = (String) ((Object[]) obj)[0];
-        didascalia = (String) ((Object[]) obj)[1];
-        if (!cognome.equals(CostBio.VUOTO)) {
-            key = cognome.substring(0, 1);
-            if (Pref.getBool(CostBio.USA_CASE_UGUALI, false)) {
-                key = key.toUpperCase();
-            }// end of if cycle
-        } else {
-            key = tagParagrafoNullo;
-        }// end of if/else cycle
-
-        if (mappaBio.containsKey(key)) {
-            lista = (ArrayList<String>) mappaBio.get(key).get(KEY_MAP_LISTA);
-            lista.add(didascalia);
-        } else {
-            mappa = new HashMap<String, Object>();
-            lista = new ArrayList<>();
-            lista.add(didascalia);
-            mappa.put(KEY_MAP_TITOLO, key);
-            mappa.put(KEY_MAP_LISTA, lista);
-            mappaBio.put(key, mappa);
-        }// end of if/else cycle
-    }// fine del metodo
-
-
     /**
      * Costruisce la frase di incipit iniziale
      * <p>
@@ -193,6 +104,31 @@ public class ListaAntroCognomeABC extends ListaAntroCognome{
         text += LibWiki.setBold(titoloVisibile);
 
         return text;
+    }// fine del metodo
+
+
+    /**
+     * Costruisce una lista di biografie che hanno una valore valido per la pagina specifica
+     * Esegue una query
+     * Sovrascritto
+     */
+    protected void elaboraListaBiografie() {
+        listaBio = (List<Bio>) mappaSuper.get(KEY_MAP_LISTA);
+    }// fine del metodo
+
+    /**
+     * Costruisce la chiave del paragrafo
+     * Sovrascritto
+     */
+    @Override
+    protected String getChiaveParagrafo(Bio bio) {
+        return LibBio.getChiavePerNome(bio, tagParagrafoNullo);
+    }// fine del metodo
+
+
+    @Override
+    public String getCognomeTxt() {
+        return super.getCognomeTxt() + "/" + titoloVisibile;
     }// fine del metodo
 
 }// fine della classe

@@ -7,7 +7,9 @@ import it.algos.vaad.wiki.Api;
 import it.algos.vaad.wiki.LibWiki;
 import it.algos.vaad.wiki.Page;
 import it.algos.vaad.wiki.WikiLogin;
+import it.algos.vaadbio.attivita.Attivita;
 import it.algos.vaadbio.bio.Bio;
+import it.algos.vaadbio.genere.Genere;
 import it.algos.vaadbio.giorno.Giorno;
 import it.algos.vaadbio.wrapperbio.WrapBio;
 import it.algos.webbase.domain.pref.Pref;
@@ -2066,6 +2068,77 @@ public abstract class LibBio {
         }// end of if cycle
 
         return lista;
+    }// fine del metodo
+
+
+    /**
+     * Costruisce una chiave di suddivisione per attività
+     */
+    public static String getChiavePerAttivita(Bio bio, String tagParagrafoNullo) {
+        String chiave = tagParagrafoNullo;
+        Genere genere = null;
+        String genereTxt;
+        Attivita attivita = null;
+        String attivitaSingolare = CostBio.VUOTO;
+
+        if (bio == null) {
+            return CostBio.VUOTO;
+        }// end of if cycle
+
+        attivita = bio.getAttivitaPunta();
+        if (attivita != null) {
+            attivitaSingolare = attivita.getSingolare();
+            genere = Genere.findBySingolareAndSesso(attivitaSingolare, bio.getSesso());
+        }// end of if cycle
+
+        if (genere != null) {
+            genereTxt = genere.getPlurale();
+            if (!genereTxt.equals(CostBio.VUOTO)) {
+                chiave = LibText.primaMaiuscola(genereTxt);
+            }// end of if cycle
+        }// end of if cycle
+
+        return chiave;
+    }// fine del metodo
+
+    /**
+     * Costruisce una chiave di suddivisione alfabetica per lettera iniziale del cognome
+     */
+    public static String getChiavePerCognome(Bio bio, String tagParagrafoNullo) {
+        String chiave = tagParagrafoNullo;
+        String cognome = "";
+
+        if (bio == null) {
+            return CostBio.VUOTO;
+        }// end of if cycle
+
+        cognome = bio.getCognomeValido();
+        if (cognome != null && cognome.length() > 0) {
+            chiave = cognome.substring(0, 1);
+            chiave = chiave.toUpperCase();
+        }// end of if cycle
+
+        return chiave;
+    }// fine del metodo
+
+    /**
+     * Costruisce una chiave di suddivisione alfabetica per lettera iniziale del nome
+     */
+    public static String getChiavePerNome(Bio bio, String tagParagrafoNullo) {
+        String chiave = tagParagrafoNullo;
+        String nome = "";
+
+        if (bio == null) {
+            return CostBio.VUOTO;
+        }// end of if cycle
+
+        nome = bio.getNomeValido();
+        if (nome != null && nome.length() > 0) {
+            chiave = nome.substring(0, 1);
+            chiave = chiave.toUpperCase();
+        }// end of if cycle
+
+        return chiave;
     }// fine del metodo
 
 }// end of abstract static class

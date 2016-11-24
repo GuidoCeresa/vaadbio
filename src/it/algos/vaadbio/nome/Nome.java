@@ -135,7 +135,7 @@ public class Nome extends BaseEntity {
      * @return lista di tutte le istanze di Nome
      */
     @SuppressWarnings("unchecked")
-    public synchronized static List<? extends BaseEntity> findAll() {
+    public  static List<? extends BaseEntity> findAll() {
         return AQuery.getList(Nome.class, new SortProperty(Nome_.nome.getName()), (Container.Filter) null);
     }// end of method
 
