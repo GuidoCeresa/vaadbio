@@ -308,7 +308,7 @@ public class Nome extends BaseEntity {
      * nella tavola Bio
      */
     public boolean delete() {
-        ArrayList<Bio> lista = this.bioNome();
+        ArrayList<Bio> lista = this.listaBio();
 
         for (Bio bio : lista) {
             bio.setNomePunta(null);
@@ -370,7 +370,7 @@ public class Nome extends BaseEntity {
      * @return lista delle istanze di Bio che usano questo nome
      */
     @SuppressWarnings("all")
-    public ArrayList<Bio> bioNome() {
+    public ArrayList<Bio> listaBio() {
         ArrayList<Bio> lista = null;
         List entities = AQuery.getList(Bio.class, this.getFiltroNome());
 

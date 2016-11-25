@@ -6,11 +6,12 @@ import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Resource;
 import com.vaadin.ui.MenuBar;
 import com.vaadin.ui.Notification;
+import com.vaadin.ui.Table;
 import it.algos.vaadbio.esegue.Esegue;
 import it.algos.vaadbio.liste.ListaAntroCognome;
 import it.algos.webbase.web.module.ModulePop;
-import it.algos.webbase.web.query.AQuery;
 import it.algos.webbase.web.table.ATable;
+import it.algos.webbase.web.table.TablePortal;
 
 /**
  * Gestione (minimale) del modulo specifico
@@ -39,7 +40,29 @@ public class CognomeMod extends ModulePop {
      */
     public CognomeMod() {
         super(Cognome.class, MENU_ADDRESS, ICON);
+        this.getTable().setRowHeaderMode(Table.RowHeaderMode.INDEX);
     }// end of constructor
+
+
+    /**
+     * Returns the table used to shows the list. <br>
+     * The concrete subclass must override for a specific Table.
+     *
+     * @return the Table
+     */
+    public ATable createTable() {
+        return new CognomeTable(this);
+    }// end of method
+
+    /**
+     * Create the Table Portal
+     *
+     * @return the TablePortal
+     */
+    @Override
+    public TablePortal createTablePortal() {
+        return new CognomeTablePortal(this);
+    }// end of method
 
     /**
      * Registers a new action handler for this container
@@ -76,10 +99,9 @@ public class CognomeMod extends ModulePop {
     @Override
     public void addSottoMenu(MenuBar.MenuItem menuItem) {
         addCommandCrea(menuItem);
-//        addCommandElabora(menuItem);
-//        addCommandConta(menuItem);
-        addCommandUpload(menuItem);
+        addCommandCiclo(menuItem);
         addCommandUploadAll(menuItem);
+        addCommandUpload(menuItem);
         addCommandStatistichel(menuItem);
     }// end of method
 
@@ -89,35 +111,35 @@ public class CognomeMod extends ModulePop {
      * @param menuItem a cui agganciare il bottone/item
      */
     private void addCommandCrea(MenuBar.MenuItem menuItem) {
-        menuItem.addItem("Creazione", FontAwesome.BEER, new MenuBar.Command() {
+        menuItem.addItem("Crea", FontAwesome.BEER, new MenuBar.Command() {
             public void menuSelected(MenuBar.MenuItem selectedItem) {
-                esegueCrea();
+                CognomeService.crea();
             }// end of method
         });// end of anonymous class
     }// end of method
 
     /**
-     * Comando bottone/item elabora tutte i records di Bio per sincronizzare i link ai cognomi
+     * Comando bottone/item ciclo completo: crea + upload + statistiche
      *
      * @param menuItem a cui agganciare il bottone/item
      */
-    private void addCommandElabora(MenuBar.MenuItem menuItem) {
-        menuItem.addItem("Elabora", FontAwesome.BEER, new MenuBar.Command() {
+    private void addCommandCiclo(MenuBar.MenuItem menuItem) {
+        menuItem.addItem("Ciclo", FontAwesome.BEER, new MenuBar.Command() {
             public void menuSelected(MenuBar.MenuItem selectedItem) {
-                esegueElabora();
+                Esegue.cicloCognomi();
             }// end of method
         });// end of anonymous class
     }// end of method
 
     /**
-     * Comando bottone/item conta tutte le pagine di Bio che hanno usano questo cognome
+     * Comando bottone/item crea tutte le pagine delle liste sul servere wiki
      *
      * @param menuItem a cui agganciare il bottone/item
      */
-    private void addCommandConta(MenuBar.MenuItem menuItem) {
-        menuItem.addItem("Conta", FontAwesome.BEER, new MenuBar.Command() {
+    private void addCommandUploadAll(MenuBar.MenuItem menuItem) {
+        menuItem.addItem("Upload all", FontAwesome.COG, new MenuBar.Command() {
             public void menuSelected(MenuBar.MenuItem selectedItem) {
-                esegueConta();
+                Esegue.uploadCognomi();
             }// end of method
         });// end of anonymous class
     }// end of method
@@ -140,46 +162,12 @@ public class CognomeMod extends ModulePop {
      *
      * @param menuItem a cui agganciare il bottone/item
      */
-    private void addCommandUploadAll(MenuBar.MenuItem menuItem) {
-        menuItem.addItem("Upload all", FontAwesome.COG, new MenuBar.Command() {
-            public void menuSelected(MenuBar.MenuItem selectedItem) {
-                esegueUploadAll();
-            }// end of method
-        });// end of anonymous class
-    }// end of method
-    /**
-     * Comando bottone/item crea tutte le pagine delle liste sul servere wiki
-     *
-     * @param menuItem a cui agganciare il bottone/item
-     */
     private void addCommandStatistichel(MenuBar.MenuItem menuItem) {
         menuItem.addItem("Statistiche", FontAwesome.COG, new MenuBar.Command() {
             public void menuSelected(MenuBar.MenuItem selectedItem) {
-                esegueStatistiche();
+                Esegue.statisticheCognomi();
             }// end of method
         });// end of anonymous class
-    }// end of method
-
-    /**
-     * Crea i nuovi cognomi individuati nei records di Bio
-     */
-    private void esegueCrea() {
-        Esegue.creaCognomi();
-    }// end of method
-
-    /**
-     * Elabora tutte i records di Bio per sincronizzare i link ai cognomi
-     */
-    private void esegueElabora() {
-        Esegue.elaboraCognomi();
-        Esegue.elabora();
-    }// end of method
-
-    /**
-     * Conta tutte le pagine di Bio che hanno usano questo cognome
-     */
-    private void esegueConta() {
-        Esegue.contaCognomi();
     }// end of method
 
 
@@ -197,20 +185,6 @@ public class CognomeMod extends ModulePop {
 
     }// end of method
 
-
-    /**
-     * Esegue l'upload di tutti i record
-     */
-    private void esegueUploadAll() {
-        Esegue.uploadCognomi();
-    }// end of method
-
-    /**
-     * Crea le pagine delle statistiche (2)
-     */
-    protected void esegueStatistiche() {
-        Esegue.statisticheCognomi();
-    }// end of method
 
     /**
      * Recupera la voce selezionata

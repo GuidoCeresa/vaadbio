@@ -20,11 +20,8 @@ import java.util.List;
 public class ListaAntroCognomeABC extends ListaAntroCognome {
 
 
-    private ListaAntroCognome listaSuperCognome;
     private HashMap<String, Object> mappaSuper;
-    private String paginaLinkata;
     private String titoloVisibile;
-    private String sesso;
 
 
     /**
@@ -44,12 +41,9 @@ public class ListaAntroCognomeABC extends ListaAntroCognome {
      * @param mappaSuper        del paragrafo
      */
     public ListaAntroCognomeABC(ListaAntroCognome listaSuperCognome, HashMap<String, Object> mappaSuper) {
-        this.listaSuperCognome = listaSuperCognome;
         this.mappaSuper = mappaSuper;
         this.oggetto = listaSuperCognome.getOggetto();
-        this.paginaLinkata = (String) mappaSuper.get(KEY_MAP_LINK);
         this.titoloVisibile = (String) mappaSuper.get(KEY_MAP_TITOLO);
-        this.sesso = (String) mappaSuper.get(KEY_MAP_SESSO);
         doInit();
     }// fine del costruttore
 

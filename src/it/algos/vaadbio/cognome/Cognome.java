@@ -48,22 +48,12 @@ public class Cognome extends BaseEntity {
     @Index()
     private int voci = 0;
 
-//    @Index()
-//    private boolean principale = true;
-//
-//    @Index()
-//    private boolean valido = true;
-//
-//    @Index()
-//    @ManyToOne
-//    private Cognome riferimento = null;
 
     /**
      * Costruttore senza argomenti
      * Necessario per le specifiche JavaBean
      */
     public Cognome() {
-        this("");
     }// end of nullary constructor
 
 
@@ -86,19 +76,6 @@ public class Cognome extends BaseEntity {
         this.setVoci(voci);
     }// end of general constructor
 
-//    /**
-//     * Costruttore completo
-//     *
-//     * @param cognome     della persona
-//     * @param principale  flag
-//     * @param riferimento al cognome che raggruppa le varie dizioni
-//     */
-//    public Cognome(String cognome, boolean principale, Cognome riferimento) {
-//        super();
-//        this.setCognome(cognome);
-//        this.setPrincipale(principale);
-//        this.setRiferimento(riferimento);
-//    }// end of full constructor
 
     /**
      * Recupera una istanza di Cognome usando la query standard della Primary Key
@@ -108,16 +85,7 @@ public class Cognome extends BaseEntity {
      * @return istanza di Cognome, null se non trovata
      */
     public static Cognome find(long id) {
-        Cognome instance = null;
-        BaseEntity entity = AQuery.find(Cognome.class, id);
-
-        if (entity != null) {
-            if (entity instanceof Cognome) {
-                instance = (Cognome) entity;
-            }// end of if cycle
-        }// end of if cycle
-
-        return instance;
+        return (Cognome) AQuery.find(Cognome.class, id);
     }// end of method
 
     /**
@@ -127,17 +95,8 @@ public class Cognome extends BaseEntity {
      *
      * @return istanza di Cognome, null se non trovata
      */
-    public static Cognome findByCognome(String cognome) {
-        Cognome instance = null;
-        BaseEntity entity = AQuery.getEntity(Cognome.class, Cognome_.cognome, cognome);
-
-        if (entity != null) {
-            if (entity instanceof Cognome) {
-                instance = (Cognome) entity;
-            }// end of if cycle
-        }// end of if cycle
-
-        return instance;
+    public static Cognome getEntityByCognome(String cognome) {
+        return (Cognome) AQuery.getEntity(Cognome.class, Cognome_.cognome, cognome);
     }// end of method
 
     /**
@@ -146,8 +105,8 @@ public class Cognome extends BaseEntity {
      * @return lista di tutte le istanze di Cognome
      */
     @SuppressWarnings("unchecked")
-    public static List<? extends BaseEntity> findAll() {
-        return AQuery.getList(Cognome.class, new SortProperty(Cognome_.cognome.getName()), (Container.Filter) null);
+    public static List<Cognome> getList() {
+        return (List<Cognome>) AQuery.getList(Cognome.class, new SortProperty(Cognome_.cognome.getName()));
     }// end of method
 
 
@@ -157,9 +116,9 @@ public class Cognome extends BaseEntity {
      * @return lista di alcune istanze di Nome
      */
     @SuppressWarnings("unchecked")
-    public static List<Cognome> findAllSuperaTaglioPagina() {
+    public static List<Cognome> getListSuperaTaglioPagina() {
         int taglio = Pref.getInt(CostBio.TAGLIO_NOMI_PAGINA, 50);
-        return (List<Cognome>) AQuery.getList(Cognome.class, getFiltroVoci(taglio));
+        return (List<Cognome>) AQuery.getList(Cognome.class, new SortProperty(Cognome_.cognome), getFiltroVoci(taglio));
     }// end of method
 
     public static Container.Filter getFiltroVoci(int maxVoci) {
@@ -172,14 +131,7 @@ public class Cognome extends BaseEntity {
      * @return numero totale di records della tavola
      */
     public static int count() {
-        int totRec = 0;
-        long totTmp = AQuery.count(Cognome.class);
-
-        if (totTmp > 0) {
-            totRec = (int) totTmp;
-        }// fine del blocco if
-
-        return totRec;
+        return AQuery.count(Cognome.class);
     }// end of method
 
     /**
@@ -251,7 +203,7 @@ public class Cognome extends BaseEntity {
         if (cognome == null) {
             try { // prova ad eseguire il codice
                 cognome = new Cognome(cognomeTxt, voci);
-                cognome.save(manager);
+                cognome = (Cognome) cognome.save(manager);
             } catch (Exception unErrore) { // intercetta l'errore
                 cognome = null;
             }// fine del blocco try-catch
@@ -260,21 +212,13 @@ public class Cognome extends BaseEntity {
         return cognome;
     }// end of static method
 
-//    /**
-//     * Controlla che il numero di records che usano questa istanza, superi il taglio previsto per la creazione della pagina
-//     *
-//     * @return vero se esistono più records del minimo previsto
-//     */
-//    @SuppressWarnings("all")
-//    public boolean superaTaglioPagina() {
-//        return superaTaglio(Pref.getInt(CostBio.TAGLIO_NOMI_PAGINA, 50));
-//    }// fine del metodo
 
     /**
      * Controlla che il numero di records che usano questa istanza, superi il taglio previsto
      *
      * @return vero se esistono più records del minimo previsto
      */
+    @Deprecated
     @SuppressWarnings("all")
     private boolean superaTaglio(int maxVoci) {
         boolean status = false;
@@ -292,6 +236,7 @@ public class Cognome extends BaseEntity {
      *
      * @return numero di records di Bio che usano questo cognome
      */
+    @Deprecated
     @SuppressWarnings("all")
     public int countBioCognome() {
         int numRecords = 0;
@@ -331,40 +276,6 @@ public class Cognome extends BaseEntity {
         this.voci = voci;
     }//end of setter method
 
-//    public boolean isPrincipale() {
-//        return principale;
-//    }// end of getter method
-//
-//    public void setPrincipale(boolean principale) {
-//        this.principale = principale;
-//    }//end of setter method
-//
-//    public Cognome getRiferimento() {
-//        return riferimento;
-//    }// end of getter method
-//
-//    public void setRiferimento(Cognome riferimento) {
-//        this.riferimento = riferimento;
-//    }//end of setter method
-//
-//
-//    public boolean isValido() {
-//        return valido;
-//    }// end of getter method
-//
-//    public void setValido(boolean valido) {
-//        this.valido = valido;
-//    }//end of setter method
-
-//    /**
-//     * Costruisce il filtro per trovare i records di Bio che questa istanza di Cognome nella property cognomePunta
-//     *
-//     * @return filtro per i cognomi
-//     */
-//    private Container.Filter getFiltroCognome() {
-////        return new Compare.Equal("cognomePunta.id", getId());
-//        return new Compare.Equal("cognomeValido", getCognome());//todo provvisorio
-//    }// fine del metodo
 
     /**
      * Recupera una lista (array) di records Bio che usano questa istanza di Cognome nella property cognomePunta
@@ -373,34 +284,8 @@ public class Cognome extends BaseEntity {
      */
     @SuppressWarnings("all")
     public List<Bio> listaBio() {
-        //        return new Compare.Equal("cognomePunta.id", getId());
-        Container.Filter filter = new Compare.Equal("cognomeValido", getCognome());//todo provvisorio
+        Container.Filter filter = new Compare.Equal("cognome", getCognome());//todo provvisorio
         SortProperty sorts = new SortProperty(Bio_.attivita.getName(), Bio_.cognomeValido.getName(), Bio_.nomeValido.getName());
-
-//        Comparator comp = new Comparator() {
-//            @Override
-//            public int compare(Object objA, Object objB) {
-//                String attivitaA = "";
-//                String attivitaB = "";
-//                Bio bioA = (Bio) objA;
-//                Bio bioB = (Bio) objB;
-//                Attivita objAttivitaA = bioA.getAttivitaPunta();
-//                Attivita objAttivitaB = bioB.getAttivitaPunta();
-//                if (objAttivitaA != null) {
-//                    attivitaA = objAttivitaA.getPlurale();
-//                }// end of if cycle
-//                if (objAttivitaB != null) {
-//                    attivitaB = objAttivitaB.getPlurale();
-//                }// end of if cycle
-//
-//                return attivitaA.compareTo(attivitaB);
-//            }// end of inner method
-//        };// end of anonymous inner class
-//        entities.sort(comp);
-
-//        if (entities != null) {
-//            lista = new ArrayList<>(entities);
-//        }// end of if cycle
 
         return (List<Bio>) AQuery.getList(Bio.class, sorts, filter);
     }// fine del metodo

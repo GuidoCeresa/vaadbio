@@ -1,12 +1,8 @@
 package it.algos.vaadbio.liste;
 
 import it.algos.vaad.wiki.LibWiki;
-import it.algos.vaadbio.bio.Bio;
 import it.algos.vaadbio.cognome.Cognome;
-import it.algos.vaadbio.lib.CostBio;
-import it.algos.vaadbio.lib.LibBio;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -63,7 +59,7 @@ public class ListaAntroCognome extends ListaAntroponimo {
      * Sovrascritto
      */
     protected void elaboraListaBiografie() {
-        Cognome cognome = getCognome();
+        Cognome cognome = this.getCognome();
 
         if (cognome != null) {
             listaBio = cognome.listaBio();
@@ -81,29 +77,12 @@ public class ListaAntroCognome extends ListaAntroponimo {
 
 
     /**
-     * Piede della pagina
+     * Categorie al piede della pagina
      * Sovrascritto
      */
     @Override
-    protected String elaboraFooter() {
-        String text = CostBio.VUOTO;
-        boolean usaInclude = usaFooterPortale || usaFooterCategorie;
-
-        if (usaFooterPortale) {
-            text += CostBio.A_CAPO;
-            text += "{{Portale|antroponimi}}";
-        }// end of if cycle
-
-        if (usaFooterCategorie) {
-            text += CostBio.A_CAPO;
-            text += "[[Categoria:Liste di persone per cognome|" + getCognomeTxt() + "]]";
-        }// end of if cycle
-
-        if (usaInclude) {
-            text = CostBio.A_CAPO + LibBio.setNoIncludeMultiRiga(text);
-        }// end of if cycle
-
-        return text;
+    protected String elaboraCategorie() {
+        return "[[Categoria:Liste di persone per cognome|" + getCognomeTxt() + "]]";
     }// fine del metodo
 
 

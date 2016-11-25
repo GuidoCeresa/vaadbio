@@ -33,7 +33,7 @@ public class UploadCognomi {
     //--Esegue un ciclo di creazione (UPLOAD) delle liste di cognomi
     private void doInit() {
         long inizio = System.currentTimeMillis();
-        List<Cognome> listaCognomi = Cognome.findAllSuperaTaglioPagina();
+        List<Cognome> listaCognomi = Cognome.getListSuperaTaglioPagina();
         int mod = 0;
         String modTxt;
 

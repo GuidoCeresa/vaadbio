@@ -106,4 +106,123 @@ $v-font-weight: 400;
     color:blue;
   }
 
+  // verde
+  .verde {
+    .v-label {
+      color: green;
+    }
+    .v-icon {
+      color: green;
+    }
+    .v-menubar-menuitem {
+      color: green;
+      background: #E5E4E2;
+    }
+    .v-menubar-menuitem-highlight {
+      color: white;
+      background: #6282A3;
+    }
+    .v-menubar-menuitem-highlight {
+      color: white;
+      background: #6282A3;
+    }
+  }
+  // salmone
+  .salmone {
+    color: #FA8072;
+
+    .v-label {
+      color: #FA8072;
+    }
+    .v-icon {
+      color: #FA8072;
+    }
+    .v-menubar-menuitem {
+      color: #FA8072;
+      background: #E5E4E2;
+    }
+    .v-menubar-menuitem-highlight {
+      color: white;
+      background: #6282A3;
+    }
+    .v-menubar-menuitem-highlight {
+      color: white;
+      background: #6282A3;
+    }
+  }
+  // rosso pompeiano
+  .rosso {
+    color: #D21F1B;
+
+    .v-label {
+      color: #D21F1B;
+    }
+    .v-icon {
+      color: #D21F1B;
+    }
+    .v-menubar-menuitem {
+      color: #D21F1B;
+      background: #E5E4E2;
+    }
+    .v-menubar-menuitem-highlight {
+      color: white;
+      background: #6282A3;
+    }
+    .v-menubar-menuitem-highlight {
+      color: white;
+      background: #6282A3;
+    }
+  }
+
+  // altro colore
+  .blue {
+    .v-label {
+      color: blue;
+    }
+    .v-icon {
+      color: blue;
+    }
+  }
+
+  $warning-color: orange;
+  .v-label-warning {
+    //background: $v-textfield-background-color;
+    color: valo-font-color($v-textfield-background-color);
+    font-style: italic;
+    //border: 2px solid $warning-color;
+    //border-radius: $v-border-radius;
+    padding: round($v-unit-size/5) round($v-unit-size/2) round($v-unit-size/5) round($v-unit-size);
+    font-weight: $v-font-weight;
+    font-size: round($v-font-size * 0.80);
+
+    &:before {
+      font-family: FontAwesome;
+      font-style: normal;
+      content: "\f071";
+      margin-right: .5em;
+      margin-left: round($v-unit-size/-2);
+      color: $warning-color;
+    }
+  }
+
+  $wiki-color: #039e36;
+  .v-label-wiki {
+    //background: $v-textfield-background-color;
+    color: $wiki-color;
+    font-style: normal;
+    //border: 2px solid $warning-color;
+    //border-radius: $v-border-radius;
+    padding: round($v-unit-size/5) round($v-unit-size/2) round($v-unit-size/5) round($v-unit-size);
+    font-weight: $v-font-weight+100;
+    font-size: round($v-font-size);
+
+    &:before {
+      font-family: FontAwesome;
+      font-style: normal;
+      content: "\f15c";
+      margin-right: .5em;
+      margin-left: round($v-unit-size/-2);
+      color: $wiki-color;
+    }
+  }
 }

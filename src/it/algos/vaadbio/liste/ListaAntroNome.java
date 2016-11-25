@@ -1,19 +1,9 @@
 package it.algos.vaadbio.liste;
 
 import it.algos.vaad.wiki.LibWiki;
-import it.algos.vaadbio.attivita.Attivita;
-import it.algos.vaadbio.bio.Bio;
-import it.algos.vaadbio.genere.Genere;
-import it.algos.vaadbio.lib.CostBio;
-import it.algos.vaadbio.lib.LibBio;
 import it.algos.vaadbio.nome.Nome;
-import it.algos.vaadbio.professione.Professione;
-import it.algos.webbase.domain.pref.Pref;
-import it.algos.webbase.web.lib.LibText;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by gac on 27 dic 2015.
@@ -27,6 +17,7 @@ public class ListaAntroNome extends ListaAntroponimo {
      */
     protected ListaAntroNome() {
     }// fine del costruttore
+
 
     /**
      * Costruttore completo
@@ -45,7 +36,6 @@ public class ListaAntroNome extends ListaAntroponimo {
     @Override
     protected void elaboraTitolo() {
         String tag = "Persone di nome ";
-
         titoloPagina = tag + getNomeTxt();
     }// fine del metodo
 
@@ -64,18 +54,16 @@ public class ListaAntroNome extends ListaAntroponimo {
 
 
     /**
-     * Lista delle biografie che hanno una valore valido per il link specifico
+     * Costruisce una lista di biografie che hanno una valore valido per la pagina specifica
+     * Esegue una query
      * Sovrascritto
      */
-    protected ArrayList<Bio> getListaBio() {
-        ArrayList<Bio> listaBio = null;
+    protected void elaboraListaBiografie() {
         Nome nome = this.getNome();
 
         if (nome != null) {
-            listaBio = nome.bioNome();
+            listaBio = nome.listaBio();
         }// end of if cycle
-
-        return listaBio;
     }// fine del metodo
 
 
@@ -89,30 +77,12 @@ public class ListaAntroNome extends ListaAntroponimo {
 
 
     /**
-     * Piede della pagina
-     * <p>
+     * Categorie al piede della pagina
      * Sovrascritto
      */
     @Override
-    protected String elaboraFooter() {
-        String text = CostBio.VUOTO;
-        boolean usaInclude = usaFooterPortale || usaFooterCategorie;
-
-        if (usaFooterPortale) {
-            text += CostBio.A_CAPO;
-            text += "{{Portale|antroponimi}}";
-        }// end of if cycle
-
-        if (usaFooterCategorie) {
-            text += CostBio.A_CAPO;
-            text += "[[Categoria:Liste di persone per nome|" + getNomeTxt() + "]]";
-        }// end of if cycle
-
-        if (usaInclude) {
-            text = CostBio.A_CAPO + LibBio.setNoIncludeMultiRiga(text);
-        }// end of if cycle
-
-        return text;
+    protected String elaboraCategorie() {
+        return "[[Categoria:Liste di persone per nome|" + getNomeTxt() + "]]";
     }// fine del metodo
 
 

@@ -45,6 +45,17 @@ public class NomeMod extends ModulePop {
 
 
     /**
+     * Returns the table used to shows the list. <br>
+     * The concrete subclass must override for a specific Table.
+     *
+     * @return the Table
+     */
+    public ATable createTable() {
+        return new NomeTable(this);
+    }// end of method
+
+
+    /**
      * Registers a new action handler for this container
      *
      * @see com.vaadin.event.Action.Container#addActionHandler(Action.Handler)
@@ -68,15 +79,6 @@ public class NomeMod extends ModulePop {
 
     }// end of method
 
-    /**
-     * Returns the table used to shows the list. <br>
-     * The concrete subclass must override for a specific Table.
-     *
-     * @return the Table
-     */
-    public ATable createTable() {
-        return new NomeTable(this);
-    }// end of method
 
     @Override
     public SearchManager createSearchManager() {

@@ -201,6 +201,8 @@ public class Bio extends BaseEntity {
     private Nazionalita nazionalitaPunta = null;
     @ManyToOne
     private Nome nomePunta = null;
+
+    @Deprecated
     @ManyToOne
     private Cognome cognomePunta = null;
 
@@ -1004,10 +1006,12 @@ public class Bio extends BaseEntity {
         this.didascaliaListe = didascaliaListe;
     }//end of setter method
 
+    @Deprecated
     public Cognome getCognomePunta() {
         return cognomePunta;
     }// end of getter method
 
+    @Deprecated
     public void setCognomePunta(Cognome cognomePunta) {
         this.cognomePunta = cognomePunta;
     }//end of setter method

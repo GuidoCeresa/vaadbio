@@ -9,6 +9,7 @@ import it.algos.webbase.web.lib.LibText;
 import it.algos.webbase.web.query.AQuery;
 
 import javax.persistence.EntityManager;
+import javax.validation.ConstraintViolationException;
 import java.util.List;
 import java.util.Vector;
 
@@ -31,14 +32,22 @@ public abstract class CognomeService {
         int recordsCreati = 0;
         Vector vettore = null;
         EntityManager manager = EM.createEntityManager();
+        manager.getTransaction().begin();
 
         vettore = Cognome.findMappa(manager);
 
         //--cancella i records esistenti
-        cancellaCognomi();
+        cancellaCognomi(manager);
 
         //--elabora i cognomi e li registra
         recordsCreati = spazzolaAllCognomiUnici(vettore, manager);
+
+        try {
+            manager.getTransaction().commit();
+        } catch (ConstraintViolationException e) {
+            manager.getTransaction().rollback();
+        }// fine del blocco try-catch
+        manager.close();
 
         return recordsCreati;
     }// fine del metodo
@@ -47,8 +56,8 @@ public abstract class CognomeService {
     /**
      * Cancella i records esistenti
      */
-    private static void cancellaCognomi() {
-        AQuery.delete(Cognome.class);
+    private static void cancellaCognomi(EntityManager manager) {
+        AQuery.delete(Cognome.class, manager);
     }// fine del metodo
 
     /**
@@ -65,11 +74,11 @@ public abstract class CognomeService {
         long numVociBio = 0;
 
         for (int k = 0; k < vettore.size(); k++) {
-            obj = (Object[])vettore.get(k);
-            cognomeTxt=(String)obj[0];
-            numVociBio=(long)obj[1];
-            if (numVociBio>taglio) {
-                if (creaSingolo(cognomeTxt, (int)numVociBio, manager)) {
+            obj = (Object[]) vettore.get(k);
+            cognomeTxt = (String) obj[0];
+            numVociBio = (long) obj[1];
+            if (numVociBio > taglio) {
+                if (creaSingolo(cognomeTxt, (int) numVociBio, manager)) {
                     numCognomiRegistrati++;
                 }// end of if cycle
             }// end of if cycle
@@ -127,7 +136,7 @@ public abstract class CognomeService {
         cognomeOut = LibBio.fixCampo(cognomeIn);
 
         //--per sicurezza in caso di nomi strani
-        cognomeOut = LibText.primaMaiuscola(cognomeOut);
+//        cognomeOut = LibText.primaMaiuscola(cognomeOut);
 
         return cognomeOut;
     }// fine del metodo
