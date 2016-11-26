@@ -44,7 +44,7 @@ public class NomeTable extends ModuleTable {
     @Override
     @SuppressWarnings("rawtypes")
     protected Object[] getDisplayColumns() {
-        return new Object[]{Nome_.nome, Nome_.principale, Nome_.nomeDoppio, colLink};
+        return new Object[]{Nome_.nome, Nome_.nomeDoppio, colLink};
     }// end of method
 
     /**
@@ -61,7 +61,7 @@ public class NomeTable extends ModuleTable {
 
         if (bean != null && bean instanceof Nome) {
             istanza = (Nome) bean;
-            wikiTitle = getTitolo(istanza.getRiferimento());
+            wikiTitle = getTitolo(istanza);
         }// end of if cycle
 
         if (checkLista) {

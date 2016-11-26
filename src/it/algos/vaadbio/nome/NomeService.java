@@ -5,12 +5,16 @@ import it.algos.vaad.wiki.LibWiki;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.lib.LibBio;
 import it.algos.webbase.domain.pref.Pref;
+import it.algos.webbase.web.entity.EM;
 import it.algos.webbase.web.lib.LibArray;
 import it.algos.webbase.web.lib.LibText;
+import it.algos.webbase.web.query.AQuery;
 
+import javax.persistence.EntityManager;
+import javax.validation.ConstraintViolationException;
 import java.text.Normalizer;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Vector;
 
 /**
  * Gestione dei nomi (antroponimi)
@@ -70,7 +74,88 @@ public abstract class NomeService {
 //        log.info 'Fine costruzione antroponimi'
     }// fine del metodo
 
+    /**
+     * Cancella i records esistenti
+     * Vengono creati nuovi records per i cognomi (unici) presenti nelle voci (bioGrails)
+     */
+    public static void crea() {
+        EntityManager manager = EM.createEntityManager();
+        manager.getTransaction().begin();
 
+        //--cancella i records esistenti
+        cancellaNomi(manager);
+
+        //--elabora i cognomi e li registra
+        creaAllNomiUnici(manager);
+
+        try {
+            manager.getTransaction().commit();
+        } catch (ConstraintViolationException e) {
+            manager.getTransaction().rollback();
+        }// fine del blocco try-catch
+        manager.close();
+
+    }// fine del metodo
+
+    /**
+     * Cancella i records esistenti
+     */
+    private static void cancellaNomi(EntityManager manager) {
+        AQuery.delete(Nome.class,manager);
+    }// fine del metodo
+
+    /**
+     * Elabora tutti i cognomi
+     * Controlla la validità di ogni singolo cognome
+     * Controlla che ci siano almeno n voci biografiche per il singolo cognome
+     * Registra il record
+     */
+    private static int creaAllNomiUnici(EntityManager manager) {
+        int numCognomiRegistrati = 0;
+        Vector vettore;
+        Object[] obj;
+        int taglio = Pref.getInt(CostBio.TAGLIO_NOMI_ELENCO, 20);
+        String nomeTxt = "";
+        long numVociBio = 0;
+
+        vettore = Nome.findMappa(manager);
+
+        for (int k = 0; k < vettore.size(); k++) {
+            obj = (Object[]) vettore.get(k);
+            nomeTxt = (String) obj[0];
+            numVociBio = (long) obj[1];
+            if (numVociBio > taglio) {
+                if (creaSingolo(nomeTxt, (int) numVociBio, manager)) {
+                    numCognomiRegistrati++;
+                }// end of if cycle
+            }// end of if cycle
+        }// endof for cycle
+
+        return numCognomiRegistrati;
+    }// fine del metodo
+
+
+    /**
+     * Controlla la validità del cognome
+     * Calcola il numero di voci Bio esistenti per il cognome
+     * Se supera il taglio TAGLIO_COGNOMI_ELENCO, registra il record
+     */
+    private static boolean creaSingolo(String nomeTxt, int numVociBio, EntityManager manager) {
+        boolean registrato = false;
+
+        nomeTxt = check(nomeTxt);
+        if (nomeTxt.equals(CostBio.VUOTO)) {
+            return false;
+        }// end of if cycle
+
+        try { // prova ad eseguire il codice
+            Nome.crea(nomeTxt, numVociBio, manager);
+            registrato = true;
+        } catch (Exception unErrore) { // intercetta l'errore
+        }// fine del blocco try-catch
+
+        return registrato;
+    }// fine del metodo
 
     /**
      * Aggiunta nuovi records e modifica di quelli esistenti
@@ -159,7 +244,7 @@ public abstract class NomeService {
         Nome nome;
 
         for (String nomeTxt : listaEccedenti) {
-            nome = Nome.findByNome(nomeTxt);
+            nome = Nome.getEntityByNome(nomeTxt);
             if (nome != null) {
                 nome.delete();
             }// end of if cycle
@@ -201,7 +286,7 @@ public abstract class NomeService {
      * @param nomeTxt nome della persona
      */
     private static Nome elaboraSingolo(String nomeTxt, boolean nomeDoppio) {
-        Nome nome = Nome.findByNome(nomeTxt);
+        Nome nome = Nome.getEntityByNome(nomeTxt);
 
         if (nome == null) {
             nome = new Nome(nomeTxt);
@@ -226,7 +311,7 @@ public abstract class NomeService {
 
         if (!nomeTxt.equals(CostBio.VUOTO)) {
             nomeTxt = nomeTxt.trim();
-            nome = Nome.findByNome(nomeTxt);
+            nome = Nome.getEntityByNome(nomeTxt);
 
             if (nome == null) {
                 nome = new Nome(nomeTxt, false, true, riferimento);
@@ -302,7 +387,7 @@ public abstract class NomeService {
             }// end of if cycle
 
             //--terza regola
-            nomeEsistente = Nome.findByNome(nomeIn.trim());
+            nomeEsistente = Nome.getEntityByNome(nomeIn.trim());
             if (nomeEsistente != null) {
                 if (nomeEsistente.isNomeDoppio()) {
                     nomeOut = nomeEsistente.getNome();

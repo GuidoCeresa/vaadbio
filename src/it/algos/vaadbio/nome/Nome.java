@@ -11,15 +11,15 @@ import it.algos.webbase.domain.pref.Pref;
 import it.algos.webbase.web.entity.BaseEntity;
 import it.algos.webbase.web.query.AQuery;
 import it.algos.webbase.web.query.SortProperty;
+import org.eclipse.persistence.annotations.CascadeOnDelete;
 import org.eclipse.persistence.annotations.Index;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.Entity;
+import javax.persistence.EntityManager;
 import javax.persistence.ManyToOne;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.LinkedHashMap;
-import java.util.List;
+import javax.persistence.Query;
+import java.util.*;
 
 /**
  * Classe di tipo JavaBean
@@ -53,15 +53,18 @@ public class Nome extends BaseEntity {
 
 
     @ManyToOne
+    @CascadeOnDelete
     private Nome riferimento;
 
+
+    @Index()
+    private int voci = 0;
 
     /**
      * Costruttore senza argomenti
      * Necessario per le specifiche JavaBean
      */
     public Nome() {
-        this("");
     }// end of nullary constructor
 
 
@@ -90,43 +93,44 @@ public class Nome extends BaseEntity {
         this.setRiferimento(riferimento);
     }// end of full constructor
 
+    /**
+     * Costruttore completo
+     *
+     * @param nome        della persona
+     * @param principale  flag
+     * @param nomeDoppio  flag
+     * @param riferimento al nome che raggruppa le varie dizioni
+     */
+    public Nome(String nome, boolean principale, boolean nomeDoppio, Nome riferimento, int voci) {
+        super();
+        this.setNome(nome);
+        this.setPrincipale(principale);
+        this.setNomeDoppio(nomeDoppio);
+        this.setRiferimento(riferimento);
+        this.setVoci(voci);
+    }// end of full constructor
+
 
     /**
      * Recupera una istanza di Nome usando la query standard della Primary Key
      *
      * @param id valore della Primary Key
+     *
      * @return istanza di Nome, null se non trovata
      */
     public static Nome find(long id) {
-        Nome instance = null;
-        BaseEntity entity = AQuery.find(Nome.class, id);
-
-        if (entity != null) {
-            if (entity instanceof Nome) {
-                instance = (Nome) entity;
-            }// end of if cycle
-        }// end of if cycle
-
-        return instance;
+        return (Nome) AQuery.find(Nome.class, id);
     }// end of method
 
     /**
      * Recupera una istanza di Nome usando la query di una property specifica
      *
      * @param nome valore della property nome
+     *
      * @return istanza di Nome, null se non trovata
      */
-    public static Nome findByNome(String nome) {
-        Nome instance = null;
-        BaseEntity entity = AQuery.getEntity(Nome.class, Nome_.nome, nome);
-
-        if (entity != null) {
-            if (entity instanceof Nome) {
-                instance = (Nome) entity;
-            }// end of if cycle
-        }// end of if cycle
-
-        return instance;
+    public static Nome getEntityByNome(String nome) {
+        return (Nome) AQuery.getEntity(Nome.class, Nome_.nome, nome);
     }// end of method
 
     /**
@@ -135,8 +139,8 @@ public class Nome extends BaseEntity {
      * @return lista di tutte le istanze di Nome
      */
     @SuppressWarnings("unchecked")
-    public  static List<? extends BaseEntity> findAll() {
-        return AQuery.getList(Nome.class, new SortProperty(Nome_.nome.getName()), (Container.Filter) null);
+    public static List<Nome> getList() {
+        return (List<Nome>) AQuery.getList(Nome.class, new SortProperty(Nome_.nome.getName()));
     }// end of method
 
 
@@ -145,15 +149,8 @@ public class Nome extends BaseEntity {
      *
      * @return numero totale di records della tavola
      */
-    public synchronized static int count() {
-        int totRec = 0;
-        long totTmp = AQuery.count(Nome.class);
-
-        if (totTmp > 0) {
-            totRec = (int) totTmp;
-        }// fine del blocco if
-
-        return totRec;
+    public static int count() {
+        return AQuery.count(Nome.class);
     }// end of method
 
     /**
@@ -161,6 +158,7 @@ public class Nome extends BaseEntity {
      * La crea SOLO se non esiste già
      *
      * @param nome della persona
+     *
      * @return istanza della classe
      */
     public synchronized static Nome crea(String nome) {
@@ -176,10 +174,11 @@ public class Nome extends BaseEntity {
      * @param principale  flag
      * @param nomeDoppio  flag
      * @param riferimento al nome che raggruppa le varie dizioni
+     *
      * @return istanza della classe
      */
     public synchronized static Nome crea(String nome, boolean principale, boolean nomeDoppio, Nome riferimento) {
-        Nome instance = Nome.findByNome(nome);
+        Nome instance = Nome.getEntityByNome(nome);
 
         if (instance == null) {
             instance = new Nome(nome, principale, nomeDoppio, riferimento);
@@ -193,6 +192,27 @@ public class Nome extends BaseEntity {
         return instance;
     }// end of static method
 
+    /**
+     * Creazione iniziale di una istanza della Entity
+     * Filtrato sulla company passata come parametro.
+     * La crea SOLO se non esiste già
+     *
+     * @return istanza della Entity
+     */
+    public static Nome crea(String nomeTxt, int voci, EntityManager manager) {
+        Nome nome = (Nome) AQuery.getEntity(Nome.class, Nome_.nome, nomeTxt, manager);
+
+        if (nome == null) {
+            try { // prova ad eseguire il codice
+                nome = new Nome(nomeTxt, true, false, null, voci);
+                nome = (Nome) nome.save(manager);
+            } catch (Exception unErrore) { // intercetta l'errore
+                nome = null;
+            }// fine del blocco try-catch
+        }// end of if cycle
+
+        return nome;
+    }// end of static method
 
     /**
      * Recupera una lista (array) di tutti i records di Nome doppi
@@ -222,9 +242,9 @@ public class Nome extends BaseEntity {
      * @return lista di alcune istanze di Nome
      */
     @SuppressWarnings("unchecked")
-    public  static ArrayList<Nome> findAllSuperaTaglioPagina() {
+    public static ArrayList<Nome> findAllSuperaTaglioPagina() {
         ArrayList<Nome> listaParziale = new ArrayList<>();
-        List<? extends BaseEntity> listaCompleta = findAll();
+        List<? extends BaseEntity> listaCompleta = getList();
         Nome nome;
 
         for (BaseEntity entity : listaCompleta) {
@@ -245,7 +265,7 @@ public class Nome extends BaseEntity {
      * @return mappa di alcune istanze di Nome
      */
     @SuppressWarnings("unchecked")
-    public  static ArrayList<String> findListaTaglioPagina() {
+    public static ArrayList<String> findListaTaglioPagina() {
         ArrayList<String> lista = new ArrayList<>();
         LinkedHashMap<Nome, Integer> mappa = findMappaTaglioPagina();
 
@@ -262,7 +282,7 @@ public class Nome extends BaseEntity {
      * @return mappa di alcune istanze di Nome
      */
     @SuppressWarnings("unchecked")
-    public  static LinkedHashMap<Nome, Integer> findMappaTaglioPagina() {
+    public static LinkedHashMap<Nome, Integer> findMappaTaglioPagina() {
         return findMappa(Pref.getInt(CostBio.TAGLIO_NOMI_PAGINA, 50));
     }// end of method
 
@@ -272,8 +292,27 @@ public class Nome extends BaseEntity {
      * @return mappa di alcune istanze di Nome
      */
     @SuppressWarnings("unchecked")
-    public  static LinkedHashMap<Nome, Integer> findMappaTaglioListe() {
+    public static LinkedHashMap<Nome, Integer> findMappaTaglioListe() {
         return findMappa(Pref.getInt(CostBio.TAGLIO_NOMI_ELENCO, 20));
+    }// end of method
+
+    /**
+     * Recupera una mappa completa dei nomi e della loro frequenza
+     *
+     * @return numero di biografie
+     */
+    public static Vector findMappa(EntityManager manager) {
+        Vector vettore = null;
+        Query query;
+        String queryTxt = "select bio.nome,count(bio.nome) from Bio bio group by bio.nome order by bio.nome";
+
+        try { // prova ad eseguire il codice
+            query = manager.createQuery(queryTxt);
+            vettore = (Vector) query.getResultList();
+        } catch (Exception unErrore) { // intercetta l'errore
+        }// fine del blocco try-catch
+
+        return vettore;
     }// end of method
 
     /**
@@ -282,10 +321,10 @@ public class Nome extends BaseEntity {
      * @return mappa di alcune istanze di Nome
      */
     @SuppressWarnings("unchecked")
-    private  static LinkedHashMap<Nome, Integer> findMappa(int maxVoci) {
+    private static LinkedHashMap<Nome, Integer> findMappa(int maxVoci) {
         LinkedHashMap<Nome, Integer> mappa = new LinkedHashMap<Nome, Integer>();
         long numRecords = 0;
-        List<? extends BaseEntity> listaCompleta = findAll();
+        List<? extends BaseEntity> listaCompleta = getList();
         Nome nome;
 
         for (BaseEntity entity : listaCompleta) {
@@ -353,6 +392,14 @@ public class Nome extends BaseEntity {
 
     public void setRiferimento(Nome riferimento) {
         this.riferimento = riferimento;
+    }//end of setter method
+
+    public int getVoci() {
+        return voci;
+    }// end of getter method
+
+    public void setVoci(int voci) {
+        this.voci = voci;
     }//end of setter method
 
     /**

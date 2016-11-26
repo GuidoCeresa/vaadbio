@@ -6,13 +6,17 @@ import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Resource;
 import com.vaadin.ui.MenuBar;
 import com.vaadin.ui.Notification;
+import com.vaadin.ui.Table;
 import it.algos.vaadbio.bio.Bio;
+import it.algos.vaadbio.cognome.CognomeService;
+import it.algos.vaadbio.cognome.CognomeTablePortal;
 import it.algos.vaadbio.esegue.Esegue;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.liste.ListaAntroNome;
 import it.algos.webbase.web.module.ModulePop;
 import it.algos.webbase.web.search.SearchManager;
 import it.algos.webbase.web.table.ATable;
+import it.algos.webbase.web.table.TablePortal;
 
 import java.util.ArrayList;
 
@@ -41,6 +45,7 @@ public class NomeMod extends ModulePop {
      */
     public NomeMod() {
         super(Nome.class, MENU_ADDRESS, ICON);
+        this.getTable().setRowHeaderMode(Table.RowHeaderMode.INDEX);
     }// end of constructor
 
 
@@ -54,6 +59,21 @@ public class NomeMod extends ModulePop {
         return new NomeTable(this);
     }// end of method
 
+    /**
+     * Create the Table Portal
+     *
+     * @return the TablePortal
+     */
+    @Override
+    public TablePortal createTablePortal() {
+        return new NomeTablePortal(this);
+    }// end of method
+
+
+    @Override
+    public SearchManager createSearchManager() {
+        return new NomeSearch(this);
+    }// end of method
 
     /**
      * Registers a new action handler for this container
@@ -80,11 +100,6 @@ public class NomeMod extends ModulePop {
     }// end of method
 
 
-    @Override
-    public SearchManager createSearchManager() {
-        return new NomeSearch(this);
-    }// end of method
-
     /**
      * Crea i sottomenu specifici del modulo
      * <p>
@@ -95,12 +110,26 @@ public class NomeMod extends ModulePop {
      */
     @Override
     public void addSottoMenu(MenuBar.MenuItem menuItem) {
+        addCommandCrea(menuItem);
         addCommandDownloadDoppi(menuItem);
         addCommandAggiunge(menuItem);
         addCommandElabora(menuItem);
         addCommandUpload(menuItem);
         addCommandStatistiche(menuItem);
         addCommandTestIncipit(menuItem);
+    }// end of method
+
+    /**
+     * Comando bottone/item crea e/o aggiunge nuovi cognomi individuati nei records di Bio
+     *
+     * @param menuItem a cui agganciare il bottone/item
+     */
+    private void addCommandCrea(MenuBar.MenuItem menuItem) {
+        menuItem.addItem("Crea", FontAwesome.BEER, new MenuBar.Command() {
+            public void menuSelected(MenuBar.MenuItem selectedItem) {
+                NomeService.crea();
+            }// end of method
+        });// end of anonymous class
     }// end of method
 
     /**

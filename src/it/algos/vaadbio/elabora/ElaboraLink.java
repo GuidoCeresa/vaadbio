@@ -189,7 +189,7 @@ public class ElaboraLink {
         if (bio != null) {
             nomeValido = bio.getNomeValido();
             if (nomeValido != null && !nomeValido.equals(CostBio.VUOTO)) {
-                nome = Nome.findByNome(nomeValido);
+                nome = Nome.getEntityByNome(nomeValido);
             }// fine del blocco if
             bio.setNomePunta(nome);
         }// fine del blocco if

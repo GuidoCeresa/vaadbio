@@ -5,7 +5,6 @@ import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.lib.LibBio;
 import it.algos.webbase.domain.pref.Pref;
 import it.algos.webbase.web.entity.EM;
-import it.algos.webbase.web.lib.LibText;
 import it.algos.webbase.web.query.AQuery;
 
 import javax.persistence.EntityManager;
@@ -28,19 +27,15 @@ public abstract class CognomeService {
      * Cancella i records esistenti
      * Vengono creati nuovi records per i cognomi (unici) presenti nelle voci (bioGrails)
      */
-    public static int crea() {
-        int recordsCreati = 0;
-        Vector vettore = null;
+    public static void crea() {
         EntityManager manager = EM.createEntityManager();
         manager.getTransaction().begin();
-
-        vettore = Cognome.findMappa(manager);
 
         //--cancella i records esistenti
         cancellaCognomi(manager);
 
         //--elabora i cognomi e li registra
-        recordsCreati = spazzolaAllCognomiUnici(vettore, manager);
+        creaAllCognomiUnici(manager);
 
         try {
             manager.getTransaction().commit();
@@ -49,7 +44,6 @@ public abstract class CognomeService {
         }// fine del blocco try-catch
         manager.close();
 
-        return recordsCreati;
     }// fine del metodo
 
 
@@ -62,53 +56,36 @@ public abstract class CognomeService {
 
     /**
      * Elabora tutti i cognomi
-     * Controlla la validità di ogni singolo cognome
-     * Controlla che ci siano almeno n voci biografiche per il singolo cognome
      * Registra il record
      */
-    private static int spazzolaAllCognomiUnici(Vector vettore, EntityManager manager) {
-        int numCognomiRegistrati = 0;
-        Object[] obj;
+    private static void creaAllCognomiUnici(EntityManager manager) {
+        Vector vettore = Cognome.findMappa(manager);
+        elaboraCognomiValidi(vettore, manager);
+    }// fine del metodo
+
+    /**
+     * Controlla che ci siano almeno n voci biografiche per il singolo cognome
+     */
+    private static void elaboraCognomiValidi(Vector vettore, EntityManager manager) {
         int taglio = Pref.getInt(CostBio.TAGLIO_COGNOMI_ELENCO, 20);
+        Object[] obj;
         String cognomeTxt = "";
-        long numVociBio = 0;
+        long numVociBio;
 
         for (int k = 0; k < vettore.size(); k++) {
             obj = (Object[]) vettore.get(k);
             cognomeTxt = (String) obj[0];
             numVociBio = (long) obj[1];
             if (numVociBio > taglio) {
-                if (creaSingolo(cognomeTxt, (int) numVociBio, manager)) {
-                    numCognomiRegistrati++;
+                cognomeTxt = check(cognomeTxt);
+                if (!cognomeTxt.equals(CostBio.VUOTO)) {
+                    Cognome.crea(cognomeTxt, (int)numVociBio, manager);
                 }// end of if cycle
             }// end of if cycle
         }// endof for cycle
 
-        return numCognomiRegistrati;
     }// fine del metodo
 
-
-    /**
-     * Controlla la validità del cognome
-     * Calcola il numero di voci Bio esistenti per il cognome
-     * Se supera il taglio TAGLIO_COGNOMI_ELENCO, registra il record
-     */
-    private static boolean creaSingolo(String cognomeTxt, int numVociBio, EntityManager manager) {
-        boolean registrato = false;
-
-        cognomeTxt = check(cognomeTxt);
-        if (cognomeTxt.equals(CostBio.VUOTO)) {
-            return false;
-        }// end of if cycle
-
-        try { // prova ad eseguire il codice
-            Cognome.crea(cognomeTxt, numVociBio, manager);
-            registrato = true;
-        } catch (Exception unErrore) { // intercetta l'errore
-        }// fine del blocco try-catch
-
-        return registrato;
-    }// fine del metodo
 
 
     /**
@@ -134,9 +111,6 @@ public abstract class CognomeService {
 
         //--quinta regola
         cognomeOut = LibBio.fixCampo(cognomeIn);
-
-        //--per sicurezza in caso di nomi strani
-//        cognomeOut = LibText.primaMaiuscola(cognomeOut);
 
         return cognomeOut;
     }// fine del metodo

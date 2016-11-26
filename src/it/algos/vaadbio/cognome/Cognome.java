@@ -29,14 +29,6 @@ import java.util.Vector;
  * 2) le proprietà devono essere private e accessibili solo con get, set e is (usato per i boolena al posto di get)
  * 3) la classe deve implementare l'interfaccia Serializable (la fa nella superclasse)
  * 4) la classe non deve contenere nessun metodo per la gestione degli eventi
- * <p>
- * Considerata la quantità di records da elaborare ad ogni ciclo (giornaliero), procedo come segue:
- * Eseguo ogni settimana (nel giorno di 'manutenzione', magari la domenica) il metodo CognomeService.creaAggiorna
- * La prima volta 'crea' i nuovi record
- * Le volte succesive aggiunge nuovi records e segna come nonUsato/deprecato/nonValido quelli non più validi
- * Esegue ogni settimana il metodo Elabora (generale per Bio) per sincronizzare i puntaCognome
- * Esegue ogni settimana il metodo CognomeService.contaCognomi per sapere ogni cognome quante voci ha
- * Esegue ogni giorno il metodo CognomeService.uploadCognomi di quelli che superano una soglia prefissata
  */
 @Entity
 public class Cognome extends BaseEntity {
@@ -135,7 +127,7 @@ public class Cognome extends BaseEntity {
     }// end of method
 
     /**
-     * Recupera una mappa dei cognomi e della loro frequenza
+     * Recupera una mappa completa dei cognomi e della loro frequenza
      *
      * @return numero di biografie
      */

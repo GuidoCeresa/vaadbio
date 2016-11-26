@@ -1,20 +1,19 @@
-package it.algos.vaadbio.cognome;
+package it.algos.vaadbio.nome;
 
 import it.algos.vaadbio.antro.AntroTablePortal;
 import it.algos.webbase.web.module.ModulePop;
 import it.algos.webbase.web.toolbar.TableToolbar;
 
 /**
- * Created by gac on 25 nov 2016.
- * Portale specifico per i cognomi
+ * Created by gac on 26 nov 2016.
+ * Portale specifico per i nomi
  */
-public class CognomeTablePortal extends AntroTablePortal {
-
+public class NomeTablePortal extends AntroTablePortal {
 
     /**
      * Costruttore base
      */
-    public CognomeTablePortal(ModulePop modulo) {
+    public NomeTablePortal(ModulePop modulo) {
         super(modulo);
     }// end of constructor
 
@@ -26,12 +25,13 @@ public class CognomeTablePortal extends AntroTablePortal {
     @Override
     public TableToolbar createToolbar() {
 
-        cmdPagina = "Cognomi";
+        cmdPagina = "Nomi";
         cmdLista = "Liste";
-        linkPagina = "Liste cognomi";
-        linkLista = "Cognomi";
+        linkPagina = "Liste nomi";
+        linkLista = "Nomi";
 
         return super.createToolbar();
     }// end of method
+
 
 }// end of class
