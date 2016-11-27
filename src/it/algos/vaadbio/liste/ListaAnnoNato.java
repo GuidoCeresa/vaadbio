@@ -4,6 +4,7 @@ import it.algos.vaadbio.anno.Anno;
 import it.algos.vaadbio.bio.Bio;
 import it.algos.vaadbio.giorno.Giorno;
 import it.algos.vaadbio.lib.CostBio;
+import it.algos.vaadbio.lib.LibBio;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,6 +16,7 @@ import java.util.LinkedHashMap;
  * Crea la lista dei nati nell'anno e la carica sul server wiki
  */
 public class ListaAnnoNato extends ListaAnno {
+
 
     /**
      * Costruttore
@@ -35,20 +37,31 @@ public class ListaAnnoNato extends ListaAnno {
     }// fine del metodo
 
 
-
     /**
-     * Lista delle biografie che hanno una valore valido per il link specifico
+     * Costruisce una lista di biografie che hanno una valore valido per la pagina specifica
+     * Esegue una query
      * Sovrascritto
      */
-    protected ArrayList<Bio> getListaBio() {
-        ArrayList<Bio> listaBio = null;
-        Anno anno = super.getAnno();
+    protected void elaboraListaBiografie() {
+        Anno anno = this.getAnno();
 
         if (anno != null) {
-            listaBio = anno.bioNati();
+            listaBio = anno.listaBioNati();
         }// end of if cycle
+    }// fine del metodo
 
-        return listaBio;
+
+    /**
+     * Ordine progressivo del paragrafo (giorno oppure anno)
+     * Sovrascritto
+     */
+    @Override
+    protected int getOrdineCrono(HashMap<String, Object> mappa) {
+        if (mappa != null && mappa.get(KEY_MAP_ORDINE_GIORNO_NATO) != null) {
+            return (int) (mappa.get(KEY_MAP_ORDINE_GIORNO_NATO));
+        } else {
+            return 0;
+        }// end of if/else cycle
     }// fine del metodo
 
     /**
@@ -57,14 +70,7 @@ public class ListaAnnoNato extends ListaAnno {
      */
     @Override
     protected String getChiave(Bio bio) {
-        String key = CostBio.VUOTO;
-        Giorno giorno = bio.getGiornoNatoPunta();
-
-        if (giorno != null) {
-            key = giorno.getTitolo();
-        }// end of if cycle
-
-        return key;
+        return LibBio.getChiavePerGiornoNato(bio, tagParagrafoNullo);
     }// fine del metodo
 
 

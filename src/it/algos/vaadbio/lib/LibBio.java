@@ -7,6 +7,7 @@ import it.algos.vaad.wiki.Api;
 import it.algos.vaad.wiki.LibWiki;
 import it.algos.vaad.wiki.Page;
 import it.algos.vaad.wiki.WikiLogin;
+import it.algos.vaadbio.anno.Anno;
 import it.algos.vaadbio.attivita.Attivita;
 import it.algos.vaadbio.bio.Bio;
 import it.algos.vaadbio.genere.Genere;
@@ -2105,16 +2106,33 @@ public abstract class LibBio {
      * Costruisce una chiave di suddivisione alfabetica per lettera iniziale del cognome
      */
     public static String getChiavePerCognome(Bio bio, String tagParagrafoNullo) {
-        String chiave = tagParagrafoNullo;
-        String cognome = "";
+        if (bio != null) {
+            return getChiavePerAntro(bio.getCognomeValido());
+        } else {
+            return tagParagrafoNullo;
+        }// end of if/else cycle
+    }// fine del metodo
 
-        if (bio == null) {
-            return CostBio.VUOTO;
-        }// end of if cycle
+    /**
+     * Costruisce una chiave di suddivisione alfabetica per lettera iniziale del nome
+     */
+    public static String getChiavePerNome(Bio bio, String tagParagrafoNullo) {
+        if (bio != null) {
+            return getChiavePerAntro(bio.getNomeValido());
+        } else {
+            return tagParagrafoNullo;
+        }// end of if/else cycle
+    }// fine del metodo
 
-        cognome = bio.getCognomeValido();
-        if (cognome != null && cognome.length() > 0) {
-            chiave = cognome.substring(0, 1);
+
+    /**
+     * Costruisce una chiave di suddivisione alfabetica per lettera iniziale del nome o del cognome
+     */
+    private static String getChiavePerAntro(String value) {
+        String chiave = CostBio.VUOTO;
+
+        if (value != null && value.length() > 0) {
+            chiave = value.substring(0, 1);
             chiave = chiave.toUpperCase();
         }// end of if cycle
 
@@ -2122,20 +2140,70 @@ public abstract class LibBio {
     }// fine del metodo
 
     /**
-     * Costruisce una chiave di suddivisione alfabetica per lettera iniziale del nome
+     * Costruisce una chiave di suddivisione alfabetica per anno di nascita linkato
      */
-    public static String getChiavePerNome(Bio bio, String tagParagrafoNullo) {
-        String chiave = tagParagrafoNullo;
-        String nome = "";
+    public static String getChiavePerAnnoNato(Bio bio, String tagParagrafoNullo) {
+        if (bio != null) {
+            return getChiavePerAnno(bio.getAnnoNatoPunta());
+        } else {
+            return tagParagrafoNullo;
+        }// end of if/else cycle
+    }// fine del metodo
 
-        if (bio == null) {
-            return CostBio.VUOTO;
+    /**
+     * Costruisce una chiave di suddivisione alfabetica per anno di morte linkato
+     */
+    public static String getChiavePerAnnoMorto(Bio bio, String tagParagrafoNullo) {
+        if (bio != null) {
+            return getChiavePerAnno(bio.getAnnoMortoPunta());
+        } else {
+            return tagParagrafoNullo;
+        }// end of if/else cycle
+    }// fine del metodo
+
+    /**
+     * Costruisce una chiave di suddivisione alfabetica per anno di nascita o morte linkato
+     */
+    private static String getChiavePerAnno(Anno anno) {
+        String chiave = CostBio.VUOTO;
+
+        if (anno != null) {
+            chiave = anno.getTitolo();
         }// end of if cycle
 
-        nome = bio.getNomeValido();
-        if (nome != null && nome.length() > 0) {
-            chiave = nome.substring(0, 1);
-            chiave = chiave.toUpperCase();
+        return chiave;
+    }// fine del metodo
+
+    /**
+     * Costruisce una chiave di suddivisione alfabetica per giorno di nascita linkato
+     */
+    public static String getChiavePerGiornoNato(Bio bio, String tagParagrafoNullo) {
+        if (bio != null) {
+            return getChiavePerGiorno(bio.getGiornoNatoPunta());
+        } else {
+            return tagParagrafoNullo;
+        }// end of if/else cycle
+    }// fine del metodo
+
+    /**
+     * Costruisce una chiave di suddivisione alfabetica per giorno di morte linkato
+     */
+    public static String getChiavePerGiornoMorto(Bio bio, String tagParagrafoNullo) {
+        if (bio != null) {
+            return getChiavePerGiorno(bio.getGiornoMortoPunta());
+        } else {
+            return tagParagrafoNullo;
+        }// end of if/else cycle
+    }// fine del metodo
+
+    /**
+     * Costruisce una chiave di suddivisione alfabetica per giorno di nascita o morte linkato
+     */
+    private static String getChiavePerGiorno(Giorno giorno) {
+        String chiave = CostBio.VUOTO;
+
+        if (giorno != null) {
+            chiave = giorno.getTitolo();
         }// end of if cycle
 
         return chiave;

@@ -9,6 +9,7 @@ import java.util.HashMap;
 
 /**
  * Created by gac on 23 nov 2016.
+ * .
  */
 public class ListaAttivitaABC extends ListaAttivita {
 
@@ -82,28 +83,6 @@ public class ListaAttivitaABC extends ListaAttivita {
         return super.getPluraleAttività() + "/" + titoloVisibile;
     }// fine del metodo
 
-
-    /**
-     * Costruisce una mappa di biografie che hanno una valore valido per il link specifico
-     */
-    protected void elaboraMappaBiografie() {
-        ArrayList lista = getListaBioSottoPagina();
-
-        if (usaTaglioVociPagina && lista.size() < maxVociPagina) {
-            return;
-        }// end of if cycle
-
-        if (lista != null && lista.size() > 0) {
-            for (Object mappa : lista) {
-                elaboraMappa(mappa);
-            }// end of if cycle
-        }// end of for cycle
-
-        if (lista != null) {
-            numPersone = lista.size();
-        }// end of if cycle
-
-    }// fine del metodo
 
     /**
      * Lista delle biografie che hanno una valore valido per il link specifico

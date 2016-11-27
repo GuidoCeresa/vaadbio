@@ -1,20 +1,19 @@
-package it.algos.vaadbio.giorno;
+package it.algos.vaadbio.anno;
 
 import it.algos.vaadbio.crono.CronoTable;
 import it.algos.webbase.web.entity.BaseEntity;
 import it.algos.webbase.web.module.ModulePop;
 
 /**
- * Created by gac on 26 nov 2016.
+ * Created by gac on 27 nov 2016.
  * .
  */
-public class GiornoTable extends CronoTable {
-
+public class AnnoTable extends CronoTable {
 
     /**
      * Costruttore base
      */
-    public GiornoTable(ModulePop modulo) {
+    public AnnoTable(ModulePop modulo) {
         super(modulo);
     }// end of constructor
 
@@ -29,7 +28,7 @@ public class GiornoTable extends CronoTable {
     @Override
     @SuppressWarnings("rawtypes")
     protected Object[] getDisplayColumns() {
-        return new Object[]{Giorno_.ordinamento, Giorno_.titolo, colLinkNati, colLinkMorti};
+        return new Object[]{Anno_.ordinamento, Anno_.titolo, colLinkNati, colLinkMorti};
     }// end of method
 
 
@@ -38,12 +37,12 @@ public class GiornoTable extends CronoTable {
      */
     protected String getTitoloNato(BaseEntity bean) {
         String wikiTitle = "";
-        Giorno giorno;
-        String tag = "Nati il ";
+        Anno anno;
+        String tag = "Nati nel ";
 
-        if (bean != null && bean instanceof Giorno) {
-            giorno = (Giorno) bean;
-            wikiTitle = tag + giorno.getTitolo();
+        if (bean != null && bean instanceof Anno) {
+            anno = (Anno) bean;
+            wikiTitle = tag + anno.getTitolo();
         }// fine del blocco if
 
         return wikiTitle;
@@ -54,12 +53,12 @@ public class GiornoTable extends CronoTable {
      */
     protected String getTitoloMorto(BaseEntity bean) {
         String wikiTitle = "";
-        Giorno giorno;
-        String tag = "Morti il ";
+        Anno anno;
+        String tag = "Morti nel ";
 
-        if (bean != null && bean instanceof Giorno) {
-            giorno = (Giorno) bean;
-            wikiTitle = tag + giorno.getTitolo();
+        if (bean != null && bean instanceof Anno) {
+            anno = (Anno) bean;
+            wikiTitle = tag + anno.getTitolo();
         }// fine del blocco if
 
         return wikiTitle;

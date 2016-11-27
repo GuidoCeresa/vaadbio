@@ -1,12 +1,16 @@
 package it.algos.vaadbio.liste;
 
+import it.algos.vaad.wiki.LibWiki;
 import it.algos.vaadbio.bio.Bio;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.lib.LibBio;
 import it.algos.webbase.domain.pref.Pref;
+import it.algos.webbase.web.lib.LibArray;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * Created by gac on 27 dic 2015.
@@ -20,12 +24,6 @@ import java.util.HashMap;
  */
 public abstract class ListaCrono extends ListaBio {
 
-
-    /**
-     * Costruttore senza parametri
-     */
-    public ListaCrono() {
-    }// fine del costruttore
 
     /**
      * Costruttore
@@ -54,6 +52,7 @@ public abstract class ListaCrono extends ListaBio {
         usaBodySottopagine = false; //--escluso per le voci crono
         usaBodyRigheMultiple = Pref.getBool(CostBio.USA_BODY_RIGHE_MULTIPLE_CRONO, true);
         usaBodyTemplate = true; //--obbligatorio per le voci crono
+        usaSortCronologico = true;
 
         // footer
         usaFooterPortale = Pref.getBool(CostBio.USA_FOOTER_PORTALE_CRONO, true);
@@ -68,7 +67,7 @@ public abstract class ListaCrono extends ListaBio {
     /**
      * Costruisce una singola mappa
      */
-    protected void elaboraMappa(Bio bio) {
+    protected void elaboraMappaOld(Bio bio) {
         String key = getChiave(bio);
         String didascalia = getDidascalia(bio);
         ArrayList<String> lista;
@@ -93,20 +92,82 @@ public abstract class ListaCrono extends ListaBio {
 
 
     /**
-     * Chiave specifica della biografia (anno o giorno)
+     * La mappa delle biografie arriva non ordinata
+     * Occorre spostare in basso il paragrafo vuoto
+     * Occorre raggruppare i paragrafi con lo stesso link visibile
+     * Occorre riordinare in base al link visibile
      * Sovrascritto
      */
-    protected String getChiave(Bio bio) {
-        return null;
+    protected void ordinaMappaBiografie() {
+        LinkedHashMap<String, HashMap> mappa = new LinkedHashMap<>();
+        HashMap<Object, Object> mappaOrd = new HashMap<>();
+        HashMap<String, Object> mappaTmp;
+        String titoloParagrafo = "";
+        ArrayList<Integer> keyList = new ArrayList<>();
+        int ord;
+        String chiave;
+        HashMap value;
+
+        for (Map.Entry<String, HashMap> mappaEntry : mappaBio.entrySet()) {
+            mappaTmp = mappaEntry.getValue();
+            titoloParagrafo = (String) mappaTmp.get(KEY_MAP_TITOLO);
+            ord = getOrdineCrono(mappaTmp);
+            keyList.add(ord);
+            mappaOrd.put(ord, titoloParagrafo);
+        }// end of for cycle
+
+        keyList = LibArray.sort(keyList);
+        for (Integer key : keyList) {
+            chiave = (String) mappaOrd.get(key);
+            value = mappaBio.get(chiave);
+            mappa.put(chiave, value);
+        }// end of for cycle
+        mappaBio = mappa;
+
+    }// fine del metodo
+
+
+    /**
+     * Ordine progressivo del paragrafo (giorno oppure anno)
+     * Sovrascritto
+     */
+    protected int getOrdineCrono(HashMap<String, Object> mappa) {
+        return 0;
     }// fine del metodo
 
     /**
-     * Didascalia specifica della biografia
-     * Sovrascritto
+     * Raggruppa le biografie
      */
-    protected String getDidascalia(Bio bio) {
-        return null;
+    protected String righeRaggruppate() {
+        String text = CostBio.VUOTO;
+        ArrayList<Bio> lista;
+        String key;
+        HashMap<String, Object> mappa;
+
+        for (Map.Entry<String, HashMap> mappaTmp : mappaBio.entrySet()) {
+            key = mappaTmp.getKey();
+            mappa = (HashMap) mappaTmp.getValue();
+            lista = (ArrayList<Bio>) mappa.get(KEY_MAP_LISTA);
+
+            text += CostBio.ASTERISCO;
+            if (lista.size() == 1) {
+                text += getDidascalia(lista.get(0));
+            } else {
+                text += LibWiki.setQuadre(key);
+                text += CostBio.A_CAPO;
+                for (Bio bio : lista) {
+                    text += CostBio.ASTERISCO;
+                    text += CostBio.ASTERISCO;
+                    text += getDidascalia(bio);
+                    text += CostBio.A_CAPO;
+                }// end of for cycle
+            }// end of if/else cycle
+            text += CostBio.A_CAPO;
+        }// end of for cycle
+
+        return text;
     }// fine del metodo
+
 
     /**
      * Incapsula il testo come parametro di un (eventuale) template

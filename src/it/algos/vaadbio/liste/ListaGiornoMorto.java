@@ -1,11 +1,10 @@
 package it.algos.vaadbio.liste;
 
-import it.algos.vaadbio.anno.Anno;
 import it.algos.vaadbio.bio.Bio;
 import it.algos.vaadbio.giorno.Giorno;
-import it.algos.vaadbio.lib.CostBio;
+import it.algos.vaadbio.lib.LibBio;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by gac on 21 dic 2015.
@@ -13,6 +12,7 @@ import java.util.ArrayList;
  * Crea la lista dei morti nel giorno e la carica sul server wiki
  */
 public class ListaGiornoMorto extends ListaGiorno {
+
 
     /**
      * Costruttore
@@ -34,18 +34,29 @@ public class ListaGiornoMorto extends ListaGiorno {
 
 
     /**
-     * Lista delle biografie che hanno una valore valido per il link specifico
+     * Costruisce una lista di biografie che hanno una valore valido per la pagina specifica
+     * Esegue una query
      * Sovrascritto
      */
-    protected ArrayList<Bio> getListaBio() {
-        ArrayList<Bio> listaBio = null;
-        Giorno giorno = super.getGiorno();
+    protected void elaboraListaBiografie() {
+        Giorno giorno = this.getGiorno();
 
         if (giorno != null) {
-            listaBio = giorno.bioMorti();
+            listaBio = giorno.listaBioMorti();
         }// end of if cycle
+    }// fine del metodo
 
-        return listaBio;
+    /**
+     * Ordine progressivo del paragrafo (giorno oppure anno)
+     * Sovrascritto
+     */
+    @Override
+    protected int getOrdineCrono(HashMap<String, Object> mappa) {
+        if (mappa != null && mappa.get(KEY_MAP_ORDINE_ANNO_MORTO) != null) {
+            return (int) (mappa.get(KEY_MAP_ORDINE_ANNO_MORTO));
+        } else {
+            return 0;
+        }// end of if/else cycle
     }// fine del metodo
 
     /**
@@ -54,14 +65,7 @@ public class ListaGiornoMorto extends ListaGiorno {
      */
     @Override
     protected String getChiave(Bio bio) {
-        String key = CostBio.VUOTO;
-        Anno anno = bio.getAnnoMortoPunta();
-
-        if (anno != null) {
-            key = anno.getTitolo();
-        }// end of if cycle
-
-        return key;
+        return LibBio.getChiavePerAnnoMorto(bio, tagParagrafoNullo);
     }// fine del metodo
 
 

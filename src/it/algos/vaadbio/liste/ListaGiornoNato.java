@@ -1,11 +1,10 @@
 package it.algos.vaadbio.liste;
 
-import it.algos.vaadbio.anno.Anno;
 import it.algos.vaadbio.bio.Bio;
 import it.algos.vaadbio.giorno.Giorno;
-import it.algos.vaadbio.lib.CostBio;
+import it.algos.vaadbio.lib.LibBio;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by gac on 21 dic 2015.
@@ -13,12 +12,6 @@ import java.util.ArrayList;
  * Crea la lista dei nati nel giorno e la carica sul server wiki
  */
 public class ListaGiornoNato extends ListaGiorno {
-
-    /**
-     * Costruttore senza parametri
-     */
-    public ListaGiornoNato() {
-    }// fine del costruttore
 
 
     /**
@@ -53,6 +46,18 @@ public class ListaGiornoNato extends ListaGiorno {
         }// end of if cycle
     }// fine del metodo
 
+    /**
+     * Ordine progressivo del paragrafo (giorno oppure anno)
+     * Sovrascritto
+     */
+    @Override
+    protected int getOrdineCrono(HashMap<String, Object> mappa) {
+        if (mappa != null && mappa.get(KEY_MAP_ORDINE_ANNO_NATO) != null) {
+            return (int) (mappa.get(KEY_MAP_ORDINE_ANNO_NATO));
+        } else {
+            return 0;
+        }// end of if/else cycle
+    }// fine del metodo
 
     /**
      * Chiave specifica della biografia (anno o giorno)
@@ -60,14 +65,7 @@ public class ListaGiornoNato extends ListaGiorno {
      */
     @Override
     protected String getChiave(Bio bio) {
-        String key = CostBio.VUOTO;
-        Anno anno = bio.getAnnoNatoPunta();
-
-        if (anno != null) {
-            key = anno.getTitolo();
-        }// end of if cycle
-
-        return key;
+        return LibBio.getChiavePerAnnoNato(bio, tagParagrafoNullo);
     }// fine del metodo
 
     /**

@@ -68,7 +68,7 @@ public abstract class ListaAntroponimo extends ListaBio {
      * Sovrascritto
      */
     @Override
-    protected String getChiaveParagrafo(Bio bio) {
+    protected String getChiave(Bio bio) {
         return LibBio.getChiavePerAttivita(bio, tagParagrafoNullo);
     }// fine del metodo
 

@@ -5,11 +5,14 @@ import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.Notification;
 import it.algos.vaadbio.crono.AnnoGiornoMod;
 import it.algos.vaadbio.esegue.Esegue;
+import it.algos.vaadbio.giorno.GiornoTable;
+import it.algos.vaadbio.giorno.GiornoTablePortal;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.liste.ListaAnnoMorto;
 import it.algos.vaadbio.liste.ListaAnnoNato;
 import it.algos.vaadbio.upload.UploadAnni;
 import it.algos.webbase.web.table.ATable;
+import it.algos.webbase.web.table.TablePortal;
 
 import javax.persistence.metamodel.Attribute;
 
@@ -36,6 +39,26 @@ public class AnnoMod extends AnnoGiornoMod {
         super(Anno.class, MENU_ADDRESS, FontAwesome.LIST_UL);
     }// end of constructor
 
+
+    /**
+     * Returns the table used to shows the list. <br>
+     * The concrete subclass must override for a specific Table.
+     *
+     * @return the Table
+     */
+    public ATable createTable() {
+        return new AnnoTable(this);
+    }// end of method
+
+    /**
+     * Create the Table Portal
+     *
+     * @return the TablePortal
+     */
+    @Override
+    public TablePortal createTablePortal() {
+        return new AnnoTablePortal(this);
+    }// end of method
 
     /**
      * Crea i campi visibili

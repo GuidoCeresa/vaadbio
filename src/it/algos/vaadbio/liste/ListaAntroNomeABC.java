@@ -114,7 +114,7 @@ public class ListaAntroNomeABC extends ListaAntroNome {
      * Sovrascritto
      */
     @Override
-    protected String getChiaveParagrafo(Bio bio) {
+    protected String getChiave(Bio bio) {
         return LibBio.getChiavePerCognome(bio, tagParagrafoNullo);
     }// fine del metodo
 

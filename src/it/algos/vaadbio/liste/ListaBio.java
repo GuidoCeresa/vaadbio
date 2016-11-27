@@ -32,6 +32,10 @@ public abstract class ListaBio {
     protected final static String KEY_MAP_SESSO = "keyMapSesso";
     protected final static String KEY_MAP_LISTA = "keyMapLista";
     protected final static String KEY_MAP_VOCI = "keyMapVoci";
+    protected final static String KEY_MAP_ORDINE_ANNO_NATO = "keyMapOrdineAnnoNato";
+    protected final static String KEY_MAP_ORDINE_ANNO_MORTO = "keyMapOrdineAnnoMorto";
+    protected final static String KEY_MAP_ORDINE_GIORNO_NATO = "keyMapOrdineGiornoNato";
+    protected final static String KEY_MAP_ORDINE_GIORNO_MORTO = "keyMapOrdineGiornoMorto";
     protected String titoloPagina;
     protected List<Bio> listaBio;
     protected LinkedHashMap<String, HashMap> mappaBio = new LinkedHashMap<String, HashMap>();
@@ -47,6 +51,7 @@ public abstract class ListaBio {
     protected String tagHeadTemplateProgetto;
     protected boolean usaHeadIncipit; // dopo il template di avviso
 
+    protected boolean usaSortCronologico;
     protected boolean usaSuddivisioneParagrafi;
     protected boolean usaOrdineAlfabeticoParagrafi;
     protected boolean usaBodySottopagine;
@@ -112,6 +117,7 @@ public abstract class ListaBio {
         usaHeadIncipit = false; //--normalmente false. Sovrascrivibile da preferenze
 
         // body
+        usaSortCronologico=false;
         usaSuddivisioneParagrafi = false;
         usaOrdineAlfabeticoParagrafi = false;
         usaBodySottopagine = true; //--normalmente true. Sovrascrivibile nelle sottoclassi
@@ -184,15 +190,14 @@ public abstract class ListaBio {
      */
     @SuppressWarnings("all")
     protected void elaboraMappaSingola(Bio bio) {
+        String key = getChiave(bio);
         String didascalia;
         ArrayList<Bio> lista;
-        String chiaveParagrafo;
         HashMap<String, Object> mappa;
         int voci;
 
-        chiaveParagrafo = getChiaveParagrafo(bio);
-        if (mappaBio.containsKey(chiaveParagrafo)) {
-            mappa = mappaBio.get(chiaveParagrafo);
+        if (mappaBio.containsKey(key)) {
+            mappa = mappaBio.get(key);
             lista = (ArrayList<Bio>) mappa.get(KEY_MAP_LISTA);
             voci = (int) mappa.get(KEY_MAP_VOCI);
             lista.add(bio);
@@ -201,12 +206,28 @@ public abstract class ListaBio {
             mappa = new HashMap<>();
             lista = new ArrayList<>();
             lista.add(bio);
-            mappa.put(KEY_MAP_TITOLO, chiaveParagrafo);
+            mappa.put(KEY_MAP_TITOLO, key);
             mappa.put(KEY_MAP_LINK, getTitoloParagrafo(bio));
             mappa.put(KEY_MAP_LISTA, lista);
             mappa.put(KEY_MAP_SESSO, bio.getSesso());
             mappa.put(KEY_MAP_VOCI, 1);
-            mappaBio.put(chiaveParagrafo, mappa);
+
+            if (usaSortCronologico) {
+                if (bio.getGiornoNatoPunta()!=null) {
+                    mappa.put(KEY_MAP_ORDINE_GIORNO_NATO, bio.getGiornoNatoPunta().getOrdinamento());
+                }// end of if cycle
+                if (bio.getGiornoMortoPunta()!=null) {
+                    mappa.put(KEY_MAP_ORDINE_GIORNO_MORTO, bio.getGiornoMortoPunta().getOrdinamento());
+                }// end of if cycle
+                if (bio.getAnnoNatoPunta()!=null) {
+                    mappa.put(KEY_MAP_ORDINE_ANNO_NATO, bio.getAnnoNatoPunta().getOrdinamento());
+                }// end of if cycle
+                if (bio.getAnnoMortoPunta()!=null) {
+                    mappa.put(KEY_MAP_ORDINE_ANNO_MORTO, bio.getAnnoMortoPunta().getOrdinamento());
+                }// end of if cycle
+            }// end of if cycle
+
+            mappaBio.put(key, mappa);
         }// end of if/else cycle
     }// fine del metodo
 
@@ -214,7 +235,7 @@ public abstract class ListaBio {
      * Costruisce la chiave del paragrafo
      * Sovrascritto
      */
-    protected String getChiaveParagrafo(Bio bio) {
+    protected String getChiave(Bio bio) {
         return "";
     }// fine del metodo
 
@@ -335,8 +356,8 @@ public abstract class ListaBio {
     }// fine del metodo
 
     /**
-     * La mappa delle biografie arriva ordinata secondo l'attività principale della voce
-     * Occorre spostare in basso il paragrafo vuot0
+     * La mappa delle biografie arriva non ordinata
+     * Occorre spostare in basso il paragrafo vuoto
      * Occorre raggruppare i paragrafi con lo stesso link visibile
      * Occorre riordinare in base al link visibile
      * Sovrascritto
@@ -600,52 +621,20 @@ public abstract class ListaBio {
     }// fine del metodo
 
     /**
-     * Raggruppa le didascalie
+     * Raggruppa le biografie
      */
     protected String righeRaggruppate() {
-        String text = CostBio.VUOTO;
-        ArrayList<String> lista;
-        String key;
-        HashMap<String, Object> mappa;
-
-        for (Map.Entry<String, HashMap> mappaTmp : mappaBio.entrySet()) {
-            lista = null;
-            key = mappaTmp.getKey();
-            mappa = (HashMap) mappaTmp.getValue();
-            if (mappa != null) {
-                lista = (ArrayList<String>) mappa.get(KEY_MAP_LISTA);
-            }// end of if cycle
-
-            if (lista != null && lista.size() == 1) {
-                text += CostBio.ASTERISCO;
-                if (!key.equals(CostBio.VUOTO)) {
-                    text += LibWiki.setQuadre(key);
-                    text += CostBio.TAG_SEPARATORE;
-                }// end of if cycle
-                text += lista.get(0);
-                text += CostBio.A_CAPO;
-            } else {
-                if (!key.equals(CostBio.VUOTO)) {
-                    text += CostBio.ASTERISCO;
-                    text += LibWiki.setQuadre(key);
-                    text += CostBio.A_CAPO;
-                }// end of if cycle
-                lista = (ArrayList) mappa.get(KEY_MAP_LISTA);
-                for (String didascalia : lista) {
-                    if (!key.equals(CostBio.VUOTO)) {
-                        text += CostBio.ASTERISCO;
-                    }// end of if cycle
-                    text += CostBio.ASTERISCO;
-                    text += didascalia;
-                    text += CostBio.A_CAPO;
-                }// end of for cycle
-            }// end of if/else cycle
-
-        }// end of for cycle
-
-        return text;
+        return CostBio.VUOTO;
     }// fine del metodo
 
+
+    /**
+     * Didascalia specifica della biografia
+     * Sovrascritto
+     */
+    protected String getDidascalia(Bio bio) {
+        return null;
+    }// fine del metodo
 
     /**
      * Nessun raggruppamento

@@ -183,27 +183,25 @@ public class Giorno extends BaseEntity {
 
 
     /**
-     * Recupera una lista (array) di records Bio che usano questa istanza di Giorno nella property cognomeValido
+     * Recupera una lista (array) di records Bio che usano questa istanza di Giorno nella property giornoNatoPunta
      * Uso un link al record di questa tavola, perché i records sono statici, creati una tantum
      *
      * @return lista delle istanze di Bio che usano questo istanza
      */
     @SuppressWarnings("all")
     public List<Bio> listaBioNati() {
-        SortProperty sorts = new SortProperty(Bio_.annoNatoPunta.getName(), Bio_.cognomeValido.getName());
         return (List<Bio>) AQuery.getList(Bio.class, Bio_.giornoNatoPunta, this);
     }// fine del metodo
 
     /**
-     * Recupera una lista (array) di records Bio che usano questa istanza di Giorno nella property cognomeValido
+     * Recupera una lista (array) di records Bio che usano questa istanza di Giorno nella property giornoMortoPunta
      * Uso un link al record di questa tavola, perché i records sono statici, creati una tantum
      *
      * @return lista delle istanze di Bio che usano questo istanza
      */
     @SuppressWarnings("all")
     public List<Bio> listaBioMorti() {
-        SortProperty sorts = new SortProperty(Bio_.annoMortoPunta.getName(), Bio_.cognomeValido.getName());
-        return (List<Bio>) AQuery.getList(Bio.class, Bio_.giornoMortoPunta, this, sorts);
+        return (List<Bio>) AQuery.getList(Bio.class, Bio_.giornoMortoPunta, this);
     }// fine del metodo
 
 

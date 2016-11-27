@@ -3,6 +3,7 @@ package it.algos.vaadbio.anno;
 import com.vaadin.data.Container;
 import com.vaadin.data.util.filter.Compare;
 import it.algos.vaadbio.bio.Bio;
+import it.algos.vaadbio.bio.Bio_;
 import it.algos.vaadbio.giorno.Giorno;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.secolo.Secolo;
@@ -145,6 +146,27 @@ public class Anno extends BaseEntity {
         return (ArrayList<Anno>) AQuery.getList(Anno.class);
     }// end of method
 
+    /**
+     * Recupera una lista (array) di records Bio che usano questa istanza di Anno nella property annoNatoPunta
+     * Uso un link al record di questa tavola, perché i records sono statici, creati una tantum
+     *
+     * @return lista delle istanze di Bio che usano questo istanza
+     */
+    @SuppressWarnings("all")
+    public List<Bio> listaBioNati() {
+        return (List<Bio>) AQuery.getList(Bio.class, Bio_.annoNatoPunta, this);
+    }// fine del metodo
+
+    /**
+     * Recupera una lista (array) di records Bio che usano questa istanza di Anno nella property annoMortoPunta
+     * Uso un link al record di questa tavola, perché i records sono statici, creati una tantum
+     *
+     * @return lista delle istanze di Bio che usano questo istanza
+     */
+    @SuppressWarnings("all")
+    public List<Bio> listaBioMorti() {
+        return (List<Bio>) AQuery.getList(Bio.class, Bio_.annoMortoPunta, this);
+    }// fine del metodo
 
     /**
      * Recupera una lista (array) di records Bio che usano questa istanza di Anno nella property annoNatoPunta

@@ -2,6 +2,11 @@ package it.algos.vaadbio.liste;
 
 import it.algos.vaadbio.giorno.Giorno;
 import it.algos.vaadbio.lib.CostBio;
+import it.algos.webbase.web.lib.LibArray;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 /**
  * Created by gac on 21 dic 2015.
@@ -13,12 +18,6 @@ public abstract class ListaGiorno extends ListaCrono {
 
 
     /**
-     * Costruttore senza parametri
-     */
-    public ListaGiorno() {
-    }// fine del costruttore
-
-    /**
      * Costruttore
      *
      * @param giorno di cui creare la lista
@@ -26,6 +25,7 @@ public abstract class ListaGiorno extends ListaCrono {
     public ListaGiorno(Giorno giorno) {
         super(giorno);
     }// fine del costruttore
+
 
 
     /**
@@ -40,7 +40,6 @@ public abstract class ListaGiorno extends ListaCrono {
             titoloPagina = giorno.getTitoloLista(getTagTitolo());
         }// fine del blocco if
     }// fine del metodo
-
 
 
     /**

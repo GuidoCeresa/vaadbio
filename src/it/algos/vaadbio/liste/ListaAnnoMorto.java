@@ -4,8 +4,10 @@ import it.algos.vaadbio.anno.Anno;
 import it.algos.vaadbio.bio.Bio;
 import it.algos.vaadbio.giorno.Giorno;
 import it.algos.vaadbio.lib.CostBio;
+import it.algos.vaadbio.lib.LibBio;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by gac on 26 dic 2015.
@@ -13,6 +15,7 @@ import java.util.ArrayList;
  * Crea la lista dei morti nell'anno e la carica sul server wiki
  */
 public class ListaAnnoMorto extends ListaAnno {
+
 
     /**
      * Costruttore
@@ -34,18 +37,29 @@ public class ListaAnnoMorto extends ListaAnno {
 
 
     /**
-     * Lista delle biografie che hanno una valore valido per il link specifico
+     * Costruisce una lista di biografie che hanno una valore valido per la pagina specifica
+     * Esegue una query
      * Sovrascritto
      */
-    protected ArrayList<Bio> getListaBio() {
-        ArrayList<Bio> listaBio = null;
-        Anno anno = super.getAnno();
+    protected void elaboraListaBiografie() {
+        Anno anno = this.getAnno();
 
         if (anno != null) {
-            listaBio = anno.bioMorti();
+            listaBio = anno.listaBioMorti();
         }// end of if cycle
+    }// fine del metodo
 
-        return listaBio;
+    /**
+     * Ordine progressivo del paragrafo (giorno oppure anno)
+     * Sovrascritto
+     */
+    @Override
+    protected int getOrdineCrono(HashMap<String, Object> mappa) {
+        if (mappa != null && mappa.get(KEY_MAP_ORDINE_GIORNO_MORTO) != null) {
+            return (int) (mappa.get(KEY_MAP_ORDINE_GIORNO_MORTO));
+        } else {
+            return 0;
+        }// end of if/else cycle
     }// fine del metodo
 
     /**
@@ -54,14 +68,7 @@ public class ListaAnnoMorto extends ListaAnno {
      */
     @Override
     protected String getChiave(Bio bio) {
-        String key = CostBio.VUOTO;
-        Giorno giorno = bio.getGiornoMortoPunta();
-
-        if (giorno != null) {
-            key = giorno.getTitolo();
-        }// end of if cycle
-
-        return key;
+        return LibBio.getChiavePerGiornoMorto(bio, tagParagrafoNullo);
     }// fine del metodo
 
 
