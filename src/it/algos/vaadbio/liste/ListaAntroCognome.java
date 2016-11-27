@@ -15,7 +15,7 @@ public class ListaAntroCognome extends ListaAntroponimo {
     /**
      * Costruttore senza parametri
      */
-    protected ListaAntroCognome() {
+    public ListaAntroCognome() {
     }// fine del costruttore
 
 
@@ -58,6 +58,7 @@ public class ListaAntroCognome extends ListaAntroponimo {
      * Esegue una query
      * Sovrascritto
      */
+    @Override
     protected void elaboraListaBiografie() {
         Cognome cognome = this.getCognome();
 

@@ -13,6 +13,12 @@ public abstract class ListaGiorno extends ListaCrono {
 
 
     /**
+     * Costruttore senza parametri
+     */
+    public ListaGiorno() {
+    }// fine del costruttore
+
+    /**
      * Costruttore
      *
      * @param giorno di cui creare la lista

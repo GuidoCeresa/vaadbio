@@ -99,27 +99,9 @@ public abstract class Esegue {
 
 
     /**
-     * Ciclo normale di aggiornamento ed upload dei nomi
-     * <p>
      * Esegue l'aggiornamento della lista dei nomi doppi
      */
-    public static void cicloNomi() {
-        long inizio = System.currentTimeMillis();
-
-        if (Pref.getBool(CostBio.USA_DAEMONS_NOMI, false)) {
-            aggiornaNomi();
-            elaboraNomi();
-            uploadNomi();
-            statisticheNomi();
-
-            Log.debug("nomi", "Nomi doppi, aggiunti ed elaborati i nomi, upload di tutti e statistiche in " + LibTime.difText(inizio));
-        }// end of if cycle
-    } // fine del metodo
-
-
-    /**
-     * Esegue l'aggiornamento della lista dei nomi doppi
-     */
+    @Deprecated
     public static void downloadNomiDoppi() {
         NomeService.listaNomiDoppi();
     }// end of method
@@ -128,6 +110,7 @@ public abstract class Esegue {
     /**
      * Esegue l'aggiornamento e la creazione dei nuovi records
      */
+    @Deprecated
     public static void aggiornaNomi() {
         NomeService.aggiorna();
     }// end of method
@@ -135,29 +118,11 @@ public abstract class Esegue {
     /**
      * Esegue l'elaborazione dei records esistenti
      */
+    @Deprecated
     public static void elaboraNomi() {
         NomeService.elabora();
     }// end of method
 
-
-    /**
-     * Upload nomi
-     */
-    public static void uploadNomi() {
-        new UploadNomi();
-    } // fine del metodo
-
-    /**
-     * Crea la pagina riepilogativa dei nomi
-     * Crea la pagina di riepilogo di tutti i nomi
-     * Crea la pagina di controllo didascalie
-     */
-    public static void statisticheNomi() {
-        new StatNomiPagine();
-        new StatNomiListe();
-
-//        creaPaginaDidascalie();
-    }// fine del metodo
 
 
     /**
@@ -203,26 +168,44 @@ public abstract class Esegue {
 
 
     //------------------------------------------------------------------------------------------------------------------------
+    // Nomi
+    //------------------------------------------------------------------------------------------------------------------------
+
+    /**
+     * Ciclo normale giornaliero di creazione dei records di nomi
+     * Ciclo normale giornaliero di upload delle liste di nomi
+     */
+    public static void cicloNomi() {
+        if (Pref.getBool(CostBio.USA_DAEMONS_NOMI, false)) {
+            NomeService.crea();
+            Esegue.uploadNomi();
+            Esegue.statisticheNomi();
+        }// end of if cycle
+    } // fine del metodo
+
+    /**
+     * Upload nomi
+     */
+    public static int uploadNomi() {
+        return new UploadNomi().getVociUplodate();
+    } // fine del metodo
+
+
+    /**
+     * Crea la pagina riepilogativa dei nomi
+     * Crea la pagina di riepilogo di tutti i nomi
+     */
+    public static void statisticheNomi() {
+        new StatNomiPagine();
+        new StatNomiListe();
+    }// fine del metodo
+//------------------------------------------------------------------------------------------------------------------------
     // Cognomi
     //------------------------------------------------------------------------------------------------------------------------
 
-//    /**
-//     * Ciclo normale settimanale di controllo e manutenzione dei cognomi
-//     */
-//    public static void cicloSettimanaleCognomi() {
-//        long inizio = System.currentTimeMillis();
-//
-//        if (Pref.getBool(CostBio.USA_DAEMONS_COGNOMI, false)) {
-//            Esegue.creaCognomi();
-////            Esegue.elaboraCognomi();
-////            Esegue.contaCognomi();
-//            Log.debug("cognomi", "Aggiunti ed elaborati i records dei cognopmi in " + LibTime.difText(inizio));
-//        }// end of if cycle
-//    } // fine del metodo
-
     /**
-     * Ciclo normale giornaliero di controllo e manutenzione dei cognomi
-     * Ciclo normale giornaliero di upload dei cognomi
+     * Ciclo normale giornaliero di creazione dei records di cognomi
+     * Ciclo normale giornaliero di upload delle liste di cognomi
      */
     public static void cicloCognomi() {
         if (Pref.getBool(CostBio.USA_DAEMONS_COGNOMI, false)) {
@@ -232,19 +215,6 @@ public abstract class Esegue {
         }// end of if cycle
     } // fine del metodo
 
-//    /**
-//     * Esegue l'aggiornamento e la creazione dei nuovi records
-//     */
-//    public static int creaCognomi() {
-//        int recordsCreati;
-//        long inizio = System.currentTimeMillis();
-//
-//        recordsCreati = CognomeService.crea();
-//        Log.debug("cognomi", "Creati " + LibNum.format(recordsCreati) + " records di cognomi in " + LibTime.difText(inizio));
-//
-//        return recordsCreati;
-//    }// end of method
-//
     /**
      * Upload nomi
      */

@@ -31,6 +31,7 @@ public abstract class ListaBio {
     protected final static String KEY_MAP_LINK = "keyMapLink";
     protected final static String KEY_MAP_SESSO = "keyMapSesso";
     protected final static String KEY_MAP_LISTA = "keyMapLista";
+    protected final static String KEY_MAP_VOCI = "keyMapVoci";
     protected String titoloPagina;
     protected List<Bio> listaBio;
     protected LinkedHashMap<String, HashMap> mappaBio = new LinkedHashMap<String, HashMap>();
@@ -187,11 +188,15 @@ public abstract class ListaBio {
         ArrayList<Bio> lista;
         String chiaveParagrafo;
         HashMap<String, Object> mappa;
+        int voci;
 
         chiaveParagrafo = getChiaveParagrafo(bio);
         if (mappaBio.containsKey(chiaveParagrafo)) {
-            lista = (ArrayList<Bio>) mappaBio.get(chiaveParagrafo).get(KEY_MAP_LISTA);
+            mappa = mappaBio.get(chiaveParagrafo);
+            lista = (ArrayList<Bio>) mappa.get(KEY_MAP_LISTA);
+            voci = (int) mappa.get(KEY_MAP_VOCI);
             lista.add(bio);
+            mappa.put(KEY_MAP_VOCI, voci + 1);
         } else {
             mappa = new HashMap<>();
             lista = new ArrayList<>();
@@ -200,6 +205,7 @@ public abstract class ListaBio {
             mappa.put(KEY_MAP_LINK, getTitoloParagrafo(bio));
             mappa.put(KEY_MAP_LISTA, lista);
             mappa.put(KEY_MAP_SESSO, bio.getSesso());
+            mappa.put(KEY_MAP_VOCI, 1);
             mappaBio.put(chiaveParagrafo, mappa);
         }// end of if/else cycle
     }// fine del metodo
@@ -532,7 +538,12 @@ public abstract class ListaBio {
             numVociParagrafo = lista.size();
 
 //            titoloParagrafo = costruisceTitolo(paginaLinkata, titoloVisibile);
-            text += LibWiki.setParagrafo(titoloParagrafo);
+            if (Pref.getBool(CostBio.USA_NUMERI_PARAGRAFO, false)) {
+                text += LibWiki.setParagrafo(titoloParagrafo, numVociParagrafo);
+            } else {
+                text += LibWiki.setParagrafo(titoloParagrafo);
+            }// end of if/else cycle
+
             text += CostBio.A_CAPO;
 
             if (usaSottopagine && numVociParagrafo > maxVociParagrafo) {

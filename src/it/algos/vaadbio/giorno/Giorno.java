@@ -4,10 +4,12 @@ import com.vaadin.data.Container;
 import com.vaadin.data.util.filter.Compare;
 import it.algos.vaadbio.anno.Anno;
 import it.algos.vaadbio.bio.Bio;
+import it.algos.vaadbio.bio.Bio_;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.mese.Mese;
 import it.algos.webbase.web.entity.BaseEntity;
 import it.algos.webbase.web.query.AQuery;
+import it.algos.webbase.web.query.SortProperty;
 import org.apache.commons.beanutils.BeanUtils;
 import org.eclipse.persistence.annotations.Index;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -178,6 +180,31 @@ public class Giorno extends BaseEntity {
 
         return testoOut;
     } // fine del metodo
+
+
+    /**
+     * Recupera una lista (array) di records Bio che usano questa istanza di Giorno nella property cognomeValido
+     * Uso un link al record di questa tavola, perché i records sono statici, creati una tantum
+     *
+     * @return lista delle istanze di Bio che usano questo istanza
+     */
+    @SuppressWarnings("all")
+    public List<Bio> listaBioNati() {
+        SortProperty sorts = new SortProperty(Bio_.annoNatoPunta.getName(), Bio_.cognomeValido.getName());
+        return (List<Bio>) AQuery.getList(Bio.class, Bio_.giornoNatoPunta, this);
+    }// fine del metodo
+
+    /**
+     * Recupera una lista (array) di records Bio che usano questa istanza di Giorno nella property cognomeValido
+     * Uso un link al record di questa tavola, perché i records sono statici, creati una tantum
+     *
+     * @return lista delle istanze di Bio che usano questo istanza
+     */
+    @SuppressWarnings("all")
+    public List<Bio> listaBioMorti() {
+        SortProperty sorts = new SortProperty(Bio_.annoMortoPunta.getName(), Bio_.cognomeValido.getName());
+        return (List<Bio>) AQuery.getList(Bio.class, Bio_.giornoMortoPunta, this, sorts);
+    }// fine del metodo
 
 
     /**

@@ -112,15 +112,14 @@ public class NomeMod extends ModulePop {
     public void addSottoMenu(MenuBar.MenuItem menuItem) {
         addCommandCrea(menuItem);
         addCommandDownloadDoppi(menuItem);
-        addCommandAggiunge(menuItem);
-        addCommandElabora(menuItem);
+        addCommandCiclo(menuItem);
+        addCommandUploadAll(menuItem);
         addCommandUpload(menuItem);
-        addCommandStatistiche(menuItem);
-        addCommandTestIncipit(menuItem);
+        addCommandStatistichel(menuItem);
     }// end of method
 
     /**
-     * Comando bottone/item crea e/o aggiunge nuovi cognomi individuati nei records di Bio
+     * Comando bottone/item cancella e ricrea tutti i cognomi individuati nei records di Bio
      *
      * @param menuItem a cui agganciare il bottone/item
      */
@@ -140,132 +139,65 @@ public class NomeMod extends ModulePop {
     private void addCommandDownloadDoppi(MenuBar.MenuItem menuItem) {
         menuItem.addItem("Nomi doppi", FontAwesome.BEER, new MenuBar.Command() {
             public void menuSelected(MenuBar.MenuItem selectedItem) {
-                esegueDownloadDoppi();
+                Esegue.downloadNomiDoppi();
             }// end of method
         });// end of anonymous class
     }// end of method
 
 
     /**
-     * Comando bottone/item aggiounge nuovi nomi individuati nei records di Bio
+     * Comando bottone/item ciclo completo: crea + upload + statistiche
      *
      * @param menuItem a cui agganciare il bottone/item
      */
-    private void addCommandAggiunge(MenuBar.MenuItem menuItem) {
-        menuItem.addItem("Aggiorna", FontAwesome.BEER, new MenuBar.Command() {
+    private void addCommandCiclo(MenuBar.MenuItem menuItem) {
+        menuItem.addItem("Ciclo", FontAwesome.BEER, new MenuBar.Command() {
             public void menuSelected(MenuBar.MenuItem selectedItem) {
-                esegueAggiorna();
+                Esegue.cicloNomi();
             }// end of method
         });// end of anonymous class
     }// end of method
 
     /**
-     * Comando bottone/item elabora i records esistenti
+     * Comando bottone/item upload di tutte le liste dei cognomi sul server wiki
      *
      * @param menuItem a cui agganciare il bottone/item
      */
-    private void addCommandElabora(MenuBar.MenuItem menuItem) {
-        menuItem.addItem("Elabora", FontAwesome.BEER, new MenuBar.Command() {
+    private void addCommandUploadAll(MenuBar.MenuItem menuItem) {
+        menuItem.addItem("Upload all", FontAwesome.COG, new MenuBar.Command() {
             public void menuSelected(MenuBar.MenuItem selectedItem) {
-                esegueElabora();
+                Esegue.uploadNomi();
             }// end of method
         });// end of anonymous class
     }// end of method
 
     /**
-     * Comando bottone/item Upload
+     * Comando bottone/item upload di una singola con la lista di un cognome sul server wiki
      *
      * @param menuItem a cui agganciare il bottone/item
      */
     private void addCommandUpload(MenuBar.MenuItem menuItem) {
-        menuItem.addItem("Upload all", FontAwesome.COG, new MenuBar.Command() {
+        menuItem.addItem("Upload", FontAwesome.COG, new MenuBar.Command() {
             public void menuSelected(MenuBar.MenuItem selectedItem) {
-                esegueUploadAll();
+                esegueUpload();
             }// end of method
         });// end of anonymous class
     }// end of method
 
     /**
-     * Comando bottone/item Statistiche
+     * Comando bottone/item crea sul server wikii le due pagine di statistiche sui cognomi
      *
      * @param menuItem a cui agganciare il bottone/item
      */
-    private void addCommandStatistiche(MenuBar.MenuItem menuItem) {
+    private void addCommandStatistichel(MenuBar.MenuItem menuItem) {
         menuItem.addItem("Statistiche", FontAwesome.COG, new MenuBar.Command() {
             public void menuSelected(MenuBar.MenuItem selectedItem) {
-                esegueStatistiche();
-            }// end of method
-        });// end of anonymous class
-    }// end of method
-
-    /**
-     * Comando bottone/item Test Incipit
-     *
-     * @param menuItem a cui agganciare il bottone/item
-     */
-    private void addCommandTestIncipit(MenuBar.MenuItem menuItem) {
-        menuItem.addItem("Test", FontAwesome.COG, new MenuBar.Command() {
-            public void menuSelected(MenuBar.MenuItem selectedItem) {
-                esegueTestIncipit();
+                Esegue.statisticheNomi();
             }// end of method
         });// end of anonymous class
     }// end of method
 
 
-    /**
-     * Esegue l'aggiornamento della lista dei nomi doppi
-     */
-    protected void esegueDownloadDoppi() {
-        Esegue.downloadNomiDoppi();
-    }// end of method
-
-
-    /**
-     * Esegue l'aggiunta dei nuovi records
-     */
-    protected void esegueAggiorna() {
-        Esegue.aggiornaNomi();
-    }// end of method
-
-    /**
-     * Esegue l'elaborazione dei records esistenti
-     */
-    protected void esegueElabora() {
-        Esegue.elaboraNomi();
-    }// end of method
-
-    /**
-     * Esegue l'upload di tutti i record
-     */
-    protected void esegueUploadAll() {
-        Esegue.uploadNomi();
-    }// end of method
-
-    /**
-     * Crea le pagine delle statistiche (3)
-     */
-    protected void esegueStatistiche() {
-        Esegue.statisticheNomi();
-    }// end of method
-
-    /**
-     * Crea la pagina di test per l'incipit
-     */
-    protected void esegueTestIncipit() {
-        ArrayList<Bio> lista = Bio.findAll();
-        int k = 0;
-
-        for (Bio bio : lista) {
-            if (!bio.getAttivita().equals(CostBio.VUOTO)) {
-                k++;
-                if (bio.getAttivita().equals(bio.getAttivita2())) {
-                    int a = 87;
-                }// end of if cycle
-            }// end of if cycle
-        }// end of for cycle
-
-
-    }// end of method
 
     /**
      * Esegue l'upload di un singolo nome
@@ -280,7 +212,6 @@ public class NomeMod extends ModulePop {
         }// end of if/else cycle
 
     }// end of method
-
 
     /**
      * Recupera la voce selezionata

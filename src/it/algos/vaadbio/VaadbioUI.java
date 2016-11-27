@@ -1,14 +1,13 @@
 package it.algos.vaadbio;
 
 import com.vaadin.annotations.Theme;
-import com.vaadin.server.Resource;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.MenuBar;
 import com.vaadin.ui.Notification;
 import it.algos.vaad.wiki.WikiLogin;
 import it.algos.vaadbio.anno.AnnoMod;
 import it.algos.vaadbio.attivita.AttivitaMod;
+import it.algos.vaadbio.bio.Bio;
 import it.algos.vaadbio.bio.BioMod;
 import it.algos.vaadbio.biologo.BioLogoMod;
 import it.algos.vaadbio.cognome.CognomeMod;
@@ -24,13 +23,12 @@ import it.algos.webbase.web.entity.EM;
 import it.algos.webbase.web.lib.LibSession;
 import it.algos.webbase.web.login.Login;
 import it.algos.webbase.web.login.LoginEvent;
-import it.algos.webbase.web.module.ModulePop;
+import it.algos.webbase.web.query.AQuery;
 import it.algos.webbase.web.ui.AlgosUI;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import java.util.List;
-import java.util.Vector;
 
 /**
  * Crea l'interfaccia utente (User Interface) iniziale dell'applicazione

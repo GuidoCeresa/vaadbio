@@ -2,12 +2,16 @@ package it.algos.vaadbio.nome;
 
 import it.algos.vaad.wiki.Api;
 import it.algos.vaad.wiki.LibWiki;
+import it.algos.vaadbio.bio.Bio;
+import it.algos.vaadbio.bio.Bio_;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.lib.LibBio;
+import it.algos.webbase.domain.log.Log;
 import it.algos.webbase.domain.pref.Pref;
 import it.algos.webbase.web.entity.EM;
 import it.algos.webbase.web.lib.LibArray;
 import it.algos.webbase.web.lib.LibText;
+import it.algos.webbase.web.lib.LibTime;
 import it.algos.webbase.web.query.AQuery;
 
 import javax.persistence.EntityManager;
@@ -64,6 +68,7 @@ public abstract class NomeService {
     private static String[] TAG_ALL_NOMI_CINESI = {"Zhang"};
     private static String[] TAG_ALL_COGNOMI = {"d'Asburgo", "d'Asburgo-Lorena", "d'Este", "da Silva", "di Borbone", "O'Brien", "Knight"};
 
+
     /**
      * costruisce i records
      */
@@ -101,7 +106,7 @@ public abstract class NomeService {
      * Cancella i records esistenti
      */
     private static void cancellaNomi(EntityManager manager) {
-        AQuery.delete(Nome.class,manager);
+        AQuery.delete(Nome.class, manager);
     }// fine del metodo
 
     /**
@@ -111,27 +116,35 @@ public abstract class NomeService {
      * Registra il record
      */
     private static int creaAllNomiUnici(EntityManager manager) {
-        int numCognomiRegistrati = 0;
+        int numNomiiRegistrati = 0;
         Vector vettore;
         Object[] obj;
         int taglio = Pref.getInt(CostBio.TAGLIO_NOMI_ELENCO, 20);
         String nomeTxt = "";
         long numVociBio = 0;
 
+        long inizio = System.currentTimeMillis();
         vettore = Nome.findMappa(manager);
 
         for (int k = 0; k < vettore.size(); k++) {
             obj = (Object[]) vettore.get(k);
             nomeTxt = (String) obj[0];
+
+            if (nomeTxt.equals("Brandon")) {
+                int a = 87;
+            }// end of if cycle
+
             numVociBio = (long) obj[1];
             if (numVociBio > taglio) {
-                if (creaSingolo(nomeTxt, (int) numVociBio, manager)) {
-                    numCognomiRegistrati++;
+                if (creaSingolo(nomeTxt, numVociBio, manager)) {
+                    numNomiiRegistrati++;
                 }// end of if cycle
             }// end of if cycle
-        }// endof for cycle
 
-        return numCognomiRegistrati;
+        }// endof for cycle
+        Log.info("Nomi", "Create le pagine dei nomi in " + LibTime.difText(inizio));
+
+        return numNomiiRegistrati;
     }// fine del metodo
 
 
@@ -140,16 +153,29 @@ public abstract class NomeService {
      * Calcola il numero di voci Bio esistenti per il cognome
      * Se supera il taglio TAGLIO_COGNOMI_ELENCO, registra il record
      */
-    private static boolean creaSingolo(String nomeTxt, int numVociBio, EntityManager manager) {
+    private static boolean creaSingolo(String nomeTxt, long numVociBioTmp, EntityManager manager) {
         boolean registrato = false;
+        long numVociBio = 0;
+        int taglio = Pref.getInt(CostBio.TAGLIO_NOMI_ELENCO, 20);
 
         nomeTxt = check(nomeTxt);
         if (nomeTxt.equals(CostBio.VUOTO)) {
             return false;
         }// end of if cycle
 
+        // ricontrolla il numero di voci
+        if (Pref.getBool(CostBio.USA_RICONTEGGIO_NOMI, false)) {
+            numVociBio = AQuery.count(Bio.class, Bio_.nomeValido, nomeTxt, manager);
+        } else {
+            numVociBio = numVociBioTmp;
+        }// end of if/else cycle
+
+        if (numVociBio < taglio) {
+            return false;
+        }// end of if cycle
+
         try { // prova ad eseguire il codice
-            Nome.crea(nomeTxt, numVociBio, manager);
+            Nome.crea(nomeTxt, (int) numVociBio, manager);
             registrato = true;
         } catch (Exception unErrore) { // intercetta l'errore
         }// fine del blocco try-catch
@@ -290,9 +316,9 @@ public abstract class NomeService {
 
         if (nome == null) {
             nome = new Nome(nomeTxt);
-            nome.setPrincipale(true);
-            nome.setNomeDoppio(nomeDoppio);
-            nome.setRiferimento(nome);
+//            nome.setPrincipale(true);
+//            nome.setNomeDoppio(nomeDoppio);
+//            nome.setRiferimento(nome);
             nome.save();
         }// end of if cycle
 
@@ -389,9 +415,9 @@ public abstract class NomeService {
             //--terza regola
             nomeEsistente = Nome.getEntityByNome(nomeIn.trim());
             if (nomeEsistente != null) {
-                if (nomeEsistente.isNomeDoppio()) {
-                    nomeOut = nomeEsistente.getNome();
-                }// end of if cycle
+//                if (nomeEsistente.isNomeDoppio()) {
+//                    nomeOut = nomeEsistente.getNome();
+//                }// end of if cycle
             } else {
             }// end of if/else cycle
         }// fine del blocco if

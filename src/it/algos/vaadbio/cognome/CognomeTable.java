@@ -26,6 +26,7 @@ public class CognomeTable extends ModuleTable {
     private final static String POCHE = "Ci sono troppe poche voci biografiche che usano questo cognome";
     private static boolean checkLista = false;
 
+
     public CognomeTable(ModulePop modulo) {
         super(modulo);
     }// end of constructor

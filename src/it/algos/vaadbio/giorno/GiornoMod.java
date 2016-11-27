@@ -3,12 +3,15 @@ package it.algos.vaadbio.giorno;
 
 import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.Notification;
-import it.algos.vaadbio.annogiorno.AnnoGiornoMod;
+import it.algos.vaadbio.cognome.CognomeTablePortal;
+import it.algos.vaadbio.crono.AnnoGiornoMod;
+import it.algos.vaadbio.crono.CronoTablePortal;
 import it.algos.vaadbio.esegue.Esegue;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.liste.ListaGiornoMorto;
 import it.algos.vaadbio.liste.ListaGiornoNato;
 import it.algos.webbase.web.table.ATable;
+import it.algos.webbase.web.table.TablePortal;
 
 /**
  * Gestione (minimale) del modulo
@@ -32,6 +35,27 @@ public class GiornoMod extends AnnoGiornoMod {
     public GiornoMod() {
         super(Giorno.class, MENU_ADDRESS, FontAwesome.LIST_UL);
     }// end of constructor
+
+
+    /**
+     * Returns the table used to shows the list. <br>
+     * The concrete subclass must override for a specific Table.
+     *
+     * @return the Table
+     */
+    public ATable createTable() {
+        return new GiornoTable(this);
+    }// end of method
+
+    /**
+     * Create the Table Portal
+     *
+     * @return the TablePortal
+     */
+    @Override
+    public TablePortal createTablePortal() {
+        return new GiornoTablePortal(this);
+    }// end of method
 
 
     /**

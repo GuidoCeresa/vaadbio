@@ -5,6 +5,7 @@ import com.vaadin.data.Container;
 import com.vaadin.data.util.filter.Compare;
 import it.algos.vaadbio.attivita.Attivita;
 import it.algos.vaadbio.bio.Bio;
+import it.algos.vaadbio.bio.Bio_;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.lib.LibBio;
 import it.algos.webbase.domain.pref.Pref;
@@ -36,25 +37,25 @@ public class Nome extends BaseEntity {
     @Index()
     private String nome = "";
 
-    /**
-     * Di norma gli accenti vengono rispettati. Pertanto: María, Marià, Maria, Mária, Marìa, Mariâ sono nomi diversi
-     * Volendo (con un flag) possono essere considerati lo stesso nome.
-     * In questo caso (stesso nome), il parametro principale diventa false ed il parametro riferimento punta a Maria (senza accento)
-     */
-    @Index()
-    private boolean principale;
-
-    /**
-     * Di norma (con un flag) i nomi doppi vengono troncati
-     * Forzando questo parametro questo nome viene mantenuto com'è anche se doppio
-     */
-    @Index()
-    private boolean nomeDoppio;
-
-
-    @ManyToOne
-    @CascadeOnDelete
-    private Nome riferimento;
+//    /**
+//     * Di norma gli accenti vengono rispettati. Pertanto: María, Marià, Maria, Mária, Marìa, Mariâ sono nomi diversi
+//     * Volendo (con un flag) possono essere considerati lo stesso nome.
+//     * In questo caso (stesso nome), il parametro principale diventa false ed il parametro riferimento punta a Maria (senza accento)
+//     */
+//    @Index()
+//    private boolean principale;
+//
+//    /**
+//     * Di norma (con un flag) i nomi doppi vengono troncati
+//     * Forzando questo parametro questo nome viene mantenuto com'è anche se doppio
+//     */
+//    @Index()
+//    private boolean nomeDoppio;
+//
+//
+//    @ManyToOne
+//    @CascadeOnDelete
+//    private Nome riferimento;
 
 
     @Index()
@@ -88,9 +89,9 @@ public class Nome extends BaseEntity {
     public Nome(String nome, boolean principale, boolean nomeDoppio, Nome riferimento) {
         super();
         this.setNome(nome);
-        this.setPrincipale(principale);
-        this.setNomeDoppio(nomeDoppio);
-        this.setRiferimento(riferimento);
+//        this.setPrincipale(principale);
+//        this.setNomeDoppio(nomeDoppio);
+//        this.setRiferimento(riferimento);
     }// end of full constructor
 
     /**
@@ -104,9 +105,9 @@ public class Nome extends BaseEntity {
     public Nome(String nome, boolean principale, boolean nomeDoppio, Nome riferimento, int voci) {
         super();
         this.setNome(nome);
-        this.setPrincipale(principale);
-        this.setNomeDoppio(nomeDoppio);
-        this.setRiferimento(riferimento);
+//        this.setPrincipale(principale);
+//        this.setNomeDoppio(nomeDoppio);
+//        this.setRiferimento(riferimento);
         this.setVoci(voci);
     }// end of full constructor
 
@@ -184,7 +185,7 @@ public class Nome extends BaseEntity {
             instance = new Nome(nome, principale, nomeDoppio, riferimento);
             instance.save();
             if (riferimento == null) {
-                instance.setRiferimento(instance);
+//                instance.setRiferimento(instance);
                 instance.save();
             }// end of if cycle
         }// end of if cycle
@@ -277,6 +278,21 @@ public class Nome extends BaseEntity {
     }// end of method
 
     /**
+     * Recupera una lista (array) parziale dei records
+     *
+     * @return lista di alcune istanze di Nome
+     */
+    @SuppressWarnings("unchecked")
+    public static List<Nome> getListSuperaTaglioPagina() {
+        int taglio = Pref.getInt(CostBio.TAGLIO_NOMI_PAGINA, 50);
+        return (List<Nome>) AQuery.getList(Nome.class, new SortProperty(Nome_.nome), getFiltroVoci(taglio));
+    }// end of method
+
+    public static Container.Filter getFiltroVoci(int maxVoci) {
+        return new Compare.GreaterOrEqual(Nome_.voci.getName(), maxVoci);
+    }// end of method
+
+    /**
      * Recupera una mappa con occorrenze dei records che rispettano il criterio
      *
      * @return mappa di alcune istanze di Nome
@@ -304,7 +320,7 @@ public class Nome extends BaseEntity {
     public static Vector findMappa(EntityManager manager) {
         Vector vettore = null;
         Query query;
-        String queryTxt = "select bio.nome,count(bio.nome) from Bio bio group by bio.nome order by bio.nome";
+        String queryTxt = "select bio.nomeValido,count(bio.nomeValido) from Bio bio group by bio.nomeValido order by bio.nomeValido";
 
         try { // prova ad eseguire il codice
             query = manager.createQuery(queryTxt);
@@ -347,7 +363,7 @@ public class Nome extends BaseEntity {
      * nella tavola Bio
      */
     public boolean delete() {
-        ArrayList<Bio> lista = this.listaBio();
+        List<Bio> lista = this.listaBio();
 
         for (Bio bio : lista) {
             bio.setNomePunta(null);
@@ -370,29 +386,29 @@ public class Nome extends BaseEntity {
         this.nome = nome;
     }//end of setter method
 
-    public boolean isPrincipale() {
-        return principale;
-    }// end of getter method
-
-    public void setPrincipale(boolean principale) {
-        this.principale = principale;
-    }//end of setter method
-
-    public boolean isNomeDoppio() {
-        return nomeDoppio;
-    }// end of getter method
-
-    public void setNomeDoppio(boolean nomeDoppio) {
-        this.nomeDoppio = nomeDoppio;
-    }//end of setter method
-
-    public Nome getRiferimento() {
-        return riferimento;
-    }// end of getter method
-
-    public void setRiferimento(Nome riferimento) {
-        this.riferimento = riferimento;
-    }//end of setter method
+//    public boolean isPrincipale() {
+//        return principale;
+//    }// end of getter method
+//
+//    public void setPrincipale(boolean principale) {
+//        this.principale = principale;
+//    }//end of setter method
+//
+//    public boolean isNomeDoppio() {
+//        return nomeDoppio;
+//    }// end of getter method
+//
+//    public void setNomeDoppio(boolean nomeDoppio) {
+//        this.nomeDoppio = nomeDoppio;
+//    }//end of setter method
+//
+//    public Nome getRiferimento() {
+//        return riferimento;
+//    }// end of getter method
+//
+//    public void setRiferimento(Nome riferimento) {
+//        this.riferimento = riferimento;
+//    }//end of setter method
 
     public int getVoci() {
         return voci;
@@ -411,43 +427,43 @@ public class Nome extends BaseEntity {
         return new Compare.Equal("nomePunta.id", getId());
     }// fine del metodo
 
-    /**
-     * Recupera una lista (array) di records Bio che usano questa istanza di Nome nella property nomePunta
-     *
-     * @return lista delle istanze di Bio che usano questo nome
-     */
-    @SuppressWarnings("all")
-    public ArrayList<Bio> listaBio() {
-        ArrayList<Bio> lista = null;
-        List entities = AQuery.getList(Bio.class, this.getFiltroNome());
-
-        Comparator comp = new Comparator() {
-            @Override
-            public int compare(Object objA, Object objB) {
-                String attivitaA = "";
-                String attivitaB = "";
-                Bio bioA = (Bio) objA;
-                Bio bioB = (Bio) objB;
-                Attivita objAttivitaA = bioA.getAttivitaPunta();
-                Attivita objAttivitaB = bioB.getAttivitaPunta();
-                if (objAttivitaA != null) {
-                    attivitaA = objAttivitaA.getPlurale();
-                }// end of if cycle
-                if (objAttivitaB != null) {
-                    attivitaB = objAttivitaB.getPlurale();
-                }// end of if cycle
-
-                return attivitaA.compareTo(attivitaB);
-            }// end of inner method
-        };// end of anonymous inner class
-        entities.sort(comp);
-
-        if (entities != null) {
-            lista = new ArrayList<>(entities);
-        }// end of if cycle
-
-        return lista;
-    }// fine del metodo
+//    /**
+//     * Recupera una lista (array) di records Bio che usano questa istanza di Nome nella property nomePunta
+//     *
+//     * @return lista delle istanze di Bio che usano questo nome
+//     */
+//    @SuppressWarnings("all")
+//    public ArrayList<Bio> listaBio() {
+//        ArrayList<Bio> lista = null;
+//        List entities = AQuery.getList(Bio.class, this.getFiltroNome());
+//
+//        Comparator comp = new Comparator() {
+//            @Override
+//            public int compare(Object objA, Object objB) {
+//                String attivitaA = "";
+//                String attivitaB = "";
+//                Bio bioA = (Bio) objA;
+//                Bio bioB = (Bio) objB;
+//                Attivita objAttivitaA = bioA.getAttivitaPunta();
+//                Attivita objAttivitaB = bioB.getAttivitaPunta();
+//                if (objAttivitaA != null) {
+//                    attivitaA = objAttivitaA.getPlurale();
+//                }// end of if cycle
+//                if (objAttivitaB != null) {
+//                    attivitaB = objAttivitaB.getPlurale();
+//                }// end of if cycle
+//
+//                return attivitaA.compareTo(attivitaB);
+//            }// end of inner method
+//        };// end of anonymous inner class
+//        entities.sort(comp);
+//
+//        if (entities != null) {
+//            lista = new ArrayList<>(entities);
+//        }// end of if cycle
+//
+//        return lista;
+//    }// fine del metodo
 
     /**
      * Recupera il numero di records Bio che usano questa istanza di Nome nella property nomePunta
@@ -507,6 +523,19 @@ public class Nome extends BaseEntity {
         }// end of if cycle
 
         return status;
+    }// fine del metodo
+
+
+    /**
+     * Recupera una lista (array) di records Bio che usano questa istanza di Nome nella property nomeValido
+     * Non uso un link al record di questa tavola, perché viene ricreata ogno volta (numero di records ed ids variabili)
+     *
+     * @return lista delle istanze di Bio che usano questo istanza
+     */
+    @SuppressWarnings("all")
+    public List<Bio> listaBio() {
+        SortProperty sorts = new SortProperty(Bio_.attivitaValida.getName(), Bio_.cognomeValido.getName(), Bio_.nomeValido.getName());
+        return (List<Bio>) AQuery.getList(Bio.class, Bio_.nomeValido, getNome(), sorts);
     }// fine del metodo
 
 }// end of entity class

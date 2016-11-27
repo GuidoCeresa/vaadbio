@@ -105,11 +105,11 @@ public class Cognome extends BaseEntity {
     /**
      * Recupera una lista (array) parziale dei records
      *
-     * @return lista di alcune istanze di Nome
+     * @return lista di alcune istanze
      */
     @SuppressWarnings("unchecked")
     public static List<Cognome> getListSuperaTaglioPagina() {
-        int taglio = Pref.getInt(CostBio.TAGLIO_NOMI_PAGINA, 50);
+        int taglio = Pref.getInt(CostBio.TAGLIO_COGNOMI_PAGINA, 50);
         return (List<Cognome>) AQuery.getList(Cognome.class, new SortProperty(Cognome_.cognome), getFiltroVoci(taglio));
     }// end of method
 
@@ -270,16 +270,15 @@ public class Cognome extends BaseEntity {
 
 
     /**
-     * Recupera una lista (array) di records Bio che usano questa istanza di Cognome nella property cognomePunta
+     * Recupera una lista (array) di records Bio che usano questa istanza di Cognome nella property cognomeValido
+     * Non uso un link al record di questa tavola, perché viene ricreata ogno volta (numero di records ed ids variabili)
      *
-     * @return lista delle istanze di Bio che usano questo cognome
+     * @return lista delle istanze di Bio che usano questo istanza
      */
     @SuppressWarnings("all")
     public List<Bio> listaBio() {
-        Container.Filter filter = new Compare.Equal("cognome", getCognome());//todo provvisorio
-        SortProperty sorts = new SortProperty(Bio_.attivita.getName(), Bio_.cognomeValido.getName(), Bio_.nomeValido.getName());
-
-        return (List<Bio>) AQuery.getList(Bio.class, sorts, filter);
+        SortProperty sorts = new SortProperty(Bio_.attivitaValida.getName(), Bio_.cognomeValido.getName(), Bio_.nomeValido.getName());
+        return (List<Bio>) AQuery.getList(Bio.class, Bio_.cognomeValido, getCognome(), sorts);
     }// fine del metodo
 
     /**

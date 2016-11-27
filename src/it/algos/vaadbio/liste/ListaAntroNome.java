@@ -58,6 +58,7 @@ public class ListaAntroNome extends ListaAntroponimo {
      * Esegue una query
      * Sovrascritto
      */
+    @Override
     protected void elaboraListaBiografie() {
         Nome nome = this.getNome();
 

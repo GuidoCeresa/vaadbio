@@ -9,6 +9,7 @@ import it.algos.webbase.web.lib.LibNum;
 import it.algos.webbase.web.lib.LibTime;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Esegue un ciclo di creazione (UPLOAD) delle liste di nomi
@@ -18,6 +19,8 @@ import java.util.ArrayList;
  * Il ciclo necessita del login come bot
  */
 public class UploadNomi {
+
+    private int vociUplodate = 0;
 
     /**
      * Costruttore completo
@@ -30,7 +33,7 @@ public class UploadNomi {
     //--Esegue un ciclo di creazione (UPLOAD) delle liste di nomi
     private void doInit() {
         long inizio = System.currentTimeMillis();
-        ArrayList<Nome> listaNomi = Nome.findAllSuperaTaglioPagina();
+        List<Nome> listaNomi = Nome.getListSuperaTaglioPagina();
         int mod = 0;
         String modTxt;
 
@@ -49,5 +52,13 @@ public class UploadNomi {
             }// end of if/else cycle
         }// end of if cycle
     }// end of method
+
+    public int getVociUplodate() {
+        return vociUplodate;
+    }// end of getter method
+
+    public void setVociUplodate(int vociUplodate) {
+        this.vociUplodate = vociUplodate;
+    }//end of setter method
 
 }// fine della classe

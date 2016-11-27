@@ -69,6 +69,7 @@ public abstract class CostBio {
     public final static String USA_BODY_RIGHE_MULTIPLE_CRONO = "usaBodyRigheMultipleCrono";
     public final static String USA_REGISTRA_SEMPRE_CRONO = "salvaSempreCrono";
     public final static String MAX_VOCI_PARAGRAFO = "maxVociParagrafo";
+    public final static String USA_NUMERI_PARAGRAFO = "usaNumeriParagrafo";
 
     // persone - nomi
     public final static String USA_NOME_SINGOLO = "usaNomeSingolo";
@@ -79,6 +80,7 @@ public abstract class CostBio {
     public final static String USA_CASE_UGUALI = "usaCaseUguali";
     public final static String USA_FOOTER_PORTALE_NOMI = "usaFooterPortaleNomi";
     public final static String USA_FOOTER_CATEGORIE_NOMI = "usaFooterCategorieNomi";
+    public final static String USA_RICONTEGGIO_NOMI = "usaRiconteggioNomi";
 
     //--taglio per registrare il record e creare la riga nella lista statistica --tipico 20
     public final static String TAGLIO_COGNOMI_ELENCO = "taglioCognomiElenco";

@@ -1,4 +1,4 @@
-package it.algos.vaadbio.antro;
+package it.algos.vaadbio.crono;
 
 import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Resource;
@@ -12,24 +12,21 @@ import it.algos.webbase.web.toolbar.TableToolbar;
  * Disabilita i bottoni Nuovo e Cancella
  * Aggiunge due bottoni per linkare le pagine di wikipedia
  */
-public abstract class AntroTablePortal extends TablePortal {
+public abstract class CronoTablePortal extends TablePortal {
 
 
     private final static Resource ICON_MOVE_UP = FontAwesome.FILE_TEXT;
     private final static String WIKI_BASE = "https://it.wikipedia.org/";
     private final static String WIKI_URL = WIKI_BASE + "wiki/";
-    private final static String WIKI_ANTRO = WIKI_URL + "Progetto:Antroponimi/";
+    private final static String WIKI_ANTRO = WIKI_URL + "Progetto:Biografie/";
 
-    protected  String cmdPagina;
-    protected  String cmdLista;
-
-    protected  String linkPagina;
-    protected  String linkLista;
+    protected String cmdPagina;
+    protected String linkPagina;
 
     /**
      * Costruttore base
      */
-    public AntroTablePortal(ModulePop modulo) {
+    public CronoTablePortal(ModulePop modulo) {
         super(modulo);
     }// end of constructor
 
@@ -59,12 +56,6 @@ public abstract class AntroTablePortal extends TablePortal {
         toolbar.addButton(cmdPagina, ICON_MOVE_UP, new MenuBar.Command() {
             public void menuSelected(MenuBar.MenuItem selectedItem) {
                 getUI().getPage().open(WIKI_ANTRO + linkPagina, "_blank");
-            }// end of inner method
-        });// end of anonymous inner class
-
-        toolbar.addButton(cmdLista, ICON_MOVE_UP, new MenuBar.Command() {
-            public void menuSelected(MenuBar.MenuItem selectedItem) {
-                getUI().getPage().open(WIKI_ANTRO + linkLista, "_blank");
             }// end of inner method
         });// end of anonymous inner class
     }// end of method

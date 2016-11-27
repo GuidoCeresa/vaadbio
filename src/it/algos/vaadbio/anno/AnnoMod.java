@@ -3,7 +3,7 @@ package it.algos.vaadbio.anno;
 
 import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.Notification;
-import it.algos.vaadbio.annogiorno.AnnoGiornoMod;
+import it.algos.vaadbio.crono.AnnoGiornoMod;
 import it.algos.vaadbio.esegue.Esegue;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.liste.ListaAnnoMorto;

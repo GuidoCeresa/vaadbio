@@ -106,7 +106,7 @@ public class CognomeMod extends ModulePop {
     }// end of method
 
     /**
-     * Comando bottone/item crea e/o aggiunge nuovi cognomi individuati nei records di Bio
+     * Comando bottone/item cancella e ricrea tutti i cognomi individuati nei records di Bio
      *
      * @param menuItem a cui agganciare il bottone/item
      */
@@ -132,7 +132,7 @@ public class CognomeMod extends ModulePop {
     }// end of method
 
     /**
-     * Comando bottone/item crea tutte le pagine delle liste sul servere wiki
+     * Comando bottone/item upload di tutte le liste dei cognomi sul server wiki
      *
      * @param menuItem a cui agganciare il bottone/item
      */
@@ -145,7 +145,7 @@ public class CognomeMod extends ModulePop {
     }// end of method
 
     /**
-     * Comando bottone/item crea una pagina con la lista di un cognome sul servere wiki
+     * Comando bottone/item upload di una singola con la lista di un cognome sul server wiki
      *
      * @param menuItem a cui agganciare il bottone/item
      */
@@ -158,7 +158,7 @@ public class CognomeMod extends ModulePop {
     }// end of method
 
     /**
-     * Comando bottone/item crea tutte le pagine delle liste sul servere wiki
+     * Comando bottone/item crea sul server wikii le due pagine di statistiche sui cognomi
      *
      * @param menuItem a cui agganciare il bottone/item
      */

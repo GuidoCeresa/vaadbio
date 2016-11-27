@@ -9,10 +9,13 @@ import it.algos.vaadbio.nazionalita.NazionalitaService;
 import it.algos.vaadbio.secolo.SecoloService;
 import it.algos.webbase.domain.pref.Pref;
 import it.algos.webbase.domain.pref.PrefType;
+import it.algos.webbase.web.entity.EM;
 import it.algos.webbase.web.lib.LibPref;
 import it.algos.webbase.web.lib.LibTime;
 import it.algos.webbase.web.lib.LibVers;
 
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import java.util.Date;
@@ -335,6 +338,28 @@ public class VersBootStrap implements ServletContextListener {
             LibPref.newVersInt(CostBio.TAGLIO_COGNOMI_PAGINA, 50, "Taglio per creare una pagina del cognome. Di default 50.");
         }// fine del blocco if
 
+        //--creata una nuova preferenza
+        if (LibVers.installa(++k)) {
+            LibPref.newVersBool(CostBio.USA_RICONTEGGIO_NOMI, false, "Ricalcola il numero di voci per ogni nome in creazione della tabella. Di default false.");
+        }// fine del blocco if
+
+        //--elimina una property come riferimento
+        if (LibVers.installa(++k)) {
+            fixPropertyBio();
+            LibVers.nuova("Bio", "La property Bio.nomePunta (deprecata) viene resa nulla, per poter cancellare la tavola Nomi");
+        }// fine del blocco if
+
+        //--creata una nuova preferenza
+        if (LibVers.installa(++k)) {
+            LibPref.newVersBool(CostBio.USA_NUMERI_PARAGRAFO, false, "Aggiunge (in piccolo) il numero delle voci contenute nel paragrafo. Di default false.");
+        }// fine del blocco if
+
+        //--elimina una property come riferimento
+//        if (LibVers.installa(++k)) {
+//            fixPropertyNome();
+//            LibVers.nuova("Nome", "La property Nome.riferimento (deprecata) viene resa nulla, per poter cancellare la tavola Nomi");
+//        }// fine del blocco if
+
 //        //--creata una nuova preferenza
 //        if (LibVers.installa(11)) {
 //            LibPref.newVersBool(CostBio.USA_UPLOAD_DOWNLOADATA, false, "Upload di ogni singola voce nel cicloDownload. Down, Ela, se tmpl diverso: Up, Down, Ela");
@@ -384,6 +409,42 @@ public class VersBootStrap implements ServletContextListener {
 //
     }// end of method
 
+
+    /**
+     * Rende nullo il valore della property di Bio che linka alla tavola Nome
+     * Per poter poi cancellare la tavola Nome, evitando l'integrità referenziale
+     */
+    public void fixPropertyBio() {
+        EntityManager manager = EM.createEntityManager();
+        Query query;
+        String queryTxt = "update Bio bio set bio.nomePunta=null";
+        try { // prova ad eseguire il codice
+            manager.getTransaction().begin();
+            query = manager.createQuery(queryTxt);
+            query.executeUpdate();
+            manager.getTransaction().commit();
+        } catch (Exception unErrore) { // intercetta l'errore
+            manager.getTransaction().rollback();
+        }// fine del blocco try-catch
+    }// end of method
+
+    /**
+     * Rende nullo il valore della property di Nome che linka ad un altro record della stessa tavola Nome
+     * Per poter poi cancellare la tavola Nome, evitando l'integrità referenziale
+     */
+    public void fixPropertyNome() {
+        EntityManager manager = EM.createEntityManager();
+        Query query;
+        String queryTxt = "update Nome nome set nome.riferimento_id=null";
+        try { // prova ad eseguire il codice
+            manager.getTransaction().begin();
+            query = manager.createQuery(queryTxt);
+            query.executeUpdate();
+            manager.getTransaction().commit();
+        } catch (Exception unErrore) { // intercetta l'errore
+            manager.getTransaction().rollback();
+        }// fine del blocco try-catch
+    }// end of method
 
     /**
      * This method is invoked when the Servlet Context

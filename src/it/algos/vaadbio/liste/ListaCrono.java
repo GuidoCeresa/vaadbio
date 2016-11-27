@@ -22,6 +22,12 @@ public abstract class ListaCrono extends ListaBio {
 
 
     /**
+     * Costruttore senza parametri
+     */
+    public ListaCrono() {
+    }// fine del costruttore
+
+    /**
      * Costruttore
      */
     public ListaCrono(Object oggetto) {

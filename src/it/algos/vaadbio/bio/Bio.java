@@ -162,7 +162,9 @@ public class Bio extends BaseEntity {
 
     //--parametri modificati rispetto ai parametri originali con lo stesso nome, secondo logiche specifiche per ogni parametro
     //--parametri usati per creare i link alle tavole specializzate per costruire le didascalie usate nelle liste
+    @Index
     private String nomeValido = CostBio.VUOTO;
+    @Index
     private String cognomeValido = CostBio.VUOTO;
     private String sessoValido = CostBio.VUOTO;
 
@@ -199,6 +201,8 @@ public class Bio extends BaseEntity {
     private Attivita attivita3Punta = null;
     @ManyToOne
     private Nazionalita nazionalitaPunta = null;
+
+    @Deprecated
     @ManyToOne
     private Nome nomePunta = null;
 

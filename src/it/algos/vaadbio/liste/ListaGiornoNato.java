@@ -15,6 +15,13 @@ import java.util.ArrayList;
 public class ListaGiornoNato extends ListaGiorno {
 
     /**
+     * Costruttore senza parametri
+     */
+    public ListaGiornoNato() {
+    }// fine del costruttore
+
+
+    /**
      * Costruttore
      *
      * @param giorno di cui creare la lista
@@ -22,6 +29,7 @@ public class ListaGiornoNato extends ListaGiorno {
     public ListaGiornoNato(Giorno giorno) {
         super(giorno);
     }// fine del costruttore
+
 
     /**
      * Recupera il tag specifico nati/morti
@@ -32,21 +40,19 @@ public class ListaGiornoNato extends ListaGiorno {
         return "Nati ";
     }// fine del metodo
 
-
     /**
-     * Lista delle biografie che hanno una valore valido per il link specifico
+     * Costruisce una lista di biografie che hanno una valore valido per la pagina specifica
+     * Esegue una query
      * Sovrascritto
      */
-    protected ArrayList<Bio> getListaBio() {
-        ArrayList<Bio> listaBio = null;
-        Giorno giorno = super.getGiorno();
+    protected void elaboraListaBiografie() {
+        Giorno giorno = this.getGiorno();
 
         if (giorno != null) {
-            listaBio = giorno.bioNati();
+            listaBio = giorno.listaBioNati();
         }// end of if cycle
-
-        return listaBio;
     }// fine del metodo
+
 
     /**
      * Chiave specifica della biografia (anno o giorno)
