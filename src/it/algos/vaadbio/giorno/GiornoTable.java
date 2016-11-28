@@ -39,11 +39,10 @@ public class GiornoTable extends CronoTable {
     protected String getTitoloNato(BaseEntity bean) {
         String wikiTitle = "";
         Giorno giorno;
-        String tag = "Nati il ";
 
         if (bean != null && bean instanceof Giorno) {
             giorno = (Giorno) bean;
-            wikiTitle = tag + giorno.getTitolo();
+            wikiTitle = giorno.getTitoloListaNati();
         }// fine del blocco if
 
         return wikiTitle;
@@ -55,11 +54,10 @@ public class GiornoTable extends CronoTable {
     protected String getTitoloMorto(BaseEntity bean) {
         String wikiTitle = "";
         Giorno giorno;
-        String tag = "Morti il ";
 
         if (bean != null && bean instanceof Giorno) {
             giorno = (Giorno) bean;
-            wikiTitle = tag + giorno.getTitolo();
+            wikiTitle =   giorno.getTitoloListaMorti();
         }// fine del blocco if
 
         return wikiTitle;

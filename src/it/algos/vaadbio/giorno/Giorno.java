@@ -74,9 +74,10 @@ public class Giorno extends BaseEntity {
      * Recupera una istanza di Giorno usando la query standard della Primary Key
      *
      * @param id valore della Primary Key
+     *
      * @return istanza di Giorno, null se non trovata
      */
-    public  static Giorno find(long id) {
+    public static Giorno find(long id) {
         Giorno instance = null;
         BaseEntity entity = AQuery.find(Giorno.class, id);
 
@@ -94,7 +95,7 @@ public class Giorno extends BaseEntity {
      *
      * @return istanza di Anno, null se non trovata
      */
-    public  static Giorno find(String titolo) {
+    public static Giorno find(String titolo) {
         return findByTitolo(titolo);
     }// end of method
 
@@ -102,9 +103,10 @@ public class Giorno extends BaseEntity {
      * Recupera una istanza di Giorno usando la query di una property specifica
      *
      * @param titolo valore della property Titolo
+     *
      * @return istanza di Giorno, null se non trovata
      */
-    public  static Giorno findByTitolo(String titolo) {
+    public static Giorno findByTitolo(String titolo) {
         Giorno instance = null;
         BaseEntity entity = AQuery.getEntity(Giorno.class, Giorno_.titolo, titolo);
 
@@ -123,7 +125,7 @@ public class Giorno extends BaseEntity {
      *
      * @return numero totale di records della tavola
      */
-    public  static int count() {
+    public static int count() {
         int totRec = 0;
         long totTmp = AQuery.count(Giorno.class);
 
@@ -141,7 +143,7 @@ public class Giorno extends BaseEntity {
      * @return lista di tutte le istanze di Giorno
      */
     @SuppressWarnings("unchecked")
-    public  static ArrayList<Giorno> findAll() {
+    public static ArrayList<Giorno> findAll() {
         return (ArrayList<Giorno>) AQuery.getList(Giorno.class);
     }// end of method
 
@@ -183,6 +185,33 @@ public class Giorno extends BaseEntity {
 
 
     /**
+     * Conta i records Bio che usano questa istanza di Giorno nella property giornoNatoPunta
+     *
+     * @return records di Bio che usano questa istanza di Giorno
+     */
+    public static int countBioNatiAll() {
+        Container.Filter filter = new Compare.Equal(Bio_.giornoNatoPunta.getName(), null);
+
+        int nonValidi = AQuery.count(Bio.class, filter);
+        int totali = AQuery.count(Bio.class);
+
+        return totali - nonValidi;
+    }// fine del metodo
+
+    /**
+     * Conta i records Bio che usano questa istanza di Giorno nella property giornoMortoPunta
+     *
+     * @return records di Bio che usano questa istanza di Giorno
+     */
+    public static int countBioMortiAll() {
+        Container.Filter filter = new Compare.Equal(Bio_.giornoMortoPunta.getName(), null);
+        int nonValidi = AQuery.count(Bio.class, filter);
+        int totali = AQuery.count(Bio.class);
+
+        return totali - nonValidi;
+    }// fine del metodo
+
+    /**
      * Recupera una lista (array) di records Bio che usano questa istanza di Giorno nella property giornoNatoPunta
      * Uso un link al record di questa tavola, perché i records sono statici, creati una tantum
      *
@@ -190,7 +219,8 @@ public class Giorno extends BaseEntity {
      */
     @SuppressWarnings("all")
     public List<Bio> listaBioNati() {
-        return (List<Bio>) AQuery.getList(Bio.class, Bio_.giornoNatoPunta, this);
+        SortProperty sorts = new SortProperty(Bio_.cognomeValido.getName(), Bio_.nomeValido.getName());
+        return (List<Bio>) AQuery.getList(Bio.class, Bio_.giornoNatoPunta, this, sorts);
     }// fine del metodo
 
     /**
@@ -201,7 +231,8 @@ public class Giorno extends BaseEntity {
      */
     @SuppressWarnings("all")
     public List<Bio> listaBioMorti() {
-        return (List<Bio>) AQuery.getList(Bio.class, Bio_.giornoMortoPunta, this);
+        SortProperty sorts = new SortProperty(Bio_.cognomeValido.getName(), Bio_.nomeValido.getName());
+        return (List<Bio>) AQuery.getList(Bio.class, Bio_.giornoMortoPunta, this, sorts);
     }// fine del metodo
 
 
@@ -210,7 +241,7 @@ public class Giorno extends BaseEntity {
      *
      * @return lista delle istanze di Bio che usano questo giorno
      */
-    @SuppressWarnings("all")
+    @Deprecated
     public ArrayList<Bio> bioNati() {
         ArrayList<Bio> lista = null;
         List entities = AQuery.getList(Bio.class, this.getFiltroNati());
@@ -263,7 +294,7 @@ public class Giorno extends BaseEntity {
      *
      * @return lista delle istanze di Bio
      */
-    @SuppressWarnings("all")
+    @Deprecated
     public ArrayList<Bio> bioMorti() {
         ArrayList<Bio> lista = null;
         List entities = AQuery.getList(Bio.class, this.getFiltroMorti());
@@ -317,14 +348,15 @@ public class Giorno extends BaseEntity {
      */
     public int countBioNati() {
 //        return (int) AQuery.getCount(Bio.class, "giornoNatoPunta", this);
-        int numRecords = 0;
-        ArrayList<Bio> lista = bioNati();
-
-        if (lista != null) {
-            numRecords = lista.size();
-        }// end of if cycle
-
-        return numRecords;
+        return AQuery.count(Bio.class, Bio_.giornoNatoPunta, this);
+//        int numRecords = 0;
+//        List<Bio> lista = listaBioNati();
+//
+//        if (lista != null) {
+//            numRecords = lista.size();
+//        }// end of if cycle
+//
+//        return numRecords;
     }// fine del metodo
 
 
@@ -334,15 +366,15 @@ public class Giorno extends BaseEntity {
      * @return numero di istanze di Bio che usano questo giorno
      */
     public int countBioMorti() {
-//        return (int) AQuery.getCount(Anno.class, "giornoMortoPunta", this);
-        int numRecords = 0;
-        ArrayList<Bio> lista = bioMorti();
-
-        if (lista != null) {
-            numRecords = lista.size();
-        }// end of if cycle
-
-        return numRecords;
+        return AQuery.count(Bio.class, Bio_.giornoMortoPunta, this);
+//        int numRecords = 0;
+//        List<Bio> lista = listaBioMorti();
+//
+//        if (lista != null) {
+//            numRecords = lista.size();
+//        }// end of if cycle
+//
+//        return numRecords;
     }// fine del metodo
 
 
@@ -371,6 +403,20 @@ public class Giorno extends BaseEntity {
     /**
      * Titolo della pagina Nati/Morti da creare/caricare su wikipedia
      */
+    public String getTitoloListaNati() {
+        return getTitoloLista("Nati");
+    }// fine del metodo
+
+    /**
+     * Titolo della pagina Nati/Morti da creare/caricare su wikipedia
+     */
+    public String getTitoloListaMorti() {
+        return getTitoloLista("Morti");
+    }// fine del metodo
+
+    /**
+     * Titolo della pagina Nati/Morti da creare/caricare su wikipedia
+     */
     public String getTitoloLista(String tag) {
         String titoloLista = CostBio.VUOTO;
         String articolo = "il";
@@ -378,9 +424,9 @@ public class Giorno extends BaseEntity {
 
         if (!titolo.equals("")) {
             if (titolo.startsWith("8") || titolo.startsWith("11")) {
-                titoloLista = tag + articoloBis + titolo;
+                titoloLista = tag + CostBio.SPAZIO + articoloBis + titolo;
             } else {
-                titoloLista = tag + articolo + CostBio.SPAZIO + titolo;
+                titoloLista = tag + CostBio.SPAZIO + articolo + CostBio.SPAZIO + titolo;
             }// fine del blocco if-else
         }// fine del blocco if
 

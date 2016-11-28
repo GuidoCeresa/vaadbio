@@ -3,9 +3,7 @@ package it.algos.vaadbio.giorno;
 
 import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.Notification;
-import it.algos.vaadbio.cognome.CognomeTablePortal;
-import it.algos.vaadbio.crono.AnnoGiornoMod;
-import it.algos.vaadbio.crono.CronoTablePortal;
+import it.algos.vaadbio.crono.CronoMod;
 import it.algos.vaadbio.esegue.Esegue;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.liste.ListaGiornoMorto;
@@ -17,7 +15,7 @@ import it.algos.webbase.web.table.TablePortal;
  * Gestione (minimale) del modulo
  */
 @SuppressWarnings("serial")
-public class GiornoMod extends AnnoGiornoMod {
+public class GiornoMod extends CronoMod {
 
 
     // indirizzo interno del modulo (serve nei menu)
@@ -78,7 +76,7 @@ public class GiornoMod extends AnnoGiornoMod {
         Giorno giorno = getGiorno();
 
         if (giorno != null) {
-            titoloPagina = giorno.getTitoloLista("Nati ");
+            titoloPagina = giorno.getTitoloListaNati();
             this.getUI().getPage().open(WIKI_URL + titoloPagina, "_blank");
         }// end of if/else cycle
 
@@ -94,7 +92,7 @@ public class GiornoMod extends AnnoGiornoMod {
         Giorno giorno = getGiorno();
 
         if (giorno != null) {
-            titoloPagina = giorno.getTitoloLista("Morti ");
+            titoloPagina = giorno.getTitoloListaMorti();
             this.getUI().getPage().open(WIKI_URL + titoloPagina, "_blank");
         }// end of if/else cycle
 

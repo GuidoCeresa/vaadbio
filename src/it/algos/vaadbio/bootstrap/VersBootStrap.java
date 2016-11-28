@@ -344,6 +344,7 @@ public class VersBootStrap implements ServletContextListener {
         }// fine del blocco if
 
         //--elimina una property come riferimento
+        //-- ricordarsi di eseguire manualmente -update WIKI.NOME set riferimento_id=null-
         if (LibVers.installa(++k)) {
             fixPropertyBio();
             LibVers.nuova("Bio", "La property Bio.nomePunta (deprecata) viene resa nulla, per poter cancellare la tavola Nomi");

@@ -20,7 +20,7 @@ import it.algos.webbase.web.table.ATable;
  * Passa alla superclasse il nome e la classe specifica
  */
 @SuppressWarnings("serial")
-public abstract class AnnoGiornoMod extends ModulePop {
+public abstract class CronoMod extends ModulePop {
 
 
     protected static final String WIKI_BASE = "https://it.wikipedia.org/";
@@ -38,7 +38,7 @@ public abstract class AnnoGiornoMod extends ModulePop {
      *
      * @param entity di riferimento del modulo
      */
-    public AnnoGiornoMod(Class entity) {
+    public CronoMod(Class entity) {
         this(entity, "", null);
     }// end of constructor
 
@@ -48,7 +48,7 @@ public abstract class AnnoGiornoMod extends ModulePop {
      * @param entity    di riferimento del modulo
      * @param menuLabel etichetta visibile nella menu bar
      */
-    public AnnoGiornoMod(Class entity, String menuLabel) {
+    public CronoMod(Class entity, String menuLabel) {
         this(entity, menuLabel, null);
     }// end of constructor
 
@@ -58,7 +58,7 @@ public abstract class AnnoGiornoMod extends ModulePop {
      * @param entity   di riferimento del modulo
      * @param menuIcon icona del menu
      */
-    public AnnoGiornoMod(Class entity, Resource menuIcon) {
+    public CronoMod(Class entity, Resource menuIcon) {
         this(entity, "", menuIcon);
     }// end of constructor
 
@@ -70,7 +70,7 @@ public abstract class AnnoGiornoMod extends ModulePop {
      * @param menuLabel etichetta visibile nella menu bar
      * @param menuIcon  icona del menu
      */
-    public AnnoGiornoMod(Class entity, String menuLabel, Resource menuIcon) {
+    public CronoMod(Class entity, String menuLabel, Resource menuIcon) {
         super(entity, menuLabel, menuIcon);
     }// end of constructor
 

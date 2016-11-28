@@ -2209,5 +2209,18 @@ public abstract class LibBio {
         return chiave;
     }// fine del metodo
 
+    /**
+     * Elimina la parte iniziale della didascalia, se presente
+     */
+    public static String troncaDidascalia(String didascaliaIn) {
+        String didascaliaOut = didascaliaIn;
+        String tag = CostBio.TAG_SEPARATORE;
+
+        if (didascaliaIn.contains(tag)) {
+            didascaliaOut = didascaliaIn.substring(didascaliaIn.indexOf(tag) + tag.length()).trim();
+        }// end of if cycle
+
+        return didascaliaOut;
+    }// fine del metodo
 
 }// end of abstract static class

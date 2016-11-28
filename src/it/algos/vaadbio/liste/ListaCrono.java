@@ -24,7 +24,6 @@ import java.util.Map;
  */
 public abstract class ListaCrono extends ListaBio {
 
-
     /**
      * Costruttore
      */
@@ -143,22 +142,31 @@ public abstract class ListaCrono extends ListaBio {
         ArrayList<Bio> lista;
         String key;
         HashMap<String, Object> mappa;
+        String didascalia;
 
         for (Map.Entry<String, HashMap> mappaTmp : mappaBio.entrySet()) {
             key = mappaTmp.getKey();
             mappa = (HashMap) mappaTmp.getValue();
             lista = (ArrayList<Bio>) mappa.get(KEY_MAP_LISTA);
 
-            text += CostBio.ASTERISCO;
             if (lista.size() == 1) {
-                text += getDidascalia(lista.get(0));
+                text += CostBio.ASTERISCO;
+                didascalia = getDidascalia(lista.get(0));
+                text += didascalia;
             } else {
-                text += LibWiki.setQuadre(key);
-                text += CostBio.A_CAPO;
+                if (!key.equals(CostBio.VUOTO)) {
+                    text += CostBio.ASTERISCO;
+                    text += LibWiki.setQuadre(key);
+                    text += CostBio.A_CAPO;
+                }// end of if cycle
                 for (Bio bio : lista) {
+                    if (!key.equals(CostBio.VUOTO)) {
+                        text += CostBio.ASTERISCO;
+                    }// end of if cycle
                     text += CostBio.ASTERISCO;
-                    text += CostBio.ASTERISCO;
-                    text += getDidascalia(bio);
+                    didascalia = getDidascalia(bio);
+                    didascalia = LibBio.troncaDidascalia(didascalia);
+                    text += didascalia;
                     text += CostBio.A_CAPO;
                 }// end of for cycle
             }// end of if/else cycle

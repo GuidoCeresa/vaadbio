@@ -8,8 +8,10 @@ import it.algos.vaadbio.giorno.Giorno;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.secolo.Secolo;
 import it.algos.webbase.web.entity.BaseEntity;
+import it.algos.webbase.web.entity.DefaultSort;
 import it.algos.webbase.web.lib.SecoloEnum;
 import it.algos.webbase.web.query.AQuery;
+import it.algos.webbase.web.query.SortProperty;
 import org.apache.commons.beanutils.BeanUtils;
 import org.eclipse.persistence.annotations.Index;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -31,6 +33,7 @@ import java.util.List;
  * 4) la classe non deve contenere nessun metodo per la gestione degli eventi
  */
 @Entity
+@DefaultSort({"ordinamento,false"})
 public class Anno extends BaseEntity {
 
     @NotEmpty
@@ -73,6 +76,7 @@ public class Anno extends BaseEntity {
      * Recupera una istanza di Anno usando la query standard della Primary Key
      *
      * @param id valore della Primary Key
+     *
      * @return istanza di Anno, null se non trovata
      */
     public static Anno find(long id) {
@@ -103,6 +107,7 @@ public class Anno extends BaseEntity {
      * Recupera una istanza di Anno usando la query di una property specifica
      *
      * @param titolo valore della property Titolo
+     *
      * @return istanza di Anno, null se non trovata
      */
     public static Anno findByTitolo(String titolo) {
@@ -154,7 +159,8 @@ public class Anno extends BaseEntity {
      */
     @SuppressWarnings("all")
     public List<Bio> listaBioNati() {
-        return (List<Bio>) AQuery.getList(Bio.class, Bio_.annoNatoPunta, this);
+        SortProperty sorts = new SortProperty(Bio_.cognomeValido.getName(), Bio_.nomeValido.getName());
+        return (List<Bio>) AQuery.getList(Bio.class, Bio_.annoNatoPunta, this, sorts);
     }// fine del metodo
 
     /**
@@ -165,7 +171,8 @@ public class Anno extends BaseEntity {
      */
     @SuppressWarnings("all")
     public List<Bio> listaBioMorti() {
-        return (List<Bio>) AQuery.getList(Bio.class, Bio_.annoMortoPunta, this);
+        SortProperty sorts = new SortProperty(Bio_.cognomeValido.getName(), Bio_.nomeValido.getName());
+        return (List<Bio>) AQuery.getList(Bio.class, Bio_.annoMortoPunta, this, sorts);
     }// fine del metodo
 
     /**

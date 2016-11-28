@@ -4,7 +4,9 @@ import it.algos.vaad.wiki.Cost;
 import it.algos.vaad.wiki.LibWiki;
 import it.algos.vaadbio.giorno.Giorno;
 import it.algos.vaadbio.lib.CostBio;
+import it.algos.webbase.web.lib.LibNum;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -13,6 +15,10 @@ import java.util.HashMap;
  * .
  */
 public class StatGiorni extends Statistiche {
+
+    private int natiFix = 0;
+    private int mortiFix = 0;
+
     /**
      * Costruttore completo
      */
@@ -31,6 +37,8 @@ public class StatGiorni extends Statistiche {
     protected void elaboraParametri() {
         super.elaboraParametri();
         titoloPagina = "Giorni";
+        usaHeadToc = false; //--tipicamente sempre true.
+        usaFooterCorrelate = true;
     }// fine del metodo
 
     /**
@@ -43,7 +51,7 @@ public class StatGiorni extends Statistiche {
 
         text += "==Giorni==";
         text += A_CAPO;
-        text += "Statistiche dei nati e morti per ogni giorno dell'anno" + LibWiki.setRef(ref1) + ". Vengono prese in considerazione tutte e solo le voci biografiche che hanno valori validi e certi dei giorni di nascita e morte della persona.";
+        text += "Statistiche dei nati e morti per ogni giorno dell'anno" + LibWiki.setRef(ref1) + ". Vengono prese in considerazione '''solo''' le voci biografiche che hanno valori '''validi e certi''' dei giorni di nascita e morte della persona.";
         text += A_CAPO;
         text += creaTable();
         text += A_CAPO;
@@ -75,10 +83,10 @@ public class StatGiorni extends Statistiche {
         String ref2 = "Il [[template:Bio|template Bio]] della voce biografica deve avere un valore valido al parametro '''giornoMeseMorte'''.";
 
         titoli.add("giorno");
-        titoli.add("nati " + LibWiki.setRef(ref1));
-        titoli.add("morti " + LibWiki.setRef(ref2));
-        titoli.add("% nati/anno ");
-        titoli.add("% morti/anno ");
+        titoli.add("nati nel giorno " + LibWiki.setRef(ref1));
+        titoli.add("morti nel giorno" + LibWiki.setRef(ref2));
+        titoli.add("% nati giorno/anno ");
+        titoli.add("% morti giorno/anno ");
 
         return titoli;
     }// fine del metodo
@@ -90,8 +98,8 @@ public class StatGiorni extends Statistiche {
         ArrayList<Boolean> colonneDestra = new ArrayList<>();
 
         colonneDestra.add(true);
-        colonneDestra.add(false);
-        colonneDestra.add(false);
+        colonneDestra.add(true);
+        colonneDestra.add(true);
         colonneDestra.add(true);
         colonneDestra.add(true);
 
@@ -105,9 +113,11 @@ public class StatGiorni extends Statistiche {
     private ArrayList listaRighe() {
         ArrayList listaRighe = new ArrayList();
         ArrayList<Giorno> giorni = Giorno.findAll();
+        int natiTotali = Giorno.countBioNatiAll();
+        int mortiTotali = Giorno.countBioMortiAll();
 
         for (Giorno giorno : giorni) {
-            listaRighe.add(getRigaGiorno(giorno));
+            listaRighe.add(getRigaGiorno(giorno, natiTotali, mortiTotali));
         } // fine del ciclo for-each
 
         return listaRighe;
@@ -116,17 +126,25 @@ public class StatGiorni extends Statistiche {
     /**
      * Restituisce l'array della riga del parametro per le nazionalita
      */
-    private ArrayList getRigaGiorno(Giorno giorno) {
+    private ArrayList getRigaGiorno(Giorno giorno, int natiTotali, int mortiTotali) {
         ArrayList riga = new ArrayList();
         String nome = giorno.getTitolo();
         int nati = giorno.countBioNati();
         int morti = giorno.countBioMorti();
+        BigDecimal natiPerCento = new BigDecimal(nati * 100).divide(new BigDecimal(natiTotali), 2, 2);
+        BigDecimal mortiPerCento = new BigDecimal(morti * 100).divide(new BigDecimal(mortiTotali), 2, 2);
+        String titoloNati = giorno.getTitoloListaNati();
+        String titoloMorti = giorno.getTitoloListaMorti();
 
-        riga.add(nome);
-        riga.add(nati);
-        riga.add(morti);
-        riga.add("alfa");
-        riga.add("beta");
+        riga.add(LibWiki.setQuadre(nome));
+        riga.add(LibWiki.setQuadre(titoloNati + "|" + LibNum.format(nati)));
+        riga.add(LibWiki.setQuadre(titoloMorti + "|" + LibNum.format(morti)));
+        riga.add(natiPerCento.toString() + " %");
+        riga.add(mortiPerCento.toString() + " %");
+
+
+        natiFix += nati;
+        mortiFix += morti;
 
         return riga;
     }// fine del metodo

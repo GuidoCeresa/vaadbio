@@ -3,10 +3,8 @@ package it.algos.vaadbio.anno;
 
 import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.Notification;
-import it.algos.vaadbio.crono.AnnoGiornoMod;
+import it.algos.vaadbio.crono.CronoMod;
 import it.algos.vaadbio.esegue.Esegue;
-import it.algos.vaadbio.giorno.GiornoTable;
-import it.algos.vaadbio.giorno.GiornoTablePortal;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.liste.ListaAnnoMorto;
 import it.algos.vaadbio.liste.ListaAnnoNato;
@@ -21,7 +19,7 @@ import javax.persistence.metamodel.Attribute;
  * Passa alla superclasse il nome e la classe specifica
  */
 @SuppressWarnings("serial")
-public class AnnoMod extends AnnoGiornoMod {
+public class AnnoMod extends CronoMod {
 
     // indirizzo interno del modulo (serve nei menu)
     public static String MENU_ADDRESS = "Anni";
