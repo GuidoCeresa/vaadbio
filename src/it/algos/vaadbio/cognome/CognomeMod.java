@@ -9,9 +9,12 @@ import com.vaadin.ui.Notification;
 import com.vaadin.ui.Table;
 import it.algos.vaadbio.esegue.Esegue;
 import it.algos.vaadbio.liste.ListaAntroCognome;
+import it.algos.vaadbio.nome.Nome_;
 import it.algos.webbase.web.module.ModulePop;
 import it.algos.webbase.web.table.ATable;
 import it.algos.webbase.web.table.TablePortal;
+
+import javax.persistence.metamodel.Attribute;
 
 /**
  * Gestione (minimale) del modulo specifico
@@ -63,6 +66,18 @@ public class CognomeMod extends ModulePop {
     public TablePortal createTablePortal() {
         return new CognomeTablePortal(this);
     }// end of method
+
+    /**
+     * Crea i campi visibili nella scheda (form)
+     * <p>
+     * Come default spazzola tutti i campi della Entity <br>
+     * Può essere sovrascritto (facoltativo) nelle sottoclassi specifiche <br>
+     * Serve anche per l'ordine con cui vengono presentati i campi nella scheda <br>
+     */
+    protected Attribute<?, ?>[] creaFieldsForm() {
+        return new Attribute[]{Cognome_.cognome, Cognome_.voci};
+    }// end of method
+
 
     /**
      * Registers a new action handler for this container

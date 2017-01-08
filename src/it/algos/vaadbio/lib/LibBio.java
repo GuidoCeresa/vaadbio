@@ -12,6 +12,7 @@ import it.algos.vaadbio.attivita.Attivita;
 import it.algos.vaadbio.bio.Bio;
 import it.algos.vaadbio.genere.Genere;
 import it.algos.vaadbio.giorno.Giorno;
+import it.algos.vaadbio.nazionalita.Nazionalita;
 import it.algos.vaadbio.wrapperbio.WrapBio;
 import it.algos.webbase.domain.pref.Pref;
 import it.algos.webbase.web.entity.BaseEntity;
@@ -121,7 +122,6 @@ public abstract class LibBio {
      * Elimina un eventuale pipe iniziale in tutte le chiavi della mappa
      *
      * @param testoTemplate del template
-     *
      * @return mappa di TUTTI i parametri esistenti nel testo
      */
     public static LinkedHashMap getMappaReali(String testoTemplate) {
@@ -138,7 +138,6 @@ public abstract class LibBio {
      *
      * @param testoTemplate del template
      * @param titoloVoce    sulla wiki
-     *
      * @return mappa di TUTTI i parametri esistenti nel testo
      */
     public static LinkedHashMap getMappaReali(String testoTemplate, String titoloVoce) {
@@ -171,7 +170,6 @@ public abstract class LibBio {
      * il primo parametro noto e così via
      *
      * @param bio istanza della Entity
-     *
      * @return mappa dei parametri esistenti nella enumeration e presenti nel testo
      */
     public static LinkedHashMap<String, String> getMappaBio(Bio bio) {
@@ -191,7 +189,6 @@ public abstract class LibBio {
      * il primo parametro noto e così via
      *
      * @param testoTemplate del template Bio
-     *
      * @return mappa dei parametri esistenti nella enumeration e presenti nel testo
      */
     public static LinkedHashMap<String, String> getMappaBio(String testoTemplate) {
@@ -330,7 +327,6 @@ public abstract class LibBio {
      * Controlla che non esistano doppie graffe dispari all'interno del template
      *
      * @param testoEssenziale testo essenziale del template, estremi esclusi
-     *
      * @return mappa chiave/valore
      */
     public static LinkedHashMap estraeTmpMappa(String testoEssenziale) {
@@ -355,7 +351,6 @@ public abstract class LibBio {
      * Elimina doppie graffe finali e aCapo (eventuale) finale
      *
      * @param testoTemplate testo completo del template
-     *
      * @return testoEssenziale testo essenziale del template, estremi esclusi
      */
     public static String estraeTmpRaw(String testoTemplate) {
@@ -384,7 +379,6 @@ public abstract class LibBio {
      * Controlla che non ci siano doppie graffe annidate nel valore dei parametri
      *
      * @param testoTemplate testo completo del template
-     *
      * @return mappa chiave/valore
      */
     public static LinkedHashMap estraeMappaReali(String testoTemplate) {
@@ -702,7 +696,6 @@ public abstract class LibBio {
      * Presuppone che la riga sia unica ed i parametri siano separati da pipe
      *
      * @param testo
-     *
      * @return mappa chiave/valore
      */
     public static LinkedHashMap getMappaRigaUnica(String testo) {
@@ -748,7 +741,6 @@ public abstract class LibBio {
      * @param testo  di riferimento
      * @param tagIni di apertura
      * @param tagEnd di chiusura
-     *
      * @return vero se il numero di tagIni è uguale al numero di tagEnd
      */
     public static boolean isPariTag(String testo, String tagIni, String tagEnd) {
@@ -770,7 +762,6 @@ public abstract class LibBio {
      * Le graffe devono anche essere nel giusto ordine
      *
      * @param testo in ingresso
-     *
      * @return vero se le occorrenze di apertura e chiusura sono uguali
      */
     public static boolean isPariGraffe(String testo) {
@@ -783,7 +774,6 @@ public abstract class LibBio {
      * Le graffe devono anche essere nel giusto ordine
      *
      * @param testo in ingresso
-     *
      * @return vero se le occorrenze di apertura e chiusura sono uguali
      */
     public static boolean isPariQuadre(String testo) {
@@ -796,7 +786,6 @@ public abstract class LibBio {
      *
      * @param testo da analizzare
      * @param tag   da cercare
-     *
      * @return numero di occorrenze
      * zero se non ce ne sono
      */
@@ -825,7 +814,6 @@ public abstract class LibBio {
      * Elimina un eventuale pipe iniziale in tutte le chiavi
      *
      * @param mappaIn dei parametri in entrata
-     *
      * @return mappa dei parametri in uscita
      */
     public static LinkedHashMap regolaMappaPipe(Map mappaIn) {
@@ -943,7 +931,6 @@ public abstract class LibBio {
      * Cancella (se esiste) anche il corrispondente record (medesimo pageid) di BioLista
      *
      * @param pageid della voce
-     *
      * @deprecated
      */
     public static boolean delete(long pageid) {
@@ -1037,7 +1024,6 @@ public abstract class LibBio {
      * Tronca comunque il testo a 255 caratteri
      *
      * @param testoIn entrata da elaborare
-     *
      * @return testoOut regolato in uscita
      */
     public static String fixCampoLuogo(String testoIn) {
@@ -1073,7 +1059,6 @@ public abstract class LibBio {
      * Tronca comunque il testo a 255 caratteri
      *
      * @param testoIn entrata da elaborare
-     *
      * @return testoOut regolato in uscita
      */
     public static String fixCampoLuogoLink(String testoIn) {
@@ -1108,7 +1093,6 @@ public abstract class LibBio {
      * Tronca comunque il testo a 255 caratteri
      *
      * @param testoIn entrata da elaborare
-     *
      * @return testoOut regolato in uscita
      */
     public static String fixCampo(String testoIn) {
@@ -1127,7 +1111,6 @@ public abstract class LibBio {
      * Elimina il testo successivo alla virgola
      *
      * @param testoIn entrata da elaborare
-     *
      * @return testoOut regolato in uscita
      */
     public static String fixCampoSesso(String testoIn) {
@@ -1158,7 +1141,6 @@ public abstract class LibBio {
      * Tronca comunque il testo a 255 caratteri
      *
      * @param testoGrezzo in entrata da elaborare
-     *
      * @return testoValido regolato in uscita
      */
     private static String fixCampoBase(String testoGrezzo) {
@@ -1192,7 +1174,6 @@ public abstract class LibBio {
      * Elabora una patch specifica del Giorno
      *
      * @param testoGrezzo in entrata da elaborare
-     *
      * @return testoValido regolato in uscita
      */
     public static String fixGiornoValido(String testoGrezzo) {
@@ -1214,7 +1195,6 @@ public abstract class LibBio {
      * Elimina il testo successivo a varii tag
      *
      * @param testoGrezzo in entrata da elaborare
-     *
      * @return testoValido regolato in uscita
      */
     public static String fixAnnoValido(String testoGrezzo) {
@@ -1238,7 +1218,6 @@ public abstract class LibBio {
      * Elimina il testo successivo alla virgola
      *
      * @param testoIn entrata da elaborare
-     *
      * @return testoOut regolato in uscita
      * @deprecated
      */
@@ -1258,7 +1237,6 @@ public abstract class LibBio {
      * Elimina il testo successivo alla virgola
      *
      * @param testoIn entrata da elaborare
-     *
      * @return testoOut regolato in uscita
      */
     public static String fixCampoAnno(String testoIn) {
@@ -1280,7 +1258,6 @@ public abstract class LibBio {
      * Elimina spazi vuoti iniziali e finali
      *
      * @param testoIn entrata da elaborare
-     *
      * @return testoIn regolato in uscita con doppie quadre eliminate
      */
     public static String setNoQuadre(String testoIn) {
@@ -1392,7 +1369,6 @@ public abstract class LibBio {
      * Recupera i pageids di tutti i records, selezionati secondo la query ricevuta
      *
      * @param queryTxt per la selezione
-     *
      * @return lista di pageids (Long)
      */
     public synchronized static ArrayList<Long> queryFind(String queryTxt) {
@@ -1403,7 +1379,6 @@ public abstract class LibBio {
      * Recupera la property (text) di tutti i records, selezionati secondo la query ricevuta
      *
      * @param queryTxt per la selezione
-     *
      * @return lista di una property (String)
      */
     public synchronized static ArrayList<String> queryFindTxt(String queryTxt) {
@@ -1415,7 +1390,6 @@ public abstract class LibBio {
      *
      * @param queryTxt per la selezione
      * @param limit    di ricerca per la query
-     *
      * @return lista di pageids (Long)
      */
     public synchronized static ArrayList<Long> queryFind(String queryTxt, int limit) {
@@ -1427,7 +1401,6 @@ public abstract class LibBio {
      *
      * @param queryTxt per la selezione
      * @param limit    di ricerca per la query
-     *
      * @return lista di una property (String)
      */
     public synchronized static ArrayList<String> queryFindTxt(String queryTxt, int limit) {
@@ -1440,7 +1413,6 @@ public abstract class LibBio {
      * @param queryTxt per la selezione
      * @param limit    di ricerca per la query
      * @param offSet   di inizio per la query
-     *
      * @return lista di pageids (Long)
      */
     public synchronized static ArrayList<Long> queryFind(String queryTxt, int limit, int offSet) {
@@ -1472,7 +1444,6 @@ public abstract class LibBio {
      * @param queryTxt per la selezione
      * @param limit    di ricerca per la query
      * @param offSet   di inizio per la query
-     *
      * @return lista di una property (String)
      */
     public synchronized static ArrayList<String> queryFindTxt(String queryTxt, int limit, int offSet) {
@@ -1502,7 +1473,6 @@ public abstract class LibBio {
      * Recupera il conteggio dei records, selezionati secondo la query ricevuta
      *
      * @param queryTxt per la selezione
-     *
      * @return numero di records
      */
     public synchronized static int queryCount(String queryTxt) {
@@ -1526,7 +1496,6 @@ public abstract class LibBio {
      *
      * @param entity   dataBase di riferimento
      * @param property unica da selezionare per il conteggio
-     *
      * @return numero di records
      */
     public synchronized static int queryCountDistinct(String entity, String property) {
@@ -1574,7 +1543,6 @@ public abstract class LibBio {
      *
      * @param entity   dataBase di riferimento
      * @param property da selezionare
-     *
      * @return lista di valori della property
      */
     public synchronized static ArrayList<String> queryFindDistinctStx(String entity, String property) {
@@ -1767,7 +1735,6 @@ public abstract class LibBio {
      * Elimina eventuali ref già presenti, per evitare di metterli doppi
      *
      * @param stringaIn in ingresso
-     *
      * @return stringa con tag ref aggiunti
      */
     public static String setRef(String stringaIn) {
@@ -1784,7 +1751,6 @@ public abstract class LibBio {
      * Elimina spazi vuoti iniziali e finali
      *
      * @param stringaIn in ingresso
-     *
      * @return stringa con le parentesi aggiunte
      */
     public static String setTonde(String stringaIn) {
@@ -1796,7 +1762,6 @@ public abstract class LibBio {
      * Elimina spazi vuoti iniziali e finali
      *
      * @param stringaIn in ingresso
-     *
      * @return stringa con gli apici aggiunti
      */
     public static String setApici(String stringaIn) {
@@ -1813,7 +1778,6 @@ public abstract class LibBio {
      * Elimina eventuali 'NoInclude' già presenti, per evitare di metterli doppi TODO Non ancora
      *
      * @param stringaIn in ingresso
-     *
      * @return stringa coi tag aggiunti
      */
     public static String setNoIncludeMultiRiga(String stringaIn) {
@@ -1830,7 +1794,6 @@ public abstract class LibBio {
      * Elimina eventuali 'NoInclude' già presenti, per evitare di metterli doppi TODO Non ancora
      *
      * @param stringaIn in ingresso
-     *
      * @return stringa coi tag aggiunti
      */
     public static String setNoIncludeRiga(String stringaIn) {
@@ -1847,7 +1810,6 @@ public abstract class LibBio {
      * Elimina eventuali 'NoInclude' già presenti, per evitare di metterli doppi TODO Non ancora
      *
      * @param stringaIn in ingresso
-     *
      * @return stringa coi tag aggiunti
      */
     private static String setNoIncludeBase(String stringaIn, boolean righeDiverse) {
@@ -1922,7 +1884,6 @@ public abstract class LibBio {
      * @param testoNew   della modifica
      * @param tagIni     inizio del testo iniziale (incipit) da considerare NON sostanziale
      * @param tagEnd     fine del testo iniziale (incipit) da considerare NON sostanziale
-     *
      * @return la modifica va effettuata
      */
     public static boolean checkModificaSostanziale(String titoloVoce, String testoNew, String tagIni, String tagEnd) {
@@ -1971,7 +1932,6 @@ public abstract class LibBio {
      * @param lista  da cui estrarre la subList
      * @param posIni iniziale
      * @param posEnd finale
-     *
      * @return subLista
      */
     public static ArrayList subList(ArrayList<Long> lista, int posIni, int posEnd) {
@@ -1997,7 +1957,6 @@ public abstract class LibBio {
      * Recupera un oggetto Bio leggendolo dal server wiki.
      *
      * @param wikiTitle della pagina da cui estrarre il template Bio
-     *
      * @return istanza di Bio
      */
     public static Bio leggeBio(String wikiTitle) {
@@ -2103,11 +2062,31 @@ public abstract class LibBio {
     }// fine del metodo
 
     /**
+     * Costruisce una chiave di suddivisione per nazionalità
+     */
+    public static String getChiavePerNazionalita(Bio bio, String tagParagrafoNullo) {
+        String chiave = tagParagrafoNullo;
+        Nazionalita nazionalita = null;
+        String nazionalitaSingolare = CostBio.VUOTO;
+
+        if (bio == null) {
+            return CostBio.VUOTO;
+        }// end of if cycle
+
+        nazionalita = bio.getNazionalitaPunta();
+        if (nazionalita != null) {
+            chiave = nazionalita.getPlurale();
+        }// end of if cycle
+
+        return LibText.primaMaiuscola(chiave);
+    }// fine del metodo
+
+    /**
      * Costruisce una chiave di suddivisione alfabetica per lettera iniziale del cognome
      */
     public static String getChiavePerCognome(Bio bio, String tagParagrafoNullo) {
         if (bio != null) {
-            return getChiavePerAntro(bio.getCognomeValido());
+            return getChiavePerAntro(bio.getCognomeValido(), tagParagrafoNullo);
         } else {
             return tagParagrafoNullo;
         }// end of if/else cycle
@@ -2118,7 +2097,7 @@ public abstract class LibBio {
      */
     public static String getChiavePerNome(Bio bio, String tagParagrafoNullo) {
         if (bio != null) {
-            return getChiavePerAntro(bio.getNomeValido());
+            return getChiavePerAntro(bio.getNomeValido(), tagParagrafoNullo);
         } else {
             return tagParagrafoNullo;
         }// end of if/else cycle
@@ -2128,8 +2107,8 @@ public abstract class LibBio {
     /**
      * Costruisce una chiave di suddivisione alfabetica per lettera iniziale del nome o del cognome
      */
-    private static String getChiavePerAntro(String value) {
-        String chiave = CostBio.VUOTO;
+    private static String getChiavePerAntro(String value, String tagParagrafoNullo) {
+        String chiave = tagParagrafoNullo;
 
         if (value != null && value.length() > 0) {
             chiave = value.substring(0, 1);

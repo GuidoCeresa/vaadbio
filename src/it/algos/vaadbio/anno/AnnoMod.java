@@ -93,7 +93,7 @@ public class AnnoMod extends CronoMod {
         Anno anno = getAnno();
 
         if (anno != null) {
-            titoloPagina = anno.getTitoloLista("Nati ");
+            titoloPagina = anno.getTitoloListaNati();
             this.getUI().getPage().open(WIKI_URL + titoloPagina, "_blank");
         }// end of if/else cycle
 
@@ -109,7 +109,7 @@ public class AnnoMod extends CronoMod {
         Anno anno = getAnno();
 
         if (anno != null) {
-            titoloPagina = anno.getTitoloLista("Morti ");
+            titoloPagina = anno.getTitoloListaMorti();
             this.getUI().getPage().open(WIKI_URL + titoloPagina, "_blank");
         }// end of if/else cycle
 

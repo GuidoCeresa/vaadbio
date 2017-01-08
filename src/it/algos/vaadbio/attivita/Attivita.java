@@ -3,16 +3,20 @@ package it.algos.vaadbio.attivita;
 import com.vaadin.data.Container;
 import com.vaadin.data.util.filter.Compare;
 import it.algos.vaadbio.bio.Bio;
+import it.algos.vaadbio.bio.Bio_;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.lib.LibBio;
 import it.algos.webbase.web.entity.BaseEntity;
+import it.algos.webbase.web.lib.LibArray;
 import it.algos.webbase.web.query.AQuery;
+import it.algos.webbase.web.query.SortProperty;
 import org.apache.commons.beanutils.BeanUtils;
 import org.eclipse.persistence.annotations.Index;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,7 +59,6 @@ public class Attivita extends BaseEntity {
      * Recupera una istanza di Bolla usando la query standard della Primary Key
      *
      * @param id valore della Primary Key
-     *
      * @return istanza di Bolla, null se non trovata
      */
     public static Attivita find(long id) {
@@ -75,7 +78,6 @@ public class Attivita extends BaseEntity {
      * Recupera una istanza di Attivita usando la query di una property specifica
      *
      * @param singolare valore della property Singolare
-     *
      * @return istanza di Bolla, null se non trovata
      */
     public static Attivita findBySingolare(String singolare) {
@@ -95,7 +97,6 @@ public class Attivita extends BaseEntity {
      * Recupera una istanza di Attivita usando la query di una property specifica
      *
      * @param plurale valore della property plurale
-     *
      * @return istanza di Bolla, null se non trovata
      */
     public static Attivita findByPlurale(String plurale) {
@@ -115,7 +116,6 @@ public class Attivita extends BaseEntity {
      * Recupera una lista di Attivita (id) usando la query di una property specifica
      *
      * @param plurale valore della property plurale
-     *
      * @return lista di ID delle attività che hanno la property plurale indicata
      */
     public static ArrayList<Long> findAllSingolari(String plurale) {
@@ -131,7 +131,6 @@ public class Attivita extends BaseEntity {
      *
      * @param plurale valore della property plurale
      * @param sesso   delle persone (solo M o F)
-     *
      * @return lista di ID delle attività che hanno la property plurale indicata
      */
     public static ArrayList<Long> findAllSingolari(String plurale, String sesso) {
@@ -229,6 +228,39 @@ public class Attivita extends BaseEntity {
         return AQuery.getListStr(Attivita.class, Attivita_.singolare, filter);
     }// end of method
 
+
+//    /**
+//     * Recupera una lista (array) di records Bio che usano questa istanza di Attivita nella property attivitaValida
+//     * Non uso un link al record di questa tavola, perché viene ricreata ogno volta (numero di records ed ids variabili)
+//     *
+//     * @return lista delle istanze di Bio che usano questo istanza
+//     */
+//    @SuppressWarnings("all")
+//    public List<Bio> listaBio() {
+//        SortProperty sorts = new SortProperty(Bio_.attivitaValida.getName(), Bio_.cognomeValido.getName(), Bio_.nomeValido.getName());
+//        return (List<Bio>) AQuery.getList(Bio.class, Bio_.attivitaValida, this, sorts);
+//    }// fine del metodo
+
+//    /**
+//     * Recupera una lista (array) di records Bio che usano tutte le attività singolari che afferiscono al plurale di questa attività
+//     *
+//     * @return lista delle istanze di Bio
+//     */
+//    @SuppressWarnings("all")
+//    public ArrayList<Bio> listaBio() {
+//        ArrayList<Bio> lista = new ArrayList<>();
+//        ArrayList<Bio> listaTmp = null;
+//        String attivitaPlurale;
+//        attivitaPlurale = this.getPlurale();
+//        List<Attivita> listaSingolari = (List<Attivita>) AQuery.getList(Attivita.class, Attivita_.plurale, attivitaPlurale);
+//
+//        for (Attivita attivitaSingolare : listaSingolari) {
+//            listaTmp = new ArrayList<>(attivitaSingolare.bio());
+//            lista= LibArray.somma(lista,listaTmp);
+//        }// end of for cycle
+//
+//        return lista;
+//    }// fine del metodo
 
     /**
      * Recupera una lista (array) di records Bio che usano questa istanza di Attività nella property attivitaValida

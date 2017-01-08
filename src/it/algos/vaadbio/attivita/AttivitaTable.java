@@ -1,4 +1,4 @@
-package it.algos.vaadbio.nome;
+package it.algos.vaadbio.attivita;
 
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.ui.Component;
@@ -6,35 +6,37 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Table;
 import it.algos.vaad.wiki.Api;
+import it.algos.vaadbio.cognome.Cognome;
+import it.algos.vaadbio.cognome.Cognome_;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.webbase.domain.pref.Pref;
 import it.algos.webbase.web.entity.BaseEntity;
+import it.algos.webbase.web.lib.LibText;
 import it.algos.webbase.web.module.ModulePop;
 import it.algos.webbase.web.table.ModuleTable;
 
 /**
- * Created by gac on 25 nov 2015.
+ * Created by gac on 25 nov 2016.
  * .
  */
-public class NomeTable extends ModuleTable {
+public class AttivitaTable extends ModuleTable {
 
     public static final String WIKI_BASE = "https://it.wikipedia.org/";
     public static final String WIKI_URL = WIKI_BASE + "wiki/";
     private static final String colLink = "pagina su wikipedia";
-    private final static String ESISTE = "Su wikipedia non esiste (ancora) una lista di persone di nome ";
-    private final static String POCHE = "Ci sono troppe poche voci biografiche che usano questo nome";
-
+    private final static String ESISTE = "Su wikipedia non esiste (ancora) una lista di persone di attività ";
+    private final static String POCHE = "Ci sono troppe poche voci biografiche che usano questa attività";
     private static boolean checkLista = false;
 
 
-    public NomeTable(ModulePop modulo) {
+    public AttivitaTable(ModulePop modulo) {
         super(modulo);
     }// end of constructor
 
 
     @Override
     protected void createAdditionalColumns() {
-        addGeneratedColumn(colLink, new LinkColumnGenerator());
+        addGeneratedColumn(colLink, new AttivitaTable.LinkColumnGenerator());
     }// end of method
 
     /**
@@ -47,7 +49,7 @@ public class NomeTable extends ModuleTable {
     @Override
     @SuppressWarnings("rawtypes")
     protected Object[] getDisplayColumns() {
-        return new Object[]{Nome_.nome, colLink, Nome_.voci};
+        return new Object[]{Attivita_.singolare, Attivita_.plurale, colLink};
     }// end of method
 
     /**
@@ -59,34 +61,30 @@ public class NomeTable extends ModuleTable {
     @SuppressWarnings("unchecked")
     private Component generateCellLink(Object itemId) {
         String wikiTitle = CostBio.VUOTO;
-        Label label;
-        int soglia = Pref.getInt(CostBio.TAGLIO_COGNOMI_PAGINA, 50);
-        Nome istanza = null;
+        Label label = null;
+        int soglia = Pref.getInt(CostBio.TAGLIO_NOMI_PAGINA, 50);
+        Attivita istanza = null;
         BaseEntity bean = getBean(itemId);
         boolean superaSoglia = false;
 
-        if (bean != null && bean instanceof Nome) {
-            istanza = (Nome) bean;
+        if (bean != null && bean instanceof Attivita) {
+            istanza = (Attivita) bean;
             wikiTitle = getTitolo(istanza);
-            superaSoglia = istanza.getVoci() >= soglia;
         }// end of if cycle
 
         if (checkLista) {
             if (Api.esiste(wikiTitle)) {
-                return new Label(wikiTitle);
-            } else {
-                return null;
-            }// end of if/else cycle
-        } else {
-            if (superaSoglia) {
                 label = new Label(wikiTitle);
-                label.addStyleName("wiki");
             } else {
                 label = new Label(POCHE);
                 label.addStyleName("warning");
-            }// end of if/else cycle
-            return label;
+            }// end of if cycle
+        } else {
+            label = new Label(wikiTitle);
+            label.addStyleName("wiki");
         }// end of if/else cycle
+
+        return label;
     }// end of method
 
     /**
@@ -100,8 +98,8 @@ public class NomeTable extends ModuleTable {
     public void itemClick(ItemClickEvent itemClickEvent) {
         BaseEntity bean = getBeanClickOnColumn(itemClickEvent, colLink);
 
-        if (bean != null && bean instanceof Nome) {
-            clickOnLink((Nome) bean);
+        if (bean != null && bean instanceof Attivita) {
+            clickOnLink((Attivita) bean);
         }// end of if cycle
 
     }// end of method
@@ -112,7 +110,7 @@ public class NomeTable extends ModuleTable {
      *
      * @param istanzaNome record selezionato
      */
-    private void clickOnLink(Nome istanzaNome) {
+    private void clickOnLink(Attivita istanzaNome) {
         String wikiTitle = getTitolo(istanzaNome);
         String message = CostBio.VUOTO;
 
@@ -120,7 +118,6 @@ public class NomeTable extends ModuleTable {
             this.getUI().getPage().open(WIKI_URL + wikiTitle, "_blank");
         } else {
             message += ESISTE;
-            message += istanzaNome.getNome();
             message += ".\n" + POCHE;
             Notification.show("Avviso", message, Notification.Type.HUMANIZED_MESSAGE);
         }// end of if/else cycle
@@ -128,15 +125,15 @@ public class NomeTable extends ModuleTable {
     }// end of method
 
     /**
-     * @param istanzaNome record selezionato
+     * @param istanza selezionata
      */
-    private String getTitolo(Nome istanzaNome) {
+    private String getTitolo(Attivita istanza) {
         String wikiTitle = "";
-        String nome = istanzaNome.getNome();
-        String tag = "Persone di nome ";
+        String attivitaTxt = istanza.getPlurale();
+        String tag = "Progetto:Biografie/Attività/";
 
-        if (!nome.equals(CostBio.VUOTO)) {
-            wikiTitle = tag + nome;
+        if (!attivitaTxt.equals(CostBio.VUOTO)) {
+            wikiTitle = tag + LibText.primaMaiuscola(attivitaTxt);
         }// fine del blocco if
 
         return wikiTitle;

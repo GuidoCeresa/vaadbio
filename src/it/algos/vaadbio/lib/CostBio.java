@@ -103,6 +103,9 @@ public abstract class CostBio {
     public final static String KEY_MAPPA_GIORNI_TITOLO = "titolo";
     public final static String KEY_MAPPA_GIORNI_MESE_MESE = "meseMese";
 
+    public final static String KEY_MAPPA_NATI = "nati";
+    public final static String KEY_MAPPA_MORTI = "morti";
+
 
     //--statistiche
     public static final String STAT_DATA_ULTIMA_SINTESI = "ultimaSintesi";

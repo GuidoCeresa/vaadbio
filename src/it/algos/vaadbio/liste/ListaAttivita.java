@@ -3,8 +3,12 @@ package it.algos.vaadbio.liste;
 import it.algos.vaad.wiki.LibWiki;
 import it.algos.vaadbio.attivita.Attivita;
 import it.algos.vaadbio.bio.Bio;
+import it.algos.vaadbio.cognome.Cognome;
+import it.algos.vaadbio.genere.Genere;
 import it.algos.vaadbio.lib.CostBio;
+import it.algos.vaadbio.lib.LibBio;
 import it.algos.vaadbio.nazionalita.Nazionalita;
+import it.algos.vaadbio.professione.Professione;
 import it.algos.webbase.domain.pref.Pref;
 import it.algos.webbase.web.lib.LibText;
 
@@ -50,7 +54,8 @@ public class ListaAttivita extends ListaBio {
         // head
         usaHeadTocIndice = true;
         usaHeadIncipit = true;
-        tagHeadTemplateProgetto = "antroponimi";
+        tagHeadTemplateProgetto = "biografie";
+
         // body
         usaSuddivisioneParagrafi = true;
         usaBodyRigheMultiple = false;
@@ -77,37 +82,61 @@ public class ListaAttivita extends ListaBio {
     @Override
     protected void elaboraTitolo() {
         String tag = "Progetto:Biografie/Attività/";
-        titoloPagina = tag + LibText.primaMaiuscola(getAttivita().getPlurale());
+        titoloPagina = tag + getAttivitaText();
     }// fine del metodo
 
 
-//    /**
-//     * Costruisce una singola mappa
-//     * Sovrascritto
-//     */
-//    @Override
-//    @SuppressWarnings("all")
-//    protected void elaboraMappa(Bio bio) {
-//        String didascalia;
-//        ArrayList<Bio> lista;
-//        String chiaveParagrafo;
-//        HashMap<String, Object> mappa;
-//
-//        chiaveParagrafo = getChiaveParagrafo(bio);
-//        if (mappaBio.containsKey(chiaveParagrafo)) {
-//            lista = (ArrayList<Bio>) mappaBio.get(chiaveParagrafo).get(KEY_MAP_LISTA);
-//            lista.add(bio);
-//        } else {
-//            mappa = new HashMap<>();
-//            lista = new ArrayList<>();
-//            lista.add(bio);
-//            mappa.put(KEY_MAP_LINK, chiaveParagrafo);
-//            mappa.put(KEY_MAP_TITOLO, chiaveParagrafo);
-//            mappa.put(KEY_MAP_LISTA, lista);
-//            mappa.put(KEY_MAP_SESSO, bio.getSesso());
-//            mappaBio.put(chiaveParagrafo, mappa);
-//        }// end of if/else cycle
-//    }// fine del metodo
+    /**
+     * Costruisce una lista di biografie che hanno una valore valido per la pagina specifica
+     * Esegue una query
+     * Sovrascritto
+     */
+    @Override
+    protected void elaboraListaBiografie() {
+        Attivita attivita = this.getAttivita();
+
+        if (attivita != null) {
+            listaBio = attivita.bio();
+        }// end of if cycle
+    }// fine del metodo
+
+
+    /**
+     * Costruisce la chiave del paragrafo
+     * Sovrascritto
+     */
+    @Override
+    protected String getChiave(Bio bio) {
+        return LibBio.getChiavePerNazionalita(bio, tagParagrafoNullo);
+    }// fine del metodo
+
+
+    /**
+     * Costruisce il titolo del paragrafo
+     * <p>
+     * Questo deve essere composto da:
+     * Professione.pagina
+     * Genere.plurale
+     */
+    protected String getTitoloParagrafo(Bio bio) {
+        String titoloParagrafo = tagParagrafoNullo;
+        String paginaWiki = CostBio.VUOTO;
+        String linkVisibile = CostBio.VUOTO;
+        String nazionalita = "";
+
+        if (bio == null) {
+            return CostBio.VUOTO;
+        }// end of if cycle
+
+        nazionalita = LibBio.getChiavePerNazionalita(bio, tagParagrafoNullo);
+        if (nazionalita != null) {
+            paginaWiki = LibText.primaMaiuscola(nazionalita);
+            linkVisibile = LibText.primaMaiuscola(nazionalita);
+            titoloParagrafo = costruisceTitolo(paginaWiki, linkVisibile);
+        }// end of if cycle
+
+        return titoloParagrafo;
+    }// fine del metodo
 
     /**
      * Costruisce la chiave del paragrafo
@@ -177,6 +206,14 @@ public class ListaAttivita extends ListaBio {
     @Override
     protected String elaboraFooter() {
         String text = CostBio.VUOTO;
+        String attivitaPluraleMaiuscola = LibText.primaMaiuscola(getPluraleAttività());
+
+        text = "==Voci correlate==";
+        text += CostBio.A_CAPO;
+        text += "*[[:Categoria:" + attivitaPluraleMaiuscola + "]]";
+        text += CostBio.A_CAPO;
+        text += "*[[Progetto:Biografie/Attività]]";
+        text += CostBio.A_CAPO;
 
         if (usaFooterPortale) {
             text += CostBio.A_CAPO;
@@ -202,20 +239,20 @@ public class ListaAttivita extends ListaBio {
     }// fine del metodo
 
 
-    /**
-     * Lista delle biografie che hanno una valore valido per il link specifico
-     * Sovrascritto
-     */
-    protected List<Bio> getListaBio() {
-        List<Bio> listaBio = null;
-        Attivita attivita = this.getAttivita();
-
-        if (attivita != null) {
-            listaBio = attivita.bio();
-        }// end of if cycle
-
-        return listaBio;
-    }// fine del metodo
+//    /**
+//     * Lista delle biografie che hanno una valore valido per il link specifico
+//     * Sovrascritto
+//     */
+//    protected List<Bio> getListaBio() {
+//        List<Bio> listaBio = null;
+//        Attivita attivita = this.getAttivita();
+//
+//        if (attivita != null) {
+//            listaBio = attivita.bio();
+//        }// end of if cycle
+//
+//        return listaBio;
+//    }// fine del metodo
 
     /**
      * Costruisce la sottopagina
@@ -241,6 +278,19 @@ public class ListaAttivita extends ListaBio {
         }// end of if cycle
 
         return plurale;
+    }// end of getter method
+
+
+    public String getAttivitaText() {
+        String attivitaText = "";
+        Attivita attivita = getAttivita();
+
+        if (attivita != null) {
+            attivitaText = attivita.getPlurale();
+            attivitaText=LibText.primaMaiuscola(attivitaText);
+        }// end of if cycle
+
+        return attivitaText;
     }// end of getter method
 
 }// fine della classe

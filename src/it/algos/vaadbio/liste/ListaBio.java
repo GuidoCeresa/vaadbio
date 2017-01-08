@@ -164,7 +164,7 @@ public abstract class ListaBio {
 
     /**
      * Costruisce una mappa di tutte le biografie della pagina,
-     * suddividendo la lista in paragrafi (attivitò, nazionalità, alfabetico, ecc.)
+     * suddividendo la lista in paragrafi (attività, nazionalità, alfabetico, ecc.)
      * Sovrascritto
      */
     protected void elaboraMappaBiografie() {

@@ -18,6 +18,7 @@ import it.algos.webbase.web.search.SearchManager;
 import it.algos.webbase.web.table.ATable;
 import it.algos.webbase.web.table.TablePortal;
 
+import javax.persistence.metamodel.Attribute;
 import java.util.ArrayList;
 
 /**
@@ -67,6 +68,18 @@ public class NomeMod extends ModulePop {
     @Override
     public TablePortal createTablePortal() {
         return new NomeTablePortal(this);
+    }// end of method
+
+
+    /**
+     * Crea i campi visibili nella scheda (form)
+     * <p>
+     * Come default spazzola tutti i campi della Entity <br>
+     * Può essere sovrascritto (facoltativo) nelle sottoclassi specifiche <br>
+     * Serve anche per l'ordine con cui vengono presentati i campi nella scheda <br>
+     */
+    protected Attribute<?, ?>[] creaFieldsForm() {
+        return new Attribute[]{Nome_.nome, Nome_.voci};
     }// end of method
 
 

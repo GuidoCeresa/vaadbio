@@ -15,10 +15,8 @@ import java.util.List;
  */
 public class ListaAntroCognomeABC extends ListaAntroCognome {
 
-
     private HashMap<String, Object> mappaSuper;
     private String titoloVisibile;
-
 
     /**
      * Costruttore

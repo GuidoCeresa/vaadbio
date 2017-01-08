@@ -9,6 +9,7 @@ import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.secolo.Secolo;
 import it.algos.webbase.web.entity.BaseEntity;
 import it.algos.webbase.web.entity.DefaultSort;
+import it.algos.webbase.web.entity.EM;
 import it.algos.webbase.web.lib.SecoloEnum;
 import it.algos.webbase.web.query.AQuery;
 import it.algos.webbase.web.query.SortProperty;
@@ -16,13 +17,9 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.eclipse.persistence.annotations.Index;
 import org.hibernate.validator.constraints.NotEmpty;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 /**
  * Classe di tipo JavaBean
@@ -152,6 +149,59 @@ public class Anno extends BaseEntity {
     }// end of method
 
     /**
+     * Recupera una lista (array) di alcuni records della Entity
+     *
+     * @return lista di istanze di Anno
+     */
+    @SuppressWarnings("unchecked")
+    public static List<Anno> getList(int partenza) {
+        return (List<Anno>) AQuery.getList(Anno.class, new Compare.Greater("ordinamento", partenza));
+    }// end of method
+
+    /**
+     * Recupera una mappa completa dei nati per anno
+     *
+     * @return numero di biografie
+     */
+    public static Vector getMappaNati() {
+        Vector vettore = null;
+        EntityManager manager = EM.createEntityManager();
+        Query query;
+        String queryTxt = "select bio.annoNatoPunta,count(bio.annoNatoPunta) from Bio bio group by bio.annoNatoPunta";
+
+        try { // prova ad eseguire il codice
+            query = manager.createQuery(queryTxt);
+            vettore = (Vector) query.getResultList();
+        } catch (Exception unErrore) { // intercetta l'errore
+        }// fine del blocco try-catch
+        manager.close();
+
+        return vettore;
+    }// end of method
+
+    /**
+     * Recupera una mappa completa dei nati per anno
+     *
+     * @return numero di biografie
+     */
+    public static Vector getMappaMorti() {
+        Vector vettore = null;
+        EntityManager manager = EM.createEntityManager();
+        Query query;
+        String queryTxt = "select bio.annoMortoPunta,count(bio.annoMortoPunta) from Bio bio group by bio.annoMortoPunta";
+
+        try { // prova ad eseguire il codice
+            query = manager.createQuery(queryTxt);
+            vettore = (Vector) query.getResultList();
+        } catch (Exception unErrore) { // intercetta l'errore
+        }// fine del blocco try-catch
+        manager.close();
+
+        return vettore;
+    }// end of method
+
+
+    /**
      * Recupera una lista (array) di records Bio che usano questa istanza di Anno nella property annoNatoPunta
      * Uso un link al record di questa tavola, perché i records sono statici, creati una tantum
      *
@@ -277,24 +327,14 @@ public class Anno extends BaseEntity {
         return lista;
     }// fine del metodo
 
-
     /**
      * Recupera il valore del numero di records di Bio che usano questa istanza di Anno nella property annoNatoPunta
      *
      * @return numero di istanze di Bio che usano questo anno
      */
     public int countBioNati() {
-//        return (int) AQuery.getCount(Anno.class, "annoNatoPunta", this);
-        int numRecords = 0;
-        ArrayList<Bio> lista = bioNati();
-
-        if (lista != null) {
-            numRecords = lista.size();
-        }// end of if cycle
-
-        return numRecords;
+        return AQuery.count(Bio.class, Bio_.annoNatoPunta, this);
     }// fine del metodo
-
 
     /**
      * Recupera il valore del numero di records di Bio che usano questa istanza di Anno nella property annoMortoPunta
@@ -302,17 +342,8 @@ public class Anno extends BaseEntity {
      * @return numero di istanze di Bio che usano questo anno
      */
     public int countBioMorti() {
-//        return (int) AQuery.getCount(Anno.class, "annoMortoPunta", this);
-        int numRecords = 0;
-        ArrayList<Bio> lista = bioMorti();
-
-        if (lista != null) {
-            numRecords = lista.size();
-        }// end of if cycle
-
-        return numRecords;
+        return AQuery.count(Bio.class, Bio_.annoMortoPunta, this);
     }// fine del metodo
-
 
     /**
      * Costruisce il filtro per trovare i records di Bio che questa istanza di Anno usa nella property annoNatoPunta
@@ -338,10 +369,25 @@ public class Anno extends BaseEntity {
     /**
      * Titolo della pagina Nati/Morti da creare/caricare su wikipedia
      */
+    public String getTitoloListaNati() {
+        return getTitoloLista("Nati");
+    }// fine del metodo
+
+    /**
+     * Titolo della pagina Nati/Morti da creare/caricare su wikipedia
+     */
+    public String getTitoloListaMorti() {
+        return getTitoloLista("Morti");
+    }// fine del metodo
+
+
+    /**
+     * Titolo della pagina Nati/Morti da creare/caricare su wikipedia
+     */
     public String getTitoloLista(String tag) {
         String titoloLista = CostBio.VUOTO;
-        String articolo = "nel";
-        String articoloBis = "nell'";
+        String articolo = " nel";
+        String articoloBis = " nell'";
 
 
         if (!titolo.equals(CostBio.VUOTO)) {
@@ -351,9 +397,9 @@ public class Anno extends BaseEntity {
                     || titolo.equals("11" + SecoloEnum.TAG_AC)
                     || titolo.startsWith("8")
                     ) {
-                titoloLista = tag + articoloBis + titolo;
+                titoloLista = tag + CostBio.VUOTO + articoloBis + titolo;
             } else {
-                titoloLista = tag + articolo + CostBio.SPAZIO + titolo;
+                titoloLista = tag + CostBio.VUOTO + articolo + CostBio.SPAZIO + titolo;
             }// fine del blocco if-else
         }// fine del blocco if
 

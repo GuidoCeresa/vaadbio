@@ -21,7 +21,7 @@ public class CognomeTable extends ModuleTable {
 
     public static final String WIKI_BASE = "https://it.wikipedia.org/";
     public static final String WIKI_URL = WIKI_BASE + "wiki/";
-    private static final String colLink = "wiki";
+    private static final String colLink = "pagina su wikipedia";
     private final static String ESISTE = "Su wikipedia non esiste (ancora) una lista di persone di cognome ";
     private final static String POCHE = "Ci sono troppe poche voci biografiche che usano questo cognome";
     private static boolean checkLista = false;

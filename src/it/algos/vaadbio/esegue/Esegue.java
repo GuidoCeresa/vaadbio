@@ -70,9 +70,11 @@ public abstract class Esegue {
      */
     public static void cicloUpload() {
         uploadGiorni();
-        statisticaSintesi();
+        statisticheAll();
         cicloNomi();
         cicloCognomi();
+        cicloAttivita();
+        cicloNazionalita();
         uploadAnni();
     } // fine del metodo
 
@@ -90,12 +92,6 @@ public abstract class Esegue {
         new UploadAnni(false);
     } // fine del metodo
 
-    /**
-     * Upload attività
-     */
-    public static void uploadAttivita() {
-        new UploadAttivita();
-    } // fine del metodo
 
 
     /**
@@ -199,6 +195,7 @@ public abstract class Esegue {
         new StatNomiPagine();
         new StatNomiListe();
     }// fine del metodo
+
 //------------------------------------------------------------------------------------------------------------------------
     // Cognomi
     //------------------------------------------------------------------------------------------------------------------------
@@ -229,6 +226,64 @@ public abstract class Esegue {
     public static void statisticheCognomi() {
         new StatCognomiPagine();
         new StatCognomiListe();
+    }// fine del metodo
+
+
+    //------------------------------------------------------------------------------------------------------------------------
+    // Attività
+    //------------------------------------------------------------------------------------------------------------------------
+
+    /**
+     * Ciclo normale giornaliero di upload delle liste di attività
+     */
+    public static void cicloAttivita() {
+        if (Pref.getBool(CostBio.USA_DAEMONS_ATTIVITA, false)) {
+            Esegue.uploadAttivita();
+            Esegue.statisticheAttivita();
+        }// end of if cycle
+    } // fine del metodo
+
+    /**
+     * Upload attività
+     */
+    public static void uploadAttivita() {
+        new UploadAttivita();
+    } // fine del metodo
+
+
+    /**
+     * Crea la pagina statistica delle attività
+     */
+    public static void statisticheAttivita() {
+    }// fine del metodo
+
+
+    //------------------------------------------------------------------------------------------------------------------------
+    // Nazionalità
+    //------------------------------------------------------------------------------------------------------------------------
+
+    /**
+     * Ciclo normale giornaliero di upload delle liste di nazionalità
+     */
+    public static void cicloNazionalita() {
+        if (Pref.getBool(CostBio.USA_DAEMONS_NAZIONALITA, false)) {
+            Esegue.uploadNazionalita();
+            Esegue.statisticheNazionalita();
+        }// end of if cycle
+    } // fine del metodo
+
+    /**
+     * Upload nazionalità
+     */
+    public static void uploadNazionalita() {
+//        new UploadNazionalita();
+    } // fine del metodo
+
+
+    /**
+     * Crea la pagina statistica delle nazionalità
+     */
+    public static void statisticheNazionalita() {
     }// fine del metodo
 
 

@@ -16,8 +16,6 @@ import java.util.HashMap;
  */
 public class StatGiorni extends Statistiche {
 
-    private int natiFix = 0;
-    private int mortiFix = 0;
 
     /**
      * Costruttore completo
@@ -63,7 +61,7 @@ public class StatGiorni extends Statistiche {
      * Corpo della tabella
      */
     private String creaTable() {
-        HashMap<String, Object> mappa = new HashMap<String, Object>();
+        HashMap<String, Object> mappa = new HashMap<>();
 
         mappa.put(Cost.KEY_MAPPA_TITOLI, listaTitoli());
         mappa.put(Cost.KEY_MAPPA_DESTRA_LISTA, listaColonneDestra());
@@ -129,22 +127,18 @@ public class StatGiorni extends Statistiche {
     private ArrayList getRigaGiorno(Giorno giorno, int natiTotali, int mortiTotali) {
         ArrayList riga = new ArrayList();
         String nome = giorno.getTitolo();
+        String titoloNati = giorno.getTitoloListaNati();
+        String titoloMorti = giorno.getTitoloListaMorti();
         int nati = giorno.countBioNati();
         int morti = giorno.countBioMorti();
         BigDecimal natiPerCento = new BigDecimal(nati * 100).divide(new BigDecimal(natiTotali), 2, 2);
         BigDecimal mortiPerCento = new BigDecimal(morti * 100).divide(new BigDecimal(mortiTotali), 2, 2);
-        String titoloNati = giorno.getTitoloListaNati();
-        String titoloMorti = giorno.getTitoloListaMorti();
 
         riga.add(LibWiki.setQuadre(nome));
         riga.add(LibWiki.setQuadre(titoloNati + "|" + LibNum.format(nati)));
         riga.add(LibWiki.setQuadre(titoloMorti + "|" + LibNum.format(morti)));
         riga.add(natiPerCento.toString() + " %");
         riga.add(mortiPerCento.toString() + " %");
-
-
-        natiFix += nati;
-        mortiFix += morti;
 
         return riga;
     }// fine del metodo

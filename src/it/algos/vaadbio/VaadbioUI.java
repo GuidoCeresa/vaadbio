@@ -18,6 +18,7 @@ import it.algos.vaadbio.nazionalita.NazionalitaMod;
 import it.algos.vaadbio.nome.NomeMod;
 import it.algos.vaadbio.secolo.SecoloMod;
 import it.algos.webbase.domain.pref.PrefMod;
+import it.algos.webbase.domain.utente.UtenteModulo;
 import it.algos.webbase.domain.vers.VersMod;
 import it.algos.webbase.web.entity.EM;
 import it.algos.webbase.web.lib.LibSession;
@@ -133,6 +134,7 @@ public class VaadbioUI extends AlgosUI {
 //        addMod(menuUtilities, new VersMod());
 //        addMod(menuUtilities, new BioLogoMod());
 //        addMod(menuUtilities, new PrefMod());
+        this.addModulo(new UtenteModulo("User"));
         this.addModulo(new VersMod());
         this.addModulo(new BioLogoMod());
         this.addModulo(new PrefMod());

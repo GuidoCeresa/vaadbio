@@ -5,8 +5,11 @@ import com.vaadin.event.Action;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.MenuBar;
 import com.vaadin.ui.Notification;
+import com.vaadin.ui.Table;
 import com.vaadin.ui.UI;
 import it.algos.vaadbio.ciclo.CicloDownload;
+import it.algos.vaadbio.cognome.CognomeTable;
+import it.algos.vaadbio.cognome.CognomeTablePortal;
 import it.algos.vaadbio.esegue.Esegue;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.liste.ListaAttivita;
@@ -14,6 +17,7 @@ import it.algos.webbase.domain.pref.Pref;
 import it.algos.webbase.web.dialog.ConfirmDialog;
 import it.algos.webbase.web.module.ModulePop;
 import it.algos.webbase.web.table.ATable;
+import it.algos.webbase.web.table.TablePortal;
 
 /**
  * Gestione (minimale) del modulo
@@ -36,8 +40,29 @@ public class AttivitaMod extends ModulePop {
      */
     public AttivitaMod() {
         super(Attivita.class, MENU_ADDRESS, FontAwesome.LIST_UL);
+        this.getTable().setRowHeaderMode(Table.RowHeaderMode.INDEX);
     }// end of constructor
 
+
+    /**
+     * Returns the table used to shows the list. <br>
+     * The concrete subclass must override for a specific Table.
+     *
+     * @return the Table
+     */
+    public ATable createTable() {
+        return new AttivitaTable(this);
+    }// end of method
+
+    /**
+     * Create the Table Portal
+     *
+     * @return the TablePortal
+     */
+    @Override
+    public TablePortal createTablePortal() {
+        return new AttivitaTablePortal(this);
+    }// end of method
 
     /**
      * Registers a new action handler for this container
@@ -76,6 +101,7 @@ public class AttivitaMod extends ModulePop {
         addCommandDownload(menuItem);
         addCommandUploadAll(menuItem);
         addCommandUpload(menuItem);
+        addCommandStatistichel(menuItem);
     }// end of method
 
     /**
@@ -86,28 +112,7 @@ public class AttivitaMod extends ModulePop {
     private void addCommandDownload(MenuBar.MenuItem menuItem) {
         menuItem.addItem("Download", FontAwesome.COG, new MenuBar.Command() {
             public void menuSelected(MenuBar.MenuItem selectedItem) {
-                boolean usaDialoghi = Pref.getBool(CostBio.USA_DIALOGHI_CONFERMA, true);
-                if (usaDialoghi) {
-                    String newMsg;
-                    newMsg = "Esegue un ciclo (<b><span style=\"color:green\">update</span></b>) di aggiunta attività</br>";
-                    ConfirmDialog dialog = new ConfirmDialog(CostBio.MSG, newMsg,
-                            new ConfirmDialog.Listener() {
-                                @Override
-                                public void onClose(ConfirmDialog dialog, boolean confirmed) {
-                                    if (confirmed) {
-                                        esegueDownload();
-                                    }// end of if cycle
-                                }// end of inner method
-                            });// end of anonymous inner class
-                    UI ui = getUI();
-                    if (ui != null) {
-                        dialog.show(ui);
-                    } else {
-                        Notification.show("Avviso", "Devi prima entrare nel modulo Attività per eseguire questo comando", Notification.Type.WARNING_MESSAGE);
-                    }// end of if/else cycle
-                } else {
-                    new CicloDownload();
-                }// fine del blocco if-else
+                AttivitaService.download();
             }// end of method
         });// end of anonymous class
     }// end of method
@@ -121,7 +126,7 @@ public class AttivitaMod extends ModulePop {
     private void addCommandUploadAll(MenuBar.MenuItem menuItem) {
         menuItem.addItem("Upload all", FontAwesome.COG, new MenuBar.Command() {
             public void menuSelected(MenuBar.MenuItem selectedItem) {
-                esegueUploadAll();
+                Esegue.uploadAttivita();
             }// end of method
         });// end of anonymous class
     }// end of method
@@ -140,18 +145,18 @@ public class AttivitaMod extends ModulePop {
     }// end of method
 
     /**
-     * Esegue il download
+     * Comando bottone/item crea sul server wikii la pagina di statistiche
+     *
+     * @param menuItem a cui agganciare il bottone/item
      */
-    public void esegueDownload() {
-        AttivitaService.download();
+    private void addCommandStatistichel(MenuBar.MenuItem menuItem) {
+        menuItem.addItem("Statistiche", FontAwesome.COG, new MenuBar.Command() {
+            public void menuSelected(MenuBar.MenuItem selectedItem) {
+                Esegue.statisticheAttivita();
+            }// end of method
+        });// end of anonymous class
     }// end of method
 
-    /**
-     * Esegue l'upload per la lista dei nati
-     */
-    public void esegueUploadAll() {
-        Esegue.uploadAttivita();
-    }// end of method
 
     /**
      * Esegue l'upload per la lista dei nati
