@@ -19,7 +19,8 @@ import java.util.Map;
  * Pagina di controllo del progetto Antroponimi
  * - Progetto:Antroponimi/Liste cognomi: Elenco dei xxx cognomi '''differenti'''  utilizzati nelle yyyy voci biografiche con occorrenze maggiori di zz
  */
-public class StatCognomiListe extends StatNomi {
+public class StatCognomiListe extends StatCognomi {
+
     private static String TITOLO_PAGINA = "Liste cognomi";
 
     private ArrayList<Cognome> listaCognomi;

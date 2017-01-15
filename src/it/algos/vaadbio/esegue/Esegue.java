@@ -36,9 +36,6 @@ public abstract class Esegue {
      * Ciclo normale giornaliero notturno di download
      */
     public static void cicloDownload() {
-        AttivitaService.download();
-        NazionalitaService.download();
-        ProfessioneService.download();
         new CicloDownload();
     } // fine del metodo
 

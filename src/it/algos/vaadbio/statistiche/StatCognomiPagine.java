@@ -17,7 +17,7 @@ import java.util.Map;
  * Pagina di controllo del progetto Antroponimi
  * - Progetto:Antroponimi/Cognomi: Elenco dei xxx cognomi che hanno più di yy ricorrenze nelle voci biografiche
  */
-public class StatCognomiPagine extends StatNomi{
+public class StatCognomiPagine extends StatCognomi {
 
     private static String TITOLO_PAGINA = "Cognomi";
     private ArrayList<Cognome> listaCognomi;

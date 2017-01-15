@@ -8,6 +8,7 @@ import it.algos.vaadbio.download.DownloadPages;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.lib.LibBio;
 import it.algos.vaadbio.nazionalita.NazionalitaService;
+import it.algos.vaadbio.professione.ProfessioneService;
 import it.algos.webbase.domain.log.Log;
 import it.algos.webbase.domain.pref.Pref;
 import it.algos.webbase.web.entity.EM;
@@ -59,6 +60,7 @@ public class CicloDownload {
     /**
      * Aggiorna la tavola delle attività
      * Aggiorna la tavola delle nazionalità
+     * Aggiorna la tavola delle professioni
      * Legge la categoria BioBot
      * Legge le voci Bio esistenti
      * <p>
@@ -100,6 +102,11 @@ public class CicloDownload {
         // aggiorna la tavola delle nazionalità
         if (!Pref.getBool(CostBio.USA_DEBUG, false)) {
             NazionalitaService.download();
+        }// fine del blocco if-else
+
+        // aggiorna la tavola delle professioni
+        if (!Pref.getBool(CostBio.USA_DEBUG, false)) {
+            ProfessioneService.download();
         }// fine del blocco if-else
 
         // carica la categoria

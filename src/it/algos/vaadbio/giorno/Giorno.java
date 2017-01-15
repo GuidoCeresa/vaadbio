@@ -74,7 +74,6 @@ public class Giorno extends BaseEntity {
      * Recupera una istanza di Giorno usando la query standard della Primary Key
      *
      * @param id valore della Primary Key
-     *
      * @return istanza di Giorno, null se non trovata
      */
     public static Giorno find(long id) {
@@ -103,7 +102,6 @@ public class Giorno extends BaseEntity {
      * Recupera una istanza di Giorno usando la query di una property specifica
      *
      * @param titolo valore della property Titolo
-     *
      * @return istanza di Giorno, null se non trovata
      */
     public static Giorno findByTitolo(String titolo) {
@@ -422,6 +420,7 @@ public class Giorno extends BaseEntity {
         String articolo = "il";
         String articoloBis = "l'";
 
+        tag = tag.trim();
         if (!titolo.equals("")) {
             if (titolo.startsWith("8") || titolo.startsWith("11")) {
                 titoloLista = tag + CostBio.SPAZIO + articoloBis + titolo;

@@ -72,6 +72,8 @@ public class ElaboraTemplate {
          if (bio != null) {
             this.tmplBioServer = bio.getTmplBioServer();
             this.doInit();
+            bio.setTmplBioStandard(tmplBioStandard);
+            bio.setTemplatesUguali(checkUguaglianzaTemplates());
         }// end of if cycle
     }// end of constructor
 
@@ -166,5 +168,13 @@ public class ElaboraTemplate {
     public boolean isValido() {
         return valido;
     }// end of getter method
+
+    public boolean checkUguaglianzaTemplates() {
+        if (tmplBioStandard.equals(tmplBioServer)) {
+            return true;
+        } else {
+            return true;
+        }// end of if/else cycle
+    }// end of method
 
 }// end of class

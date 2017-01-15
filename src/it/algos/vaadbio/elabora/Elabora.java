@@ -111,8 +111,7 @@ public class Elabora {
         String tmplBioStandard;
 
         //--Costruisce il tmplBioStandard che serve per l'upload della singola voce sul server
-        tmplBioStandard = new ElaboraTemplate(bio.getTmplBioServer()).getTmplBioStandard();
-        bio.setTmplBioStandard(tmplBioStandard);
+        new ElaboraTemplate(bio);
 
         //--Elabora valori base di tutti i parametri
         new ElaboraParametri(bio);
@@ -135,6 +134,15 @@ public class Elabora {
             if (Pref.getBool(CostBio.USA_LOG_CICLO, true)) {
                 Log.debug("elabora", "Non sono riuscito ad elaborare la voce " + LibWiki.setQuadre(bio.getTitle()));
             }// end of if cycle
+
+            //@todo PATCH
+            bio.setTmplBioServer("");
+            bio.setTmplBioStandard("");
+            bio.setPreData("");
+            bio.setPostCognome("");
+            bio.save(manager);
+            elaborata = true;
+
         }// fine del blocco try-catch
     }// end of method
 

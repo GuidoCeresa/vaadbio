@@ -3,6 +3,7 @@ package it.algos.vaadbio.lib;
 
 import com.vaadin.addon.jpacontainer.JPAContainerItem;
 import com.vaadin.data.Item;
+import com.vaadin.shared.ui.label.ContentMode;
 import it.algos.vaad.wiki.Api;
 import it.algos.vaad.wiki.LibWiki;
 import it.algos.vaad.wiki.Page;
@@ -23,12 +24,10 @@ import it.algos.webbase.web.lib.LibText;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import java.awt.*;
 import java.util.*;
+import java.util.List;
 
-//import it.algos.vaadbio.biolista.BioLista;
-//import it.algos.vaadbio.biooriginale.BioOriginale;
-//import it.algos.vaadbio.biovalida.BioValida;
-//import it.algos.vaadbio.biowiki.BioWiki;
 
 /**
  * Created by gac on 20 ago 2015.
@@ -2200,6 +2199,20 @@ public abstract class LibBio {
         }// end of if cycle
 
         return didascaliaOut;
+    }// fine del metodo
+
+    /**
+     * Spazio di separazione
+     */
+    public static com.vaadin.ui.Label spazio(int ripetizioni) {
+        com.vaadin.ui.Label label;
+        String tag = "";
+
+        for (int k = 0; k < ripetizioni; k++) {
+            tag += CostBio.SPAZIO_HTML;
+        }// end of for cycle
+
+        return new com.vaadin.ui.Label(tag, ContentMode.HTML);
     }// fine del metodo
 
 }// end of abstract static class

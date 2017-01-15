@@ -134,7 +134,7 @@ public class Cognome extends BaseEntity {
     public static Vector findMappa(EntityManager manager) {
         Vector vettore = null;
         Query query;
-        String queryTxt = "select bio.cognome,count(bio.cognome) from Bio bio group by bio.cognome order by bio.cognome";
+        String queryTxt = "select bio.cognomeValido,count(bio.cognomeValido) from Bio bio group by bio.cognomeValido order by bio.cognomeValido";
 
         try { // prova ad eseguire il codice
             query = manager.createQuery(queryTxt);

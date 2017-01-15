@@ -124,6 +124,7 @@ public class WrapBio {
         bio.setTitle(wikiTitle);
         bio.setTmplBioServer(tmplBio);
         bio.setTemplateEsiste(true);
+        bio.setTemplateValido(true);
         bio.setUltimaLettura(LibTime.adesso());
 
         //--Elabora l'istanza

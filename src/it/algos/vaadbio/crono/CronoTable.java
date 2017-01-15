@@ -19,8 +19,8 @@ public abstract class CronoTable extends ModuleTable {
 
     protected final static String WIKI_BASE = "https://it.wikipedia.org/";
     protected final static String WIKI_URL = WIKI_BASE + "wiki/";
-    protected final static String colLinkNati = "wiki nati";
-    protected final static String colLinkMorti = "wiki morti";
+    protected final static String colLinkNati = "Nati";
+    protected final static String colLinkMorti = "Mrti";
     protected final static String ESISTE = "Su wikipedia non esiste (ancora) una lista corrispondente ";
     protected final static String POCHE = "Ci sono troppe poche voci biografiche che usano questo lista";
 

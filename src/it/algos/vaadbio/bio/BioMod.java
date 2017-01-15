@@ -7,6 +7,7 @@ import com.vaadin.ui.MenuBar;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
 import it.algos.vaad.wiki.LibWiki;
+import it.algos.vaadbio.attivita.AttivitaTablePortal;
 import it.algos.vaadbio.ciclo.CicloDownload;
 import it.algos.vaadbio.ciclo.CicloElabora;
 import it.algos.vaadbio.ciclo.CicloUpdate;
@@ -23,6 +24,7 @@ import it.algos.webbase.web.lib.LibNum;
 import it.algos.webbase.web.module.ModulePop;
 import it.algos.webbase.web.search.SearchManager;
 import it.algos.webbase.web.table.ATable;
+import it.algos.webbase.web.table.TablePortal;
 
 import javax.persistence.metamodel.Attribute;
 
@@ -71,6 +73,16 @@ public class BioMod extends ModulePop {
     }// end of method
 
     /**
+     * Create the Table Portal
+     *
+     * @return the TablePortal
+     */
+    @Override
+    public TablePortal createTablePortal() {
+        return new BioTablePortal(this);
+    }// end of method
+
+    /**
      * Returns the form used to edit an item. <br>
      * The concrete subclass must override for a specific Form.
      *
@@ -86,74 +98,6 @@ public class BioMod extends ModulePop {
         return new BioSearch(this);
     }// end of method
 
-
-    /**
-     * Crea i campi visibili nella lista (table)
-     * <p/
-     * Come default spazzola tutti i campi della Entity <br>
-     * Può essere sovrascritto (facoltativo) nelle sottoclassi specifiche <br>
-     * Serve anche per l'ordine con cui vengono presentati i campi nella lista <br>
-     */
-    protected Attribute<?, ?>[] creaFieldsList() {
-        return new Attribute[]{
-                Bio_.pageid,
-                Bio_.title,
-                Bio_.ultimaLettura,
-                Bio_.ultimaElaborazione,
-
-                Bio_.didascaliaGiornoNato,
-                Bio_.didascaliaGiornoMorto,
-                Bio_.didascaliaAnnoNato,
-                Bio_.didascaliaAnnoMorto,
-                Bio_.didascaliaListe,
-
-                Bio_.attivita,
-                Bio_.attivita2,
-                Bio_.attivita3,
-                Bio_.nazionalita,
-
-                Bio_.giornoMeseNascita,
-                Bio_.giornoMeseNascitaValido,
-                Bio_.giornoNatoPunta,
-                Bio_.giornoMeseMorte,
-                Bio_.giornoMeseMorteValido,
-                Bio_.giornoMortoPunta,
-
-                Bio_.annoNascita,
-                Bio_.annoNascitaValido,
-                Bio_.annoNatoPunta,
-                Bio_.annoMorte,
-                Bio_.annoMorteValido,
-                Bio_.annoMortoPunta,
-
-                Bio_.nomePunta
-
-        };
-    }// end of method
-
-    /**
-     * Crea i campi visibili nella scheda (form)
-     * <p>
-     * Come default spazzola tutti i campi della Entity <br>
-     * Può essere sovrascritto (facoltativo) nelle sottoclassi specifiche <br>
-     * Serve anche per l'ordine con cui vengono presentati i campi nella scheda <br>
-     */
-    protected Attribute<?, ?>[] creaFieldsForm() {
-        return new Attribute[]{Bio_.pageid,
-                Bio_.title,
-                Bio_.templateEsiste,
-                Bio_.templateValido,
-                Bio_.templatesUguali,
-                Bio_.ultimaLettura,
-                Bio_.ultimaElaborazione,
-                Bio_.didascaliaGiornoNato,
-                Bio_.didascaliaGiornoMorto,
-                Bio_.didascaliaAnnoNato,
-                Bio_.didascaliaAnnoMorto,
-                Bio_.didascaliaListe,
-                Bio_.nomePunta
-        };
-    }// end of method
 
 
     /**
@@ -172,7 +116,6 @@ public class BioMod extends ModulePop {
                 Bio_.title
         };
     }// end of method
-
 
 
     /**
@@ -662,7 +605,7 @@ public class BioMod extends ModulePop {
         if (title != null && !title.equals("")) {
             this.getUI().getPage().open(WIKI_CRONO + title + WIKI_CRONO_END, "_blank");
         } else {
-            Notification.show("Devi selezionare una riga per visualizzare la cronologia della voce su wikipedia");
+            Notification.show("Devi selezionare una riga per visualizzare la cronologia della pagina su wikipedia");
         }// end of if/else cycle
     }// end of method
 

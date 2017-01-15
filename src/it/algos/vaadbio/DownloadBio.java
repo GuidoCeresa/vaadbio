@@ -22,6 +22,7 @@ import java.sql.Timestamp;
  * Azzera il flag temporale ultimaElaborazione
  * Regola il flag templateEsiste
  */
+@Deprecated
 public class DownloadBio {
 
     private boolean letta = false;

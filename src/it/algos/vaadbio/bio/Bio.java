@@ -9,6 +9,9 @@ import it.algos.vaadbio.lib.LibBio;
 import it.algos.vaadbio.nazionalita.Nazionalita;
 import it.algos.vaadbio.nome.Nome;
 import it.algos.webbase.web.entity.BaseEntity;
+import it.algos.webbase.web.entity.DefaultSort;
+import it.algos.webbase.web.field.AFType;
+import it.algos.webbase.web.field.AIField;
 import it.algos.webbase.web.lib.LibTime;
 import it.algos.webbase.web.query.AQuery;
 import org.eclipse.persistence.annotations.Index;
@@ -33,20 +36,25 @@ import java.util.ArrayList;
  * Created by gac on 23 nov 2015.
  */
 @Entity
+@DefaultSort({"title,true"})
 public class Bio extends BaseEntity {
 
     @NotNull
     @Index
+    @AIField(type = AFType.lungo, width = "100px", caption = "PageID", help = "key mediawiki.")
     private long pageid;
 
     @NotEmpty
     @Index
+    @AIField(type = AFType.text, width = "400px", caption = "Title", help = "Titolo pagina wiki.")
     private String title = "";
 
     @Lob
+    @AIField(type = AFType.area, columns = 30, rows = 20, caption = "tmplBioServer", help = "Template effettivamente presente sul server.")
     private String tmplBioServer = CostBio.VUOTO;
 
     @Lob
+    @AIField(type = AFType.area, columns = 30, rows = 20, caption = "tmplBioStandard", help = "Template standard.")
     private String tmplBioStandard = CostBio.VUOTO;
 
     //--tempo di DOWNLOAD
@@ -54,11 +62,13 @@ public class Bio extends BaseEntity {
     //--molto meglio che siano esattamente dello stesso tipo
     //--ultima lettura/aggiornamento della voce effettuata dal programma VaadBio
     @Index
+    @AIField(type = AFType.time, caption = "Ultima Lettura", help = "ultima lettura/aggiornamento della voce effettuata dal programma VaadBio")
     private Timestamp ultimaLettura;
 
     //--tempo di ELABORAZIONE
     //--momento in cui il record Bio è stato elaborato estraendo i dati dal tmplBioServer e costruendo il tmplBioStandard
     @Index
+    @AIField(type = AFType.time, caption = "Ultima Elaborazione", help = "momento in cui il record Bio è stato elaborato estraendo i dati dal tmplBioServer e costruendo il tmplBioStandard")
     private Timestamp ultimaElaborazione;
 
     //--esiste la pagina (altrimenti non ci sarebbe il record) con pageid e title, ma templateServer potrebbe essere vuoto
@@ -78,8 +88,10 @@ public class Bio extends BaseEntity {
     @Column(columnDefinition = "text")
     private String titolo = CostBio.VUOTO;  //titolo tipo ''dottore'', non TITLE della pagina
     @Column(columnDefinition = "text")
+    @AIField(type = AFType.text, width = "400px", caption = "Nome")
     private String nome = CostBio.VUOTO;
     @Column(columnDefinition = "text")
+    @AIField(type = AFType.text, width = "400px", caption = "Cognome")
     private String cognome = CostBio.VUOTO;
     @Column(columnDefinition = "text")
     private String cognomePrima = CostBio.VUOTO;
@@ -95,29 +107,41 @@ public class Bio extends BaseEntity {
     private String sesso = CostBio.VUOTO;
 
     @Column(columnDefinition = "text")
+    @AIField(type = AFType.text, width = "350px", caption = "Luogo Nascita")
     private String luogoNascita = CostBio.VUOTO;
     @Column(columnDefinition = "text")
+    @AIField(type = AFType.text, width = "350px", caption = "Luogo Nascita Link")
     private String luogoNascitaLink = CostBio.VUOTO;
     @Column(columnDefinition = "text")
+    @AIField(type = AFType.text, width = "800px", caption = "Luogo Nascita Alternativo")
     private String luogoNascitaAlt = CostBio.VUOTO;
     @Column(columnDefinition = "text")
+    @AIField(type = AFType.text, width = "250px", caption = "Giorno Nato")
     private String giornoMeseNascita = CostBio.VUOTO;
     @Column(columnDefinition = "text")
+    @AIField(type = AFType.text, width = "250px", caption = "Anno Nato")
     private String annoNascita = CostBio.VUOTO;
     @Column(columnDefinition = "text")
+    @AIField(type = AFType.text, width = "1000px", caption = "Note Nascita")
     private String noteNascita = CostBio.VUOTO;
 
     @Column(columnDefinition = "text")
+    @AIField(type = AFType.text, width = "350px", caption = "Luogo Morte")
     private String luogoMorte = CostBio.VUOTO;
     @Column(columnDefinition = "text")
+    @AIField(type = AFType.text, width = "350px", caption = "Luogo Morte Link")
     private String luogoMorteLink = CostBio.VUOTO;
     @Column(columnDefinition = "text")
+    @AIField(type = AFType.text, width = "800px", caption = "Luogo Morte Alternativo")
     private String luogoMorteAlt = CostBio.VUOTO;
     @Column(columnDefinition = "text")
+    @AIField(type = AFType.text, width = "250px", caption = "Giorno Morto")
     private String giornoMeseMorte = CostBio.VUOTO;
     @Column(columnDefinition = "text")
+    @AIField(type = AFType.text, width = "250px", caption = "Anno Morto")
     private String annoMorte = CostBio.VUOTO;
     @Column(columnDefinition = "text")
+    @AIField(type = AFType.text, width = "1000px", caption = "Note Morte")
     private String noteMorte = CostBio.VUOTO;
 
     @Column(columnDefinition = "text")
@@ -133,6 +157,7 @@ public class Bio extends BaseEntity {
     @Column(columnDefinition = "text")
     private String attivita3 = CostBio.VUOTO;
     @Column(columnDefinition = "text")
+    @AIField(type = AFType.text, width = "1000px", caption = "Altre attivita")
     private String attivitaAltre = CostBio.VUOTO;
 
     @Column(columnDefinition = "text")
@@ -168,14 +193,22 @@ public class Bio extends BaseEntity {
     private String cognomeValido = CostBio.VUOTO;
     private String sessoValido = CostBio.VUOTO;
 
+    @AIField(type = AFType.text, width = "350px", caption = "Luogo Nato Valido")
     private String luogoNascitaValido = CostBio.VUOTO;
+    @AIField(type = AFType.text, width = "350px", caption = "Luogo Nato Link Valido")
     private String luogoNascitaLinkValido = CostBio.VUOTO;
+    @AIField(type = AFType.text, width = "150px", caption = "Giorno Nato Valido")
     private String giornoMeseNascitaValido = CostBio.VUOTO;
+    @AIField(type = AFType.text, width = "150px", caption = "Anno Nato Valido")
     private String annoNascitaValido = CostBio.VUOTO;
 
+    @AIField(type = AFType.text, width = "350px", caption = "Luogo Morto Valido")
     private String luogoMorteValido = CostBio.VUOTO;
+    @AIField(type = AFType.text, width = "350px", caption = "Luogo Morto Link Valido")
     private String luogoMorteLinkValido = CostBio.VUOTO;
+    @AIField(type = AFType.text, width = "150px", caption = "Giorno Morto Valido")
     private String giornoMeseMorteValido = CostBio.VUOTO;
+    @AIField(type = AFType.text, width = "150px", caption = "Anno Morto Valido")
     private String annoMorteValido = CostBio.VUOTO;
 
     private String attivitaValida = CostBio.VUOTO;
@@ -186,12 +219,16 @@ public class Bio extends BaseEntity {
 
     // campi di collegamenti alle altre tavole specializzate
     @ManyToOne
+    @AIField(type = AFType.combo, clazz = Giorno.class, width = "200px", caption = "Giorno Nato Punta")
     private Giorno giornoNatoPunta;
     @ManyToOne
+    @AIField(type = AFType.combo, clazz = Giorno.class, width = "200px", caption = "Giorno Morto Punta")
     private Giorno giornoMortoPunta;
     @ManyToOne
+    @AIField(type = AFType.combo, clazz = Anno.class, width = "200px", caption = "Anno Nato Punta")
     private Anno annoNatoPunta = null;
     @ManyToOne
+    @AIField(type = AFType.combo, clazz = Anno.class, width = "200px", caption = "Anno Morto Punta")
     private Anno annoMortoPunta = null;
     @ManyToOne
     private Attivita attivitaPunta = null;
@@ -216,10 +253,15 @@ public class Bio extends BaseEntity {
 //    Cognome cognomeLista = null;
 
     //    private String didascaliaBase;
+    @AIField(type = AFType.text, width = "1100px", caption = "Didascalia Giorno Nato")
     private String didascaliaGiornoNato = CostBio.VUOTO;
+    @AIField(type = AFType.text, width = "1100px", caption = "Didascalia Giorno Morto")
     private String didascaliaGiornoMorto = CostBio.VUOTO;
+    @AIField(type = AFType.text, width = "1100px", caption = "Didascalia Anno Nato")
     private String didascaliaAnnoNato = CostBio.VUOTO;
+    @AIField(type = AFType.text, width = "1100px", caption = "Didascalia Anno Morto")
     private String didascaliaAnnoMorto = CostBio.VUOTO;
+    @AIField(type = AFType.text, width = "1100px", caption = "Didascalia Liste")
     private String didascaliaListe = CostBio.VUOTO;
 
     /**

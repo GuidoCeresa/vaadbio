@@ -82,7 +82,7 @@ public class Attivita extends BaseEntity {
      */
     public static Attivita findBySingolare(String singolare) {
         Attivita instance = null;
-        BaseEntity entity = AQuery.getEntity(Attivita.class, Attivita_.singolare, singolare.toLowerCase());
+        BaseEntity entity = AQuery.getEntity(Attivita.class, Attivita_.singolare, singolare);
 
         if (entity != null) {
             if (entity instanceof Attivita) {

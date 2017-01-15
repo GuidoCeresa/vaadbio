@@ -47,7 +47,7 @@ public abstract class NazionalitaService {
             if (Pref.getBool(CostBio.USA_LOG_DEBUG, false)) {
                 secondi = LibTime.difText(inizio);
                 records = LibNum.format(mappa.size());
-                Log.debug("attivita", "Aggiornati in " + secondi + " i " + records + " records di nazionalità (plurale)");
+                Log.debug("nazionalità", "Aggiornati in " + secondi + " i " + records + " records di nazionalità (plurale)");
             }// fine del blocco if
             return true;
         }// end of if/else cycle

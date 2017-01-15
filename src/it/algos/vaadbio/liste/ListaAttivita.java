@@ -62,7 +62,7 @@ public class ListaAttivita extends ListaBio {
         usaBodyDoppiaColonna = false;
         usaSottopagine = true;
         usaTitoloParagrafoConLink = true;
-        usaTaglioVociPagina = true;
+        usaTaglioVociPagina = false;
         maxVociPagina = Pref.getInt(CostBio.TAGLIO_NOMI_PAGINA, 100);
 
         // footer
@@ -229,13 +229,20 @@ public class ListaAttivita extends ListaBio {
     }// fine del metodo
 
 
+
     /**
      * Controlla che la modifica sia sostanziale
-     * <p>
+     * Se il flag è false, registra sempre
+     * Se il flag è vero, controlla la differenza del testo
      * Sovrascritto
      */
+    @Override
     protected boolean checkPossoRegistrare(String titolo, String testo) {
-        return true;
+        if (Pref.getBool(CostBio.USA_REGISTRA_SEMPRE_PERSONA, false)) {
+            return true;
+        } else {
+            return LibBio.checkModificaSostanziale(titolo, testo, tagHeadTemplateAvviso, "}}");
+        }// end of if/else cycle
     }// fine del metodo
 
 

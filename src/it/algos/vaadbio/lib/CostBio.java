@@ -9,6 +9,7 @@ public abstract class CostBio {
 
     // generalissime
     public final static String SPAZIO = " ";
+    public final static String SPAZIO_HTML = "&nbsp;";
     public final static String VUOTO = "";
     public final static String A_CAPO = "\n";
     public final static String PIPE = "|";

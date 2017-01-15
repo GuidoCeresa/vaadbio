@@ -10,7 +10,6 @@ import it.algos.webbase.web.toolbar.TableToolbar;
  */
 public class AttivitaTablePortal extends AntroTablePortal {
 
-
     /**
      * Costruttore base
      */
@@ -25,7 +24,6 @@ public class AttivitaTablePortal extends AntroTablePortal {
      */
     @Override
     public TableToolbar createToolbar() {
-
         cmdPagina = "Attività";
         cmdLista = "Attività";
         linkPagina = "Liste attività";
