@@ -117,7 +117,7 @@ public abstract class ListaBio {
         usaHeadIncipit = false; //--normalmente false. Sovrascrivibile da preferenze
 
         // body
-        usaSortCronologico=false;
+        usaSortCronologico = false;
         usaSuddivisioneParagrafi = false;
         usaOrdineAlfabeticoParagrafi = false;
         usaBodySottopagine = true; //--normalmente true. Sovrascrivibile nelle sottoclassi
@@ -125,7 +125,7 @@ public abstract class ListaBio {
         usaBodyDoppiaColonna = true; //--normalmente true. Sovrascrivibile nelle sottoclassi
         usaBodyTemplate = false; //--normalmente false. Sovrascrivibile nelle sottoclassi
         usaSottopagine = false; //--normalmente false. Sovrascrivibile nelle sottoclassi
-        maxVociParagrafo = Pref.getInt(CostBio.MAX_VOCI_PARAGRAFO, 100);//--tipicamente 100. Sovrascrivibile nelle sottoclassi
+        maxVociParagrafo = Pref.getInt(CostBio.MAX_VOCI_PARAGRAFO, 50);//--tipicamente 100. Sovrascrivibile nelle sottoclassi
         tagParagrafoNullo = ALTRE;
         usaTitoloParagrafoConLink = false;
         usaTaglioVociPagina = false;
@@ -213,16 +213,16 @@ public abstract class ListaBio {
             mappa.put(KEY_MAP_VOCI, 1);
 
             if (usaSortCronologico) {
-                if (bio.getGiornoNatoPunta()!=null) {
+                if (bio.getGiornoNatoPunta() != null) {
                     mappa.put(KEY_MAP_ORDINE_GIORNO_NATO, bio.getGiornoNatoPunta().getOrdinamento());
                 }// end of if cycle
-                if (bio.getGiornoMortoPunta()!=null) {
+                if (bio.getGiornoMortoPunta() != null) {
                     mappa.put(KEY_MAP_ORDINE_GIORNO_MORTO, bio.getGiornoMortoPunta().getOrdinamento());
                 }// end of if cycle
-                if (bio.getAnnoNatoPunta()!=null) {
+                if (bio.getAnnoNatoPunta() != null) {
                     mappa.put(KEY_MAP_ORDINE_ANNO_NATO, bio.getAnnoNatoPunta().getOrdinamento());
                 }// end of if cycle
-                if (bio.getAnnoMortoPunta()!=null) {
+                if (bio.getAnnoMortoPunta() != null) {
                     mappa.put(KEY_MAP_ORDINE_ANNO_MORTO, bio.getAnnoMortoPunta().getOrdinamento());
                 }// end of if cycle
             }// end of if cycle
@@ -368,23 +368,26 @@ public abstract class ListaBio {
         ArrayList<String> keyList;
         ArrayList<String> lista;
 
-        if (usaOrdineAlfabeticoParagrafi) {
-            mappa = new LinkedHashMap<String, HashMap>();
-            keyList = new ArrayList<String>(mappaBio.keySet());
-            keyList = LibArray.sort(keyList);
-            for (String key : keyList) {
-                mappa.put(key, mappaBio.get(key));
-            }// end of for cycle
-            mappaBio = mappa;
+        if (mappaBio == null) {
+            return;
         }// end of if cycle
 
-        mappa = mappaBio;
-        if (mappa != null && mappa.containsKey(tagParagrafoNullo)) {
+        mappa = new LinkedHashMap<String, HashMap>();
+        keyList = new ArrayList<String>(mappaBio.keySet());
+        keyList = LibArray.sort(keyList);
+        for (String key : keyList) {
+            mappa.put(key, mappaBio.get(key));
+        }// end of for cycle
+        mappaBio = mappa;
+
+        if (mappaBio.containsKey(tagParagrafoNullo)) {
+            mappa = mappaBio;
             mappaTmp = mappa.get(tagParagrafoNullo);
             mappa.remove(tagParagrafoNullo);
             mappa.put(tagParagrafoNullo, mappaTmp);
             mappaBio = mappa;
         }// end of if cycle
+
     }// fine del metodo
 
     /**
