@@ -88,7 +88,7 @@ public class GenereMod extends ModulePop {
                     if (ui != null) {
                         dialog.show(ui);
                     } else {
-                        Notification.show("Avviso", "Devi prima entrare nel modulo Bio per eseguire questo comando", Notification.Type.WARNING_MESSAGE);
+                        Notification.show("Avviso", "Devi prima entrare nel modulo Genere per eseguire questo comando", Notification.Type.WARNING_MESSAGE);
                     }// end of if/else cycle
                 } else {
                     new CicloDownload();

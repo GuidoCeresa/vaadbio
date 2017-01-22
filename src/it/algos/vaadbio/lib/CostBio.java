@@ -74,14 +74,15 @@ public abstract class CostBio {
 
     // persone - nomi
     public final static String USA_NOME_SINGOLO = "usaNomeSingolo";
-    public final static String TAGLIO_NOMI_PAGINA = "taglioNomiPagina"; //--tipico 50
     public final static String TAGLIO_NOMI_ELENCO = "taglioNomiElenco"; //--tipico 20
+    public final static String TAGLIO_NOMI_PAGINA = "taglioNomiPagina"; //--tipico 50
     public final static String USA_REGISTRA_SEMPRE_PERSONA = "salvaSemprePersona";
     public final static String USA_REGISTRA_SEMPRE_ATT_NAZ = "salvaSempreAttNaz";
     public final static String USA_CASE_UGUALI = "usaCaseUguali";
     public final static String USA_FOOTER_PORTALE_NOMI = "usaFooterPortaleNomi";
     public final static String USA_FOOTER_CATEGORIE_NOMI = "usaFooterCategorieNomi";
     public final static String USA_RICONTEGGIO_NOMI = "usaRiconteggioNomi";
+    public final static String USA_NOMI_DIVERSI_PER_ACCENTO = "usaNomiDiversiPerAccento";
 
     //--taglio per registrare il record e creare la riga nella lista statistica --tipico 20
     public final static String TAGLIO_COGNOMI_ELENCO = "taglioCognomiElenco";

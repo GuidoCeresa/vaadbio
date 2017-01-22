@@ -4,6 +4,7 @@ import com.vaadin.annotations.Theme;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
+import it.algos.vaad.VaadApp;
 import it.algos.vaad.wiki.WikiLogin;
 import it.algos.vaadbio.anno.AnnoMod;
 import it.algos.vaadbio.attivita.AttivitaMod;
@@ -11,6 +12,7 @@ import it.algos.vaadbio.bio.Bio;
 import it.algos.vaadbio.bio.BioMod;
 import it.algos.vaadbio.biologo.BioLogoMod;
 import it.algos.vaadbio.cognome.CognomeMod;
+import it.algos.vaadbio.genere.GenereMod;
 import it.algos.vaadbio.giorno.GiornoMod;
 import it.algos.vaadbio.lib.LibBio;
 import it.algos.vaadbio.mese.MeseMod;
@@ -71,6 +73,9 @@ public class VaadbioUI extends AlgosUI {
         this.setCopyRight();
 
 //        this.checkLogin();
+
+        VaadApp.WIKI_LOGIN = new WikiLogin("Gacbot@Gacbot", "tftgv0vhl16c0qnmfdqide3jqdp1i5m7");
+
         boolean loggato = false;
         loggato = LibSession.getAttributeBool("logged");
         if (loggato) {
@@ -114,7 +119,7 @@ public class VaadbioUI extends AlgosUI {
         this.addModulo(new NomeMod());
         this.addModulo(new CognomeMod());
 //        this.addModulo(new ProfessioneMod());
-//        this.addModulo(new GenereMod());
+        this.addModulo(new GenereMod());
         this.addModulo(new AttivitaMod());
         this.addModulo(new NazionalitaMod());
     }// end of method
@@ -131,7 +136,6 @@ public class VaadbioUI extends AlgosUI {
         }// end of if cycle
 
         Object obj = LibSession.getAttribute(WikiLogin.WIKI_LOGIN_KEY_IN_SESSION);
-        int a = 87;
     }// end of method
 
     private void setCopyRight() {
@@ -171,7 +175,11 @@ public class VaadbioUI extends AlgosUI {
 //        footerLayout.addComponent(new Label("Vaadbio versione 5.0 del 1 nov 2016"));
 //        footerLayout.addComponent(new Label("Vaadbio versione 5.1 del 3 nov 2016"));
 //        footerLayout.addComponent(new Label("Vaadbio versione 5.2 del 4 nov 2016"));
-        footerLayout.addComponent(new Label("Vaadbio versione 5.3 del 6 nov 2016"));
+//        footerLayout.addComponent(new Label("Vaadbio versione 5.3 del 6 nov 2016"));
+//        footerLayout.addComponent(new Label("Vaadbio versione 5.4 del 19 gen 2017"));
+//        footerLayout.addComponent(new Label("Vaadbio versione 5.5 del 20 gen 2017"));
+//        footerLayout.addComponent(new Label("Vaadbio versione 5.6 del 21 gen 2017"));
+        footerLayout.addComponent(new Label("Vaadbio versione 5.7 del 22 gen 2017"));
     }// end of method
 
 }//end of UI class

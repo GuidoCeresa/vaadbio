@@ -2,10 +2,12 @@ package it.algos.vaadbio.bootstrap;
 
 import it.algos.vaadbio.anno.AnnoService;
 import it.algos.vaadbio.attivita.AttivitaService;
+import it.algos.vaadbio.genere.GenereService;
 import it.algos.vaadbio.giorno.GiornoService;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.mese.MeseService;
 import it.algos.vaadbio.nazionalita.NazionalitaService;
+import it.algos.vaadbio.professione.ProfessioneService;
 import it.algos.vaadbio.secolo.SecoloService;
 import it.algos.webbase.domain.pref.Pref;
 import it.algos.webbase.domain.pref.PrefType;
@@ -107,6 +109,24 @@ public class VersBootStrap implements ServletContextListener {
                 LibVers.nuova("Nazionalità", "Creazione iniziale dei records letti dalla pagina wiki");
             } else {
                 LibVers.nuova("Nazionalità", "Non sono riuscito a leggere la pagina wiki");
+            }// end of if/else cycle
+        }// fine del blocco if
+
+        //--creazione iniziale dei records della tavola Genere
+        if (LibVers.installa(++k)) {
+            if (GenereService.download()) {
+                LibVers.nuova("Genere", "Creazione iniziale dei records letti dalla pagina wiki");
+            } else {
+                LibVers.nuova("Genere", "Non sono riuscito a leggere la pagina wiki");
+            }// end of if/else cycle
+        }// fine del blocco if
+
+        //--creazione iniziale dei records della tavola Professione
+        if (LibVers.installa(++k)) {
+            if (ProfessioneService.download()) {
+                LibVers.nuova("Professione", "Creazione iniziale dei records letti dalla pagina wiki");
+            } else {
+                LibVers.nuova("Professione", "Non sono riuscito a leggere la pagina wiki");
             }// end of if/else cycle
         }// fine del blocco if
 
@@ -248,7 +268,7 @@ public class VersBootStrap implements ServletContextListener {
 
         //--creata una nuova preferenza
         if (LibVers.installa(++k)) {
-            LibPref.newVersBool(CostBio.USA_LOG_DEBUG, false, "Uso del log di registrazione per il livello debug. Di default falso.");
+            LibPref.newVersBool(CostBio.USA_LOG_DEBUG, true, "Uso del log di registrazione per il livello debug. Di default true.");
         }// fine del blocco if
 
         //--creata una nuova preferenza
@@ -354,6 +374,12 @@ public class VersBootStrap implements ServletContextListener {
         if (LibVers.installa(++k)) {
             LibPref.newVersBool(CostBio.USA_NUMERI_PARAGRAFO, false, "Aggiunge (in piccolo) il numero delle voci contenute nel paragrafo. Di default false.");
         }// fine del blocco if
+
+        //--creata una nuova preferenza
+        if (LibVers.installa(++k)) {
+            LibPref.newVersBool(CostBio.USA_NOMI_DIVERSI_PER_ACCENTO, true, "Nomi diversi per accenti diversi: Mária # Maria. Di default true.");
+        }// fine del blocco if
+
 
         //--elimina una property come riferimento
 //        if (LibVers.installa(++k)) {

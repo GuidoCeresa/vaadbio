@@ -1,6 +1,8 @@
 package it.algos.vaadbio.nome;
 
 
+import com.sun.tools.internal.xjc.reader.xmlschema.bindinfo.BIConversion;
+import com.vaadin.addon.jpacontainer.util.HibernateUtil;
 import com.vaadin.data.Container;
 import com.vaadin.data.util.filter.Compare;
 import it.algos.vaadbio.attivita.Attivita;
@@ -12,14 +14,17 @@ import it.algos.webbase.domain.pref.Pref;
 import it.algos.webbase.web.entity.BaseEntity;
 import it.algos.webbase.web.query.AQuery;
 import it.algos.webbase.web.query.SortProperty;
+import jdk.nashorn.internal.runtime.regexp.joni.constants.StringType;
 import org.eclipse.persistence.annotations.CascadeOnDelete;
 import org.eclipse.persistence.annotations.Index;
+import org.eclipse.persistence.sessions.Session;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.ManyToOne;
 import javax.persistence.Query;
+import java.beans.Expression;
 import java.util.*;
 
 /**
@@ -116,7 +121,6 @@ public class Nome extends BaseEntity {
      * Recupera una istanza di Nome usando la query standard della Primary Key
      *
      * @param id valore della Primary Key
-     *
      * @return istanza di Nome, null se non trovata
      */
     public static Nome find(long id) {
@@ -127,7 +131,6 @@ public class Nome extends BaseEntity {
      * Recupera una istanza di Nome usando la query di una property specifica
      *
      * @param nome valore della property nome
-     *
      * @return istanza di Nome, null se non trovata
      */
     public static Nome getEntityByNome(String nome) {
@@ -159,7 +162,6 @@ public class Nome extends BaseEntity {
      * La crea SOLO se non esiste già
      *
      * @param nome della persona
-     *
      * @return istanza della classe
      */
     public synchronized static Nome crea(String nome) {
@@ -175,7 +177,6 @@ public class Nome extends BaseEntity {
      * @param principale  flag
      * @param nomeDoppio  flag
      * @param riferimento al nome che raggruppa le varie dizioni
-     *
      * @return istanza della classe
      */
     public synchronized static Nome crea(String nome, boolean principale, boolean nomeDoppio, Nome riferimento) {
@@ -326,7 +327,47 @@ public class Nome extends BaseEntity {
             query = manager.createQuery(queryTxt);
             vettore = (Vector) query.getResultList();
         } catch (Exception unErrore) { // intercetta l'errore
+            int a = 87;
         }// fine del blocco try-catch
+
+        return vettore;
+    }// end of method
+
+    /**
+     * Recupera una mappa completa dei nomi e della loro frequenza
+     *
+     * @return numero di biografie
+     */
+    public static Vector findMappaSoglia(EntityManager manager, int soglia) {
+        Vector vettore = new Vector();
+        Vector vettoreAll = findMappa(manager);
+        ArrayList<String> nomi = new ArrayList<>();
+        Object[] obj;
+        String nomeTxt;
+        long numVociBio = 0;
+
+        if (vettoreAll != null) {
+            for (Object vect : vettoreAll) {
+                if (vect instanceof Object[]) {
+                    obj = (Object[]) vect;
+                    nomeTxt = (String) obj[0];
+                    numVociBio = (long) obj[1];
+
+                    if (numVociBio > soglia) {
+                        vettore.add(obj);
+//                        if (Pref.getBool(CostBio.USA_NOMI_DIVERSI_PER_ACCENTO, true)) {
+//                            if (nomi.contains(nomeTxt)) {
+//                                vettore.add(obj);
+//                            }// end of if cycle
+//                            nomi.add(nomeTxt);
+//                        } else {
+//                            vettore.add(obj);
+//                            nomi.add(nomeTxt);
+//                        }// end of if/else cycle
+                    }// end of if cycle
+                }// end of if cycle
+            }// end of for cycle
+        }// end of if cycle
 
         return vettore;
     }// end of method
@@ -534,6 +575,16 @@ public class Nome extends BaseEntity {
      */
     @SuppressWarnings("all")
     public List<Bio> listaBio() {
+//        String query="SELECT b FROM BIO B where nomevalido COLLATE utf8mb4_bin='Maria' order by cognome,nome";
+//       Object lista = LibBio.queryFind(query);
+//
+//        SortProperty sorts2 = new SortProperty(Bio_.attivitaValida.getName(), Bio_.cognomeValido.getName(), Bio_.nomeValido.getName());
+//        Container.Filter filter = new Compare.Equal("nomeValido", getNome());
+//        Object obj= (List<Bio>) AQuery.getList(Bio.class, filter);
+//
+//        Container.Filter filter2 = new Compare.Equal("nomeValido COLLATE utf8mb4_bin ", getNome());
+//        Object obj2= (List<Bio>) AQuery.getList(Bio.class, filter2);
+
         SortProperty sorts = new SortProperty(Bio_.attivitaValida.getName(), Bio_.cognomeValido.getName(), Bio_.nomeValido.getName());
         return (List<Bio>) AQuery.getList(Bio.class, Bio_.nomeValido, getNome(), sorts);
     }// fine del metodo

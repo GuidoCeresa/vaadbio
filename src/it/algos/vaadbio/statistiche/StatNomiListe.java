@@ -85,7 +85,7 @@ public class StatNomiListe extends StatNomi {
         text += LibWiki.setBold(LibNum.format(numNomi));
         text += " nomi '''differenti'''  utilizzati nelle ";
         text += LibWiki.setBold(LibNum.format(numVoci));
-        text += " voci biografiche con occorrenze maggiori di ";
+        text += " voci biografiche con occorrenze maggiori o uguali a ";
         text += LibWiki.setBold(taglioVoci);
         text += A_CAPO;
         text += creaElenco();

@@ -134,15 +134,6 @@ public class Elabora {
             if (Pref.getBool(CostBio.USA_LOG_CICLO, true)) {
                 Log.debug("elabora", "Non sono riuscito ad elaborare la voce " + LibWiki.setQuadre(bio.getTitle()));
             }// end of if cycle
-
-            //@todo PATCH
-            bio.setTmplBioServer("");
-            bio.setTmplBioStandard("");
-            bio.setPreData("");
-            bio.setPostCognome("");
-            bio.save(manager);
-            elaborata = true;
-
         }// fine del blocco try-catch
     }// end of method
 

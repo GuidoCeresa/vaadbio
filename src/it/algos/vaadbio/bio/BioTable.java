@@ -62,6 +62,7 @@ public class BioTable extends ModuleTable {
 
                 Bio_.titolo,
                 Bio_.nome,
+                Bio_.nomeValido,
                 Bio_.cognome,
                 Bio_.sesso,
 

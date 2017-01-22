@@ -15,6 +15,7 @@ import it.algos.webbase.web.lib.LibTime;
 import it.algos.webbase.web.query.AQuery;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.validation.ConstraintViolationException;
 import java.text.Normalizer;
 import java.util.ArrayList;
@@ -106,6 +107,16 @@ public abstract class NomeService {
      * Cancella i records esistenti
      */
     private static void cancellaNomi(EntityManager manager) {
+        Query query;
+        String queryTxt = "update Bio bio set bio.nomePunta=null";
+
+        try { // prova ad eseguire il codice
+            query = manager.createQuery(queryTxt);
+            query.executeUpdate();
+        } catch (Exception unErrore) { // intercetta l'errore
+            int a = 87;
+        }// fine del blocco try-catch
+
         AQuery.delete(Nome.class, manager);
     }// fine del metodo
 
@@ -124,21 +135,15 @@ public abstract class NomeService {
         long numVociBio = 0;
 
         long inizio = System.currentTimeMillis();
-        vettore = Nome.findMappa(manager);
+        vettore = Nome.findMappaSoglia(manager, taglio);
 
         for (int k = 0; k < vettore.size(); k++) {
             obj = (Object[]) vettore.get(k);
             nomeTxt = (String) obj[0];
-
-            if (nomeTxt.equals("Brandon")) {
-                int a = 87;
-            }// end of if cycle
-
             numVociBio = (long) obj[1];
-            if (numVociBio > taglio) {
-                if (creaSingolo(nomeTxt, numVociBio, manager)) {
-                    numNomiiRegistrati++;
-                }// end of if cycle
+
+            if (creaSingolo(nomeTxt, numVociBio, manager)) {
+                numNomiiRegistrati++;
             }// end of if cycle
 
         }// endof for cycle

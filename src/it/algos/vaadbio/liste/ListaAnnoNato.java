@@ -33,7 +33,7 @@ public class ListaAnnoNato extends ListaAnno {
      */
     @Override
     protected String getTagTitolo() {
-        return "Nati ";
+        return "Nati";
     }// fine del metodo
 
 
