@@ -20,7 +20,6 @@ public class StatNomiPagine extends StatNomi {
 
     private static String TITOLO_PAGINA = "Nomi";
     private ArrayList<Nome> listaNomi;
-    private LinkedHashMap<Nome, Integer> mappaNomi;
     private long inizio = System.currentTimeMillis();
     private int mod = 0;
     private String modTxt;

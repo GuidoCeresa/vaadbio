@@ -5,9 +5,13 @@ import it.algos.vaad.wiki.LibWiki;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.lib.LibBio;
 import it.algos.webbase.domain.pref.Pref;
+import it.algos.webbase.web.lib.LibArray;
 import it.algos.webbase.web.lib.LibTime;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 /**
  * Created by gac on 14 gen 2016.
@@ -49,6 +53,7 @@ public abstract class Statistiche {
     public void doInit() {
         elaboraParametri();
         elaboraMappaBiografie();
+        ordinaMappaBiografie();
         elaboraPagina();
         elaboraPreferenze();
     }// end of method
@@ -82,6 +87,14 @@ public abstract class Statistiche {
      * Sovrascritto
      */
     protected void elaboraMappaBiografie() {
+    }// fine del metodo
+
+    /**
+     * La mappa delle biografie arriva non ordinata
+     * Occorre riordinare in base agli accenti
+     * Sovrascritto
+     */
+    protected void ordinaMappaBiografie() {
     }// fine del metodo
 
     /**

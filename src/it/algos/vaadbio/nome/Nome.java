@@ -12,6 +12,7 @@ import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.lib.LibBio;
 import it.algos.webbase.domain.pref.Pref;
 import it.algos.webbase.web.entity.BaseEntity;
+import it.algos.webbase.web.entity.DefaultSort;
 import it.algos.webbase.web.query.AQuery;
 import it.algos.webbase.web.query.SortProperty;
 import jdk.nashorn.internal.runtime.regexp.joni.constants.StringType;
@@ -36,6 +37,7 @@ import java.util.*;
  * 4) la classe non deve contenere nessun metodo per la gestione degli eventi
  */
 @Entity
+@DefaultSort({"nome,true"})
 public class Nome extends BaseEntity {
 
     @NotEmpty
@@ -353,7 +355,7 @@ public class Nome extends BaseEntity {
                     nomeTxt = (String) obj[0];
                     numVociBio = (long) obj[1];
 
-                    if (numVociBio > soglia) {
+                    if (numVociBio >= soglia) {
                         vettore.add(obj);
 //                        if (Pref.getBool(CostBio.USA_NOMI_DIVERSI_PER_ACCENTO, true)) {
 //                            if (nomi.contains(nomeTxt)) {
@@ -514,13 +516,18 @@ public class Nome extends BaseEntity {
     @SuppressWarnings("all")
     public long countBioNome() {
         long numRecords = 0;
-        ArrayList lista;
+        ArrayList lista = null;
         String query = CostBio.VUOTO;
         String queryBase = "select count(bio.id) from Bio bio";
-        String queryWhere = " where bio.nomePunta.id=" + getId();
+//        String queryWhere = " where bio.nomePunta.id=" + getId();
+        String queryWhere = " where bio.nomeValido=" + "'" + nome + "'";
 
         query = queryBase + queryWhere;
-        lista = LibBio.queryFind(query);
+        try { // prova ad eseguire il codice
+            lista = LibBio.queryFind(query);
+        } catch (Exception unErrore) { // intercetta l'errore
+            int a = 87;
+        }// fine del blocco try-catch
 
         if (lista != null && lista.size() == 1) {
             numRecords = (long) lista.get(0);

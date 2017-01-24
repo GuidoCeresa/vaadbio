@@ -24,7 +24,6 @@ public class StatNomiListe extends StatNomi {
     private static String TITOLO_PAGINA = "Liste nomi";
 
     private ArrayList<Nome> listaNomi;
-    private LinkedHashMap<Nome, Integer> mappaNomi;
     private long inizio = System.currentTimeMillis();
     private int mod = 0;
     private String modTxt;
