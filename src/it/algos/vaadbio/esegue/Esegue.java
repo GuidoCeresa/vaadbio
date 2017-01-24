@@ -68,7 +68,9 @@ public abstract class Esegue {
     public static void cicloUpload() {
         uploadGiorni();
         statisticheAll();
-        cicloNomi();
+        if (Pref.getBool(CostBio.USA_DAEMONS_NOMI, false)) {
+            cicloNomi();
+        }// end of if cycle
         cicloCognomi();
         cicloAttivita();
         cicloNazionalita();
@@ -88,7 +90,6 @@ public abstract class Esegue {
     public static void uploadAnni() {
         new UploadAnni(false);
     } // fine del metodo
-
 
 
     /**
@@ -115,7 +116,6 @@ public abstract class Esegue {
     public static void elaboraNomi() {
         NomeService.elabora();
     }// end of method
-
 
 
     /**
@@ -169,11 +169,9 @@ public abstract class Esegue {
      * Ciclo normale giornaliero di upload delle liste di nomi
      */
     public static void cicloNomi() {
-        if (Pref.getBool(CostBio.USA_DAEMONS_NOMI, false)) {
-            NomeService.crea();
-            Esegue.uploadNomi();
-            Esegue.statisticheNomi();
-        }// end of if cycle
+        NomeService.crea();
+        Esegue.uploadNomi();
+        Esegue.statisticheNomi();
     } // fine del metodo
 
     /**

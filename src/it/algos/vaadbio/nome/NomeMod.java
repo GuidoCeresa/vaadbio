@@ -205,6 +205,7 @@ public class NomeMod extends ModulePop {
     private void addCommandStatistichel(MenuBar.MenuItem menuItem) {
         menuItem.addItem("Statistiche", FontAwesome.COG, new MenuBar.Command() {
             public void menuSelected(MenuBar.MenuItem selectedItem) {
+                NomeService.crea();
                 Esegue.statisticheNomi();
             }// end of method
         });// end of anonymous class
