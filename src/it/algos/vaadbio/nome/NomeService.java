@@ -10,16 +10,19 @@ import it.algos.webbase.domain.log.Log;
 import it.algos.webbase.domain.pref.Pref;
 import it.algos.webbase.web.entity.EM;
 import it.algos.webbase.web.lib.LibArray;
+import it.algos.webbase.web.lib.LibNum;
 import it.algos.webbase.web.lib.LibText;
 import it.algos.webbase.web.lib.LibTime;
 import it.algos.webbase.web.query.AQuery;
+import org.apache.commons.collections.iterators.EntrySetMapIterator;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.validation.ConstraintViolationException;
 import java.text.Normalizer;
-import java.util.ArrayList;
-import java.util.Vector;
+import java.util.*;
+
+import static it.algos.webbase.domain.pref.TypePref.stringa;
 
 /**
  * Gestione dei nomi (antroponimi)
@@ -71,16 +74,6 @@ public abstract class NomeService {
 
 
     /**
-     * costruisce i records
-     */
-    public static void costruisce() {
-//        cancellaTutto()
-//        aggiunge();
-//
-//        log.info 'Fine costruzione antroponimi'
-    }// fine del metodo
-
-    /**
      * Cancella i records esistenti
      * Vengono creati nuovi records per i cognomi (unici) presenti nelle voci (bioGrails)
      */
@@ -103,8 +96,9 @@ public abstract class NomeService {
 
     }// fine del metodo
 
+
     /**
-     * Cancella i records esistenti
+     * Cancella i records esistenti con nomePunta
      */
     private static void cancellaNomi(EntityManager manager) {
         Query query;
@@ -114,54 +108,52 @@ public abstract class NomeService {
             query = manager.createQuery(queryTxt);
             query.executeUpdate();
         } catch (Exception unErrore) { // intercetta l'errore
-            int a = 87;
         }// fine del blocco try-catch
 
         AQuery.delete(Nome.class, manager);
     }// fine del metodo
 
     /**
-     * Elabora tutti i cognomi
-     * Controlla la validità di ogni singolo cognome
-     * Controlla che ci siano almeno n voci biografiche per il singolo cognome
+     * Elabora tutti i nomi
+     * Controlla la validità di ogni singolo nome
+     * Controlla che ci siano almeno n voci biografiche per il singolo nome
      * Registra il record
      */
     private static int creaAllNomiUnici(EntityManager manager) {
         int numNomiiRegistrati = 0;
         Vector vettore;
+        LinkedHashMap<String, Integer> mappa;
         Object[] obj;
         int taglio = Pref.getInt(CostBio.TAGLIO_NOMI_ELENCO, 20);
         String nomeTxt = "";
         long numVociBio = 0;
 
         long inizio = System.currentTimeMillis();
-        vettore = Nome.findMappaSoglia(manager, taglio);
+        mappa = Nome.findMappa(manager, taglio);
 
-        for (int k = 0; k < vettore.size(); k++) {
-            obj = (Object[]) vettore.get(k);
-            nomeTxt = (String) obj[0];
-            numVociBio = (long) obj[1];
 
+        for (Map.Entry<String, Integer> elementoDellaMappa : mappa.entrySet()) {
+            nomeTxt = elementoDellaMappa.getKey();
+            numVociBio = elementoDellaMappa.getValue();
             if (creaSingolo(nomeTxt, numVociBio, manager)) {
                 numNomiiRegistrati++;
             }// end of if cycle
+        }// end of for cycle
 
-        }// endof for cycle
-        Log.info("Nomi", "Create le pagine dei nomi in " + LibTime.difText(inizio));
+        Log.info("Nomi", "Create " + LibNum.format(numNomiiRegistrati) + " pagine di nomi in " + LibTime.difText(inizio));
 
         return numNomiiRegistrati;
     }// fine del metodo
 
 
     /**
-     * Controlla la validità del cognome
-     * Calcola il numero di voci Bio esistenti per il cognome
-     * Se supera il taglio TAGLIO_COGNOMI_ELENCO, registra il record
+     * Controlla la validità del nome
+     * Calcola il numero di voci Bio esistenti per il nome
+     * Se supera il taglio TAGLIO_NOMI_ELENCO, registra il record
      */
     private static boolean creaSingolo(String nomeTxt, long numVociBioTmp, EntityManager manager) {
         boolean registrato = false;
         long numVociBio = 0;
-        int taglio = Pref.getInt(CostBio.TAGLIO_NOMI_ELENCO, 20);
 
         nomeTxt = check(nomeTxt);
         if (nomeTxt.equals(CostBio.VUOTO)) {
@@ -174,10 +166,6 @@ public abstract class NomeService {
         } else {
             numVociBio = numVociBioTmp;
         }// end of if/else cycle
-
-        if (numVociBio < taglio) {
-            return false;
-        }// end of if cycle
 
         try { // prova ad eseguire il codice
             Nome.crea(nomeTxt, (int) numVociBio, manager);
@@ -192,6 +180,7 @@ public abstract class NomeService {
      * Aggiunta nuovi records e modifica di quelli esistenti
      * Vengono creati nuovi records per i nomi presenti nelle voci (bioGrails) che superano la soglia minima
      */
+    @Deprecated
     public static void aggiorna() {
         ArrayList<String> listaNomiCompleta;
         ArrayList<String> listaNomiUnici;
@@ -564,5 +553,6 @@ public abstract class NomeService {
 
         Api.scriveVoce(titolo, testo);
     } // fine del metodo
+
 
 }//end of class

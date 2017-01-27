@@ -13,6 +13,8 @@ import it.algos.vaadbio.lib.LibBio;
 import it.algos.webbase.domain.pref.Pref;
 import it.algos.webbase.web.entity.BaseEntity;
 import it.algos.webbase.web.entity.DefaultSort;
+import it.algos.webbase.web.entity.EM;
+import it.algos.webbase.web.lib.LibArray;
 import it.algos.webbase.web.query.AQuery;
 import it.algos.webbase.web.query.SortProperty;
 import jdk.nashorn.internal.runtime.regexp.joni.constants.StringType;
@@ -26,6 +28,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.ManyToOne;
 import javax.persistence.Query;
 import java.beans.Expression;
+import java.text.Collator;
+import java.text.Normalizer;
 import java.util.*;
 
 /**
@@ -37,7 +41,7 @@ import java.util.*;
  * 4) la classe non deve contenere nessun metodo per la gestione degli eventi
  */
 @Entity
-@DefaultSort({"nome,true"})
+//@DefaultSort({"nome,true"})
 public class Nome extends BaseEntity {
 
     @NotEmpty
@@ -271,10 +275,10 @@ public class Nome extends BaseEntity {
     @SuppressWarnings("unchecked")
     public static ArrayList<String> findListaTaglioPagina() {
         ArrayList<String> lista = new ArrayList<>();
-        LinkedHashMap<Nome, Integer> mappa = findMappaTaglioPagina();
+        LinkedHashMap<String, Integer> mappa = findMappaTaglioPagina();
 
-        for (Nome nome : mappa.keySet()) {
-            lista.add(nome.getNome());
+        for (String nomeTxt : mappa.keySet()) {
+            lista.add(nomeTxt);
         }// end of for cycle
 
         return lista;
@@ -301,8 +305,8 @@ public class Nome extends BaseEntity {
      * @return mappa di alcune istanze di Nome
      */
     @SuppressWarnings("unchecked")
-    public static LinkedHashMap<Nome, Integer> findMappaTaglioPagina() {
-        return findMappa(Pref.getInt(CostBio.TAGLIO_NOMI_PAGINA, 50));
+    public static LinkedHashMap<String, Integer> findMappaTaglioPagina() {
+        return findMappa((EntityManager) null, Pref.getInt(CostBio.TAGLIO_NOMI_PAGINA, 50));
     }// end of method
 
     /**
@@ -311,8 +315,8 @@ public class Nome extends BaseEntity {
      * @return mappa di alcune istanze di Nome
      */
     @SuppressWarnings("unchecked")
-    public static LinkedHashMap<Nome, Integer> findMappaTaglioListe() {
-        return findMappa(Pref.getInt(CostBio.TAGLIO_NOMI_ELENCO, 20));
+    public static LinkedHashMap<String, Integer> findMappaTaglioListe() {
+        return findMappa((EntityManager) null, Pref.getInt(CostBio.TAGLIO_NOMI_ELENCO, 20));
     }// end of method
 
     /**
@@ -320,10 +324,17 @@ public class Nome extends BaseEntity {
      *
      * @return numero di biografie
      */
-    public static Vector findMappa(EntityManager manager) {
+    public static Vector findVettoreBase(EntityManager manager) {
         Vector vettore = null;
         Query query;
         String queryTxt = "select bio.nomeValido,count(bio.nomeValido) from Bio bio group by bio.nomeValido order by bio.nomeValido";
+
+        // se non specificato l'EntityManager, ne crea uno locale
+        boolean usaManagerLocale = false;
+        if (manager == null) {
+            usaManagerLocale = true;
+            manager = EM.createEntityManager();
+        }// end of if cycle
 
         try { // prova ad eseguire il codice
             query = manager.createQuery(queryTxt);
@@ -332,46 +343,52 @@ public class Nome extends BaseEntity {
             int a = 87;
         }// fine del blocco try-catch
 
+        // eventualmente chiude l'EntityManager locale
+        if (usaManagerLocale) {
+            manager.close();
+        }// end of if cycle
+
         return vettore;
     }// end of method
 
     /**
-     * Recupera una mappa completa dei nomi e della loro frequenza
+     * Recupera una mappa completa (ordinata) dei nomi e della loro frequenza
      *
-     * @return numero di biografie
+     * @return mappa sigla, numero di voci
      */
-    public static Vector findMappaSoglia(EntityManager manager, int soglia) {
-        Vector vettore = new Vector();
-        Vector vettoreAll = findMappa(manager);
-        ArrayList<String> nomi = new ArrayList<>();
+    public static LinkedHashMap<String, Integer> findMappa(EntityManager manager, int taglio) {
+        LinkedHashMap<String, Integer> mappa = new LinkedHashMap<>();
+        LinkedHashMap<String, Object> mappaTmp = new LinkedHashMap<>();
+        Vector vettoreAll = findVettoreBase(manager);
         Object[] obj;
-        String nomeTxt;
+        String nomeText = "";
         long numVociBio = 0;
+        String chiave;
+        int valore;
 
         if (vettoreAll != null) {
             for (Object vect : vettoreAll) {
                 if (vect instanceof Object[]) {
                     obj = (Object[]) vect;
-                    nomeTxt = (String) obj[0];
+                    nomeText = (String) obj[0];
                     numVociBio = (long) obj[1];
-
-                    if (numVociBio >= soglia) {
-                        vettore.add(obj);
-//                        if (Pref.getBool(CostBio.USA_NOMI_DIVERSI_PER_ACCENTO, true)) {
-//                            if (nomi.contains(nomeTxt)) {
-//                                vettore.add(obj);
-//                            }// end of if cycle
-//                            nomi.add(nomeTxt);
-//                        } else {
-//                            vettore.add(obj);
-//                            nomi.add(nomeTxt);
-//                        }// end of if/else cycle
+                    if (numVociBio >= taglio) {
+                        if (!nomeText.equals("")) {
+                            mappaTmp.put(nomeText, (int)numVociBio);
+                        }// end of if cycle
                     }// end of if cycle
                 }// end of if cycle
             }// end of for cycle
         }// end of if cycle
 
-        return vettore;
+        mappaTmp = LibArray.ordinaMappaAccentiSensibile(mappaTmp);
+        for (Map.Entry<String, Object> elementoDellaMappa : mappaTmp.entrySet()) {
+            chiave = elementoDellaMappa.getKey();
+            valore = (int) elementoDellaMappa.getValue();
+            mappa.put(chiave, valore);
+        }// end of for cycle
+
+        return mappa;
     }// end of method
 
     /**
@@ -379,6 +396,7 @@ public class Nome extends BaseEntity {
      *
      * @return mappa di alcune istanze di Nome
      */
+    @Deprecated
     @SuppressWarnings("unchecked")
     private static LinkedHashMap<Nome, Integer> findMappa(int maxVoci) {
         LinkedHashMap<Nome, Integer> mappa = new LinkedHashMap<Nome, Integer>();
@@ -595,5 +613,63 @@ public class Nome extends BaseEntity {
         SortProperty sorts = new SortProperty(Bio_.attivitaValida.getName(), Bio_.cognomeValido.getName(), Bio_.nomeValido.getName());
         return (List<Bio>) AQuery.getList(Bio.class, Bio_.nomeValido, getNome(), sorts);
     }// fine del metodo
+
+
+//    /**
+//     * La lista arriva non ordinata
+//     * Occorre riordinare in base agli accenti
+//     */
+//    private void ordinaLista(ArrayList<String> lista) {
+//        String nomeTxt = "";
+//        HashMap<String, Nome> mappaTmp = new HashMap<>();
+//
+//        if (mappaNomi != null) {
+//            lista = new ArrayList();
+//            for (Object obj : mappaNomi.keySet()) {
+//                nomeTxt = ((Nome) obj).getNome();
+//                lista.add(nomeTxt);
+//                mappaTmp.put(nomeTxt, (Nome) obj);
+//            }// end of for cycle
+//        }// end of if cycle
+//
+//        Collator usCollator = Collator.getInstance(Locale.US); //Your locale here
+//        usCollator.setStrength(Collator.PRIMARY); //desired strength
+//        Collections.sort(lista, usCollator);
+//
+////        mappaNomi=new HashMap<>()
+//        int a = 87;
+//    }// end of method
+
+//    /**
+//     * La mappa delle biografie arriva non ordinata
+//     * Occorre riordinare in base agli accenti
+//     * Sovrascritto
+//     */
+//    protected void ordinaMappaBiografie() {
+//        String nomeTxt = "";
+//        HashMap<String, Nome> mappaTmp = new HashMap<>();
+//        ArrayList lista = null;
+//
+//        if (mappaNomi != null) {
+//            lista = new ArrayList();
+//            for (Object obj : mappaNomi.keySet()) {
+//                nomeTxt = ((Nome) obj).getNome();
+//                lista.add(nomeTxt);
+//                mappaTmp.put(nomeTxt, (Nome) obj);
+//            }// end of for cycle
+//        }// end of if cycle
+//
+//        Collator usCollator = Collator.getInstance(Locale.US); //Your locale here
+//        usCollator.setStrength(Collator.PRIMARY); //desired strength
+//        Collections.sort(lista, usCollator);
+//
+////        mappaNomi=new HashMap<>()
+//        int a = 87;
+//    }// end of method
+
+//    public static String removeAccents(String text) {
+//        return text == null ? null : Normalizer.normalize(text, Normalizer.Form.NFD).replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
+//    }// end of method
+
 
 }// end of entity class

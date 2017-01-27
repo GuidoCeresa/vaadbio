@@ -17,7 +17,7 @@ import java.util.*;
  */
 public abstract class StatNomi extends Statistiche {
 
-    protected LinkedHashMap<Nome, Integer> mappaNomi;
+    protected LinkedHashMap<String, Integer> mappaNomi;
 
     /**
      * Regola alcuni (eventuali) parametri specifici della sottoclasse
@@ -40,35 +40,35 @@ public abstract class StatNomi extends Statistiche {
     }// fine del metodo
 
 
-    /**
-     * La mappa delle biografie arriva non ordinata
-     * Occorre riordinare in base agli accenti
-     * Sovrascritto
-     */
-    @Override
-    protected void ordinaMappaBiografie() {
-        String nomeTxt = "";
-        HashMap<String, Nome> mappaTmp = new HashMap<>();
-        ArrayList lista = null;
-
-        if (mappaNomi != null) {
-            lista = new ArrayList();
-            for (Object obj : mappaNomi.keySet()) {
-                nomeTxt = ((Nome) obj).getNome();
-                lista.add(nomeTxt);
-                mappaTmp.put(nomeTxt, (Nome) obj);
-            }// end of for cycle
-        }// end of if cycle
-
-        Collator usCollator = Collator.getInstance(Locale.US); //Your locale here
-        usCollator.setStrength(Collator.PRIMARY); //desired strength
-        Collections.sort(lista, usCollator);
-
-//        mappaNomi=new HashMap<>()
-        int a = 87;
-    }// end of method
-
-    public static String removeAccents(String text) {
-        return text == null ? null : Normalizer.normalize(text, Normalizer.Form.NFD).replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
-    }// end of method
+//    /**
+//     * La mappa delle biografie arriva non ordinata
+//     * Occorre riordinare in base agli accenti
+//     * Sovrascritto
+//     */
+//    @Override
+//    protected void ordinaMappaBiografie() {
+//        String nomeTxt = "";
+//        HashMap<String, Nome> mappaTmp = new HashMap<>();
+//        ArrayList lista = null;
+//
+//        if (mappaNomi != null) {
+//            lista = new ArrayList();
+//            for (Object obj : mappaNomi.keySet()) {
+//                nomeTxt = ((Nome) obj).getNome();
+//                lista.add(nomeTxt);
+//                mappaTmp.put(nomeTxt, (Nome) obj);
+//            }// end of for cycle
+//        }// end of if cycle
+//
+//        Collator usCollator = Collator.getInstance(Locale.US); //Your locale here
+//        usCollator.setStrength(Collator.PRIMARY); //desired strength
+//        Collections.sort(lista, usCollator);
+//
+////        mappaNomi=new HashMap<>()
+//        int a = 87;
+//    }// end of method
+//
+//    public static String removeAccents(String text) {
+//        return text == null ? null : Normalizer.normalize(text, Normalizer.Form.NFD).replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
+//    }// end of method
 }// end of class

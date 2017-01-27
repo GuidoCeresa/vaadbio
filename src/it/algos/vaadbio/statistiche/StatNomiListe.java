@@ -38,7 +38,7 @@ public class StatNomiListe extends StatNomi {
     /**
      * Costruttore completo
      */
-    public StatNomiListe(LinkedHashMap<Nome, Integer> mappaNomi) {
+    public StatNomiListe(LinkedHashMap<String, Integer> mappaNomi) {
         this.mappaNomi = mappaNomi;
         doInit();
     }// end of constructor
@@ -97,8 +97,7 @@ public class StatNomiListe extends StatNomi {
      * Corpo con elenco delle pagine
      */
     private String creaElenco() {
-        String testoTabella = CostBio.VUOTO;
-        String riga = CostBio.VUOTO;
+        String testoTabella ;
         ArrayList listaPagine = new ArrayList();
         ArrayList listaRiga;
         HashMap mappaTavola = new HashMap();
@@ -112,11 +111,9 @@ public class StatNomiListe extends StatNomi {
         titoli.add(LibWiki.setBold("Nome"));
         titoli.add(LibWiki.setBold("Voci"));
 
-        for (Map.Entry mappa : mappaNomi.entrySet()) {
-
-            nome = (Nome) mappa.getKey();
-            nomeText = nome.getNome();
-            num = (Integer) mappa.getValue();
+        for (Map.Entry<String, Integer> mappa : mappaNomi.entrySet()) {
+            nomeText = mappa.getKey();
+            num =  mappa.getValue();
             numText = LibNum.format(num);
             if (num >= taglioPagine) {
                 nomeText = tag + nomeText + CostBio.PIPE + nomeText;

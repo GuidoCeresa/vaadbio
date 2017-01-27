@@ -35,7 +35,7 @@ public class StatNomiPagine extends StatNomi {
     /**
      * Costruttore completo
      */
-    public StatNomiPagine(LinkedHashMap<Nome, Integer> mappaNomi) {
+    public StatNomiPagine(LinkedHashMap<String, Integer> mappaNomi) {
         this.mappaNomi = mappaNomi;
         doInit();
     }// end of constructor
@@ -93,17 +93,16 @@ public class StatNomiPagine extends StatNomi {
      */
     private String creaElenco() {
         String text = CostBio.VUOTO;
-        String riga = CostBio.VUOTO;
+        String riga ;
         Nome nome;
         String nomeText;
         int num;
         String numText;
         String tag = "Persone di nome ";
 
-        for (Map.Entry mappa : mappaNomi.entrySet()) {
-            nome = (Nome) mappa.getKey();
-            nomeText = nome.getNome();
-            num = (Integer) mappa.getValue();
+        for (Map.Entry<String, Integer> mappa : mappaNomi.entrySet()) {
+            nomeText = mappa.getKey();
+            num =  mappa.getValue();
             numText = LibNum.format(num);
             numText = LibWiki.setBold(numText);
             numText = "(" + numText + ")";
