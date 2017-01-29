@@ -58,7 +58,7 @@ public class CicloDelete extends CicloDownload{
 
             if (Pref.getBool(CostBio.USA_LOG_CICLO, true)) {
                 if (numRecordsCancellati > 0) {
-                    Log.info("delete", "Cancellati " + LibNum.format(numRecordsCancellati) + " records (che non avevano più la corrispondente voce nella categoria) in " + LibTime.difText(inizio));
+                    Log.debug("delete", "Cancellati " + LibNum.format(numRecordsCancellati) + " records (che non avevano più la corrispondente voce nella categoria) in " + LibTime.difText(inizio));
                 }// end of if cycle
             }// fine del blocco if
         }// fine del blocco if

@@ -6,8 +6,11 @@ import it.algos.vaadbio.bio.Bio;
 import it.algos.vaadbio.bio.Bio_;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.lib.LibBio;
+import it.algos.vaadbio.nome.Nome;
 import it.algos.webbase.domain.pref.Pref;
 import it.algos.webbase.web.entity.BaseEntity;
+import it.algos.webbase.web.entity.EM;
+import it.algos.webbase.web.lib.LibArray;
 import it.algos.webbase.web.query.AQuery;
 import it.algos.webbase.web.query.SortProperty;
 import org.apache.commons.beanutils.BeanUtils;
@@ -17,10 +20,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Vector;
+import java.util.*;
 
 /**
  * Classe di tipo JavaBean
@@ -33,9 +33,11 @@ import java.util.Vector;
 @Entity
 public class Cognome extends BaseEntity {
 
+
     @NotEmpty
     @Index()
     private String cognome = "";
+
 
     @Index()
     private int voci = 0;
@@ -52,20 +54,22 @@ public class Cognome extends BaseEntity {
     /**
      * Costruttore
      *
-     * @param cognome della persona
+     * @param cognomeTxt della persona
      */
-    public Cognome(String cognome) {
-        this(cognome, 0);
+    public Cognome(String cognomeTxt) {
+        this(cognomeTxt, 0);
     }// end of general constructor
 
     /**
      * Costruttore
      *
-     * @param cognome della persona
+     * @param cognomeTxt della persona
+     * @param numVoci    biografiche che hanno cognomeValido = cognomeTxt
      */
-    public Cognome(String cognome, int voci) {
-        this.setCognome(cognome);
-        this.setVoci(voci);
+    public Cognome(String cognomeTxt, int numVoci) {
+        super();
+        this.setCognome(cognomeTxt);
+        this.setVoci(numVoci);
     }// end of general constructor
 
 
@@ -73,7 +77,6 @@ public class Cognome extends BaseEntity {
      * Recupera una istanza di Cognome usando la query standard della Primary Key
      *
      * @param id valore della Primary Key
-     *
      * @return istanza di Cognome, null se non trovata
      */
     public static Cognome find(long id) {
@@ -83,12 +86,11 @@ public class Cognome extends BaseEntity {
     /**
      * Recupera una istanza di Cognome usando la query di una property specifica
      *
-     * @param cognome valore della property cognome
-     *
+     * @param cognomeTxt valore della property cognome
      * @return istanza di Cognome, null se non trovata
      */
-    public static Cognome getEntityByCognome(String cognome) {
-        return (Cognome) AQuery.getEntity(Cognome.class, Cognome_.cognome, cognome);
+    public static Cognome getEntityByCognome(String cognomeTxt) {
+        return (Cognome) AQuery.getEntity(Cognome.class, Cognome_.cognome, cognomeTxt);
     }// end of method
 
     /**
@@ -100,6 +102,80 @@ public class Cognome extends BaseEntity {
     public static List<Cognome> getList() {
         return (List<Cognome>) AQuery.getList(Cognome.class, new SortProperty(Cognome_.cognome.getName()));
     }// end of method
+
+
+    /**
+     * Recupera il valore del numero totale di records della Domain Class
+     *
+     * @return numero totale di records della tavola
+     */
+    public static int count() {
+        return AQuery.count(Cognome.class);
+    }// end of method
+
+    /**
+     * Creazione iniziale di una istanza della Entity
+     * Filtrato sulla company passata come parametro.
+     * La crea SOLO se non esiste già
+     *
+     * @param cognomeTxt della persona
+     * @return istanza della Entity
+     */
+    public static Cognome crea(String cognomeTxt) {
+        return crea(cognomeTxt, 0);
+    }// end of static method
+
+
+    /**
+     * Creazione iniziale di una istanza della Entity
+     * Filtrato sulla company passata come parametro.
+     * La crea SOLO se non esiste già
+     *
+     * @param cognomeTxt della persona
+     * @param numVoci    biografiche che hanno cognomeValido = cognomeTxt
+     * @return istanza della Entity
+     */
+    public static Cognome crea(String cognomeTxt, int numVoci) {
+        return crea(cognomeTxt, numVoci, (EntityManager) null);
+    }// end of static method
+
+
+    /**
+     * Creazione iniziale di una istanza della Entity
+     * Filtrato sulla company passata come parametro.
+     * La crea SOLO se non esiste già
+     *
+     * @param cognomeTxt della persona
+     * @param numVoci    biografiche che hanno cognomeValido = cognomeTxt
+     * @param manager    the EntityManager to use
+     * @return istanza della Entity
+     */
+    public static Cognome crea(String cognomeTxt, int numVoci, EntityManager manager) {
+        Cognome instance = (Cognome) AQuery.getEntity(Cognome.class, Cognome_.cognome, cognomeTxt, manager);
+
+        // se non specificato l'EntityManager, ne crea uno locale
+        boolean usaManagerLocale = false;
+        if (manager == null) {
+            usaManagerLocale = true;
+            manager = EM.createEntityManager();
+        }// end of if cycle
+
+        if (instance == null) {
+            try { // prova ad eseguire il codice
+                instance = new Cognome(cognomeTxt, numVoci);
+                instance = (Cognome) instance.save(manager);
+            } catch (Exception unErrore) { // intercetta l'errore
+                instance = null;
+            }// fine del blocco try-catch
+        }// end of if cycle
+
+        // eventualmente chiude l'EntityManager locale
+        if (usaManagerLocale) {
+            manager.close();
+        }// end of if cycle
+
+        return instance;
+    }// end of static method
 
 
     /**
@@ -117,33 +193,48 @@ public class Cognome extends BaseEntity {
         return new Compare.GreaterOrEqual(Cognome_.voci.getName(), maxVoci);
     }// end of method
 
-    /**
-     * Recupera il valore del numero totale di records della Domain Class
-     *
-     * @return numero totale di records della tavola
-     */
-    public static int count() {
-        return AQuery.count(Cognome.class);
-    }// end of method
 
     /**
      * Recupera una mappa completa dei cognomi e della loro frequenza
      *
-     * @return numero di biografie
+     * @return mappa di tutte le istanze di Cognome
      */
-    public static Vector findMappa(EntityManager manager) {
+    private static Vector findVettoreBase(EntityManager manager) {
         Vector vettore = null;
         Query query;
         String queryTxt = "select bio.cognomeValido,count(bio.cognomeValido) from Bio bio group by bio.cognomeValido order by bio.cognomeValido";
+
+        // se non specificato l'EntityManager, ne crea uno locale
+        boolean usaManagerLocale = false;
+        if (manager == null) {
+            usaManagerLocale = true;
+            manager = EM.createEntityManager();
+        }// end of if cycle
 
         try { // prova ad eseguire il codice
             query = manager.createQuery(queryTxt);
             vettore = (Vector) query.getResultList();
         } catch (Exception unErrore) { // intercetta l'errore
+            int a = 87;
         }// fine del blocco try-catch
+
+        // eventualmente chiude l'EntityManager locale
+        if (usaManagerLocale) {
+            manager.close();
+        }// end of if cycle
 
         return vettore;
     }// end of method
+
+    /**
+     * Recupera una mappa completa (ordinata) dei cognomi e della loro frequenza
+     *
+     * @return mappa sigla, numero di voci
+     */
+    static LinkedHashMap<String, Integer> findMappa(EntityManager manager, int taglio) {
+        return LibBio.findMappa(findVettoreBase(manager), taglio);
+    }// end of method
+
 
     /**
      * Recupera una mappa con occorrenze dei records che rispettano il criterio
@@ -181,28 +272,6 @@ public class Cognome extends BaseEntity {
 
         return mappa;
     }// end of method
-
-    /**
-     * Creazione iniziale di una istanza della Entity
-     * Filtrato sulla company passata come parametro.
-     * La crea SOLO se non esiste già
-     *
-     * @return istanza della Entity
-     */
-    public static Cognome crea(String cognomeTxt, int voci, EntityManager manager) {
-        Cognome cognome = (Cognome) AQuery.getEntity(Cognome.class, Cognome_.cognome, cognomeTxt, manager);
-
-        if (cognome == null) {
-            try { // prova ad eseguire il codice
-                cognome = new Cognome(cognomeTxt, voci);
-                cognome = (Cognome) cognome.save(manager);
-            } catch (Exception unErrore) { // intercetta l'errore
-                cognome = null;
-            }// fine del blocco try-catch
-        }// end of if cycle
-
-        return cognome;
-    }// end of static method
 
 
     /**
@@ -277,7 +346,7 @@ public class Cognome extends BaseEntity {
      */
     @SuppressWarnings("all")
     public List<Bio> listaBio() {
-        SortProperty sorts = new SortProperty(Bio_.attivitaValida.getName(), Bio_.cognomeValido.getName(), Bio_.nomeValido.getName());
+        SortProperty sorts = new SortProperty( Bio_.cognomeValido.getName(), Bio_.nomeValido.getName());
         return (List<Bio>) AQuery.getList(Bio.class, Bio_.cognomeValido, getCognome(), sorts);
     }// fine del metodo
 

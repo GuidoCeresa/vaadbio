@@ -85,18 +85,18 @@ public class WrapBio {
             if (Pref.getBool(CostBio.USA_LOG_CICLO, true)) {
                 testoPagina = pagina.getText();
                 if (testoPagina.equals(CostBio.VUOTO)) {
-                    Log.debug("cicloNew", "La pagina " + LibWiki.setQuadre(wikiTitle) + ", non è stata letta");
+                    Log.warning("cicloNew", "La pagina " + LibWiki.setQuadre(wikiTitle) + ", non è stata letta");
                     return;
                 }// end of if cycle
                 if (testoPagina.startsWith(CostBio.DISAMBIGUA)) {
-                    Log.debug("cicloNew", "La pagina " + LibWiki.setQuadre(wikiTitle) + ", non è stata registrata perché è una disambigua");
+                    Log.warning("cicloNew", "La pagina " + LibWiki.setQuadre(wikiTitle) + ", non è stata registrata perché è una disambigua");
                     return;
                 }// end of if cycle
                 if (testoPagina.startsWith(CostBio.REDIRECT) || testoPagina.startsWith(CostBio.REDIRECT)) {
-                    Log.debug("cicloNew", "La pagina " + LibWiki.setQuadre(wikiTitle) + ", non è stata registrata perché è un redirect");
+                    Log.warning("cicloNew", "La pagina " + LibWiki.setQuadre(wikiTitle) + ", non è stata registrata perché è un redirect");
                     return;
                 }// end of if cycle
-                Log.debug("cicloNew", "La pagina " + LibWiki.setQuadre(wikiTitle) + ", non è stata registrata perché  manca il tmplBio");
+                Log.warning("cicloNew", "La pagina " + LibWiki.setQuadre(wikiTitle) + ", non è stata registrata perché  manca il tmplBio");
                 return;
             }// fine del blocco if
             return;

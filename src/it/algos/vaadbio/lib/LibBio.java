@@ -2215,4 +2215,47 @@ public abstract class LibBio {
         return new com.vaadin.ui.Label(tag, ContentMode.HTML);
     }// fine del metodo
 
+
+    /**
+     * Recupera una mappa completa (ordinata) dei nomi/cognomi e della loro frequenza
+     *
+     * @return mappa sigla (nomi/cognomi), numero di voci
+     */
+    public static LinkedHashMap<String, Integer> findMappa(Vector vettoreAll, int taglio) {
+        LinkedHashMap<String, Integer> mappa = new LinkedHashMap<>();
+        LinkedHashMap<String, Object> mappaTmp = null;
+        Object[] obj;
+        String nomeText = "";
+        long numVociBio = 0;
+        String chiave;
+        int valore;
+
+        if (vettoreAll != null) {
+            mappaTmp = new LinkedHashMap<>();
+            for (Object vect : vettoreAll) {
+                if (vect instanceof Object[]) {
+                    obj = (Object[]) vect;
+                    nomeText = (String) obj[0];
+                    numVociBio = (long) obj[1];
+                    if (numVociBio >= taglio) {
+                        if (!nomeText.equals("")) {
+                            mappaTmp.put(nomeText, (int) numVociBio);
+                        }// end of if cycle
+                    }// end of if cycle
+                }// end of if cycle
+            }// end of for cycle
+        }// end of if cycle
+
+        if (mappaTmp != null) {
+            mappaTmp = LibArray.ordinaMappaAccentiSensibile(mappaTmp);
+            for (Map.Entry<String, Object> elementoDellaMappa : mappaTmp.entrySet()) {
+                chiave = elementoDellaMappa.getKey();
+                valore = (int) elementoDellaMappa.getValue();
+                mappa.put(chiave, valore);
+            }// end of for cycle
+        }// end of if cycle
+
+        return mappa;
+    }// end of method
+
 }// end of abstract static class

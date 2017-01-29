@@ -39,38 +39,22 @@ import java.util.*;
  * 2) le proprietà devono essere private e accessibili solo con get, set e is (usato per i boolenai al posto di get)
  * 3) la classe deve implementare l'interfaccia Serializable (la fa nella superclasse)
  * 4) la classe non deve contenere nessun metodo per la gestione degli eventi
+ * <p>
+ * Di norma gli accenti vengono rispettati. Pertanto: María, Marià, Maria, Mária, Marìa, Mariâ sono nomi diversi
+ * Di norma i nomi doppi vengono troncati
  */
 @Entity
 //@DefaultSort({"nome,true"})
 public class Nome extends BaseEntity {
 
+
     @NotEmpty
     @Index()
     private String nome = "";
 
-//    /**
-//     * Di norma gli accenti vengono rispettati. Pertanto: María, Marià, Maria, Mária, Marìa, Mariâ sono nomi diversi
-//     * Volendo (con un flag) possono essere considerati lo stesso nome.
-//     * In questo caso (stesso nome), il parametro principale diventa false ed il parametro riferimento punta a Maria (senza accento)
-//     */
-//    @Index()
-//    private boolean principale;
-//
-//    /**
-//     * Di norma (con un flag) i nomi doppi vengono troncati
-//     * Forzando questo parametro questo nome viene mantenuto com'è anche se doppio
-//     */
-//    @Index()
-//    private boolean nomeDoppio;
-//
-//
-//    @ManyToOne
-//    @CascadeOnDelete
-//    private Nome riferimento;
-
-
     @Index()
     private int voci = 0;
+
 
     /**
      * Costruttore senza argomenti
@@ -83,43 +67,22 @@ public class Nome extends BaseEntity {
     /**
      * Costruttore
      *
-     * @param nome della persona
+     * @param nomeTxt della persona
      */
-    public Nome(String nome) {
-        this(nome, true, false, null);
-    }// end of general constructor
-
-    /**
-     * Costruttore completo
-     *
-     * @param nome        della persona
-     * @param principale  flag
-     * @param nomeDoppio  flag
-     * @param riferimento al nome che raggruppa le varie dizioni
-     */
-    public Nome(String nome, boolean principale, boolean nomeDoppio, Nome riferimento) {
-        super();
-        this.setNome(nome);
-//        this.setPrincipale(principale);
-//        this.setNomeDoppio(nomeDoppio);
-//        this.setRiferimento(riferimento);
+    public Nome(String nomeTxt) {
+        this(nomeTxt, 0);
     }// end of full constructor
 
     /**
      * Costruttore completo
      *
-     * @param nome        della persona
-     * @param principale  flag
-     * @param nomeDoppio  flag
-     * @param riferimento al nome che raggruppa le varie dizioni
+     * @param nomeTxt della persona
+     * @param numVoci biografiche che hanno nomeValido = nomeTxt
      */
-    public Nome(String nome, boolean principale, boolean nomeDoppio, Nome riferimento, int voci) {
+    public Nome(String nomeTxt, int numVoci) {
         super();
-        this.setNome(nome);
-//        this.setPrincipale(principale);
-//        this.setNomeDoppio(nomeDoppio);
-//        this.setRiferimento(riferimento);
-        this.setVoci(voci);
+        this.setNome(nomeTxt);
+        this.setVoci(numVoci);
     }// end of full constructor
 
 
@@ -136,11 +99,11 @@ public class Nome extends BaseEntity {
     /**
      * Recupera una istanza di Nome usando la query di una property specifica
      *
-     * @param nome valore della property nome
+     * @param nomeTxt valore della property nome
      * @return istanza di Nome, null se non trovata
      */
-    public static Nome getEntityByNome(String nome) {
-        return (Nome) AQuery.getEntity(Nome.class, Nome_.nome, nome);
+    public static Nome getEntityByNome(String nomeTxt) {
+        return (Nome) AQuery.getEntity(Nome.class, Nome_.nome, nomeTxt);
     }// end of method
 
     /**
@@ -167,11 +130,11 @@ public class Nome extends BaseEntity {
      * Creazione iniziale di una istanza
      * La crea SOLO se non esiste già
      *
-     * @param nome della persona
+     * @param nomeTxt della persona
      * @return istanza della classe
      */
-    public synchronized static Nome crea(String nome) {
-        return crea(nome, true, true, null);
+    public static Nome crea(String nomeTxt) {
+        return crea(nomeTxt, 0);
     }// end of static method
 
 
@@ -179,25 +142,12 @@ public class Nome extends BaseEntity {
      * Creazione iniziale di una istanza
      * La crea SOLO se non esiste già
      *
-     * @param nome        della persona
-     * @param principale  flag
-     * @param nomeDoppio  flag
-     * @param riferimento al nome che raggruppa le varie dizioni
+     * @param nomeTxt della persona
+     * @param numVoci biografiche che hanno nomeValido = nomeTxt
      * @return istanza della classe
      */
-    public synchronized static Nome crea(String nome, boolean principale, boolean nomeDoppio, Nome riferimento) {
-        Nome instance = Nome.getEntityByNome(nome);
-
-        if (instance == null) {
-            instance = new Nome(nome, principale, nomeDoppio, riferimento);
-            instance.save();
-            if (riferimento == null) {
-//                instance.setRiferimento(instance);
-                instance.save();
-            }// end of if cycle
-        }// end of if cycle
-
-        return instance;
+    public static Nome crea(String nomeTxt, int numVoci) {
+        return crea(nomeTxt, numVoci, (EntityManager) null);
     }// end of static method
 
     /**
@@ -205,21 +155,36 @@ public class Nome extends BaseEntity {
      * Filtrato sulla company passata come parametro.
      * La crea SOLO se non esiste già
      *
+     * @param nomeTxt della persona
+     * @param numVoci biografiche che hanno nomeValido = nomeTxt
+     * @param manager the EntityManager to use
      * @return istanza della Entity
      */
-    public static Nome crea(String nomeTxt, int voci, EntityManager manager) {
-        Nome nome = (Nome) AQuery.getEntity(Nome.class, Nome_.nome, nomeTxt, manager);
+    public static Nome crea(String nomeTxt, int numVoci, EntityManager manager) {
+        Nome instance = (Nome) AQuery.getEntity(Nome.class, Nome_.nome, nomeTxt, manager);
 
-        if (nome == null) {
+        // se non specificato l'EntityManager, ne crea uno locale
+        boolean usaManagerLocale = false;
+        if (manager == null) {
+            usaManagerLocale = true;
+            manager = EM.createEntityManager();
+        }// end of if cycle
+
+        if (instance == null) {
             try { // prova ad eseguire il codice
-                nome = new Nome(nomeTxt, true, false, null, voci);
-                nome = (Nome) nome.save(manager);
+                instance = new Nome(nomeTxt, numVoci);
+                instance = (Nome) instance.save(manager);
             } catch (Exception unErrore) { // intercetta l'errore
-                nome = null;
+                instance = null;
             }// fine del blocco try-catch
         }// end of if cycle
 
-        return nome;
+        // eventualmente chiude l'EntityManager locale
+        if (usaManagerLocale) {
+            manager.close();
+        }// end of if cycle
+
+        return instance;
     }// end of static method
 
     /**
@@ -228,7 +193,7 @@ public class Nome extends BaseEntity {
      * @return lista di tutte le istanze di Nome
      */
     @SuppressWarnings("unchecked")
-    public synchronized static ArrayList<Nome> findAllDoppi() {
+    public static ArrayList<Nome> findAllDoppi() {
         Container.Filter filtro = new Compare.Equal("nomeDoppio", true);
         return (ArrayList<Nome>) AQuery.getList(Nome.class, filtro);
     }// end of method
@@ -239,7 +204,7 @@ public class Nome extends BaseEntity {
      * @return lista di tutte le istanze di Nome
      */
     @SuppressWarnings("unchecked")
-    public synchronized static ArrayList<Nome> findAllNotDoppi() {
+    public static ArrayList<Nome> findAllNotDoppi() {
         Container.Filter filtro = new Compare.Equal("nomeDoppio", false);
         return (ArrayList<Nome>) AQuery.getList(Nome.class, filtro);
     }// end of method
@@ -322,9 +287,9 @@ public class Nome extends BaseEntity {
     /**
      * Recupera una mappa completa dei nomi e della loro frequenza
      *
-     * @return numero di biografie
+     * @return mappa di tutte le istanze di Nome
      */
-    public static Vector findVettoreBase(EntityManager manager) {
+    private static Vector findVettoreBase(EntityManager manager) {
         Vector vettore = null;
         Query query;
         String queryTxt = "select bio.nomeValido,count(bio.nomeValido) from Bio bio group by bio.nomeValido order by bio.nomeValido";
@@ -356,40 +321,10 @@ public class Nome extends BaseEntity {
      *
      * @return mappa sigla, numero di voci
      */
-    public static LinkedHashMap<String, Integer> findMappa(EntityManager manager, int taglio) {
-        LinkedHashMap<String, Integer> mappa = new LinkedHashMap<>();
-        LinkedHashMap<String, Object> mappaTmp = new LinkedHashMap<>();
-        Vector vettoreAll = findVettoreBase(manager);
-        Object[] obj;
-        String nomeText = "";
-        long numVociBio = 0;
-        String chiave;
-        int valore;
-
-        if (vettoreAll != null) {
-            for (Object vect : vettoreAll) {
-                if (vect instanceof Object[]) {
-                    obj = (Object[]) vect;
-                    nomeText = (String) obj[0];
-                    numVociBio = (long) obj[1];
-                    if (numVociBio >= taglio) {
-                        if (!nomeText.equals("")) {
-                            mappaTmp.put(nomeText, (int)numVociBio);
-                        }// end of if cycle
-                    }// end of if cycle
-                }// end of if cycle
-            }// end of for cycle
-        }// end of if cycle
-
-        mappaTmp = LibArray.ordinaMappaAccentiSensibile(mappaTmp);
-        for (Map.Entry<String, Object> elementoDellaMappa : mappaTmp.entrySet()) {
-            chiave = elementoDellaMappa.getKey();
-            valore = (int) elementoDellaMappa.getValue();
-            mappa.put(chiave, valore);
-        }// end of for cycle
-
-        return mappa;
+     static LinkedHashMap<String, Integer> findMappa(EntityManager manager, int taglio) {
+        return LibBio.findMappa(findVettoreBase(manager), taglio);
     }// end of method
+
 
     /**
      * Recupera una mappa con occorrenze dei records che rispettano il criterio
@@ -447,29 +382,6 @@ public class Nome extends BaseEntity {
         this.nome = nome;
     }//end of setter method
 
-//    public boolean isPrincipale() {
-//        return principale;
-//    }// end of getter method
-//
-//    public void setPrincipale(boolean principale) {
-//        this.principale = principale;
-//    }//end of setter method
-//
-//    public boolean isNomeDoppio() {
-//        return nomeDoppio;
-//    }// end of getter method
-//
-//    public void setNomeDoppio(boolean nomeDoppio) {
-//        this.nomeDoppio = nomeDoppio;
-//    }//end of setter method
-//
-//    public Nome getRiferimento() {
-//        return riferimento;
-//    }// end of getter method
-//
-//    public void setRiferimento(Nome riferimento) {
-//        this.riferimento = riferimento;
-//    }//end of setter method
 
     public int getVoci() {
         return voci;
@@ -488,43 +400,6 @@ public class Nome extends BaseEntity {
         return new Compare.Equal("nomePunta.id", getId());
     }// fine del metodo
 
-//    /**
-//     * Recupera una lista (array) di records Bio che usano questa istanza di Nome nella property nomePunta
-//     *
-//     * @return lista delle istanze di Bio che usano questo nome
-//     */
-//    @SuppressWarnings("all")
-//    public ArrayList<Bio> listaBio() {
-//        ArrayList<Bio> lista = null;
-//        List entities = AQuery.getList(Bio.class, this.getFiltroNome());
-//
-//        Comparator comp = new Comparator() {
-//            @Override
-//            public int compare(Object objA, Object objB) {
-//                String attivitaA = "";
-//                String attivitaB = "";
-//                Bio bioA = (Bio) objA;
-//                Bio bioB = (Bio) objB;
-//                Attivita objAttivitaA = bioA.getAttivitaPunta();
-//                Attivita objAttivitaB = bioB.getAttivitaPunta();
-//                if (objAttivitaA != null) {
-//                    attivitaA = objAttivitaA.getPlurale();
-//                }// end of if cycle
-//                if (objAttivitaB != null) {
-//                    attivitaB = objAttivitaB.getPlurale();
-//                }// end of if cycle
-//
-//                return attivitaA.compareTo(attivitaB);
-//            }// end of inner method
-//        };// end of anonymous inner class
-//        entities.sort(comp);
-//
-//        if (entities != null) {
-//            lista = new ArrayList<>(entities);
-//        }// end of if cycle
-//
-//        return lista;
-//    }// fine del metodo
 
     /**
      * Recupera il numero di records Bio che usano questa istanza di Nome nella property nomePunta
@@ -600,76 +475,9 @@ public class Nome extends BaseEntity {
      */
     @SuppressWarnings("all")
     public List<Bio> listaBio() {
-//        String query="SELECT b FROM BIO B where nomevalido COLLATE utf8mb4_bin='Maria' order by cognome,nome";
-//       Object lista = LibBio.queryFind(query);
-//
-//        SortProperty sorts2 = new SortProperty(Bio_.attivitaValida.getName(), Bio_.cognomeValido.getName(), Bio_.nomeValido.getName());
-//        Container.Filter filter = new Compare.Equal("nomeValido", getNome());
-//        Object obj= (List<Bio>) AQuery.getList(Bio.class, filter);
-//
-//        Container.Filter filter2 = new Compare.Equal("nomeValido COLLATE utf8mb4_bin ", getNome());
-//        Object obj2= (List<Bio>) AQuery.getList(Bio.class, filter2);
-
-        SortProperty sorts = new SortProperty(Bio_.attivitaValida.getName(), Bio_.cognomeValido.getName(), Bio_.nomeValido.getName());
+        SortProperty sorts = new SortProperty(Bio_.cognomeValido.getName(), Bio_.nomeValido.getName());
         return (List<Bio>) AQuery.getList(Bio.class, Bio_.nomeValido, getNome(), sorts);
     }// fine del metodo
-
-
-//    /**
-//     * La lista arriva non ordinata
-//     * Occorre riordinare in base agli accenti
-//     */
-//    private void ordinaLista(ArrayList<String> lista) {
-//        String nomeTxt = "";
-//        HashMap<String, Nome> mappaTmp = new HashMap<>();
-//
-//        if (mappaNomi != null) {
-//            lista = new ArrayList();
-//            for (Object obj : mappaNomi.keySet()) {
-//                nomeTxt = ((Nome) obj).getNome();
-//                lista.add(nomeTxt);
-//                mappaTmp.put(nomeTxt, (Nome) obj);
-//            }// end of for cycle
-//        }// end of if cycle
-//
-//        Collator usCollator = Collator.getInstance(Locale.US); //Your locale here
-//        usCollator.setStrength(Collator.PRIMARY); //desired strength
-//        Collections.sort(lista, usCollator);
-//
-////        mappaNomi=new HashMap<>()
-//        int a = 87;
-//    }// end of method
-
-//    /**
-//     * La mappa delle biografie arriva non ordinata
-//     * Occorre riordinare in base agli accenti
-//     * Sovrascritto
-//     */
-//    protected void ordinaMappaBiografie() {
-//        String nomeTxt = "";
-//        HashMap<String, Nome> mappaTmp = new HashMap<>();
-//        ArrayList lista = null;
-//
-//        if (mappaNomi != null) {
-//            lista = new ArrayList();
-//            for (Object obj : mappaNomi.keySet()) {
-//                nomeTxt = ((Nome) obj).getNome();
-//                lista.add(nomeTxt);
-//                mappaTmp.put(nomeTxt, (Nome) obj);
-//            }// end of for cycle
-//        }// end of if cycle
-//
-//        Collator usCollator = Collator.getInstance(Locale.US); //Your locale here
-//        usCollator.setStrength(Collator.PRIMARY); //desired strength
-//        Collections.sort(lista, usCollator);
-//
-////        mappaNomi=new HashMap<>()
-//        int a = 87;
-//    }// end of method
-
-//    public static String removeAccents(String text) {
-//        return text == null ? null : Normalizer.normalize(text, Normalizer.Form.NFD).replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
-//    }// end of method
 
 
 }// end of entity class

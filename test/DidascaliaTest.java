@@ -43,7 +43,7 @@ public class DidascaliaTest {
         attivitaPunta = new Attivita("politico", "politici");
         attivita2Punta = new Attivita("patriota", "patrioti");
         nazionalitaPunta = new Nazionalita("italiano", "italiani");
-        nomePunta = new Nome("Silvio", true, false, null);
+        nomePunta = new Nome("Silvio");
         bio = new Bio();
         bio.setTitle("Silvio Spaventa");
         bio.setNome("Silvio");

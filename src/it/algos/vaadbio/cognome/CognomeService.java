@@ -1,15 +1,24 @@
 package it.algos.vaadbio.cognome;
 
 
+import it.algos.vaadbio.bio.Bio;
+import it.algos.vaadbio.bio.Bio_;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.lib.LibBio;
+import it.algos.vaadbio.nome.Nome;
+import it.algos.webbase.domain.log.Log;
 import it.algos.webbase.domain.pref.Pref;
 import it.algos.webbase.web.entity.EM;
+import it.algos.webbase.web.lib.LibNum;
+import it.algos.webbase.web.lib.LibTime;
 import it.algos.webbase.web.query.AQuery;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.validation.ConstraintViolationException;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 
 /**
@@ -51,17 +60,77 @@ public abstract class CognomeService {
      * Cancella i records esistenti
      */
     private static void cancellaCognomi(EntityManager manager) {
+        Query query;
+        String queryTxt = "update Bio bio set bio.cognomePunta=null";
+
+        try { // prova ad eseguire il codice
+            query = manager.createQuery(queryTxt);
+            query.executeUpdate();
+        } catch (Exception unErrore) { // intercetta l'errore
+            Log.warning("cognomePunta", "Ancora da eliminare la property cognomePunta");
+        }// fine del blocco try-catch
+
         AQuery.delete(Cognome.class, manager);
     }// fine del metodo
 
     /**
      * Elabora tutti i cognomi
+     * Controlla la validità di ogni singolo cognome
+     * Controlla che ci siano almeno n voci biografiche per il singolo cognome
      * Registra il record
      */
     private static void creaAllCognomiUnici(EntityManager manager) {
-        Vector vettore = Cognome.findMappa(manager);
-        elaboraCognomiValidi(vettore, manager);
+        int numCognomiRegistrati = 0;
+        LinkedHashMap<String, Integer> mappa;
+        int taglio = Pref.getInt(CostBio.TAGLIO_COGNOMI_ELENCO, 20);
+        String cognomeTxt = "";
+        long numVociBio = 0;
+
+        long inizio = System.currentTimeMillis();
+        mappa = Cognome.findMappa(manager, taglio);
+
+        for (Map.Entry<String, Integer> elementoDellaMappa : mappa.entrySet()) {
+            cognomeTxt = elementoDellaMappa.getKey();
+            numVociBio = elementoDellaMappa.getValue();
+            if (creaSingolo(cognomeTxt, numVociBio, manager)) {
+                numCognomiRegistrati++;
+            }// end of if cycle
+        }// end of for cycle
+
+        Log.debug("Cognomi", "Create " + LibNum.format(numCognomiRegistrati) + " pagine di cognomi in " + LibTime.difText(inizio));
     }// fine del metodo
+
+
+    /**
+     * Controlla la validità del cognome
+     * (Ri)Calcola (eventualmente) il numero di voci Bio esistenti per il cognome
+     * Se supera il taglio TAGLIO_COGNOMI_ELENCO, registra il record
+     */
+    private static boolean creaSingolo(String cognomeTxt, long numVociBioTmp, EntityManager manager) {
+        boolean registrato = false;
+        long numVociBio = 0;
+
+        cognomeTxt = check(cognomeTxt);
+        if (cognomeTxt.equals(CostBio.VUOTO)) {
+            return false;
+        }// end of if cycle
+
+        // ricontrolla il numero di voci
+        if (Pref.getBool(CostBio.USA_RICONTEGGIO_NOMI, false)) {
+            numVociBio = AQuery.count(Bio.class, Bio_.cognomeValido, cognomeTxt, manager);
+        } else {
+            numVociBio = numVociBioTmp;
+        }// end of if/else cycle
+
+        try { // prova ad eseguire il codice
+            Cognome.crea(cognomeTxt, (int) numVociBio, manager);
+            registrato = true;
+        } catch (Exception unErrore) { // intercetta l'errore
+        }// fine del blocco try-catch
+
+        return registrato;
+    }// fine del metodo
+
 
     /**
      * Controlla che ci siano almeno n voci biografiche per il singolo cognome

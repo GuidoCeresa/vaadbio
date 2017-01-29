@@ -71,7 +71,9 @@ public abstract class Esegue {
         if (Pref.getBool(CostBio.USA_DAEMONS_NOMI, false)) {
             cicloNomi();
         }// end of if cycle
-        cicloCognomi();
+        if (Pref.getBool(CostBio.USA_DAEMONS_COGNOMI, false)) {
+            cicloCognomi();
+        }// end of if cycle
         cicloAttivita();
         cicloNazionalita();
         uploadAnni();
@@ -200,11 +202,9 @@ public abstract class Esegue {
      * Ciclo normale giornaliero di upload delle liste di cognomi
      */
     public static void cicloCognomi() {
-        if (Pref.getBool(CostBio.USA_DAEMONS_COGNOMI, false)) {
-            CognomeService.crea();
-            Esegue.uploadCognomi();
-            Esegue.statisticheCognomi();
-        }// end of if cycle
+        CognomeService.crea();
+        Esegue.uploadCognomi();
+        Esegue.statisticheCognomi();
     } // fine del metodo
 
     /**

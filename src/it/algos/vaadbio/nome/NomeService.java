@@ -27,26 +27,6 @@ import static it.algos.webbase.domain.pref.TypePref.stringa;
 /**
  * Gestione dei nomi (antroponimi)
  * <p>
- * 1° fase da fare una tantum o ogni 6-12 mesi
- * Costruisce
- * Annullamento del link tra BioGrails e gli Antroponimi
- * Creazione dei records di antroponimi leggendo i records BioGrails
- * Controllo della pagina Progetto:Antroponimi/Nomi doppi
- * Ricalcolo delle voci per ricostruire in ogni record di BioGrails il link verso il corretto record di Antroponimo
- * <p>
- * 2° fase da fare una tantum
- * Aggiunge
- * Aggiunta dei records di antroponimi leggendo i records BioGrails
- * Controllo della pagina Progetto:Antroponimi/Nomi doppi
- * Ricalcolo delle voci per ricostruire in ogni record di BioGrails il link verso il corretto record di Antroponimo
- * <p>
- * 3° fase da fare ogni settimana
- * Ricalcola
- * Upload
- * Controllo della pagina Progetto:Antroponimi/Nomi doppi
- * Spazzolamento di tutti i records di Antroponimi per aggiornare il numero di voci linkate
- * Creazione della pagina/lista per ogni record di Antroponimi che supera la soglia
- * <p>
  * Note:
  * A- Se USA_ACCENTI_NORMALIZZATI è true, devo vedere sempre il nome Aaròn. Se è false lo vedo solo se supera SOGLIA_ANTROPONIMI
  * B- Crea records di Antroponimo al di sopra di SOGLIA_ANTROPONIMI
@@ -108,6 +88,7 @@ public abstract class NomeService {
             query = manager.createQuery(queryTxt);
             query.executeUpdate();
         } catch (Exception unErrore) { // intercetta l'errore
+            Log.warning("nomePunta", "Ancora da eliminare la property nomePunta");
         }// fine del blocco try-catch
 
         AQuery.delete(Nome.class, manager);
@@ -119,11 +100,9 @@ public abstract class NomeService {
      * Controlla che ci siano almeno n voci biografiche per il singolo nome
      * Registra il record
      */
-    private static int creaAllNomiUnici(EntityManager manager) {
-        int numNomiiRegistrati = 0;
-        Vector vettore;
+    private static void creaAllNomiUnici(EntityManager manager) {
+        int numNomiRegistrati = 0;
         LinkedHashMap<String, Integer> mappa;
-        Object[] obj;
         int taglio = Pref.getInt(CostBio.TAGLIO_NOMI_ELENCO, 20);
         String nomeTxt = "";
         long numVociBio = 0;
@@ -131,24 +110,21 @@ public abstract class NomeService {
         long inizio = System.currentTimeMillis();
         mappa = Nome.findMappa(manager, taglio);
 
-
         for (Map.Entry<String, Integer> elementoDellaMappa : mappa.entrySet()) {
             nomeTxt = elementoDellaMappa.getKey();
             numVociBio = elementoDellaMappa.getValue();
             if (creaSingolo(nomeTxt, numVociBio, manager)) {
-                numNomiiRegistrati++;
+                numNomiRegistrati++;
             }// end of if cycle
         }// end of for cycle
 
-        Log.info("Nomi", "Create " + LibNum.format(numNomiiRegistrati) + " pagine di nomi in " + LibTime.difText(inizio));
-
-        return numNomiiRegistrati;
+        Log.debug("Nomi", "Create " + LibNum.format(numNomiRegistrati) + " pagine di nomi in " + LibTime.difText(inizio));
     }// fine del metodo
 
 
     /**
      * Controlla la validità del nome
-     * Calcola il numero di voci Bio esistenti per il nome
+     * (Ri)Calcola (eventualmente) il numero di voci Bio esistenti per il nome
      * Se supera il taglio TAGLIO_NOMI_ELENCO, registra il record
      */
     private static boolean creaSingolo(String nomeTxt, long numVociBioTmp, EntityManager manager) {
@@ -319,28 +295,6 @@ public abstract class NomeService {
         return nome;
     }// fine del metodo
 
-
-    /**
-     * Crea (controllando che non esista già) un record secondario di Nome
-     *
-     * @param nomeTxt     nome della persona
-     * @param riferimento record principale di riferimento nel DB Nome
-     */
-    private static Nome elaboraSingolo(String nomeTxt, Nome riferimento) {
-        Nome nome = null;
-
-        if (!nomeTxt.equals(CostBio.VUOTO)) {
-            nomeTxt = nomeTxt.trim();
-            nome = Nome.getEntityByNome(nomeTxt);
-
-            if (nome == null) {
-                nome = new Nome(nomeTxt, false, true, riferimento);
-                nome.save();
-            }// end of if cycle
-        }// end of if cycle
-
-        return nome;
-    }// fine del metodo
 
     /**
      * Recupera una lista 'grezza' di tutti i nomi
