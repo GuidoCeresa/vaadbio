@@ -19,7 +19,6 @@ import java.util.Map;
 public class StatNomiPagine extends StatNomi {
 
     private static String TITOLO_PAGINA = "Nomi";
-    private ArrayList<Nome> listaNomi;
     private long inizio = System.currentTimeMillis();
     private int mod = 0;
     private String modTxt;
@@ -94,7 +93,6 @@ public class StatNomiPagine extends StatNomi {
     private String creaElenco() {
         String text = CostBio.VUOTO;
         String riga ;
-        Nome nome;
         String nomeText;
         int num;
         String numText;

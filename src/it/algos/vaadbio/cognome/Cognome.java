@@ -186,10 +186,10 @@ public class Cognome extends BaseEntity {
     @SuppressWarnings("unchecked")
     public static List<Cognome> getListSuperaTaglioPagina() {
         int taglio = Pref.getInt(CostBio.TAGLIO_COGNOMI_PAGINA, 50);
-        return (List<Cognome>) AQuery.getList(Cognome.class, new SortProperty(Cognome_.cognome), getFiltroVoci(taglio));
+        return (List<Cognome>) AQuery.getList(Cognome.class, getFiltroVoci(taglio));
     }// end of method
 
-    public static Container.Filter getFiltroVoci(int maxVoci) {
+    private static Container.Filter getFiltroVoci(int maxVoci) {
         return new Compare.GreaterOrEqual(Cognome_.voci.getName(), maxVoci);
     }// end of method
 
@@ -242,8 +242,8 @@ public class Cognome extends BaseEntity {
      * @return mappa di alcune istanze di Nome
      */
     @SuppressWarnings("unchecked")
-    public static LinkedHashMap<Cognome, Integer> findMappaTaglioPagina() {
-        return findMappa(Pref.getInt(CostBio.TAGLIO_NOMI_PAGINA, 50));
+    public static LinkedHashMap<String, Integer> findMappaTaglioPagina() {
+        return findMappa((EntityManager) null, Pref.getInt(CostBio.TAGLIO_COGNOMI_PAGINA, 50));
     }// end of method
 
     /**
@@ -252,8 +252,8 @@ public class Cognome extends BaseEntity {
      * @return mappa di alcune istanze di Nome
      */
     @SuppressWarnings("unchecked")
-    public static LinkedHashMap<Cognome, Integer> findMappaTaglioListe() {
-        return findMappa(Pref.getInt(CostBio.TAGLIO_NOMI_ELENCO, 20));
+    public static LinkedHashMap<String, Integer> findMappaTaglioListe() {
+        return findMappa((EntityManager) null, Pref.getInt(CostBio.TAGLIO_COGNOMI_ELENCO, 20));
     }// end of method
 
     /**
@@ -346,7 +346,7 @@ public class Cognome extends BaseEntity {
      */
     @SuppressWarnings("all")
     public List<Bio> listaBio() {
-        SortProperty sorts = new SortProperty( Bio_.cognomeValido.getName(), Bio_.nomeValido.getName());
+        SortProperty sorts = new SortProperty(Bio_.cognomeValido.getName(), Bio_.nomeValido.getName());
         return (List<Bio>) AQuery.getList(Bio.class, Bio_.cognomeValido, getCognome(), sorts);
     }// fine del metodo
 

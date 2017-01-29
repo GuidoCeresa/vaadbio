@@ -20,8 +20,6 @@ import java.util.Map;
 public class StatCognomiPagine extends StatCognomi {
 
     private static String TITOLO_PAGINA = "Cognomi";
-    private ArrayList<Cognome> listaCognomi;
-    private LinkedHashMap<Cognome, Integer> mappaCognomi;
     private long inizio = System.currentTimeMillis();
     private int mod = 0;
     private String modTxt;
@@ -36,7 +34,7 @@ public class StatCognomiPagine extends StatCognomi {
     /**
      * Costruttore completo
      */
-    public StatCognomiPagine(LinkedHashMap<Cognome, Integer> mappaCognomi) {
+    public StatCognomiPagine(LinkedHashMap<String, Integer> mappaCognomi) {
         this.mappaCognomi = mappaCognomi;
         doInit();
     }// end of constructor
@@ -72,10 +70,10 @@ public class StatCognomiPagine extends StatCognomi {
     protected String elaboraBody() {
         String text = CostBio.VUOTO;
         int numVoci = mappaCognomi.size();
-        int taglioPagine = Pref.getInt(CostBio.TAGLIO_NOMI_PAGINA);
+        int taglioPagine = Pref.getInt(CostBio.TAGLIO_COGNOMI_PAGINA);
 
         text += A_CAPO;
-        text += "==Nomi==";
+        text += "==Cognomi==";
         text += A_CAPO;
         text += "Elenco dei ";
         text += LibWiki.setBold(LibNum.format(numVoci));
@@ -94,17 +92,15 @@ public class StatCognomiPagine extends StatCognomi {
      */
     private String creaElenco() {
         String text = CostBio.VUOTO;
-        String riga = CostBio.VUOTO;
-        Cognome cognome;
+        String riga ;
         String cognomeText;
         int num;
         String numText;
         String tag = "Persone di cognome ";
 
-        for (Map.Entry mappa : mappaCognomi.entrySet()) {
-            cognome = (Cognome) mappa.getKey();
-            cognomeText = cognome.getCognome();
-            num = (Integer) mappa.getValue();
+        for (Map.Entry<String, Integer> mappa : mappaCognomi.entrySet()) {
+            cognomeText = mappa.getKey();
+            num = mappa.getValue();
             numText = LibNum.format(num);
             numText = LibWiki.setBold(numText);
             numText = "(" + numText + ")";

@@ -491,6 +491,7 @@ public abstract class NomeService {
     /**
      * Crea una pagina di prova
      */
+    @Deprecated
     public static void testIncipitNomi() {
         String titolo = "Utente:Gac/Sandbox4279";
         String template;

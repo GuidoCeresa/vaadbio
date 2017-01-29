@@ -1,5 +1,7 @@
 package it.algos.vaadbio.statistiche;
 
+import java.util.LinkedHashMap;
+
 /**
  * Created by gac on 05 nov 2016.
  * Pagine di controllo del progetto Antroponimi
@@ -8,6 +10,8 @@ package it.algos.vaadbio.statistiche;
  * - Progetto:Antroponimi/Liste cognomi: Elenco dei xxx cognomi differenti utilizzati nelle yyy voci biografiche con occorrenze maggiori di zz
  */
 public class StatCognomi extends Statistiche {
+
+    protected LinkedHashMap<String, Integer> mappaCognomi;
 
     /**
      * Regola alcuni (eventuali) parametri specifici della sottoclasse

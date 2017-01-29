@@ -260,7 +260,7 @@ public class Nome extends BaseEntity {
         return (List<Nome>) AQuery.getList(Nome.class, new SortProperty(Nome_.nome), getFiltroVoci(taglio));
     }// end of method
 
-    public static Container.Filter getFiltroVoci(int maxVoci) {
+    private static Container.Filter getFiltroVoci(int maxVoci) {
         return new Compare.GreaterOrEqual(Nome_.voci.getName(), maxVoci);
     }// end of method
 

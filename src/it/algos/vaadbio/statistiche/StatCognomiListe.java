@@ -24,7 +24,6 @@ public class StatCognomiListe extends StatCognomi {
     private static String TITOLO_PAGINA = "Liste cognomi";
 
     private ArrayList<Cognome> listaCognomi;
-    private LinkedHashMap<Cognome, Integer> mappaCognomi;
     private long inizio = System.currentTimeMillis();
     private int mod = 0;
     private String modTxt;
@@ -40,7 +39,7 @@ public class StatCognomiListe extends StatCognomi {
     /**
      * Costruttore completo
      */
-    public StatCognomiListe(LinkedHashMap<Cognome, Integer> mappaCognomi) {
+    public StatCognomiListe(LinkedHashMap<String, Integer> mappaCognomi) {
         this.mappaCognomi = mappaCognomi;
         doInit();
     }// end of constructor
@@ -81,7 +80,7 @@ public class StatCognomiListe extends StatCognomi {
         int taglioVoci = Pref.getInt(CostBio.TAGLIO_NOMI_ELENCO);
 
         text += A_CAPO;
-        text += "==Nomi==";
+        text += "==Cognomi==";
         text += A_CAPO;
         text += "Elenco dei ";
         text += LibWiki.setBold(LibNum.format(numCognomi));
@@ -100,27 +99,23 @@ public class StatCognomiListe extends StatCognomi {
      * Corpo con elenco delle pagine
      */
     private String creaElenco() {
-        String testoTabella = CostBio.VUOTO;
+        String testoTabella ;
         String riga = CostBio.VUOTO;
         ArrayList listaPagine = new ArrayList();
         ArrayList listaRiga;
         HashMap mappaTavola = new HashMap();
-        Cognome cognome;
         String cognomeText;
         int num;
-        int taglioPagine = Pref.getInt(CostBio.TAGLIO_NOMI_PAGINA);
-        String numText;
+        int taglioPagine = Pref.getInt(CostBio.TAGLIO_COGNOMI_PAGINA);
         String tag = "Persone di cognome ";
         ArrayList titoli = new ArrayList();
         titoli.add(LibWiki.setBold("Cognome"));
         titoli.add(LibWiki.setBold("Voci"));
 
-        for (Map.Entry mappa : mappaCognomi.entrySet()) {
+        for (Map.Entry<String, Integer> mappa: mappaCognomi.entrySet()) {
 
-            cognome = (Cognome) mappa.getKey();
-            cognomeText = cognome.getCognome();
-            num = (Integer) mappa.getValue();
-            numText = LibNum.format(num);
+            cognomeText = mappa.getKey();
+            num =  mappa.getValue();
             if (num >= taglioPagine) {
                 cognomeText = tag + cognomeText + CostBio.PIPE + cognomeText;
                 cognomeText = LibWiki.setQuadre(cognomeText);

@@ -101,11 +101,9 @@ public class StatNomiListe extends StatNomi {
         ArrayList listaPagine = new ArrayList();
         ArrayList listaRiga;
         HashMap mappaTavola = new HashMap();
-        Nome nome;
         String nomeText;
         int num;
         int taglioPagine = Pref.getInt(CostBio.TAGLIO_NOMI_PAGINA);
-        String numText;
         String tag = "Persone di nome ";
         ArrayList titoli = new ArrayList();
         titoli.add(LibWiki.setBold("Nome"));
@@ -114,7 +112,6 @@ public class StatNomiListe extends StatNomi {
         for (Map.Entry<String, Integer> mappa : mappaNomi.entrySet()) {
             nomeText = mappa.getKey();
             num =  mappa.getValue();
-            numText = LibNum.format(num);
             if (num >= taglioPagine) {
                 nomeText = tag + nomeText + CostBio.PIPE + nomeText;
                 nomeText = LibWiki.setQuadre(nomeText);
@@ -127,6 +124,7 @@ public class StatNomiListe extends StatNomi {
             listaPagine.add(listaRiga);
 
         }// end of for cycle
+
         mappaTavola.put(Cost.KEY_MAPPA_SORTABLE_BOOLEAN, true);
         mappaTavola.put(Cost.KEY_MAPPA_TITOLI, titoli);
         mappaTavola.put(Cost.KEY_MAPPA_RIGHE_LISTA, listaPagine);
