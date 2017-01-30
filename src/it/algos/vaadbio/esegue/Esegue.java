@@ -74,8 +74,13 @@ public abstract class Esegue {
         if (Pref.getBool(CostBio.USA_DAEMONS_COGNOMI, false)) {
             cicloCognomi();
         }// end of if cycle
-        cicloAttivita();
-        cicloNazionalita();
+        if (Pref.getBool(CostBio.USA_DAEMONS_ATTIVITA, false)) {
+            cicloAttivita();
+        }// end of if cycle
+        if (Pref.getBool(CostBio.USA_DAEMONS_NAZIONALITA, false)) {
+            cicloNazionalita();
+        }// end of if cycle
+
         uploadAnni();
     } // fine del metodo
 
@@ -232,10 +237,8 @@ public abstract class Esegue {
      * Ciclo normale giornaliero di upload delle liste di attività
      */
     public static void cicloAttivita() {
-        if (Pref.getBool(CostBio.USA_DAEMONS_ATTIVITA, false)) {
-            Esegue.uploadAttivita();
-            Esegue.statisticheAttivita();
-        }// end of if cycle
+        Esegue.uploadAttivita();
+        Esegue.statisticheAttivita();
     } // fine del metodo
 
     /**
@@ -261,10 +264,8 @@ public abstract class Esegue {
      * Ciclo normale giornaliero di upload delle liste di nazionalità
      */
     public static void cicloNazionalita() {
-        if (Pref.getBool(CostBio.USA_DAEMONS_NAZIONALITA, false)) {
-            Esegue.uploadNazionalita();
-            Esegue.statisticheNazionalita();
-        }// end of if cycle
+        Esegue.uploadNazionalita();
+        Esegue.statisticheNazionalita();
     } // fine del metodo
 
     /**
