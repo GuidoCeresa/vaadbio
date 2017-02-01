@@ -8,6 +8,7 @@ import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.lib.LibBio;
 import it.algos.webbase.web.entity.BaseEntity;
 import it.algos.webbase.web.lib.LibArray;
+import it.algos.webbase.web.lib.LibText;
 import it.algos.webbase.web.query.AQuery;
 import it.algos.webbase.web.query.SortProperty;
 import org.apache.commons.beanutils.BeanUtils;
@@ -97,11 +98,30 @@ public class Attivita extends BaseEntity {
      * Recupera una istanza di Attivita usando la query di una property specifica
      *
      * @param plurale valore della property plurale
-     * @return istanza di Bolla, null se non trovata
+     * @return istanza di Attivita, null se non trovata
      */
     public static Attivita findByPlurale(String plurale) {
         Attivita instance = null;
         BaseEntity entity = AQuery.getEntity(Attivita.class, Attivita_.plurale, plurale.toLowerCase());
+
+        if (entity != null) {
+            if (entity instanceof Attivita) {
+                instance = (Attivita) entity;
+            }// end of if cycle
+        }// end of if cycle
+
+        return instance;
+    }// end of method
+
+    /**
+     * Recupera la prima istanza di Attivita usando la query di una property specifica
+     *
+     * @param plurale valore della property plurale
+     * @return istanza di Attivita, null se non trovata
+     */
+    public static Attivita findByFirstPlurale(String plurale) {
+        Attivita instance = null;
+        BaseEntity entity = AQuery.findFirst(Attivita.class, Attivita_.plurale, plurale.toLowerCase());
 
         if (entity != null) {
             if (entity instanceof Attivita) {
@@ -271,8 +291,14 @@ public class Attivita extends BaseEntity {
     public List<Bio> bio() {
         ArrayList<String> whereList = new ArrayList<>();
         ArrayList<String> orderList = new ArrayList<>();
+        String tag = "'";
 
         for (String singolare : getListSingolari()) {
+
+            if (singolare.contains(tag)) {
+                singolare = singolare.replaceAll(tag, tag + tag);
+            }// end of if cycle
+
             whereList.add("attivitaValida=" + LibBio.setApici(singolare));
             whereList.add("attivita2Valida=" + LibBio.setApici(singolare));
             whereList.add("attivita3Valida=" + LibBio.setApici(singolare));

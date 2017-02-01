@@ -2,6 +2,8 @@ package it.algos.vaadbio.nazionalita;
 
 import com.vaadin.data.Container;
 import com.vaadin.data.util.filter.Compare;
+import it.algos.vaadbio.attivita.Attivita;
+import it.algos.vaadbio.attivita.Attivita_;
 import it.algos.vaadbio.bio.Bio;
 import it.algos.vaadbio.lib.LibBio;
 import it.algos.webbase.web.entity.BaseEntity;
@@ -138,7 +140,7 @@ public class Nazionalita extends BaseEntity {
      *
      * @return lista dei valori distinti di plurale
      */
-    public synchronized static ArrayList<String> findDistinctPlurale() {
+    public  static ArrayList<String> findDistinctPlurale() {
         return LibBio.queryFindDistinctStx("Nazionalita", "plurale");
     }// end of method
 
@@ -149,9 +151,20 @@ public class Nazionalita extends BaseEntity {
      * @return lista di tutte le istanze di Nazionalita
      */
     @SuppressWarnings("unchecked")
-    public synchronized static ArrayList<Nazionalita> findAll() {
+    public  static ArrayList<Nazionalita> findAll() {
         return (ArrayList<Nazionalita>) AQuery.getList(Nazionalita.class);
     }// end of method
+
+    /**
+     * Recupera una lista (array) di tutti i records della Domain Class
+     *
+     * @return lista di tutte le istanze di Nazionalita
+     */
+    @SuppressWarnings("unchecked")
+    public static List<Nazionalita> findAllDistinct() {
+        return (List<Nazionalita>) LibBio.getDistinct(Nazionalita.class, "plurale");
+    }// end of method
+
 
     /**
      * Recupera una lista (array) dei records con la property indicata
@@ -159,7 +172,7 @@ public class Nazionalita extends BaseEntity {
      * @return lista di tutte le istanze di Nazionalita che rispondo al requisito
      */
     @SuppressWarnings("unchecked")
-    public synchronized static ArrayList<Nazionalita> findAllByPlurale(String plurale) {
+    public  static ArrayList<Nazionalita> findAllByPlurale(String plurale) {
         ArrayList<Nazionalita> lista = null;
         Container.Filter filtro;
         List<? extends BaseEntity> entities = null;
@@ -172,6 +185,19 @@ public class Nazionalita extends BaseEntity {
         }// end of if cycle
 
         return lista;
+    }// end of method
+
+
+    /**
+     * Recupera una lista (array) di singolari relativi al plurale di questa nazionalità
+     * Cioè i noimi di tutte le nazionalità che hanno questo plurale
+     *
+     * @return lista delle istanze di Nazionalita
+     */
+    @SuppressWarnings("unchecked")
+    public List<String> getListSingolari() {
+        Container.Filter filter = new Compare.Equal(Nazionalita_.plurale.getName(), plurale);
+        return AQuery.getListStr(Nazionalita.class, Nazionalita_.singolare, filter);
     }// end of method
 
     /**
@@ -193,6 +219,28 @@ public class Nazionalita extends BaseEntity {
 
         return numRecords;
     }// fine del metodo
+
+    /**
+     * Recupera una lista (array) di records Bio che usano questa istanza di Nazionalità nella property nazionalitaValida
+     *
+     * @return lista delle istanze di Bio che usano questa nazionalità
+     */
+    @SuppressWarnings("all")
+    public List<Bio> bio() {
+        ArrayList<String> whereList = new ArrayList<>();
+        ArrayList<String> orderList = new ArrayList<>();
+
+        for (String singolare : getListSingolari()) {
+            whereList.add("nazionalitaValida=" + LibBio.setApici(singolare));
+        }// end of for cycle
+
+        orderList.add("attivita");
+        orderList.add("cognome");
+        orderList.add("nome");
+
+        return (List<Bio>) LibBio.getList(Bio.class, whereList, orderList);
+    }// fine del metodo
+
 
     @Override
     public String toString() {

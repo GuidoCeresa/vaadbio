@@ -146,6 +146,25 @@ public class Genere extends BaseEntity {
     }// end of method
 
     /**
+     * Recupera la prima istanza di Genere usando la query di una property specifica
+     *
+     * @param plurale valore della property Sigla
+     * @return istanza di Genere, null se non trovata
+     */
+    public static Genere findByFirstPlurale(String plurale) {
+        Genere instance = null;
+        BaseEntity entity = AQuery.findFirst(Genere.class, Genere_.plurale, plurale);
+
+        if (entity != null) {
+            if (entity instanceof Genere) {
+                instance = (Genere) entity;
+            }// end of if cycle
+        }// end of if cycle
+
+        return instance;
+    }// end of method
+
+    /**
      * Recupera il valore del numero totale di records della della Entity
      *
      * @return numero totale di records della tavola

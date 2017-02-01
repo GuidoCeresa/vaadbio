@@ -3,7 +3,6 @@ package it.algos.vaadbio.liste;
 import it.algos.vaad.wiki.LibWiki;
 import it.algos.vaadbio.attivita.Attivita;
 import it.algos.vaadbio.bio.Bio;
-import it.algos.vaadbio.cognome.Cognome;
 import it.algos.vaadbio.genere.Genere;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.lib.LibBio;
@@ -12,32 +11,30 @@ import it.algos.vaadbio.professione.Professione;
 import it.algos.webbase.domain.pref.Pref;
 import it.algos.webbase.web.lib.LibText;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 /**
- * Created by gac on 21 nov 2016.
- * Crea la lista di una attività e la carica sul server wiki
+ * Created by gac on 31/01/17.
+ * Crea la lista di una nazionalità e la carica sul server wiki
  */
-public class ListaAttivita extends ListaBio {
+public class ListaNazionalita extends ListaBio {
 
-    private final static String PATH_PROGETTO = "Progetto:Biografie/Nazionalità/";
+    private final static String PATH_PROGETTO = "Progetto:Biografie/Attività/";
 
     /**
      * Costruttore senza parametri
      */
-    protected ListaAttivita() {
+    protected ListaNazionalita() {
     }// fine del costruttore
 
 
     /**
      * Costruttore completo
      *
-     * @param attivita indicata
+     * @param nazionalita indicata
      */
-    public ListaAttivita(Attivita attivita) {
-        super(attivita);
+    public ListaNazionalita(Nazionalita nazionalita) {
+        super(nazionalita);
     }// fine del costruttore
 
 
@@ -81,8 +78,8 @@ public class ListaAttivita extends ListaBio {
      */
     @Override
     protected void elaboraTitolo() {
-        String tag = "Progetto:Biografie/Attività/";
-        titoloPagina = tag + getAttivitaText();
+        String tag = "Progetto:Biografie/Nazionalità/";
+        titoloPagina = tag + getNazionalitaText();
     }// fine del metodo
 
 
@@ -93,10 +90,10 @@ public class ListaAttivita extends ListaBio {
      */
     @Override
     protected void elaboraListaBiografie() {
-        Attivita attivita = this.getAttivita();
+        Nazionalita nazionalita = this.getNazionalita();
 
-        if (attivita != null) {
-            listaBio = attivita.bio();
+        if (nazionalita != null) {
+            listaBio = nazionalita.bio();
         }// end of if cycle
     }// fine del metodo
 
@@ -107,7 +104,7 @@ public class ListaAttivita extends ListaBio {
      */
     @Override
     protected String getChiave(Bio bio) {
-        return LibBio.getChiavePerNazionalita(bio, tagParagrafoNullo);
+        return LibBio.getChiavePerAttivita(bio, tagParagrafoNullo);
     }// fine del metodo
 
 
@@ -120,18 +117,18 @@ public class ListaAttivita extends ListaBio {
      */
     protected String getTitoloParagrafo(Bio bio) {
         String titoloParagrafo = tagParagrafoNullo;
-        String paginaWiki = CostBio.VUOTO;
-        String linkVisibile = CostBio.VUOTO;
-        String nazionalita = "";
+        String paginaWiki;
+        String linkVisibile;
+        String attivita;
 
         if (bio == null) {
             return CostBio.VUOTO;
         }// end of if cycle
 
-        nazionalita = LibBio.getChiavePerNazionalita(bio, tagParagrafoNullo);
-        if (nazionalita != null) {
-            paginaWiki = LibText.primaMaiuscola(nazionalita);
-            linkVisibile = LibText.primaMaiuscola(nazionalita);
+        attivita = LibBio.getChiavePerAttivita(bio, tagParagrafoNullo);
+        if (attivita != null) {
+            paginaWiki = LibText.primaMaiuscola(attivita);
+            linkVisibile = LibText.primaMaiuscola(attivita);
             titoloParagrafo = costruisceTitolo(paginaWiki, linkVisibile);
         }// end of if cycle
 
@@ -147,15 +144,15 @@ public class ListaAttivita extends ListaBio {
      */
     protected String getChiaveParagrafo(Bio bio) {
         String chiaveParagrafo = tagParagrafoNullo;
-        Nazionalita nazionalita = null;
+        Attivita attivita = null;
 
         if (bio == null) {
             return CostBio.VUOTO;
         }// end of if cycle
 
-        nazionalita = bio.getNazionalitaPunta();
-        if (nazionalita != null) {
-            chiaveParagrafo = nazionalita.getPlurale();
+        attivita = bio.getAttivitaPunta();
+        if (attivita != null) {
+            chiaveParagrafo = attivita.getPlurale();
             chiaveParagrafo = LibText.primaMaiuscola(chiaveParagrafo);
         }// end of if cycle
 
@@ -165,19 +162,55 @@ public class ListaAttivita extends ListaBio {
     /**
      * Costruisce il titolo del paragrafo
      * <p>
-     * Questo deve essere composto da:
-     * Professione.pagina
-     * Genere.plurale
+     * Arriva chiaveParagrafo
+     * Lo cerco come plurale di Genere
+     * Prendo il primo singolare di Genere
+     * Prendo il corrispondente plurale di Attivita
      */
-    private String getTitoloParagrafo(String chiaveParagrafo) {
+    protected String getTitoloParagrafo(String chiaveParagrafo) {
+        String titoloParagrafo = tagParagrafoNullo;
+        Professione professione = null;
+        String professioneTxt;
+        String paginaWiki = CostBio.VUOTO;
+        Genere genere = null;
+        String genereSingolare;
+        String linkVisibile = CostBio.VUOTO;
+        Attivita attivita = null;
+        String attivitaSingolare = CostBio.VUOTO;
+        String attivitaPlurale = CostBio.VUOTO;
+
+        if (chiaveParagrafo.equals("")) {
+            return CostBio.VUOTO;
+        }// end of if cycle
+
+        genere = Genere.findByFirstPlurale(chiaveParagrafo.toLowerCase());
+        if (genere != null) {
+            genereSingolare = genere.getSingolare();
+            attivita = Attivita.findBySingolare(genereSingolare);
+        }// end of if cycle
+
+        if (attivita != null) {
+            attivitaPlurale = attivita.getPlurale();
+            paginaWiki = LibText.primaMaiuscola(attivitaPlurale);
+//            linkVisibile = LibText.primaMaiuscola(attivitaPlurale);
+            titoloParagrafo = getTitoloParagrafo2(paginaWiki, chiaveParagrafo);
+        }// end of if cycle
+
+        int a = 87;
+        return titoloParagrafo;
+
+    }// fine del metodo
+
+    /**
+     * Costruisce il titolo del paragrafo
+     */
+    private String getTitoloParagrafo2(String paginaWiki, String linkVisibile) {
         String titoloParagrafo = tagParagrafoNullo;
         String pipe = "|";
 
-        if (!chiaveParagrafo.equals(CostBio.VUOTO)) {
-            titoloParagrafo = PATH_PROGETTO + chiaveParagrafo + pipe + chiaveParagrafo;
-            titoloParagrafo = LibWiki.setQuadre(titoloParagrafo);
-            titoloParagrafo = LibWiki.setParagrafo(titoloParagrafo);
-        }// end of if cycle
+        titoloParagrafo = PATH_PROGETTO + paginaWiki + pipe + linkVisibile;
+        titoloParagrafo = LibWiki.setQuadre(titoloParagrafo);
+        titoloParagrafo = LibWiki.setParagrafo(titoloParagrafo);
 
         return titoloParagrafo;
     }// fine del metodo
@@ -205,14 +238,14 @@ public class ListaAttivita extends ListaBio {
      */
     @Override
     protected String elaboraFooter() {
-        String text = CostBio.VUOTO;
-        String attivitaPluraleMaiuscola = LibText.primaMaiuscola(getPluraleAttività());
+        String text;
+        String nazionalitaPluraleMaiuscola = LibText.primaMaiuscola(getPluraleNazionalita());
 
         text = "==Voci correlate==";
         text += CostBio.A_CAPO;
-        text += "*[[:Categoria:" + attivitaPluraleMaiuscola + "]]";
+        text += "*[[:Categoria:" + nazionalitaPluraleMaiuscola + "]]";
         text += CostBio.A_CAPO;
-        text += "*[[Progetto:Biografie/Attività]]";
+        text += "*[[Progetto:Biografie/Nazionalità]]";
         text += CostBio.A_CAPO;
 
         if (usaFooterPortale) {
@@ -222,7 +255,7 @@ public class ListaAttivita extends ListaBio {
 
         if (usaFooterCategorie) {
             text += CostBio.A_CAPO;
-            text += "[[Categoria:Bio attività|" + getPluraleAttività() + "]]";
+            text += "[[Categoria:Bio nazionalità|" + getPluraleNazionalita() + "]]";
         }// end of if cycle
 
         return text;
@@ -249,21 +282,21 @@ public class ListaAttivita extends ListaBio {
      * Metodo sovrascritto
      */
     protected void creaSottopagina(HashMap<String, Object> mappa) {
-        new ListaAttivitaABC(this, mappa);
+        new ListaNazionalitaABC(this, mappa);
     }// fine del metodo
 
 
-    public Attivita getAttivita() {
-        return (Attivita) getOggetto();
+    public Nazionalita getNazionalita() {
+        return (Nazionalita) getOggetto();
     }// end of getter method
 
 
-    public String getPluraleAttività() {
+    private String getPluraleNazionalita() {
         String plurale = "";
-        Attivita attivita = getAttivita();
+        Nazionalita nazionalita = getNazionalita();
 
-        if (attivita != null) {
-            plurale = attivita.getPlurale();
+        if (nazionalita != null) {
+            plurale = nazionalita.getPlurale();
             plurale = LibText.primaMaiuscola(plurale);
         }// end of if cycle
 
@@ -271,16 +304,16 @@ public class ListaAttivita extends ListaBio {
     }// end of getter method
 
 
-    public String getAttivitaText() {
-        String attivitaText = "";
-        Attivita attivita = getAttivita();
+    protected String getNazionalitaText() {
+        String nazionalitaText = "";
+        Nazionalita nazionalita = getNazionalita();
 
-        if (attivita != null) {
-            attivitaText = attivita.getPlurale();
-            attivitaText=LibText.primaMaiuscola(attivitaText);
+        if (nazionalita != null) {
+            nazionalitaText = nazionalita.getPlurale();
+            nazionalitaText = LibText.primaMaiuscola(nazionalitaText);
         }// end of if cycle
 
-        return attivitaText;
+        return nazionalitaText;
     }// end of getter method
 
 }// fine della classe

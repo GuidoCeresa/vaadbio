@@ -159,7 +159,7 @@ public class AttivitaMod extends ModulePop {
 
 
     /**
-     * Esegue l'upload per la lista dei nati
+     * Esegue l'upload per la lista della attività
      */
     public void esegueUpload() {
         Attivita attivita = getAttivita();

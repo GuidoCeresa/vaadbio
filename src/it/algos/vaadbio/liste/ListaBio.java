@@ -859,4 +859,5 @@ public abstract class ListaBio {
     public boolean isRegistrata() {
         return registrata;
     }// end of getter method
+
 }// fine della classe

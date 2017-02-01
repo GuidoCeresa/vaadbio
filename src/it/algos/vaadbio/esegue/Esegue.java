@@ -272,7 +272,7 @@ public abstract class Esegue {
      * Upload nazionalità
      */
     public static void uploadNazionalita() {
-//        new UploadNazionalita();
+        new UploadNazionalita();
     } // fine del metodo
 
 
