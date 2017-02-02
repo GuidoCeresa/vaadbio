@@ -249,39 +249,6 @@ public class Attivita extends BaseEntity {
     }// end of method
 
 
-//    /**
-//     * Recupera una lista (array) di records Bio che usano questa istanza di Attivita nella property attivitaValida
-//     * Non uso un link al record di questa tavola, perché viene ricreata ogno volta (numero di records ed ids variabili)
-//     *
-//     * @return lista delle istanze di Bio che usano questo istanza
-//     */
-//    @SuppressWarnings("all")
-//    public List<Bio> listaBio() {
-//        SortProperty sorts = new SortProperty(Bio_.attivitaValida.getName(), Bio_.cognomeValido.getName(), Bio_.nomeValido.getName());
-//        return (List<Bio>) AQuery.getList(Bio.class, Bio_.attivitaValida, this, sorts);
-//    }// fine del metodo
-
-//    /**
-//     * Recupera una lista (array) di records Bio che usano tutte le attività singolari che afferiscono al plurale di questa attività
-//     *
-//     * @return lista delle istanze di Bio
-//     */
-//    @SuppressWarnings("all")
-//    public ArrayList<Bio> listaBio() {
-//        ArrayList<Bio> lista = new ArrayList<>();
-//        ArrayList<Bio> listaTmp = null;
-//        String attivitaPlurale;
-//        attivitaPlurale = this.getPlurale();
-//        List<Attivita> listaSingolari = (List<Attivita>) AQuery.getList(Attivita.class, Attivita_.plurale, attivitaPlurale);
-//
-//        for (Attivita attivitaSingolare : listaSingolari) {
-//            listaTmp = new ArrayList<>(attivitaSingolare.bio());
-//            lista= LibArray.somma(lista,listaTmp);
-//        }// end of for cycle
-//
-//        return lista;
-//    }// fine del metodo
-
     /**
      * Recupera una lista (array) di records Bio che usano questa istanza di Attività nella property attivitaValida
      *
@@ -304,9 +271,9 @@ public class Attivita extends BaseEntity {
             whereList.add("attivita3Valida=" + LibBio.setApici(singolare));
         }// end of for cycle
 
-        orderList.add("nazionalita");
-        orderList.add("cognome");
-        orderList.add("nome");
+//        orderList.add("nazionalitaValida");
+        orderList.add("cognomeValido");
+        orderList.add("nomeValido");
 
         return (List<Bio>) LibBio.getList(Bio.class, whereList, orderList);
     }// fine del metodo

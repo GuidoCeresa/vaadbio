@@ -296,6 +296,7 @@ public abstract class ListaBio {
     /**
      * Costruisce il link alla pagina linkata da inserire nel titolo del paragrafo
      */
+    @Deprecated
     protected String getPaginaLinkata(Bio bio) {
         String paginaWiki = CostBio.VUOTO;
         Professione professione = null;
@@ -328,6 +329,7 @@ public abstract class ListaBio {
     /**
      * Costruisce il titolo visibile del paragrafo
      */
+    @Deprecated
     protected String getTitoloPar(Bio bio) {
         String titoloParagrafo = tagParagrafoNullo;
         Genere genere = null;
@@ -408,7 +410,7 @@ public abstract class ListaBio {
      * Gli spazi (righe) di separazione vanno aggiunti qui <br>
      * Registra la pagina <br>
      */
-    protected void elaboraPagina() {
+    private void elaboraPagina() {
         boolean debug = Pref.getBool(CostBio.USA_DEBUG, false);
         String summary = LibWiki.getSummary();
         String testo = CostBio.VUOTO;
@@ -663,13 +665,17 @@ public abstract class ListaBio {
                 text += lista.get(0);
                 text += CostBio.A_CAPO;
             } else {
-                for (String didascalia : lista) {
-                    text += CostBio.ASTERISCO;
-                    text += LibWiki.setQuadre(key);
-                    text += CostBio.TAG_SEPARATORE;
-                    text += didascalia;
-                    text += CostBio.A_CAPO;
-                }// end of for cycle
+                try { // prova ad eseguire il codice
+                    for (String didascalia : lista) {
+                        text += CostBio.ASTERISCO;
+                        text += LibWiki.setQuadre(key);
+                        text += CostBio.TAG_SEPARATORE;
+                        text += didascalia;
+                        text += CostBio.A_CAPO;
+                    }// end of for cycle
+                } catch (Exception unErrore) { // intercetta l'errore
+                    int a=87;
+                }// fine del blocco try-catch
             }// end of if/else cycle
 
         }// end of for cycle

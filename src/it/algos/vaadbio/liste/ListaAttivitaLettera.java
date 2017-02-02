@@ -3,20 +3,19 @@ package it.algos.vaadbio.liste;
 import it.algos.vaad.wiki.LibWiki;
 import it.algos.vaadbio.attivita.Attivita;
 import it.algos.vaadbio.bio.Bio;
-import it.algos.vaadbio.cognome.Cognome;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.lib.LibBio;
-import it.algos.webbase.domain.pref.Pref;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
- * Created by gac on 23 nov 2016.
+ * Created by gac on 02/02/17.
  * Crea la sottopagina della lista di attività indicata e la carica sul server wiki
  */
-public class ListaAttivitaABC extends ListaAttivita {
+public class ListaAttivitaLettera extends ListaAttivitaABC {
 
     private HashMap<String, Object> mappaSuper;
     private String titoloVisibile;
@@ -24,7 +23,7 @@ public class ListaAttivitaABC extends ListaAttivita {
     /**
      * Costruttore senza parametri
      */
-    protected ListaAttivitaABC() {
+    protected ListaAttivitaLettera() {
     }// fine del costruttore
 
 
@@ -33,7 +32,7 @@ public class ListaAttivitaABC extends ListaAttivita {
      *
      * @param attivita indicata
      */
-    public ListaAttivitaABC(Attivita attivita) {
+    public ListaAttivitaLettera(Attivita attivita) {
         super(attivita);
     }// fine del costruttore
 
@@ -44,10 +43,11 @@ public class ListaAttivitaABC extends ListaAttivita {
      * @param listaSuperAttivita della superPagina
      * @param mappaSuper         del paragrafo
      */
-    public ListaAttivitaABC(ListaAttivita listaSuperAttivita, HashMap<String, Object> mappaSuper) {
+    public ListaAttivitaLettera(ListaAttivita listaSuperAttivita, HashMap<String, Object> mappaSuper) {
         this.mappaSuper = mappaSuper;
         this.oggetto = listaSuperAttivita.getOggetto();
         this.titoloVisibile = (String) mappaSuper.get(KEY_MAP_TITOLO);
+        this.titoloPaginaMadre = listaSuperAttivita.getTitoloPagina();
         doInit();
     }// fine del costruttore
 
@@ -62,19 +62,13 @@ public class ListaAttivitaABC extends ListaAttivita {
     protected void elaboraParametri() {
         super.elaboraParametri();
 
-        // head
-        usaHeadRitorno = true;
-        usaHeadTocIndice = false;
-        usaHeadIncipit = true;
-
         // body
-        usaSuddivisioneParagrafi = true;
-        usaSottopagine = true;
+        usaSuddivisioneParagrafi = false;
+        usaSottopagine = false;
         usaOrdineAlfabeticoParagrafi = true;
         tagParagrafoNullo = "...";
         usaTitoloParagrafoConLink = false;
-        usaTaglioVociPagina = true;
-        maxVociPagina = Pref.getInt(CostBio.TAGLIO_NOMI_PAGINA, 100);
+        usaTaglioVociPagina = false;
 
     }// fine del metodo
 
@@ -84,16 +78,7 @@ public class ListaAttivitaABC extends ListaAttivita {
      */
     @Override
     protected void elaboraTitolo() {
-        titoloPagina = PROGETTO_BIOGRAFIE_ATTIVITÀ + getAttivitaText();
-    }// fine del metodo
-
-    /**
-     * Titolo della pagina 'madre'
-     * <p>
-     * Sovrascritto
-     */
-    protected String getTitoloPaginaMadre() {
-        return "";
+        titoloPagina = titoloPaginaMadre  + "/" + titoloVisibile;
     }// fine del metodo
 
 
@@ -102,32 +87,49 @@ public class ListaAttivitaABC extends ListaAttivita {
      * Esegue una query
      * Sovrascritto
      */
+    @Override
     protected void elaboraListaBiografie() {
         listaBio = (List<Bio>) mappaSuper.get(KEY_MAP_LISTA);
     }// fine del metodo
 
-    /**
-     * Costruisce la chiave del paragrafo
-     * Sovrascritto
-     */
-    @Override
-    protected String getChiave(Bio bio) {
-        return LibBio.getChiavePerCognome(bio, tagParagrafoNullo);
-    }// fine del metodo
 
     /**
-     * Costruisce la sottopagina
-     * Metodo sovrascritto
+     * Nessun raggruppamento
      */
     @Override
-    protected void creaSottopagina(HashMap<String, Object> mappa) {
-        new ListaAttivitaLettera(this, mappa);
-    }// fine del metodo
+    protected String righeSemplici() {
+        String text = CostBio.VUOTO;
+        ArrayList<Bio> lista = null;
+        String key = titoloVisibile;
+        HashMap mappa = null;
 
+        if (mappaBio.size() == 1) {
+            mappa = mappaBio.get(key);
+        }// end of if cycle
+
+        if (mappa != null) {
+            lista = (ArrayList<Bio>) mappa.get(KEY_MAP_LISTA);
+        }// end of if cycle
+
+        if (lista != null) {
+            try { // prova ad eseguire il codice
+                for (Bio bio : lista) {
+                    text += CostBio.ASTERISCO;
+                    text += CostBio.SPAZIO;
+                    text += bio.getDidascaliaListe();
+                    text += CostBio.A_CAPO;
+                }// end of for cycle
+            } catch (Exception unErrore) { // intercetta l'errore
+                int a = 87;
+            }// fine del blocco try-catch
+        }// end of if cycle
+
+        return text;
+    }// fine del metodo
 
     @Override
     public String getAttivitaText() {
-        return super.getAttivitaText() + "/" + titoloVisibile;
+        return titoloPaginaMadre  + "/" + titoloVisibile;
     }// fine del metodo
 
 }// fine della classe

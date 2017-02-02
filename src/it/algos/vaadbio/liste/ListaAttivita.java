@@ -3,18 +3,13 @@ package it.algos.vaadbio.liste;
 import it.algos.vaad.wiki.LibWiki;
 import it.algos.vaadbio.attivita.Attivita;
 import it.algos.vaadbio.bio.Bio;
-import it.algos.vaadbio.cognome.Cognome;
-import it.algos.vaadbio.genere.Genere;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.lib.LibBio;
 import it.algos.vaadbio.nazionalita.Nazionalita;
-import it.algos.vaadbio.professione.Professione;
 import it.algos.webbase.domain.pref.Pref;
 import it.algos.webbase.web.lib.LibText;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * Created by gac on 21 nov 2016.
@@ -22,12 +17,13 @@ import java.util.List;
  */
 public class ListaAttivita extends ListaBio {
 
-    private final static String PATH_PROGETTO = "Progetto:Biografie/Nazionalità/";
+     final static String PROGETTO_BIOGRAFIE_ATTIVITÀ = "Progetto:Biografie/Attività/";
+     final static String PROGETTO_BIOGRAFIE_NAZIONALITÀ = "Progetto:Biografie/Nazionalità/";
 
     /**
      * Costruttore senza parametri
      */
-    protected ListaAttivita() {
+     ListaAttivita() {
     }// fine del costruttore
 
 
@@ -81,8 +77,7 @@ public class ListaAttivita extends ListaBio {
      */
     @Override
     protected void elaboraTitolo() {
-        String tag = "Progetto:Biografie/Attività/";
-        titoloPagina = tag + getAttivitaText();
+        titoloPagina = PROGETTO_BIOGRAFIE_ATTIVITÀ + getAttivitaText();
     }// fine del metodo
 
 
@@ -174,7 +169,7 @@ public class ListaAttivita extends ListaBio {
         String pipe = "|";
 
         if (!chiaveParagrafo.equals(CostBio.VUOTO)) {
-            titoloParagrafo = PATH_PROGETTO + chiaveParagrafo + pipe + chiaveParagrafo;
+            titoloParagrafo = PROGETTO_BIOGRAFIE_NAZIONALITÀ + chiaveParagrafo + pipe + chiaveParagrafo;
             titoloParagrafo = LibWiki.setQuadre(titoloParagrafo);
             titoloParagrafo = LibWiki.setParagrafo(titoloParagrafo);
         }// end of if cycle
@@ -277,7 +272,7 @@ public class ListaAttivita extends ListaBio {
 
         if (attivita != null) {
             attivitaText = attivita.getPlurale();
-            attivitaText=LibText.primaMaiuscola(attivitaText);
+            attivitaText = LibText.primaMaiuscola(attivitaText);
         }// end of if cycle
 
         return attivitaText;
