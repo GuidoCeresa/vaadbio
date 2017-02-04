@@ -7,6 +7,7 @@ import it.algos.vaadbio.bio.Bio;
 import it.algos.vaadbio.giorno.Giorno;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.lib.LibBio;
+import it.algos.vaadbio.nazionalita.Nazionalita;
 import it.algos.webbase.domain.pref.Pref;
 import it.algos.webbase.domain.pref.PrefType;
 import it.algos.webbase.web.lib.LibDate;
@@ -31,7 +32,7 @@ import java.util.Map;
 public class StatSintesi extends Statistiche {
 
     private static HashMap<String, Object> mappaSintesi = new HashMap();
-    private static int NUOVA_ATTESA = 4;
+//    private static int NUOVA_ATTESA = 4;
 
     /**
      * Costruttore completo
@@ -167,7 +168,7 @@ public class StatSintesi extends Statistiche {
         String prefCode = CostBio.STAT_NUM_NAZIONALITA;
         String descrizione = tagPath + "Nazionalità|Nazionalità utilizzate";
         int oldValue = Pref.getInt(prefCode, 300);
-        int newValue = 87;
+        int newValue = Nazionalita.countDistinct();
         String nota = "Le nazionalità sono quelle '''convenzionalmente''' previste dalla comunità ed inserite nell'elenco utilizzato dal template Bio";
 
         return getRigaBase(true, descrizione, nota, oldValue, newValue, prefCode);
@@ -180,7 +181,7 @@ public class StatSintesi extends Statistiche {
         String prefCode = CostBio.STAT_GIORNI_ATTESA;
         String descrizione = "Giorni di attesa";
         int oldValue = Pref.getInt(prefCode, 5);
-        int newValue = NUOVA_ATTESA;
+        int newValue = oldValue;
         String nota = "Giorni di attesa '''indicativi''' prima che ogni singola voce venga ricontrollata per registrare eventuali modifiche intervenute nei parametri significativi.";
 
         return getRigaBase(false, descrizione, nota, oldValue, newValue, prefCode);

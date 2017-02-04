@@ -1497,7 +1497,7 @@ public abstract class LibBio {
      * @param property unica da selezionare per il conteggio
      * @return numero di records
      */
-    public synchronized static int queryCountDistinct(String entity, String property) {
+    public static int queryCountDistinct(String entity, String property) {
         int numero = 0;
         long lungo;
         List vettore;

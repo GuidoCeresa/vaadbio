@@ -17,14 +17,13 @@ import java.util.HashMap;
  * Created by gac on 31/01/17.
  * Crea la lista di una nazionalità e la carica sul server wiki
  */
-public class ListaNazionalita extends ListaBio {
+public class ListaNazionalita extends ListaAttNaz {
 
-    private final static String PATH_PROGETTO = "Progetto:Biografie/Attività/";
 
     /**
      * Costruttore senza parametri
      */
-    protected ListaNazionalita() {
+     ListaNazionalita() {
     }// fine del costruttore
 
 
@@ -38,39 +37,6 @@ public class ListaNazionalita extends ListaBio {
     }// fine del costruttore
 
 
-    /**
-     * Regola alcuni (eventuali) parametri specifici della sottoclasse
-     * <p>
-     * Nelle sottoclassi va SEMPRE richiamata la superclasse PRIMA di regolare localmente le variabili <br>
-     * Sovrascritto
-     */
-    @Override
-    protected void elaboraParametri() {
-        super.elaboraParametri();
-
-        // head
-        usaHeadTocIndice = true;
-        usaHeadIncipit = true;
-        tagHeadTemplateProgetto = "biografie";
-
-        // body
-        usaSuddivisioneParagrafi = true;
-        usaBodyRigheMultiple = false;
-        usaBodyDoppiaColonna = false;
-        usaSottopagine = true;
-        usaTitoloParagrafoConLink = true;
-        usaTaglioVociPagina = false;
-        maxVociPagina = Pref.getInt(CostBio.TAGLIO_NOMI_PAGINA, 100);
-
-        // footer
-        usaFooterPortale = true;
-        if (Pref.getBool(CostBio.USA_DEBUG, false)) {
-            usaFooterCategorie = false;
-        } else {
-            usaFooterCategorie = true;
-        }// end of if/else cycle
-    }// fine del metodo
-
 
     /**
      * Titolo della pagina da creare/caricare su wikipedia
@@ -78,8 +44,7 @@ public class ListaNazionalita extends ListaBio {
      */
     @Override
     protected void elaboraTitolo() {
-        String tag = "Progetto:Biografie/Nazionalità/";
-        titoloPagina = tag + getNazionalitaText();
+        titoloPagina = PROGETTO_BIOGRAFIE_NAZIONALITÀ + getNazionalitaText();
     }// fine del metodo
 
 
@@ -142,6 +107,7 @@ public class ListaNazionalita extends ListaBio {
      * Professione.pagina
      * Genere.plurale
      */
+    @Deprecated
     protected String getChiaveParagrafo(Bio bio) {
         String chiaveParagrafo = tagParagrafoNullo;
         Attivita attivita = null;
@@ -167,7 +133,7 @@ public class ListaNazionalita extends ListaBio {
      * Prendo il primo singolare di Genere
      * Prendo il corrispondente plurale di Attivita
      */
-    protected String getTitoloParagrafo(String chiaveParagrafo) {
+    private String getTitoloParagrafo(String chiaveParagrafo) {
         String titoloParagrafo = tagParagrafoNullo;
         Professione professione = null;
         String professioneTxt;
@@ -193,7 +159,7 @@ public class ListaNazionalita extends ListaBio {
             attivitaPlurale = attivita.getPlurale();
             paginaWiki = LibText.primaMaiuscola(attivitaPlurale);
 //            linkVisibile = LibText.primaMaiuscola(attivitaPlurale);
-            titoloParagrafo = getTitoloParagrafo2(paginaWiki, chiaveParagrafo);
+            titoloParagrafo = getTitoloParagrafo(paginaWiki, chiaveParagrafo);
         }// end of if cycle
 
         int a = 87;
@@ -204,11 +170,11 @@ public class ListaNazionalita extends ListaBio {
     /**
      * Costruisce il titolo del paragrafo
      */
-    private String getTitoloParagrafo2(String paginaWiki, String linkVisibile) {
-        String titoloParagrafo = tagParagrafoNullo;
+    private String getTitoloParagrafo(String paginaWiki, String linkVisibile) {
+        String titoloParagrafo;
         String pipe = "|";
 
-        titoloParagrafo = PATH_PROGETTO + paginaWiki + pipe + linkVisibile;
+        titoloParagrafo = PROGETTO_BIOGRAFIE_ATTIVITÀ + paginaWiki + pipe + linkVisibile;
         titoloParagrafo = LibWiki.setQuadre(titoloParagrafo);
         titoloParagrafo = LibWiki.setParagrafo(titoloParagrafo);
 
@@ -262,20 +228,6 @@ public class ListaNazionalita extends ListaBio {
     }// fine del metodo
 
 
-    /**
-     * Controlla che la modifica sia sostanziale
-     * Se il flag è false, registra sempre
-     * Se il flag è vero, controlla la differenza del testo
-     * Sovrascritto
-     */
-    @Override
-    protected boolean checkPossoRegistrare(String titolo, String testo) {
-        if (Pref.getBool(CostBio.USA_REGISTRA_SEMPRE_PERSONA, false)) {
-            return true;
-        } else {
-            return LibBio.checkModificaSostanziale(titolo, testo, tagHeadTemplateAvviso, "}}");
-        }// end of if/else cycle
-    }// fine del metodo
 
     /**
      * Costruisce la sottopagina

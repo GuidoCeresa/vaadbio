@@ -74,7 +74,7 @@ public class ListaAttivitaABC extends ListaAttivita {
         tagParagrafoNullo = "...";
         usaTitoloParagrafoConLink = false;
         usaTaglioVociPagina = true;
-        maxVociPagina = Pref.getInt(CostBio.TAGLIO_NOMI_PAGINA, 100);
+        maxVociPagina = Pref.getInt(CostBio.TAGLIO_NOMI_PAGINA, 50);
 
     }// fine del metodo
 

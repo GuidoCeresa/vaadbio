@@ -130,10 +130,9 @@ public class Nazionalita extends BaseEntity {
      *
      * @return numero di records unici per plurale
      */
-    public static int countDistinctPlurale() {
-        return LibBio.queryCountDistinct("Nazionalita", "plurale");
+    public static int countDistinct() {
+        return LibBio.queryCountDistinct("Attivita", "plurale");
     }// end of method
-
 
     /**
      * Recupera una lista (array) del plurale di records distinti di Nazionalità
@@ -234,7 +233,7 @@ public class Nazionalita extends BaseEntity {
             whereList.add("nazionalitaValida=" + LibBio.setApici(singolare));
         }// end of for cycle
 
-        orderList.add("attivita");
+//        orderList.add("attivita");
         orderList.add("cognome");
         orderList.add("nome");
 

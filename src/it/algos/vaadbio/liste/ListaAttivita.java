@@ -15,10 +15,8 @@ import java.util.HashMap;
  * Created by gac on 21 nov 2016.
  * Crea la lista di una attività e la carica sul server wiki
  */
-public class ListaAttivita extends ListaBio {
+public class ListaAttivita extends ListaAttNaz {
 
-     final static String PROGETTO_BIOGRAFIE_ATTIVITÀ = "Progetto:Biografie/Attività/";
-     final static String PROGETTO_BIOGRAFIE_NAZIONALITÀ = "Progetto:Biografie/Nazionalità/";
 
     /**
      * Costruttore senza parametri
@@ -37,38 +35,6 @@ public class ListaAttivita extends ListaBio {
     }// fine del costruttore
 
 
-    /**
-     * Regola alcuni (eventuali) parametri specifici della sottoclasse
-     * <p>
-     * Nelle sottoclassi va SEMPRE richiamata la superclasse PRIMA di regolare localmente le variabili <br>
-     * Sovrascritto
-     */
-    @Override
-    protected void elaboraParametri() {
-        super.elaboraParametri();
-
-        // head
-        usaHeadTocIndice = true;
-        usaHeadIncipit = true;
-        tagHeadTemplateProgetto = "biografie";
-
-        // body
-        usaSuddivisioneParagrafi = true;
-        usaBodyRigheMultiple = false;
-        usaBodyDoppiaColonna = false;
-        usaSottopagine = true;
-        usaTitoloParagrafoConLink = true;
-        usaTaglioVociPagina = false;
-        maxVociPagina = Pref.getInt(CostBio.TAGLIO_NOMI_PAGINA, 100);
-
-        // footer
-        usaFooterPortale = true;
-        if (Pref.getBool(CostBio.USA_DEBUG, false)) {
-            usaFooterCategorie = false;
-        } else {
-            usaFooterCategorie = true;
-        }// end of if/else cycle
-    }// fine del metodo
 
 
     /**
@@ -115,9 +81,9 @@ public class ListaAttivita extends ListaBio {
      */
     protected String getTitoloParagrafo(Bio bio) {
         String titoloParagrafo = tagParagrafoNullo;
-        String paginaWiki = CostBio.VUOTO;
-        String linkVisibile = CostBio.VUOTO;
-        String nazionalita = "";
+        String paginaWiki ;
+        String linkVisibile;
+        String nazionalita ;
 
         if (bio == null) {
             return CostBio.VUOTO;
@@ -140,6 +106,7 @@ public class ListaAttivita extends ListaBio {
      * Professione.pagina
      * Genere.plurale
      */
+    @Deprecated
     protected String getChiaveParagrafo(Bio bio) {
         String chiaveParagrafo = tagParagrafoNullo;
         Nazionalita nazionalita = null;
@@ -223,21 +190,6 @@ public class ListaAttivita extends ListaBio {
         return text;
     }// fine del metodo
 
-
-    /**
-     * Controlla che la modifica sia sostanziale
-     * Se il flag è false, registra sempre
-     * Se il flag è vero, controlla la differenza del testo
-     * Sovrascritto
-     */
-    @Override
-    protected boolean checkPossoRegistrare(String titolo, String testo) {
-        if (Pref.getBool(CostBio.USA_REGISTRA_SEMPRE_PERSONA, false)) {
-            return true;
-        } else {
-            return LibBio.checkModificaSostanziale(titolo, testo, tagHeadTemplateAvviso, "}}");
-        }// end of if/else cycle
-    }// fine del metodo
 
     /**
      * Costruisce la sottopagina
