@@ -1,6 +1,5 @@
 package it.algos.vaadbio.liste;
 
-import it.algos.vaadbio.attivita.Attivita;
 import it.algos.vaadbio.bio.Bio;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.lib.LibBio;
@@ -45,7 +44,7 @@ public class ListaNazionalitaABC extends ListaNazionalita {
     public ListaNazionalitaABC(ListaNazionalita listaSuperNazionalita, HashMap<String, Object> mappaSuper) {
         this.mappaSuper = mappaSuper;
         this.oggetto = listaSuperNazionalita.getOggetto();
-        this.titoloVisibile = (String) mappaSuper.get(KEY_MAP_TITOLO);
+        this.titoloVisibile = (String) mappaSuper.get(KEY_MAP_PARAGRAFO_TITOLO);
         doInit();
     }// fine del costruttore
 

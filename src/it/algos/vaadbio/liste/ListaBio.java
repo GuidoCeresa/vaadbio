@@ -27,8 +27,8 @@ public abstract class ListaBio {
     protected final static String TAG_NO_INDICE = "__NOTOC__";
     protected final static String TAG_NON_SCRIVERE = "<!-- NON MODIFICATE DIRETTAMENTE QUESTA PAGINA - GRAZIE -->";
     protected final static String ALTRE = "Altre...";
-    protected final static String KEY_MAP_TITOLO = "keyMapTitolo";
-    protected final static String KEY_MAP_LINK = "keyMapLink";
+    protected final static String KEY_MAP_PARAGRAFO_TITOLO = "keyMapTitolo";
+    protected final static String KEY_MAP_PARAGRAFO_LINK = "keyMapLink";
     protected final static String KEY_MAP_SESSO = "keyMapSesso";
     protected final static String KEY_MAP_LISTA = "keyMapLista";
     protected final static String KEY_MAP_VOCI = "keyMapVoci";
@@ -206,8 +206,8 @@ public abstract class ListaBio {
             mappa = new HashMap<>();
             lista = new ArrayList<>();
             lista.add(bio);
-            mappa.put(KEY_MAP_TITOLO, key);
-            mappa.put(KEY_MAP_LINK, getTitoloParagrafo(bio));
+            mappa.put(KEY_MAP_PARAGRAFO_TITOLO, key);
+            mappa.put(KEY_MAP_PARAGRAFO_LINK, getTitoloParagrafo(bio));
             mappa.put(KEY_MAP_LISTA, lista);
             mappa.put(KEY_MAP_SESSO, bio.getSesso());
             mappa.put(KEY_MAP_VOCI, 1);
@@ -554,12 +554,12 @@ public abstract class ListaBio {
             mappa = mappaTmp.getValue();
 
             if (usaOrdineAlfabeticoParagrafi) {
-                titoloParagrafo = (String) mappa.get(KEY_MAP_TITOLO);
+                titoloParagrafo = (String) mappa.get(KEY_MAP_PARAGRAFO_TITOLO);
             } else {
-                titoloParagrafo = (String) mappa.get(KEY_MAP_LINK);
+                titoloParagrafo = (String) mappa.get(KEY_MAP_PARAGRAFO_LINK);
             }// end of if/else cycle
 
-            titoloVisibile = (String) mappa.get(KEY_MAP_TITOLO);
+            titoloVisibile = (String) mappa.get(KEY_MAP_PARAGRAFO_TITOLO);
             lista = (List<Bio>) mappa.get(KEY_MAP_LISTA);
             numVociParagrafo = lista.size();
 
@@ -674,7 +674,7 @@ public abstract class ListaBio {
                         text += CostBio.A_CAPO;
                     }// end of for cycle
                 } catch (Exception unErrore) { // intercetta l'errore
-                    int a=87;
+                    int a = 87;
                 }// fine del blocco try-catch
             }// end of if/else cycle
 

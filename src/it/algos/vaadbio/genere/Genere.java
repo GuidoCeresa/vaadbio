@@ -146,6 +146,24 @@ public class Genere extends BaseEntity {
     }// end of method
 
     /**
+     * Recupera una istanza di Genere usando la query di una property specifica
+     *
+     * @param plurale valore della property Sigla
+     * @return istanza di Genere, null se non trovata
+     */
+    public static Genere findByMaschile(String plurale) {
+        Genere instance = findByFirstPlurale(plurale.toLowerCase());
+        String genereSingolareText;
+
+        if (instance != null) {
+            genereSingolareText = instance.getSingolare();
+            instance = Genere.findBySingolareAndSesso(genereSingolareText, "M");
+        }// end of if cycle
+
+        return instance;
+    }// end of method
+
+    /**
      * Recupera la prima istanza di Genere usando la query di una property specifica
      *
      * @param plurale valore della property Sigla

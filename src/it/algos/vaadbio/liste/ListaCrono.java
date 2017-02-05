@@ -109,7 +109,7 @@ public abstract class ListaCrono extends ListaBio {
 
         for (Map.Entry<String, HashMap> mappaEntry : mappaBio.entrySet()) {
             mappaTmp = mappaEntry.getValue();
-            titoloParagrafo = (String) mappaTmp.get(KEY_MAP_TITOLO);
+            titoloParagrafo = (String) mappaTmp.get(KEY_MAP_PARAGRAFO_TITOLO);
             ord = getOrdineCrono(mappaTmp);
             keyList.add(ord);
             mappaOrd.put(ord, titoloParagrafo);

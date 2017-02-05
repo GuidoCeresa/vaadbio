@@ -37,7 +37,7 @@ public class ListaAntroCognomeABC extends ListaAntroCognome {
     public ListaAntroCognomeABC(ListaAntroCognome listaSuperCognome, HashMap<String, Object> mappaSuper) {
         this.mappaSuper = mappaSuper;
         this.oggetto = listaSuperCognome.getOggetto();
-        this.titoloVisibile = (String) mappaSuper.get(KEY_MAP_TITOLO);
+        this.titoloVisibile = (String) mappaSuper.get(KEY_MAP_PARAGRAFO_TITOLO);
         doInit();
     }// fine del costruttore
 

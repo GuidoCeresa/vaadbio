@@ -2061,6 +2061,25 @@ public abstract class LibBio {
     }// fine del metodo
 
     /**
+     * Costruisce un titolo di riferimento per attività
+     */
+    public static String getTitoloPerAttivita(Bio bio, String tagParagrafoNullo) {
+        String titolo = tagParagrafoNullo;
+        Attivita attivita = null;
+
+        if (bio == null) {
+            return CostBio.VUOTO;
+        }// end of if cycle
+
+        attivita = bio.getAttivitaPunta();
+        if (attivita != null) {
+            titolo = attivita.getPlurale();
+        }// end of if cycle
+
+        return titolo;
+    }// fine del metodo
+
+    /**
      * Costruisce una chiave di suddivisione per nazionalità
      */
     public static String getChiavePerNazionalita(Bio bio, String tagParagrafoNullo) {

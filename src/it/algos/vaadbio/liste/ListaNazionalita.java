@@ -23,7 +23,7 @@ public class ListaNazionalita extends ListaAttNaz {
     /**
      * Costruttore senza parametri
      */
-     ListaNazionalita() {
+    ListaNazionalita() {
     }// fine del costruttore
 
 
@@ -35,7 +35,6 @@ public class ListaNazionalita extends ListaAttNaz {
     public ListaNazionalita(Nazionalita nazionalita) {
         super(nazionalita);
     }// fine del costruttore
-
 
 
     /**
@@ -83,22 +82,31 @@ public class ListaNazionalita extends ListaAttNaz {
     protected String getTitoloParagrafo(Bio bio) {
         String titoloParagrafo = tagParagrafoNullo;
         String paginaWiki;
-        String linkVisibile;
-        String attivita;
+        String titoloVisibile;
+        Genere genere;
 
         if (bio == null) {
             return CostBio.VUOTO;
         }// end of if cycle
 
-        attivita = LibBio.getChiavePerAttivita(bio, tagParagrafoNullo);
-        if (attivita != null) {
-            paginaWiki = LibText.primaMaiuscola(attivita);
-            linkVisibile = LibText.primaMaiuscola(attivita);
-            titoloParagrafo = costruisceTitolo(paginaWiki, linkVisibile);
+        titoloVisibile = LibBio.getChiavePerAttivita(bio, tagParagrafoNullo);
+        paginaWiki = LibBio.getTitoloPerAttivita(bio, tagParagrafoNullo);
+        if (titoloVisibile != null) {
+//            genere = Genere.findByMaschile(titoloVisibile);
+//            if (genere == null) {
+//                genere = Genere.findByMaschile(titoloVisibile);
+//                int a = 87;
+//            }// end of if cycle
+
+//            paginaWiki = genere.getPlurale();
+            paginaWiki = LibText.primaMaiuscola(paginaWiki);
+            titoloVisibile = LibText.primaMaiuscola(titoloVisibile);
+            titoloParagrafo = costruisceTitolo(paginaWiki, titoloVisibile);
         }// end of if cycle
 
         return titoloParagrafo;
     }// fine del metodo
+
 
     /**
      * Costruisce la chiave del paragrafo
@@ -133,7 +141,7 @@ public class ListaNazionalita extends ListaAttNaz {
      * Prendo il primo singolare di Genere
      * Prendo il corrispondente plurale di Attivita
      */
-    private String getTitoloParagrafo(String chiaveParagrafo) {
+    private String getTitoloParagrafoOld(String chiaveParagrafo) {
         String titoloParagrafo = tagParagrafoNullo;
         Professione professione = null;
         String professioneTxt;
@@ -167,6 +175,26 @@ public class ListaNazionalita extends ListaAttNaz {
 
     }// fine del metodo
 
+//    /**
+//     * Costruisce il titolo del paragrafo
+//     * <p>
+//     * Questo deve essere composto da:
+//     * Professione.pagina
+//     * Genere.plurale
+//     */
+//    private String getTitoloParagrafo(String chiaveParagrafo) {
+//        String titoloParagrafo = tagParagrafoNullo;
+//        String pipe = "|";
+//
+//        if (!chiaveParagrafo.equals(CostBio.VUOTO)) {
+//            titoloParagrafo = PROGETTO_BIOGRAFIE_ATTIVITÀ + chiaveParagrafo + pipe + chiaveParagrafo;
+//            titoloParagrafo = LibWiki.setQuadre(titoloParagrafo);
+//            titoloParagrafo = LibWiki.setParagrafo(titoloParagrafo);
+//        }// end of if cycle
+//
+//        return titoloParagrafo;
+//    }// fine del metodo
+
     /**
      * Costruisce il titolo del paragrafo
      */
@@ -191,7 +219,7 @@ public class ListaNazionalita extends ListaAttNaz {
         if (linkVisibile.equals(tagParagrafoNullo)) {
             return LibWiki.setParagrafo(linkVisibile);
         } else {
-            return getTitoloParagrafo(linkVisibile);
+            return getTitoloParagrafo(paginaWiki,linkVisibile);
         }// end of if/else cycle
 
     }// fine del metodo
@@ -226,7 +254,6 @@ public class ListaNazionalita extends ListaAttNaz {
 
         return text;
     }// fine del metodo
-
 
 
     /**

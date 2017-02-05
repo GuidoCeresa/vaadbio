@@ -1,14 +1,11 @@
 package it.algos.vaadbio.liste;
 
-import it.algos.vaad.wiki.LibWiki;
 import it.algos.vaadbio.attivita.Attivita;
 import it.algos.vaadbio.bio.Bio;
-import it.algos.vaadbio.cognome.Cognome;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.lib.LibBio;
 import it.algos.webbase.domain.pref.Pref;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -47,7 +44,7 @@ public class ListaAttivitaABC extends ListaAttivita {
     public ListaAttivitaABC(ListaAttivita listaSuperAttivita, HashMap<String, Object> mappaSuper) {
         this.mappaSuper = mappaSuper;
         this.oggetto = listaSuperAttivita.getOggetto();
-        this.titoloVisibile = (String) mappaSuper.get(KEY_MAP_TITOLO);
+        this.titoloVisibile = (String) mappaSuper.get(KEY_MAP_PARAGRAFO_TITOLO);
         doInit();
     }// fine del costruttore
 
