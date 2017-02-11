@@ -83,7 +83,12 @@ public class WrapBio {
         if (tmplBio.equals("")) {
             registrata = false;
             if (Pref.getBool(CostBio.USA_LOG_CICLO, true)) {
-                testoPagina = pagina.getText();
+                try { // prova ad eseguire il codice
+                    testoPagina = pagina.getText();
+                } catch (Exception unErrore) { // intercetta l'errore
+                    Log.error("cicloNew", "La pagina " + LibWiki.setQuadre(wikiTitle) + ", non aveva il testo");
+                    return;
+                }// fine del blocco try-catch
                 if (testoPagina.equals(CostBio.VUOTO)) {
                     Log.warning("cicloNew", "La pagina " + LibWiki.setQuadre(wikiTitle) + ", non è stata letta");
                     return;
