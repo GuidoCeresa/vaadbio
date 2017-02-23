@@ -80,6 +80,14 @@ public class BioTable extends ModuleTable {
                 Bio_.nazionalita,
 
                 Bio_.didascaliaListe,
+
+                Bio_.giornoMeseNascita,
+                Bio_.giornoMeseNascitaValido,
+                Bio_.giornoMeseMorte,
+                Bio_.giornoMeseMorteValido,
+
+                Bio_.giornoNatoPunta,
+                Bio_.giornoMortoPunta,
         };// end of collection
     }// end of method
 

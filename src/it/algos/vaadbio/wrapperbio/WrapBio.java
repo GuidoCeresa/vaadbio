@@ -63,7 +63,7 @@ public class WrapBio {
         long pageid;
         String wikiTitle;
         String tmplBio;
-        String testoPagina=CostBio.VUOTO;
+        String testoPagina = CostBio.VUOTO;
 
         if (pagina == null) {
             return;
@@ -89,6 +89,10 @@ public class WrapBio {
                     Log.error("cicloNew", "La pagina " + LibWiki.setQuadre(wikiTitle) + ", non aveva il testo");
                     return;
                 }// fine del blocco try-catch
+                if (testoPagina == null) {
+                    Log.error("cicloNew", "La pagina " + LibWiki.setQuadre(wikiTitle) + ", ha un testo nullo");
+                    return;
+                }// end of if cycle
                 if (testoPagina.equals(CostBio.VUOTO)) {
                     Log.warning("cicloNew", "La pagina " + LibWiki.setQuadre(wikiTitle) + ", non è stata letta");
                     return;

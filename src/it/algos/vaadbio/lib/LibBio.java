@@ -1170,6 +1170,7 @@ public abstract class LibBio {
      * <p>
      * Elimina il testo successivo a varii tag
      * Elimina il testo se NON contiene una spazio vuoto (tipico della data giorno-mese)
+     * Elimina eventuali DOPPI spazi vuoto (tipico della data tra il giorno ed il mese)
      * Elabora una patch specifica del Giorno
      *
      * @param testoGrezzo in entrata da elaborare
@@ -1177,6 +1178,7 @@ public abstract class LibBio {
      */
     public static String fixGiornoValido(String testoGrezzo) {
         String testoValido = "";
+        String tagDoppio = CostBio.SPAZIO + CostBio.SPAZIO;
 
         if (testoGrezzo == null || testoGrezzo.equals(CostBio.VUOTO) || !testoGrezzo.contains(CostBio.SPAZIO)) {
             return CostBio.VUOTO;
@@ -1184,6 +1186,11 @@ public abstract class LibBio {
 
         testoValido = LibBio.fixCampoBase(testoGrezzo);
         testoValido = Giorno.fix(testoValido);
+        testoValido = testoValido.toLowerCase();
+
+        if (testoValido.contains(tagDoppio)) {
+            testoValido = testoValido.replaceFirst(tagDoppio, CostBio.SPAZIO);
+        }// end of if cycle
 
         return testoValido.trim();
     } // fine del metodo
