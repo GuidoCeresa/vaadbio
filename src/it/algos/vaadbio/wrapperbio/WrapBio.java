@@ -86,26 +86,26 @@ public class WrapBio {
                 try { // prova ad eseguire il codice
                     testoPagina = pagina.getText();
                 } catch (Exception unErrore) { // intercetta l'errore
-                    Log.error("cicloNew", "La pagina " + LibWiki.setQuadre(wikiTitle) + ", non aveva il testo");
+                    Log.error("update", "La pagina " + LibWiki.setQuadre(wikiTitle) + ", non aveva il testo");
                     return;
                 }// fine del blocco try-catch
                 if (testoPagina == null) {
-                    Log.error("cicloNew", "La pagina " + LibWiki.setQuadre(wikiTitle) + ", ha un testo nullo");
+                    Log.error("update", "La pagina " + LibWiki.setQuadre(wikiTitle) + ", ha un testo nullo");
                     return;
                 }// end of if cycle
                 if (testoPagina.equals(CostBio.VUOTO)) {
-                    Log.warning("cicloNew", "La pagina " + LibWiki.setQuadre(wikiTitle) + ", non è stata letta");
+                    Log.warning("update", "La pagina " + LibWiki.setQuadre(wikiTitle) + ", non è stata letta");
                     return;
                 }// end of if cycle
                 if (testoPagina.startsWith(CostBio.DISAMBIGUA)) {
-                    Log.warning("cicloNew", "La pagina " + LibWiki.setQuadre(wikiTitle) + ", non è stata registrata perché è una disambigua");
+                    Log.warning("update", "La pagina " + LibWiki.setQuadre(wikiTitle) + ", non è stata registrata perché è una disambigua");
                     return;
                 }// end of if cycle
                 if (testoPagina.startsWith(CostBio.REDIRECT) || testoPagina.startsWith(CostBio.REDIRECT)) {
-                    Log.warning("cicloNew", "La pagina " + LibWiki.setQuadre(wikiTitle) + ", non è stata registrata perché è un redirect");
+                    Log.warning("update", "La pagina " + LibWiki.setQuadre(wikiTitle) + ", non è stata registrata perché è un redirect");
                     return;
                 }// end of if cycle
-                Log.warning("cicloNew", "La pagina " + LibWiki.setQuadre(wikiTitle) + ", non è stata registrata perché  manca il tmplBio");
+                Log.warning("update", "La pagina " + LibWiki.setQuadre(wikiTitle) + ", non è stata registrata perché  manca il tmplBio");
                 return;
             }// fine del blocco if
             return;

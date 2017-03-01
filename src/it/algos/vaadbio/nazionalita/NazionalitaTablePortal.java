@@ -1,14 +1,14 @@
 package it.algos.vaadbio.nazionalita;
 
-import it.algos.vaadbio.attnaz.AttNazTablePortal;
+import it.algos.vaadbio.liste.ListeTablePortal;
 import it.algos.webbase.web.module.ModulePop;
 import it.algos.webbase.web.toolbar.TableToolbar;
 
 /**
  * Created by gac on 31/01/17.
- * .
+ * Portale specifico per le nazionalità
  */
-public class NazionalitaTablePortal extends AttNazTablePortal{
+public class NazionalitaTablePortal extends ListeTablePortal {
 
     /**
      * Costruttore base
@@ -17,19 +17,13 @@ public class NazionalitaTablePortal extends AttNazTablePortal{
         super(modulo);
     }// end of constructor
 
-    /**
-     * Creates the toolbar
-     * Barra standard con 5 bottoni (nuovo, modifica, elimina, cerca, selezione)
-     * Sovrascrivibile, per aggiungere/modificare bottoni
-     */
     @Override
-    public TableToolbar createToolbar() {
+    protected void init() {
+        wikiProgetto = "Biografie";
         cmdPagina = "Nazionalità";
-        cmdLista = "Nazionalità";
-        linkPagina = "Liste nazionalità";
-        linkLista = "Liste nazionalità";
+        linkPagina = "Nazionalità";
 
-        return super.createToolbar();
+        super.init();
     }// end of method
 
-}
+}// end of class

@@ -6,7 +6,9 @@ import it.algos.vaadbio.bio.Bio;
 import it.algos.vaadbio.bio.Bio_;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.lib.LibBio;
+import it.algos.webbase.domain.pref.Pref;
 import it.algos.webbase.web.entity.BaseEntity;
+import it.algos.webbase.web.entity.EM;
 import it.algos.webbase.web.lib.LibArray;
 import it.algos.webbase.web.lib.LibText;
 import it.algos.webbase.web.query.AQuery;
@@ -18,8 +20,11 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Vector;
 
 /**
  * Classe di tipo JavaBean
@@ -187,6 +192,58 @@ public class Attivita extends BaseEntity {
         }// end of if cycle
 
         return lista;
+    }// end of method
+
+
+    /**
+     * Recupera una mappa con occorrenze dei records che rispettano il criterio
+     *
+     * @return mappa di alcune istanze
+     */
+    @SuppressWarnings("unchecked")
+    public static LinkedHashMap<Attivita, ArrayList> findMappaTaglioListe() {
+        return findMappa((EntityManager) null, Pref.getInt(CostBio.TAGLIO_LISTE_ELENCO, 20));
+    }// end of method
+
+    /**
+     * Recupera una mappa completa (ordinata) dei nomi e della loro frequenza
+     *
+     * @return mappa di alcune istanze
+     */
+    static LinkedHashMap<Attivita, ArrayList> findMappa(EntityManager manager, int taglio) {
+        return LibBio.findMappaAtt(findVettoreBase(manager), taglio);
+    }// end of method
+
+    /**
+     * Recupera una mappa completa dei nomi e della loro frequenza
+     *
+     * @return mappa di tutte le istanze
+     */
+    private static Vector findVettoreBase(EntityManager manager) {
+        Vector vettore = null;
+        Query query;
+        String queryTxt = "select bio.attivitaPunta,count(bio.attivitaPunta),bio.attivita2Punta,count(bio.attivita2Punta) from Bio bio group by bio.attivitaPunta,bio.attivita2Punta order by bio.attivitaValida";
+
+        // se non specificato l'EntityManager, ne crea uno locale
+        boolean usaManagerLocale = false;
+        if (manager == null) {
+            usaManagerLocale = true;
+            manager = EM.createEntityManager();
+        }// end of if cycle
+
+        try { // prova ad eseguire il codice
+            query = manager.createQuery(queryTxt);
+            vettore = (Vector) query.getResultList();
+        } catch (Exception unErrore) { // intercetta l'errore
+            int a = 87;
+        }// fine del blocco try-catch
+
+        // eventualmente chiude l'EntityManager locale
+        if (usaManagerLocale) {
+            manager.close();
+        }// end of if cycle
+
+        return vettore;
     }// end of method
 
     /**

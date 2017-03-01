@@ -253,6 +253,7 @@ public abstract class Esegue {
      * Crea la pagina statistica delle attività
      */
     public static void statisticheAttivita() {
+        new StatAttivita();
     }// fine del metodo
 
 
@@ -280,6 +281,7 @@ public abstract class Esegue {
      * Crea la pagina statistica delle nazionalità
      */
     public static void statisticheNazionalita() {
+        new StatNazionalita();
     }// fine del metodo
 
 

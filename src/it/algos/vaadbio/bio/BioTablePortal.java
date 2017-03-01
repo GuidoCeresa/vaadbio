@@ -3,7 +3,6 @@ package it.algos.vaadbio.bio;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Resource;
 import com.vaadin.ui.MenuBar;
-import it.algos.vaadbio.antro.AntroTablePortal;
 import it.algos.webbase.web.module.ModulePop;
 import it.algos.webbase.web.table.TablePortal;
 import it.algos.webbase.web.toolbar.TableToolbar;

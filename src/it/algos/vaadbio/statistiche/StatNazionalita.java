@@ -39,6 +39,7 @@ public class StatNazionalita extends Statistiche {
     protected void elaboraParametri() {
         super.elaboraParametri();
         titoloPagina = "Nazionalità";
+        usaFooterCorrelate = true;
     }// fine del metodo
 
 
@@ -209,43 +210,5 @@ public class StatNazionalita extends Statistiche {
 
         return LibWiki.creaTable(mappa);
     }// fine del metodo
-
-
-    /**
-     * Corpo del footer
-     * Sovrascritto
-     */
-    @Override
-    protected String elaboraFooterCorrelate() {
-        String text = CostBio.VUOTO;
-
-        text += A_CAPO;
-        text += "==Voci correlate==";
-        text += A_CAPO;
-        text += "*[[" + DISCUSSIONI + tagPath + "Nazionalità]]";
-        text += A_CAPO;
-        text += "*[[" + tagPath + "Attività]]";
-        text += A_CAPO;
-        text += "*[[:Categoria:Bio nazionalità]]";
-        text += A_CAPO;
-        text += "*[[:Categoria:Bio attività]]";
-        text += A_CAPO;
-        text += "*[[Progetto:Biografie/Statistiche]]";
-        text += A_CAPO;
-        text += "*[https://it.wikipedia.org/w/index.php?title=Modulo:Bio/Plurale_nazionalità&action=edit Lista delle nazionalità nel modulo (protetto)]";
-        text += A_CAPO;
-        text += "*[https://it.wikipedia.org/w/index.php?title=Modulo:Bio/Plurale_attività&action=edit Lista delle attività nel modulo (protetto)]";
-
-        return text;
-    }// fine del metodo
-//    }// fine del metodo
-
-//    /**
-//     * Numero AttNaz utilizzate
-//     * Sovrascritto
-//     */
-//    protected int vociUsate() {
-//        return
-//    }// fine del metodo
 
 }// end of class

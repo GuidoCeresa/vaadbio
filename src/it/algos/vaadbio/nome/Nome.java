@@ -285,6 +285,15 @@ public class Nome extends BaseEntity {
     }// end of method
 
     /**
+     * Recupera una mappa completa (ordinata) dei nomi e della loro frequenza
+     *
+     * @return mappa sigla, numero di voci
+     */
+    static LinkedHashMap<String, Integer> findMappa(EntityManager manager, int taglio) {
+        return LibBio.findMappa(findVettoreBase(manager), taglio);
+    }// end of method
+
+    /**
      * Recupera una mappa completa dei nomi e della loro frequenza
      *
      * @return mappa di tutte le istanze di Nome
@@ -316,14 +325,6 @@ public class Nome extends BaseEntity {
         return vettore;
     }// end of method
 
-    /**
-     * Recupera una mappa completa (ordinata) dei nomi e della loro frequenza
-     *
-     * @return mappa sigla, numero di voci
-     */
-     static LinkedHashMap<String, Integer> findMappa(EntityManager manager, int taglio) {
-        return LibBio.findMappa(findVettoreBase(manager), taglio);
-    }// end of method
 
 
     /**

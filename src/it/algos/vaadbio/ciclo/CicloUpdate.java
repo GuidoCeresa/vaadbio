@@ -116,7 +116,7 @@ public class CicloUpdate extends CicloDownload {
         numCicli = LibArray.numCicli(numVociDaControllare, vociPerBlocco);
         vociPerBlocco = Math.min(numVociDaControllare, vociPerBlocco);
         for (int k = 0; k < numCicli; k++) {
-            offset = vociPerBlocco * k;
+             offset = vociPerBlocco * k;
 
             //--Lista (pageids) di un blocco ordinato di records del database
             posIni = k * vociPerBlocco;

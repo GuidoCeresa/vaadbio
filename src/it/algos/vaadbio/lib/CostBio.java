@@ -88,6 +88,7 @@ public abstract class CostBio {
     public final static String TAGLIO_COGNOMI_ELENCO = "taglioCognomiElenco";
     //--taglio per creare una pagina del cognome --tipico 50
     public final static String TAGLIO_COGNOMI_PAGINA = "taglioCognomiPagina";
+    public final static String TAGLIO_LISTE_ELENCO = "taglioListeElenco";
 
     //--chiavi mappa volori numerici passati come valore di ritorno multiplo
     public final static String KEY_MAPPA_REGISTRATE = "registrate";
