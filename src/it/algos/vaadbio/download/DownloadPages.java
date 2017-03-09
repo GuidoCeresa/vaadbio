@@ -5,6 +5,8 @@ import it.algos.vaad.wiki.Page;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.wrapperbio.WrapBio;
 import it.algos.webbase.domain.pref.Pref;
+import it.algos.webbase.domain.log.Log;
+import it.algos.webbase.web.lib.LibNum;
 
 import javax.persistence.EntityManager;
 import java.util.ArrayList;
@@ -105,7 +107,7 @@ public class DownloadPages {
             }// end of for cycle
 
             fine = System.currentTimeMillis();
-//            Log.setDebug("test", "save ciclo con unico commit  " + LibNum.format(numVociRegistrate) + " nuove voci in " + LibNum.format(fine - inizio));
+            Log.debug("test", "save ciclo con unico commit  " + LibNum.format(numVociRegistrate) + " nuove voci in " + LibNum.format(fine - inizio));
         }// end of if cycle
     }// end of method
 
@@ -138,7 +140,7 @@ public class DownloadPages {
             }// end of for cycle
 
             fine = System.currentTimeMillis();
-//            Log.setDebug("test", "save singolarmente senza commit " + LibNum.format(numVociRegistrate) + " nuove voci in " + LibNum.format(fine - inizio));
+            Log.debug("test", "save singolarmente senza commit " + LibNum.format(numVociRegistrate) + " nuove voci in " + LibNum.format(fine - inizio));
         }// end of if cycle
     }// end of method
 

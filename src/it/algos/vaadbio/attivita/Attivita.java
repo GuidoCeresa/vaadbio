@@ -6,11 +6,16 @@ import it.algos.vaadbio.bio.Bio;
 import it.algos.vaadbio.bio.Bio_;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.lib.LibBio;
+import it.algos.vaadbio.nazionalita.Nazionalita;
+import it.algos.vaadbio.nazionalita.Nazionalita_;
+import it.algos.webbase.domain.log.Log;
 import it.algos.webbase.domain.pref.Pref;
 import it.algos.webbase.web.entity.BaseEntity;
 import it.algos.webbase.web.entity.EM;
 import it.algos.webbase.web.lib.LibArray;
+import it.algos.webbase.web.lib.LibNum;
 import it.algos.webbase.web.lib.LibText;
+import it.algos.webbase.web.lib.LibTime;
 import it.algos.webbase.web.query.AQuery;
 import it.algos.webbase.web.query.SortProperty;
 import org.apache.commons.beanutils.BeanUtils;
@@ -274,6 +279,16 @@ public class Attivita extends BaseEntity {
 
 
     /**
+     * Recupera una lista (array) del plurale di records distinti di Attivita
+     *
+     * @return lista dei valori distinti di plurale
+     */
+    public static ArrayList<String> findDistinctPlurale() {
+        return LibBio.queryFindDistinctStx("Attivita", "plurale");
+    }// end of method
+
+
+    /**
      * Recupera una lista (array) di tutti i records della Domain Class
      *
      * @return lista di tutte le istanze di Attivita
@@ -294,6 +309,27 @@ public class Attivita extends BaseEntity {
     }// end of method
 
     /**
+     * Recupera una lista (array) dei records con la property indicata
+     *
+     * @return lista di tutte le istanze di Attivita che rispondo al requisito
+     */
+    @SuppressWarnings("unchecked")
+    public static ArrayList<Attivita> findAllByPlurale(String plurale) {
+        ArrayList<Attivita> lista = null;
+        Container.Filter filtro;
+        List<? extends BaseEntity> entities = null;
+
+        filtro = new Compare.Equal(Attivita_.plurale.getName(), plurale);
+        entities = AQuery.getList(Attivita.class, filtro);
+
+        if (entities != null) {
+            lista = new ArrayList(entities);
+        }// end of if cycle
+
+        return lista;
+    }// end of method
+
+    /**
      * Recupera una lista (array) di singolari relativi al plurale di questa attivita
      * Cioè i noimi di tutte le attività che hanno questo plurale
      *
@@ -305,6 +341,56 @@ public class Attivita extends BaseEntity {
         return AQuery.getListStr(Attivita.class, Attivita_.singolare, filter);
     }// end of method
 
+
+    /**
+     * Recupera il valore del numero di records di Bio che usano questa attivita
+     * Vengono analizzate tutte le 3 attività
+     *
+     * @return numero di records che usano questa attivita
+     */
+    public int countBio() {
+        int numRecords = 0;
+        Container.Filter filtro;
+
+        filtro = new Compare.Equal("attivitaPunta", this);
+        numRecords += AQuery.count(Bio.class, filtro);
+
+        filtro = new Compare.Equal("attivita2Punta", this);
+        numRecords += AQuery.count(Bio.class, filtro);
+
+        filtro = new Compare.Equal("attivita3Punta", this);
+        numRecords += AQuery.count(Bio.class, filtro);
+
+        return numRecords;
+    }// fine del metodo
+
+
+    /**
+     * Recupera il valore del numero di records di Bio che usano questa attivita
+     *
+     * @return numero di records che usano questa attivita
+     */
+    public int countBioAttUno() {
+        return AQuery.count(Bio.class, new Compare.Equal("attivitaPunta", this));
+    }// fine del metodo
+
+    /**
+     * Recupera il valore del numero di records di Bio che usano questa attivita
+     *
+     * @return numero di records che usano questa attivita
+     */
+    public int countBioAttDue() {
+        return AQuery.count(Bio.class, new Compare.Equal("attivita2Punta", this));
+    }// fine del metodo
+
+    /**
+     * Recupera il valore del numero di records di Bio che usano questa attivita
+     *
+     * @return numero di records che usano questa attivita
+     */
+    public int countBioAttTre() {
+        return AQuery.count(Bio.class, new Compare.Equal("attivita3Punta", this));
+    }// fine del metodo
 
     /**
      * Recupera una lista (array) di records Bio che usano questa istanza di Attività nella property attivitaValida

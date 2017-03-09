@@ -4,6 +4,7 @@ import it.algos.vaad.wiki.Api;
 import it.algos.vaad.wiki.LibWiki;
 import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.lib.LibBio;
+import it.algos.webbase.domain.log.Log;
 import it.algos.webbase.domain.pref.Pref;
 import it.algos.webbase.web.lib.LibArray;
 import it.algos.webbase.web.lib.LibTime;
@@ -51,11 +52,13 @@ public abstract class Statistiche {
     /**
      */
     public void doInit() {
+        long inizio= System.currentTimeMillis();
         elaboraParametri();
         elaboraMappaBiografie();
         ordinaMappaBiografie();
         elaboraPagina();
         elaboraPreferenze();
+        Log.error("Test",LibTime.difText(inizio));
     }// end of method
 
     /**
