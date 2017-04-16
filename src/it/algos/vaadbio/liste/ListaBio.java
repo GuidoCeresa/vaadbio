@@ -125,7 +125,7 @@ public abstract class ListaBio {
         usaBodyDoppiaColonna = true; //--normalmente true. Sovrascrivibile nelle sottoclassi
         usaBodyTemplate = false; //--normalmente false. Sovrascrivibile nelle sottoclassi
         usaSottopagine = false; //--normalmente false. Sovrascrivibile nelle sottoclassi
-        maxVociParagrafo = Pref.getInt(CostBio.MAX_VOCI_PARAGRAFO, 50);//--tipicamente 100. Sovrascrivibile nelle sottoclassi
+        maxVociParagrafo = Pref.getInt(CostBio.MAX_VOCI_PARAGRAFO, 50);//--tipicamente 50. Sovrascrivibile nelle sottoclassi
         tagParagrafoNullo = ALTRE;
         usaTitoloParagrafoConLink = false;
         usaTaglioVociPagina = false;

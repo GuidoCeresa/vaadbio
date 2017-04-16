@@ -3,6 +3,8 @@ package it.algos.vaadbio.liste;
 import it.algos.vaadbio.attivita.Attivita;
 import it.algos.vaadbio.bio.Bio;
 import it.algos.vaadbio.lib.CostBio;
+import it.algos.vaadbio.lib.LibBio;
+import it.algos.webbase.domain.pref.Pref;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,6 +18,7 @@ public class ListaAttivitaLettera extends ListaAttivitaABC {
 
     private HashMap<String, Object> mappaSuper;
     private String titoloVisibile;
+
 
     /**
      * Costruttore senza parametri
@@ -58,14 +61,22 @@ public class ListaAttivitaLettera extends ListaAttivitaABC {
     @Override
     protected void elaboraParametri() {
         super.elaboraParametri();
+        boolean usaSuddivisioneParagrafiDueLettere = Pref.getBool(CostBio.USA_PARAGRAFO_DUE_LETTERE, true);
+        int numVoci = (int) mappaSuper.get(KEY_MAP_VOCI);
+        int maxVociParginaAlfabetica = maxVociParagrafo * 2;
 
         // body
-        usaSuddivisioneParagrafi = false;
+        if (usaSuddivisioneParagrafiDueLettere && numVoci > maxVociParginaAlfabetica) {
+            usaSuddivisioneParagrafi = true;
+        } else {
+            usaSuddivisioneParagrafi = false;
+        }// end of if/else cycle
         usaSottopagine = false;
+        usaTaglioVociPagina = false;
+
         usaOrdineAlfabeticoParagrafi = true;
         tagParagrafoNullo = "...";
         usaTitoloParagrafoConLink = false;
-        usaTaglioVociPagina = false;
 
     }// fine del metodo
 
@@ -75,7 +86,7 @@ public class ListaAttivitaLettera extends ListaAttivitaABC {
      */
     @Override
     protected void elaboraTitolo() {
-        titoloPagina = titoloPaginaMadre  + "/" + titoloVisibile;
+        titoloPagina = titoloPaginaMadre + "/" + titoloVisibile;
     }// fine del metodo
 
 
@@ -124,9 +135,31 @@ public class ListaAttivitaLettera extends ListaAttivitaABC {
         return text;
     }// fine del metodo
 
+    /**
+     * Costruisce la chiave del paragrafo
+     * Sovrascritto
+     */
+    @Override
+    protected String getChiave(Bio bio) {
+        if (usaSuddivisioneParagrafi) {
+            return LibBio.getChiavePerCognomeDue(bio, tagParagrafoNullo);
+        } else {
+            return LibBio.getChiavePerCognome(bio, tagParagrafoNullo);
+        }// end of if/else cycle
+    }// fine del metodo
+
+    /**
+     * Costruisce la sottopagina
+     * Metodo sovrascritto
+     */
+    @Override
+    protected void creaSottopagina(HashMap<String, Object> mappa) {
+        new ListaAttivitaLettera(this, mappa);
+    }// fine del metodo
+
     @Override
     public String getAttivitaText() {
-        return titoloPaginaMadre  + "/" + titoloVisibile;
+        return titoloPaginaMadre + "/" + titoloVisibile;
     }// fine del metodo
 
 }// fine della classe

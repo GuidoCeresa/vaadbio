@@ -71,6 +71,7 @@ public abstract class CostBio {
     public final static String USA_REGISTRA_SEMPRE_CRONO = "salvaSempreCrono";
     public final static String MAX_VOCI_PARAGRAFO = "maxVociParagrafo";
     public final static String USA_NUMERI_PARAGRAFO = "usaNumeriParagrafo";
+    public final static String USA_PARAGRAFO_DUE_LETTERE = "usaParagrafoDueLettere";
 
     // persone - nomi
     public final static String USA_NOME_SINGOLO = "usaNomeSingolo";

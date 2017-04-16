@@ -2118,6 +2118,17 @@ public abstract class LibBio {
     }// fine del metodo
 
     /**
+     * Costruisce una chiave di suddivisione alfabetica per le prime due lettere iniziale del cognome
+     */
+    public static String getChiavePerCognomeDue(Bio bio, String tagParagrafoNullo) {
+        if (bio != null) {
+            return getChiavePerAntroDue(bio.getCognomeValido(), tagParagrafoNullo);
+        } else {
+            return tagParagrafoNullo;
+        }// end of if/else cycle
+    }// fine del metodo
+
+    /**
      * Costruisce una chiave di suddivisione alfabetica per lettera iniziale del nome
      */
     public static String getChiavePerNome(Bio bio, String tagParagrafoNullo) {
@@ -2129,6 +2140,7 @@ public abstract class LibBio {
     }// fine del metodo
 
 
+
     /**
      * Costruisce una chiave di suddivisione alfabetica per lettera iniziale del nome o del cognome
      */
@@ -2138,6 +2150,20 @@ public abstract class LibBio {
         if (value != null && value.length() > 0) {
             chiave = value.substring(0, 1);
             chiave = chiave.toUpperCase();
+        }// end of if cycle
+
+        return chiave;
+    }// fine del metodo
+
+    /**
+     * Costruisce una chiave di suddivisione alfabetica per le prime due lettere iniziali del nome o del cognome
+     */
+    private static String getChiavePerAntroDue(String value, String tagParagrafoNullo) {
+        String chiave = tagParagrafoNullo;
+
+        if (value != null && value.length() > 0) {
+            chiave = value.substring(0, 1).toUpperCase();
+            chiave += value.substring(1, 2).toLowerCase();
         }// end of if cycle
 
         return chiave;

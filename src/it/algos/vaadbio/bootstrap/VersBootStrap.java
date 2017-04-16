@@ -385,6 +385,11 @@ public class VersBootStrap implements ServletContextListener {
             LibPref.newVersInt(CostBio.TAGLIO_LISTE_ELENCO, 20, "Taglio per registrare il record e creare la riga nella lista statistica di attività e nazionalità. Di default 20.");
         }// fine del blocco if
 
+        //--creata una nuova preferenza
+        if (LibVers.installa(++k)) {
+            LibPref.newVersBool(CostBio.USA_PARAGRAFO_DUE_LETTERE, true, "Suddivide le pagine alfabetiche per la seconda lettera. Di default true.");
+        }// fine del blocco if
+
         //--elimina una property come riferimento
 //        if (LibVers.installa(++k)) {
 //            fixPropertyNome();
