@@ -3,7 +3,9 @@ package it.algos.vaadbio.liste;
 
 import it.algos.vaadbio.bio.Bio;
 import it.algos.vaadbio.lib.CostBio;
+import it.algos.vaadbio.lib.LibBio;
 import it.algos.vaadbio.nazionalita.Nazionalita;
+import it.algos.webbase.domain.pref.Pref;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -60,14 +62,22 @@ public class ListaNazionalitaLettera extends ListaNazionalitaABC {
     @Override
     protected void elaboraParametri() {
         super.elaboraParametri();
+        boolean usaSuddivisioneParagrafiDueLettere = Pref.getBool(CostBio.USA_PARAGRAFO_DUE_LETTERE, true);
+        int numVoci = (int) mappaSuper.get(KEY_MAP_VOCI);
+        int maxVociParginaAlfabetica = maxVociParagrafo * 2;
 
         // body
-        usaSuddivisioneParagrafi = false;
+        if (usaSuddivisioneParagrafiDueLettere && numVoci > maxVociParginaAlfabetica) {
+            usaSuddivisioneParagrafi = true;
+        } else {
+            usaSuddivisioneParagrafi = false;
+        }// end of if/else cycle
         usaSottopagine = false;
+        usaTaglioVociPagina = false;
+
         usaOrdineAlfabeticoParagrafi = true;
         tagParagrafoNullo = "...";
         usaTitoloParagrafoConLink = false;
-        usaTaglioVociPagina = false;
 
     }// fine del metodo
 
@@ -124,6 +134,28 @@ public class ListaNazionalitaLettera extends ListaNazionalitaABC {
         }// end of if cycle
 
         return text;
+    }// fine del metodo
+
+    /**
+     * Costruisce la chiave del paragrafo
+     * Sovrascritto
+     */
+    @Override
+    protected String getChiave(Bio bio) {
+        if (usaSuddivisioneParagrafi) {
+            return LibBio.getChiavePerCognomeDue(bio, tagParagrafoNullo);
+        } else {
+            return LibBio.getChiavePerCognome(bio, tagParagrafoNullo);
+        }// end of if/else cycle
+    }// fine del metodo
+
+    /**
+     * Costruisce la sottopagina
+     * Metodo sovrascritto
+     */
+    @Override
+    protected void creaSottopagina(HashMap<String, Object> mappa) {
+        new ListaNazionalitaLettera(this, mappa);
     }// fine del metodo
 
     @Override
