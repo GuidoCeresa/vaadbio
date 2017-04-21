@@ -2140,7 +2140,6 @@ public abstract class LibBio {
     }// fine del metodo
 
 
-
     /**
      * Costruisce una chiave di suddivisione alfabetica per lettera iniziale del nome o del cognome
      */
@@ -2161,7 +2160,7 @@ public abstract class LibBio {
     private static String getChiavePerAntroDue(String value, String tagParagrafoNullo) {
         String chiave = tagParagrafoNullo;
 
-        if (value != null && value.length() > 0) {
+        if (value != null && value.length() > 1) {
             chiave = value.substring(0, 1).toUpperCase();
             chiave += value.substring(1, 2).toLowerCase();
         }// end of if cycle
