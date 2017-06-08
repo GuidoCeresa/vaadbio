@@ -85,6 +85,7 @@ public abstract class CostBio {
     public final static String USA_RICONTEGGIO_NOMI = "usaRiconteggioNomi";
     public final static String USA_NOMI_DIVERSI_PER_ACCENTO = "usaNomiDiversiPerAccento";
 
+
     //--taglio per registrare il record e creare la riga nella lista statistica --tipico 20
     public final static String TAGLIO_COGNOMI_ELENCO = "taglioCognomiElenco";
     //--taglio per creare una pagina del cognome --tipico 50
