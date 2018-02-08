@@ -8,6 +8,8 @@ import it.algos.vaadbio.lib.CostBio;
 import it.algos.vaadbio.nazionalita.Nazionalita;
 import it.algos.vaadbio.nome.Nome;
 
+import java.util.Date;
+
 /**
  * Created by gac on 19 dic 2015.
  * .
@@ -77,7 +79,6 @@ public class ElaboraLink {
     } // fine del metodo
 
 
-
     private Giorno getGiorno(String giornoTestoValido) {
         Giorno giorno = null;
 
@@ -106,11 +107,28 @@ public class ElaboraLink {
     private void fixAnnoMortoPunta(Bio bio) {
         Anno anno = null;
         String annoTestoValido;
+        int deltaOrdinamento = 2000;
+        int deltaData = 1900;
+        int ordinamento;
+        int annoNumero;
+        long ora = System.currentTimeMillis();
+        Date oggi = new Date(ora);
+        int annoCorrente = oggi.getYear() + deltaData;
 
         if (bio != null) {
             annoTestoValido = bio.getAnnoMorteValido();
             anno = getAnno(annoTestoValido);
-            bio.setAnnoMortoPunta(anno);
+
+            if (anno != null) {
+                ordinamento = anno.getOrdinamento();
+                annoNumero = ordinamento - deltaOrdinamento;
+                if (annoNumero > annoCorrente) {
+                    bio.setAnnoMortoPunta(null);
+                } else {
+                    bio.setAnnoMortoPunta(anno);
+                }// end of if/else cycle
+            }// end of if cycle
+
         }// fine del blocco if
     } // fine del metodo
 

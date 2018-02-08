@@ -18,6 +18,7 @@ import it.algos.vaadbio.lib.LibBio;
 import it.algos.vaadbio.mese.MeseMod;
 import it.algos.vaadbio.nazionalita.NazionalitaMod;
 import it.algos.vaadbio.nome.NomeMod;
+import it.algos.vaadbio.professione.ProfessioneMod;
 import it.algos.vaadbio.secolo.SecoloMod;
 import it.algos.webbase.domain.pref.PrefMod;
 import it.algos.webbase.domain.utente.UtenteModulo;
@@ -122,6 +123,7 @@ public class VaadbioUI extends AlgosUI {
         this.addModulo(new GenereMod());
         this.addModulo(new AttivitaMod());
         this.addModulo(new NazionalitaMod());
+        this.addModulo(new ProfessioneMod());
     }// end of method
 
 
@@ -193,7 +195,10 @@ public class VaadbioUI extends AlgosUI {
 //        footerLayout.addComponent(new Label("Vaadbio versione 6.8 del 9 mar 2017"));
 //        footerLayout.addComponent(new Label("Vaadbio versione 6.9 del 16 apr 2017"));
 //        footerLayout.addComponent(new Label("Vaadbio versione 7.0 del 18 apr 2017"));
-        footerLayout.addComponent(new Label("Vaadbio versione 7.1 del 22 apr 2017"));
+//        footerLayout.addComponent(new Label("Vaadbio versione 7.1 del 22 apr 2017"));
+//        footerLayout.addComponent(new Label("Vaadbio versione 7.2 del 22 dic 2017"));
+//        footerLayout.addComponent(new Label("Vaadbio versione 7.3 del 15 gen 2018"));
+        footerLayout.addComponent(new Label("Vaadbio versione 7.4 del 8 feb 2018"));
     }// end of method
 
 }//end of UI class

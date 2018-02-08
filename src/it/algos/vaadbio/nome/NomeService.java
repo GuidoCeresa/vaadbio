@@ -52,10 +52,17 @@ public abstract class NomeService {
     private static String[] TAG_ALL_NOMI_CINESI = {"Zhang"};
     private static String[] TAG_ALL_COGNOMI = {"d'Asburgo", "d'Asburgo-Lorena", "d'Este", "da Silva", "di Borbone", "O'Brien", "Knight"};
 
+    private static List LISTA_NOMI_DOPPI = null;
+
+
+    static {
+        LISTA_NOMI_DOPPI = listaNomiDoppi();
+    }// fine del metodo
+
 
     /**
      * Cancella i records esistenti
-     * Vengono creati nuovi records per i cognomi (unici) presenti nelle voci (bioGrails)
+     * Vengono creati nuovi records per i nomi (unici) presenti nelle voci (bioGrails)
      */
     public static void crea() {
         EntityManager manager = EM.createEntityManager();
@@ -64,7 +71,7 @@ public abstract class NomeService {
         //--cancella i records esistenti
         cancellaNomi(manager);
 
-        //--elabora i cognomi e li registra
+        //--elabora i nomi e li registra
         creaAllNomiUnici(manager);
 
         try {
@@ -184,7 +191,7 @@ public abstract class NomeService {
      * Occorre aggiungere quindi i nomi doppi esplicitamente previsti nella lista su wiki
      * Vengono eliminati im precedenti nomi doppi non più presenti nella pagina del progetto
      */
-    public static void listaNomiDoppi() {
+    public static List listaNomiDoppi() {
         String titolo = TITOLO_LISTA_NOMI_DOPPI;
         String tagInizio = "*";
         String tagRiga = "\\*";
@@ -218,9 +225,10 @@ public abstract class NomeService {
             }// end of for cycle
         }// end of if cycle
 
-        listaDB = LibBio.queryFindTxt("select nome.nome from Nome nome where nome.nomeDoppio=1 order by nome.nome asc");
-        aggiungeMancanti(LibArray.differenza(listaServer, listaDB));
-        cancellaEccedenti(LibArray.differenza(listaDB, listaServer));
+        return listaServer;
+//        listaDB = LibBio.queryFindTxt("select nome.nome from Nome nome where nome.nomeDoppio=1 order by nome.nome asc");
+//        aggiungeMancanti(LibArray.differenza(listaServer, listaDB));
+//        cancellaEccedenti(LibArray.differenza(listaDB, listaServer));
     }// fine del metodo
 
 
@@ -361,13 +369,18 @@ public abstract class NomeService {
             }// end of if cycle
 
             //--terza regola
-            nomeEsistente = Nome.getEntityByNome(nomeIn.trim());
-            if (nomeEsistente != null) {
-//                if (nomeEsistente.isNomeDoppio()) {
-//                    nomeOut = nomeEsistente.getNome();
-//                }// end of if cycle
-            } else {
-            }// end of if/else cycle
+            if (LISTA_NOMI_DOPPI.contains(nomeIn)) {
+                nomeOut=nomeIn;
+            }// end of if cycle
+
+
+//            nomeEsistente = Nome.getEntityByNome(nomeIn.trim());
+//            if (nomeEsistente != null) {
+////                if (nomeEsistente.isNomeDoppio()) {
+////                    nomeOut = nomeEsistente.getNome();
+////                }// end of if cycle
+//            } else {
+//            }// end of if/else cycle
         }// fine del blocco if
 
         // --quarta regola

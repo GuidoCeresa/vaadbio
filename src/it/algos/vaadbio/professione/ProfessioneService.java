@@ -6,7 +6,9 @@ import it.algos.webbase.domain.log.Log;
 import it.algos.webbase.domain.pref.Pref;
 import it.algos.webbase.web.lib.LibNum;
 import it.algos.webbase.web.lib.LibTime;
+import it.algos.webbase.web.query.AQuery;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -31,6 +33,11 @@ public abstract class ProfessioneService {
         LinkedHashMap<String, Object> mappa;
         String secondi;
         String records;
+
+        ArrayList<Professione> listaEsistenti = Professione.findAll();
+        for (Professione professione : listaEsistenti) {
+            professione.delete();
+        }// end of for cycle
 
         // Recupera la mappa dalla pagina wiki
         mappa = LibWiki.leggeMappaModulo(TITOLO_MODULO);

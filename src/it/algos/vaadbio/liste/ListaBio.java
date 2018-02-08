@@ -261,6 +261,10 @@ public abstract class ListaBio {
             return CostBio.VUOTO;
         }// end of if cycle
 
+        if (bio.getTitle().equals("Ferdinando Ughelli")) {
+            int a=87;
+        }// end of if cycle
+
         attivita = bio.getAttivitaPunta();
 
         if (attivita != null) {

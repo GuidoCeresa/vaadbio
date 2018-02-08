@@ -2243,7 +2243,7 @@ public abstract class LibBio {
      */
     public static String troncaDidascalia(String didascaliaIn) {
         String didascaliaOut = didascaliaIn;
-        String tag = CostBio.TAG_SEPARATORE;
+        String tag = "]]"+CostBio.TAG_SEPARATORE;
 
         if (didascaliaIn.contains(tag)) {
             didascaliaOut = didascaliaIn.substring(didascaliaIn.indexOf(tag) + tag.length()).trim();

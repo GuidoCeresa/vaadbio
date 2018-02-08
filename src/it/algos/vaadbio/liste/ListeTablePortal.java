@@ -15,9 +15,9 @@ import it.algos.webbase.web.toolbar.TableToolbar;
  */
 public abstract class ListeTablePortal extends TablePortal {
 
-    private final static Resource ICON_MOVE_UP = FontAwesome.FILE_TEXT;
-    private final static String WIKI_BASE = "https://it.wikipedia.org/wiki/Progetto:";
-    private final static String TAG = "/";
+    protected final static Resource ICON_MOVE_UP = FontAwesome.FILE_TEXT;
+    protected final static String WIKI_BASE = "https://it.wikipedia.org/wiki/Progetto:";
+    protected final static String TAG = "/";
 
     protected String wikiProgetto;
 
@@ -56,7 +56,7 @@ public abstract class ListeTablePortal extends TablePortal {
     /*
      * Link alle pagine di servizio.
      */
-    private void addMenuLinkWikipedia() {
+    protected void addMenuLinkWikipedia() {
         String wikiLink = WIKI_BASE + wikiProgetto + TAG;
 
         if (LibText.isValida(cmdPagina)) {
